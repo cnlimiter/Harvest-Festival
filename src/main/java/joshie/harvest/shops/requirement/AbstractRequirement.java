@@ -15,11 +15,13 @@ public abstract class AbstractRequirement implements IRequirement {
         this.cost = cost;
     }
 
+    @Override
     @Nonnull
     public ItemStack getIcon() {
         return icon;
     }
 
+    @Override
     public int getCost() {
         return cost;
     }

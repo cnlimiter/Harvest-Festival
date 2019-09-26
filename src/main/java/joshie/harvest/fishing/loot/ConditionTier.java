@@ -41,10 +41,12 @@ public class ConditionTier implements LootCondition {
             super(new ResourceLocation(MODID, "tier"), ConditionTier.class);
         }
 
+        @Override
         public void serialize(@Nonnull JsonObject json, @Nonnull ConditionTier value, @Nonnull JsonSerializationContext context) {
             json.addProperty("level", value.level);
         }
 
+        @Override
         @Nonnull
         public ConditionTier deserialize(@Nonnull JsonObject json, @Nonnull JsonDeserializationContext context) {
             return new ConditionTier(JsonUtils.getInt(json, "level", 1));

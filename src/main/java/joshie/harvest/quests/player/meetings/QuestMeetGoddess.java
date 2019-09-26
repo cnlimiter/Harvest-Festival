@@ -27,6 +27,7 @@ public class QuestMeetGoddess extends QuestQuestion {
         setNPCs(GODDESS);
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public String getLocalizedScript(EntityPlayer player, NPC npc) {
         //The goddess says hello and asks if you are new

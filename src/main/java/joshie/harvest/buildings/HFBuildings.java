@@ -13,7 +13,6 @@ import joshie.harvest.buildings.building.BuildingFestival;
 import joshie.harvest.buildings.item.ItemBlueprint;
 import joshie.harvest.buildings.item.ItemBuilding;
 import joshie.harvest.buildings.item.ItemCheat;
-import joshie.harvest.buildings.item.ItemCheat.Cheat;
 import joshie.harvest.buildings.loader.*;
 import joshie.harvest.buildings.placeable.Placeable;
 import joshie.harvest.buildings.render.BuildingItemRenderer;
@@ -24,7 +23,6 @@ import joshie.harvest.buildings.special.SpecialRuleFestivals;
 import joshie.harvest.core.HFCore;
 import joshie.harvest.core.base.render.BuildingDefinition;
 import joshie.harvest.core.base.render.MeshIdentical;
-import joshie.harvest.core.proxy.HFClientProxy;
 import joshie.harvest.core.util.HFTemplate;
 import joshie.harvest.core.util.annotations.HFLoader;
 import joshie.harvest.npcs.HFNPCs;
@@ -34,10 +32,12 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraftforge.client.ForgeHooksClient;
+import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.common.registry.IForgeRegistryEntry.Impl;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.registries.IForgeRegistryEntry.Impl;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.logging.log4j.Level;
@@ -49,6 +49,7 @@ import static joshie.harvest.core.lib.LoadOrder.HFBUILDING;
 import static joshie.harvest.npcs.HFNPCs.CLOCKMAKER_CHILD;
 
 @HFLoader(priority = HFBUILDING)
+@EventBusSubscriber(Side.CLIENT)
 @SuppressWarnings("unchecked, unused")
 public class HFBuildings {
     public static final ItemBuilding STRUCTURES = new ItemBuilding().register("structures");
@@ -99,14 +100,21 @@ public class HFBuildings {
     @SideOnly(Side.CLIENT)
     @SuppressWarnings("deprecation")
     public static void initClient() {
-        BuildingDefinition.registerEverything();
-        if (HFCore.DEBUG_MODE) {
-            HFClientProxy.RENDER_MAP.put(CHEAT, BuildingTile.INSTANCE);
-            ClientRegistry.bindTileEntitySpecialRenderer(BuildingTile.class, new BuildingItemRenderer());
-            ForgeHooksClient.registerTESRItemStack(CHEAT, Cheat.BUILDING_PREVIEW.ordinal(), BuildingTile.class);
-        }
     }
 
+    @SideOnly(Side.CLIENT)
+    @SubscribeEvent
+    public static void mapModel(ModelRegistryEvent event)
+    {
+        BuildingDefinition.registerEverything();
+        if (HFCore.DEBUG_MODE) {
+            BuildingItemRenderer renderer = new BuildingItemRenderer();
+            CHEAT.setTileEntityItemStackRenderer(new BuildingItemRenderer.TEISR(renderer));
+            ClientRegistry.bindTileEntitySpecialRenderer(BuildingTile.class, renderer);
+            //ForgeHooksClient.registerTESRItemStack(CHEAT, Cheat.BUILDING_PREVIEW.ordinal(), BuildingTile.class);
+        }
+    }
+    
     @SuppressWarnings("unchecked")
     private static <B extends Building> B registerBuilding(String name, Class<B>... clazzes) {
         Class<B> clazz = clazzes.length == 1 ? clazzes[0] : null;

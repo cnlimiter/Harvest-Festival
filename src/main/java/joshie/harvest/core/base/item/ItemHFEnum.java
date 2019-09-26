@@ -47,8 +47,8 @@ public abstract class ItemHFEnum<I extends ItemHFEnum, E extends Enum<E> & IStri
     @Override
     @SuppressWarnings("unchecked")
     @Nonnull
-    public I setUnlocalizedName(@Nonnull String name) {
-        super.setUnlocalizedName(name);
+    public I setTranslationKey(@Nonnull String name) {
+        super.setTranslationKey(name);
         return (I) this;
     }
 
@@ -88,14 +88,14 @@ public abstract class ItemHFEnum<I extends ItemHFEnum, E extends Enum<E> & IStri
 
     @Override
     @Nonnull
-    public String getUnlocalizedName(ItemStack stack) {
+    public String getTranslationKey(ItemStack stack) {
         return prefix + "_" + getEnumFromStack(stack).name().toLowerCase(Locale.ENGLISH);
     }
 
     @Override
     @Nonnull
     public String getItemStackDisplayName(@Nonnull ItemStack stack) {
-        return TextHelper.translate(getUnlocalizedName(stack).replaceAll("(.)([A-Z])", "$1$2").toLowerCase(Locale.ENGLISH).replace("_", "."));
+        return TextHelper.translate(getTranslationKey(stack).replaceAll("(.)([A-Z])", "$1$2").toLowerCase(Locale.ENGLISH).replace("_", "."));
     }
 
     @Override
@@ -108,11 +108,13 @@ public abstract class ItemHFEnum<I extends ItemHFEnum, E extends Enum<E> & IStri
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void getSubItems(@Nonnull Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
-        for (E e: values) {
-            if (shouldDisplayInCreative(e)) {
-                list.add(new ItemStack(item, 1, e.ordinal()));
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list) {
+        if (this.isInCreativeTab(tab))
+        {
+            for (E e: values) {
+                if (shouldDisplayInCreative(e)) {
+                    list.add(new ItemStack(this, 1, e.ordinal()));
+                }
             }
         }
     }
@@ -124,8 +126,13 @@ public abstract class ItemHFEnum<I extends ItemHFEnum, E extends Enum<E> & IStri
     @SideOnly(Side.CLIENT)
     @Override
     public void registerModels(Item item, String name) {
-        for (E e: values) {
-            ModelLoader.setCustomModelResourceLocation(item, e.ordinal(), new ModelResourceLocation(getRegistryName(), e.getName()));
-        }
+    	if (item.getHasSubtypes()) {
+            for (E e: values) {
+                ModelLoader.setCustomModelResourceLocation(item, e.ordinal(), new ModelResourceLocation(getRegistryName(), e.getName()));
+            }
+    	}
+    	else {
+			super.registerModels(item, name);
+		}
     }
 }

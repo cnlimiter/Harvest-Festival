@@ -53,6 +53,7 @@ public class GreetingFlowerBuyer implements IInfoButton {
         gui.drawTexturedModalRect(x, y, 80, 0, 16, 16);
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public String getTooltip() {
         return "harvestfestival.npc.tooltip.flower";

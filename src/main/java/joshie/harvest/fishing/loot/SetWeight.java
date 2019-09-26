@@ -24,6 +24,7 @@ public class SetWeight extends LootFunction {
         super(conditionsIn);
     }
 
+    @Override
     @Nonnull
     public ItemStack apply(@Nonnull ItemStack stack, @Nonnull Random rand, @Nonnull LootContext context) {
         if (context.getKillerPlayer() instanceof EntityPlayer && stack.getItem() == HFFishing.FISH) {
@@ -58,8 +59,10 @@ public class SetWeight extends LootFunction {
             super(new ResourceLocation("hf_set_weight"), SetWeight.class);
         }
 
+        @Override
         public void serialize(@Nonnull JsonObject object, @Nonnull SetWeight functionClazz, @Nonnull JsonSerializationContext serializationContext) {}
 
+        @Override
         @Nonnull
         public SetWeight deserialize(@Nonnull JsonObject object, @Nonnull JsonDeserializationContext deserializationContext, @Nonnull LootCondition[] conditionsIn) {
             return new SetWeight(conditionsIn);

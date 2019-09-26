@@ -29,6 +29,7 @@ public class Exact extends FloorCondition {
             super(new ResourceLocation(MODID, "exact"), Exact.class);
         }
 
+        @Override
         public void serialize(@Nonnull JsonObject json, @Nonnull Exact value, @Nonnull JsonSerializationContext context) {
             if (value.values.length == 1) {
                 json.addProperty("value", value.values[0]);
@@ -42,6 +43,7 @@ public class Exact extends FloorCondition {
             }
         }
 
+        @Override
         @Nonnull
         public Exact deserialize(@Nonnull JsonObject json, @Nonnull JsonDeserializationContext context) {
             if (json.has("values")) {

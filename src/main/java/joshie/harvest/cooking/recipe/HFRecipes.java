@@ -3,16 +3,20 @@ package joshie.harvest.cooking.recipe;
 import joshie.harvest.animals.HFAnimals;
 import joshie.harvest.animals.item.ItemAnimalProduct.Sizeable;
 import joshie.harvest.api.HFApi;
+import joshie.harvest.api.cooking.Recipe;
 import joshie.harvest.api.core.Size;
 import joshie.harvest.cooking.HFCooking;
 import joshie.harvest.cooking.item.ItemIngredients;
+import joshie.harvest.cooking.item.ItemMeal;
 import joshie.harvest.cooking.item.ItemMeal.Meal;
 import joshie.harvest.core.util.annotations.HFLoader;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 
 import static joshie.harvest.cooking.recipe.HFIngredients.*;
 import static joshie.harvest.cooking.recipe.RecipeHelper.*;
+import static joshie.harvest.core.lib.HFModInfo.MODID;
 
 @HFLoader
 public class HFRecipes {
@@ -22,6 +26,10 @@ public class HFRecipes {
         addNoUtensilRecipes();
         addPotRecipes();
         addOvenRecipes();
+
+        for (Meal ameal: ItemMeal.MEALS) {
+        	ItemMeal.MEAL_TO_RECIPE.put(ameal, Recipe.REGISTRY.get(new ResourceLocation(MODID, ameal.getName())));
+        }
 
         //Register the base meals as shippable
         HFApi.shipping.registerSellable(HFCooking.MEAL.getStackFromEnum(Meal.BUTTER), 100L);

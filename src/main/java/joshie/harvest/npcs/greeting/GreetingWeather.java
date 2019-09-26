@@ -16,6 +16,7 @@ import java.util.Locale;
 import static joshie.harvest.core.lib.HFModInfo.ICONS;
 
 public class GreetingWeather implements IInfoButton {
+    @Override
     @SuppressWarnings("deprecation")
     @SideOnly(Side.CLIENT)
     public String getLocalizedText(EntityPlayer player, EntityAgeable entity, NPC npc) {
@@ -29,6 +30,7 @@ public class GreetingWeather implements IInfoButton {
         gui.drawTexturedModalRect(x, y, 32, 0, 16, 16);
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public String getTooltip() {
         return "harvestfestival.npc.tooltip.weather";

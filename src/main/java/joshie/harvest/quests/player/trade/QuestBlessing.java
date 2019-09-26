@@ -117,6 +117,7 @@ public class QuestBlessing extends QuestTrade {
     /** Called to write data about this quest
      * @param nbt the nbt tag to write to
      * @return the nbt tag**/
+    @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
         super.writeToNBT(nbt);
         if (date != null) {

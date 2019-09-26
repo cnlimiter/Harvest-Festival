@@ -30,6 +30,7 @@ public class ItemFishingRod extends ItemTool<ItemFishingRod> {
         super(tier, "fishing_rod", new HashSet<>());
         setCreativeTab(HFTab.FISHING);
         addPropertyOverride(new ResourceLocation("cast"), new IItemPropertyGetter() {
+            @Override
             @SideOnly(Side.CLIENT)
             public float apply(@Nonnull ItemStack stack, @Nullable World worldIn, @Nullable EntityLivingBase entityIn) {
                 return entityIn == null ? 0.0F : (entityIn.getHeldItemMainhand() == stack && entityIn instanceof EntityPlayer && ((EntityPlayer)entityIn).fishEntity != null ? 1.0F : 0.0F);
@@ -93,14 +94,14 @@ public class ItemFishingRod extends ItemTool<ItemFishingRod> {
                     //Lure replacement
                     int j = (tier.getToolLevel() + 1) * (getBaitAmount(stack) > 0 ? 2 : 1);
                     if (j > 0) {
-                        entityfishhook.func_191516_a(j);
+                        entityfishhook.setLureSpeed(j);
                     }
 
                     //Luck of the sea replacement
                     int k = tier == ToolTier.CURSED ? 1 : 0;
 
                     if (k > 0)  {
-                        entityfishhook.func_191517_b(k);
+                        entityfishhook.setLuck(k);
                     }
 
                     world.spawnEntity(entityfishhook);

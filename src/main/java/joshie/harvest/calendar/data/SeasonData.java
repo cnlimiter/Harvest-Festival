@@ -49,8 +49,8 @@ public class SeasonData {
     }
 
     private void recalculateMiddayAndMidnight() {
-        midday = (int) ((double) (sunrise + sunset) / 2D);
-        midnight = (int) ((double) (sunrise + sunset + 24000) / 2D);
+        midday = (int) ((sunrise + sunset) / 2D);
+        midnight = (int) ((sunrise + sunset + 24000) / 2D);
     }
 
     public ResourceLocation getResource() {

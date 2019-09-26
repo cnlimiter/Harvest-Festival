@@ -1,6 +1,6 @@
 package joshie.harvest.crops.handlers.growth;
 
-import net.minecraft.block.BlockPumpkin;
+import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
@@ -14,6 +14,6 @@ public class GrowthHandlerPumpkin extends GrowthHandlerSide {
 
     @Override
     protected IBlockState getBlockState(World world) {
-        return block.getDefaultState().withProperty(BlockPumpkin.FACING, EnumFacing.HORIZONTALS[world.rand.nextInt(EnumFacing.HORIZONTALS.length)]);
+        return block.getDefaultState().withProperty(BlockHorizontal.FACING, EnumFacing.HORIZONTALS[world.rand.nextInt(EnumFacing.HORIZONTALS.length)]);
     }
 }

@@ -55,6 +55,7 @@ public class QuestStarryNight extends QuestFestivalTimed {
         return true;
     }
 
+    @Override
     @Nullable
     public Selection getSelection(EntityPlayer player, NPC npc) {
         return getDataForPlayer(player).getSelection(time);

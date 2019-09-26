@@ -70,10 +70,10 @@ public class InventoryHelper {
     private static <T> void takeItems(EntityPlayer player, T taking, int amount, Matcher<T> matcher) {
         int toTake = amount;
         ItemStack offhand = player.inventory.offHandInventory.get(0);
-        if (matcher.matches(offhand, taking)) {
+        if (!offhand.isEmpty() && matcher.matches(offhand, taking)) {
             ItemStack taken = offhand.splitStack(toTake);
             toTake -= taken.getCount();
-            player.inventory.offHandInventory.get(0).isEmpty(); //Clear
+         // player.inventory.offHandInventory.get(0).isEmpty(); //Clear
             if (toTake <= 0) return; //No further processing neccessary
         }
 
@@ -83,7 +83,7 @@ public class InventoryHelper {
             if (!stack.isEmpty() && matcher.matches(stack, taking)) {
                 ItemStack taken = stack.splitStack(toTake);
                 toTake -= taken.getCount();
-                player.inventory.mainInventory.get(i).isEmpty(); //Clear
+             // player.inventory.mainInventory.get(i).isEmpty(); //Clear
                 if (toTake <= 0) return; //No further processing neccessary
             }
         }

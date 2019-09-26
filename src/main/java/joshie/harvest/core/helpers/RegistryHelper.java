@@ -10,7 +10,6 @@ import joshie.harvest.api.trees.Tree;
 import joshie.harvest.core.base.render.FakeEntityRenderer;
 import joshie.harvest.core.base.render.FakeEntityRenderer.EntityItemRenderer;
 import joshie.harvest.core.handlers.DisableHandler;
-import joshie.harvest.core.proxy.HFClientProxy;
 import joshie.harvest.crops.HFCrops;
 import joshie.harvest.crops.handlers.SeedRecipeHandler;
 import joshie.harvest.crops.handlers.drop.DropHandlerTree;
@@ -29,6 +28,8 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.registries.GameData;
+
 import org.apache.commons.lang3.text.WordUtils;
 
 import javax.annotation.Nonnull;
@@ -44,7 +45,7 @@ public class RegistryHelper {
     public static void registerSounds(String... sounds) {
         for (String sound : sounds) {
             ResourceLocation resource = new ResourceLocation(MODID, sound);
-            GameRegistry.register(new SoundEvent(resource), resource);
+            GameData.register_impl(new SoundEvent(resource).setRegistryName(resource));
         }
     }
 
@@ -69,7 +70,7 @@ public class RegistryHelper {
 
     @SideOnly(Side.CLIENT)
     public static void registerEntityRenderer(Item item, EntityItemRenderer instance) {
-        HFClientProxy.RENDER_MAP.put(item, instance);
+        item.setTileEntityItemStackRenderer(new FakeEntityRenderer.TEISR(instance));
         ClientRegistry.bindTileEntitySpecialRenderer(instance.getClass(), FakeEntityRenderer.INSTANCE);
     }
 
@@ -116,7 +117,7 @@ public class RegistryHelper {
 
         //Add a bag > seed recipe
         if (crop.getCropStack(1).getItem() != seeds.getItem()) {
-            GameRegistry.addRecipe(new SeedRecipeHandler(seeds, crop.getSeedStack(1)));
+        	GameData.register_impl(new SeedRecipeHandler(seeds, crop.getSeedStack(1)).setRegistryName("harvestfestival", seeds.getItem().getRegistryName().getPath()));
         }
     }
 
@@ -132,7 +133,7 @@ public class RegistryHelper {
     }
 
     private static boolean isInDictionary(String name, @Nonnull ItemStack stack) {
-        for (ItemStack check: OreDictionary.getOres(name)) {
+        for (ItemStack check: OreDictionary.getOres(name, false)) {
             if (check.getItem() == stack.getItem() && (check.getItemDamage() == OreDictionary.WILDCARD_VALUE || check.getItemDamage() == stack.getItemDamage())) {
                 return true;
             }

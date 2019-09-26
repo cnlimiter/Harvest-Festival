@@ -3,10 +3,10 @@ package joshie.harvest.cooking.render;
 import joshie.harvest.cooking.CookingAPI;
 import joshie.harvest.cooking.tile.TileCooking;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemBlock;
@@ -31,7 +31,7 @@ public abstract class SpecialRendererCookware<T extends TileCooking> extends Til
     private static final Minecraft MINECRAFT = Minecraft.getMinecraft();
 
     @Override
-    public void renderTileEntityAt(@Nullable T tile, double x, double y, double z, float tick, int destroyStage) {
+    public void render(@Nullable T tile, double x, double y, double z, float tick, int destroyStage, float alpha) {
         GlStateManager.pushMatrix();
         GlStateManager.translate(x, y, z);
         renderCookware(tile);
@@ -122,14 +122,14 @@ public abstract class SpecialRendererCookware<T extends TileCooking> extends Til
         GlStateManager.enableBlend();
         GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         Tessellator tessellator = Tessellator.getInstance();
-        VertexBuffer vb = tessellator.getBuffer();
+        BufferBuilder vb = tessellator.getBuffer();
         TextureAtlasSprite sprite = MINECRAFT.getTextureMapBlocks().getTextureExtry(fluid.toString());
         if (sprite != null) {
             MINECRAFT.renderEngine.bindTexture(LOCATION_BLOCKS_TEXTURE);
-            double uMin = (double) sprite.getMinU();
-            double uMax = (double) sprite.getMaxU();
-            double vMin = (double) sprite.getMinV();
-            double vMax = (double) sprite.getMaxV();
+            double uMin = sprite.getMinU();
+            double uMax = sprite.getMaxU();
+            double vMin = sprite.getMinV();
+            double vMax = sprite.getMaxV();
 
             vb.begin(7, POSITION_TEX);
             vb.pos(size / 2f, 0, size / 2f).tex(uMax, vMax).endVertex();
@@ -153,14 +153,14 @@ public abstract class SpecialRendererCookware<T extends TileCooking> extends Til
         GlStateManager.enableBlend();
         GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         Tessellator tessellator = Tessellator.getInstance();
-        VertexBuffer vb = tessellator.getBuffer();
+        BufferBuilder vb = tessellator.getBuffer();
         TextureAtlasSprite sprite = MINECRAFT.getTextureMapBlocks().getTextureExtry(fluid.toString());
         if (sprite != null) {
             MINECRAFT.renderEngine.bindTexture(LOCATION_BLOCKS_TEXTURE);
-            double uMin = (double) sprite.getMinU();
-            double uMax = (double) sprite.getMaxU();
-            double vMin = (double) sprite.getMinV();
-            double vMax = (double) sprite.getMaxV();
+            double uMin = sprite.getMinU();
+            double uMax = sprite.getMaxU();
+            double vMin = sprite.getMinV();
+            double vMax = sprite.getMaxV();
 
             //Draw Top
             //

@@ -1,10 +1,12 @@
 package joshie.harvest.player.relationships;
 
+import java.util.Collection;
+
 import joshie.harvest.api.calendar.CalendarDate;
 import joshie.harvest.api.npc.NPC;
 import joshie.harvest.api.npc.RelationStatus;
 import joshie.harvest.api.player.RelationshipType;
-import joshie.harvest.core.achievements.HFAchievements;
+import joshie.harvest.core.advancements.EventTrigger;
 import joshie.harvest.core.network.PacketHandler;
 import joshie.harvest.player.PlayerTrackerServer;
 import joshie.harvest.player.packet.PacketSyncGifted;
@@ -14,8 +16,6 @@ import joshie.harvest.player.packet.PacketSyncStatusReset;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
-
-import java.util.Collection;
 
 public class RelationshipDataServer extends RelationshipData {
     private final PlayerTrackerServer master;
@@ -68,7 +68,7 @@ public class RelationshipDataServer extends RelationshipData {
         relationships.put(npc, newValue);
         EntityPlayerMP player = master.getAndCreatePlayer();
         if (player != null) {
-            if (newValue >= 5000) player.addStat(HFAchievements.friend);
+        	if (newValue >= 5000) EventTrigger.INSTANCE.trigger(player, "make_friend");
             PacketHandler.sendToClient(new PacketSyncRelationship(npc, newValue), player);
         }
     }

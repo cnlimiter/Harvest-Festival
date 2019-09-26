@@ -29,11 +29,13 @@ public class Between extends FloorCondition {
             super(new ResourceLocation(MODID, "between"), Between.class);
         }
 
+        @Override
         public void serialize(@Nonnull JsonObject json, @Nonnull Between value, @Nonnull JsonSerializationContext context) {
             json.addProperty("from", value.from);
             json.addProperty("to", value.to);
         }
 
+        @Override
         @Nonnull
         public Between deserialize(@Nonnull JsonObject json, @Nonnull JsonDeserializationContext context) {
             return new Between(JsonUtils.getInt(json, "from", 0), JsonUtils.getInt(json, "to", 0));

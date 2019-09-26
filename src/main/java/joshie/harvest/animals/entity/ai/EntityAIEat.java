@@ -30,8 +30,8 @@ public class EntityAIEat extends EntityAIAnimal {
     }
 
     @Override
-    public boolean continueExecuting() {
-        return currentTask >= 0 && super.continueExecuting();
+    public boolean shouldContinueExecuting() {
+        return currentTask >= 0 && super.shouldContinueExecuting();
     }
 
     @Override
@@ -39,7 +39,7 @@ public class EntityAIEat extends EntityAIAnimal {
         super.updateTask();
         World world = animal.world;
         if (animal.getDistance(destinationBlock.getX(), destinationBlock.getY(), destinationBlock.getZ()) <= 1D) {
-            animal.getLookHelper().setLookPosition((double)destinationBlock.getX() + 0.5D, (double)(destinationBlock.getY()), (double)destinationBlock.getZ() + 0.5D, 10.0F, (float)animal.getVerticalFaceSpeed());
+            animal.getLookHelper().setLookPosition(destinationBlock.getX() + 0.5D, (destinationBlock.getY()), destinationBlock.getZ() + 0.5D, 10.0F, animal.getVerticalFaceSpeed());
             if (eatTimer == 0) eatTimer = 50;
             else eatTimer--;
 

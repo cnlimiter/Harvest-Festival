@@ -44,6 +44,7 @@ public class PageRecipeList extends Page {
         this.utensil = utensil;
     }
 
+    @Override
     public PageRecipeList initGui(GuiCookbook gui) {
         super.initGui(gui);
         recipes = new ArrayList<>();

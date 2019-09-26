@@ -44,6 +44,8 @@ public class NewDayHandler {
         if (!OfflineTickHandler.BLOCKED) {
             if (event.phase != Phase.END) return;
             World overworld = FMLCommonHandler.instance().getMinecraftServerInstance().worlds[0];
+            System.out.println(overworld.getWorldTime());
+            System.out.println(overworld.getWorldTime() % TICKS_PER_DAY);
             if (overworld.getWorldTime() % TICKS_PER_DAY == 1) {
                 CalendarServer calendar = HFTrackers.getCalendar(overworld);
                 CalendarDate yesterday = calendar.getDate().copy();

@@ -26,6 +26,7 @@ public class EntityAIEatLivestock extends EntityAIEat {
         return super.isEdible(pos, state);
     }
 
+    @Override
     protected void eat(BlockPos pos, IBlockState state) {
         Block block = state.getBlock();
         if (block == Blocks.TALLGRASS) {

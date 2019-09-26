@@ -7,6 +7,7 @@ import joshie.harvest.core.helpers.TextHelper;
 import joshie.harvest.tools.ToolHelper;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -23,6 +24,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -105,7 +108,7 @@ public class ItemSickle extends ItemToolChargeable<ItemSickle> {
                                     if (state.getBlock().canHarvestBlock(worldIn, newPos, player)) {
                                         boolean flag = state.getBlock().removedByPlayer(state, worldIn, newPos, player, true);
                                         if (flag) {
-                                            state.getBlock().onBlockDestroyedByPlayer(worldIn, newPos, state);
+                                            state.getBlock().onPlayerDestroy(worldIn, newPos, state);
                                             state.getBlock().harvestBlock(worldIn, player, newPos, state, worldIn.getTileEntity(newPos), stack);
                                         }
                                     }
@@ -121,10 +124,10 @@ public class ItemSickle extends ItemToolChargeable<ItemSickle> {
     }
 
     @Override
-    public float getStrVsBlock(@Nonnull ItemStack stack, IBlockState state) {
+    public float getDestroySpeed(@Nonnull ItemStack stack, IBlockState state) {
         if (canUse(stack)) {
             Material material = state.getMaterial();
-            return (state.getBlock() != Blocks.GRASS && material == Material.GRASS) || material == Material.LEAVES || material == Material.VINE ? 10F : super.getStrVsBlock(stack, state);
+            return (state.getBlock() != Blocks.GRASS && material == Material.GRASS) || material == Material.LEAVES || material == Material.VINE ? 10F : super.getDestroySpeed(stack, state);
         } else return 0.05F;
     }
 
@@ -143,18 +146,18 @@ public class ItemSickle extends ItemToolChargeable<ItemSickle> {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(@Nonnull ItemStack stack, EntityPlayer player, List<String> list, boolean flag) {
-        super.addInformation(stack, player, list, flag);
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+        super.addInformation(stack, worldIn, tooltip, flagIn);
         int charge = getCharge(stack);
         ToolTier thisTier = getTier(stack);
         if (thisTier != ToolTier.BASIC) {
             ToolTier tier = LEVEL_TO_TIER.get(charge);
-            list.add(TextFormatting.GOLD + TextHelper.translate("sickle.tooltip.charge." + tier.name().toLowerCase(Locale.ENGLISH)));
-            list.add("-------");
+            tooltip.add(TextFormatting.GOLD + TextHelper.translate("sickle.tooltip.charge." + tier.name().toLowerCase(Locale.ENGLISH)));
+            tooltip.add("-------");
             if (charge < thisTier.getToolLevel())
-                list.add(TextFormatting.AQUA + "" + TextFormatting.ITALIC + TextHelper.translate("sickle.tooltip.charge"));
+            	tooltip.add(TextFormatting.AQUA + "" + TextFormatting.ITALIC + TextHelper.translate("sickle.tooltip.charge"));
             if (charge != 0)
-                list.add(TextFormatting.RED + "" + TextFormatting.ITALIC + TextHelper.translate("sickle.tooltip.discharge"));
+            	tooltip.add(TextFormatting.RED + "" + TextFormatting.ITALIC + TextHelper.translate("sickle.tooltip.discharge"));
         }
     }
 

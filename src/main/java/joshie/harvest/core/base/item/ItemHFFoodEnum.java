@@ -51,8 +51,8 @@ public abstract class ItemHFFoodEnum<I extends ItemHFFoodEnum, E extends Enum<E>
     @Override
     @SuppressWarnings("unchecked")
     @Nonnull
-    public I setUnlocalizedName(@Nonnull String name) {
-        super.setUnlocalizedName(name);
+    public I setTranslationKey(@Nonnull String name) {
+        super.setTranslationKey(name);
         return (I) this;
     }
 
@@ -92,14 +92,14 @@ public abstract class ItemHFFoodEnum<I extends ItemHFFoodEnum, E extends Enum<E>
 
     @Override
     @Nonnull
-    public String getUnlocalizedName(ItemStack stack) {
+    public String getTranslationKey(ItemStack stack) {
         return prefix + "_" + getEnumFromStack(stack).name().toLowerCase(Locale.ENGLISH);
     }
 
     @Override
     @Nonnull
     public String getItemStackDisplayName(@Nonnull ItemStack stack) {
-        return TextHelper.translate(getUnlocalizedName(stack).replaceAll("(.)([A-Z])", "$1$2").toLowerCase(Locale.ENGLISH).replace("_", "."));
+        return TextHelper.translate(getTranslationKey(stack).replaceAll("(.)([A-Z])", "$1$2").toLowerCase(Locale.ENGLISH).replace("_", "."));
     }
 
     @Override
@@ -108,16 +108,18 @@ public abstract class ItemHFFoodEnum<I extends ItemHFFoodEnum, E extends Enum<E>
     }
 
     @Nonnull
-    protected ItemStack getCreativeStack(E e) {
+    public ItemStack getCreativeStack(E e) {
         return new ItemStack(this, 1, e.ordinal());
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void getSubItems(@Nonnull Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
-        for (E e: values) {
-            ItemStack stack = getCreativeStack(e);
-            if (!stack.isEmpty()) list.add(stack);
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list) {
+        if (this.isInCreativeTab(tab))
+        {
+            for (E e: values) {
+                ItemStack stack = getCreativeStack(e);
+                if (!stack.isEmpty()) list.add(stack);
+            }
         }
     }
 

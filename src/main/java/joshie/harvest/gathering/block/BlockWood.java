@@ -92,16 +92,15 @@ public class BlockWood extends BlockHFSmashable<BlockWood, Wood> {
     }
 
     @Override
-    public NonNullList<ItemStack> getDrops(EntityPlayer player, World world, BlockPos pos, IBlockState state, float luck) {
+    public void getDrops(NonNullList<ItemStack> drops, EntityPlayer player, World world, BlockPos pos, IBlockState state, float luck) {
         Wood type = getEnumFromState(state);
         switch (type) {
-            case BRANCH_SMALL: return NonNullList.withSize(1, new ItemStack(Blocks.LOG, 1));
-            case BRANCH_MEDIUM: return NonNullList.withSize(1, new ItemStack(Blocks.LOG, 2));
-            case BRANCH_LARGE: return NonNullList.withSize(1, new ItemStack(Blocks.LOG, 6));
-            case STUMP_SMALL: return NonNullList.withSize(1, new ItemStack(Blocks.LOG, 3));
-            case STUMP_MEDIUM: return NonNullList.withSize(1, new ItemStack(Blocks.LOG, 4));
-            case STUMP_LARGE: return NonNullList.withSize(1, new ItemStack(Blocks.LOG, 12));
-            default: return NonNullList.create();
+            case BRANCH_SMALL: drops.add(new ItemStack(Blocks.LOG, 1)); break;
+            case BRANCH_MEDIUM: drops.add(new ItemStack(Blocks.LOG, 2)); break;
+            case BRANCH_LARGE: drops.add(new ItemStack(Blocks.LOG, 6)); break;
+            case STUMP_SMALL: drops.add(new ItemStack(Blocks.LOG, 3)); break;
+            case STUMP_MEDIUM: drops.add(new ItemStack(Blocks.LOG, 4)); break;
+            case STUMP_LARGE: drops.add(new ItemStack(Blocks.LOG, 12)); break;
         }
     }
 

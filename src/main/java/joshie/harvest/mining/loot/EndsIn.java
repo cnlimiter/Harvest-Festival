@@ -27,10 +27,12 @@ public class EndsIn extends FloorCondition {
             super(new ResourceLocation(MODID, "ends"), EndsIn.class);
         }
 
+        @Override
         public void serialize(@Nonnull JsonObject json, @Nonnull EndsIn value, @Nonnull JsonSerializationContext context) {
             json.addProperty("in", value.in);
         }
 
+        @Override
         @Nonnull
         public EndsIn deserialize(@Nonnull JsonObject json, @Nonnull JsonDeserializationContext context) {
             return new EndsIn(JsonUtils.getInt(json, "in", 0));

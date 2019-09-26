@@ -11,7 +11,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.registries.GameData;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -31,20 +31,20 @@ public abstract class ItemHFBase<I extends ItemHFBase> extends Item {
     @Override
     @Nonnull
     public String getItemStackDisplayName(@Nonnull ItemStack stack) {
-        return TextHelper.localize(getUnlocalizedName());
+        return TextHelper.localize(getTranslationKey());
     }
 
     @Override
     @Nonnull
-    public String getUnlocalizedName() {
-        return HFModInfo.MODID + "." + super.getUnlocalizedName().replace("item.", "");
+    public String getTranslationKey() {
+        return HFModInfo.MODID + "." + super.getTranslationKey().replace("item.", "");
     }
 
     @SuppressWarnings("unchecked")
     public I register(String name) {
-        setUnlocalizedName(name.replace("_", "."));
+        setTranslationKey(name.replace("_", "."));
         setRegistryName(new ResourceLocation(MODID, name));
-        GameRegistry.register(this);
+        GameData.register_impl(this);
         if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) {
             registerModels(this, name);
         }
@@ -58,12 +58,12 @@ public abstract class ItemHFBase<I extends ItemHFBase> extends Item {
             NonNullList<ItemStack> subItems = NonNullList.create();
             if (item.getCreativeTabs().length > 0) {
                 for (CreativeTabs tab : item.getCreativeTabs()) {
-                    item.getSubItems(item, tab, subItems);
+                    item.getSubItems(tab, subItems);
                 }
             }
 
             for (ItemStack stack : subItems) {
-                String subItemName = item.getUnlocalizedName(stack).replace("item.", "").replace(".", "_");
+                String subItemName = item.getTranslationKey(stack).replace("item.", "").replace(".", "_");
                 ModelLoader.setCustomModelResourceLocation(item, item.getDamage(stack), new ModelResourceLocation(new ResourceLocation(MODID, subItemName), "inventory"));
             }
         } else {

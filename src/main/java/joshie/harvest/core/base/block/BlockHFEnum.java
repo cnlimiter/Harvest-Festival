@@ -148,7 +148,7 @@ public abstract class BlockHFEnum<B extends BlockHFEnum, E extends Enum<E> & ISt
     @Override
     @SideOnly(Side.CLIENT)
     @Nonnull
-    public BlockRenderLayer getBlockLayer() {
+    public BlockRenderLayer getRenderLayer() {
         return BlockRenderLayer.CUTOUT;
     }
 
@@ -165,7 +165,7 @@ public abstract class BlockHFEnum<B extends BlockHFEnum, E extends Enum<E> & ISt
     }
 
     @Override
-    public String getUnlocalizedName(@Nonnull ItemStack stack) {
+    public String getTranslationKey(@Nonnull ItemStack stack) {
         return getEnumFromMeta(stack.getItemDamage()).name().toLowerCase(Locale.ENGLISH);
     }
 
@@ -174,15 +174,15 @@ public abstract class BlockHFEnum<B extends BlockHFEnum, E extends Enum<E> & ISt
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void getSubBlocks(@Nonnull Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
+    public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list) {
         for (E e : values) {
             if (shouldDisplayInCreative(e)) {
-                list.add(new ItemStack(item, 1, e.ordinal()));
+                list.add(new ItemStack(this, 1, e.ordinal()));
             }
         }
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public void registerModels(Item item, String name) {
         for (int i = 0; i < values.length; i++) {

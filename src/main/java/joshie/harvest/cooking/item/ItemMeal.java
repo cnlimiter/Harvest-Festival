@@ -11,6 +11,8 @@ import joshie.harvest.core.HFCore;
 import joshie.harvest.core.HFTab;
 import joshie.harvest.core.base.item.ItemHFFoodEnum;
 import joshie.harvest.core.helpers.TextHelper;
+import net.minecraft.client.util.ITooltipFlag;
+import joshie.harvest.quests.town.festivals.contest.cooking.CookingContestEntry;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
@@ -23,17 +25,19 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import java.util.*;
 
 import static joshie.harvest.cooking.recipe.RecipeBuilder.FOOD_LEVEL;
 import static joshie.harvest.cooking.recipe.RecipeBuilder.SATURATION_LEVEL;
-import static joshie.harvest.core.lib.HFModInfo.MODID;
 import static joshie.harvest.core.registry.ShippingRegistry.SELL_VALUE;
 import static net.minecraft.util.text.TextFormatting.DARK_GRAY;
 
 public class ItemMeal extends ItemHFFoodEnum<ItemMeal, Meal> {
-    private static final EnumMap<Meal, Recipe> MEAL_TO_RECIPE = new EnumMap<>(Meal.class);
+    public static final EnumMap<Meal, Recipe> MEAL_TO_RECIPE = new EnumMap<>(Meal.class);
     public static final Meal[] MEALS = Meal.values();
+
     public ItemMeal() {
         super(HFTab.COOKING, Meal.class);
     }
@@ -66,7 +70,7 @@ public class ItemMeal extends ItemHFFoodEnum<ItemMeal, Meal> {
             this.utensil = null;
         }
 
-        Meal (Utensil utensil) {
+        Meal(Utensil utensil) {
             this.hasAltTexture = false;
             this.utensil = utensil;
         }
@@ -92,19 +96,31 @@ public class ItemMeal extends ItemHFFoodEnum<ItemMeal, Meal> {
         else return getCreativeStack(MEALS[55 + rand.nextInt(35)]);
     }
 
-    private Recipe getRecipeFromMeal(Meal meal) {
-        if (MEAL_TO_RECIPE.size() == 0) {
-            for (Meal ameal: MEALS) {
-                MEAL_TO_RECIPE.put(ameal, Recipe.REGISTRY.get(new ResourceLocation(MODID, ameal.getName())));
+    public ItemStack getRandomMealFromUtensil(Utensil utensil) {
+        List<ItemStack> meals = new ArrayList<>();
+        for (Meal meal : MEALS) {
+            ItemStack randomMeal = getCreativeStack(meal);
+            Utensil stackUtensil = CookingContestEntry.getUtensilFromStack(randomMeal);
+            if (stackUtensil != null && stackUtensil.getResource() == utensil.getResource()) {
+                meals.add(randomMeal);
             }
         }
+        Collections.shuffle(meals);
+        return meals.get(0).copy();
+    }
 
+    private static Recipe getRecipeFromMeal(Meal meal) {
+        if (MEAL_TO_RECIPE.size() == 0) {
+            for (Meal ameal: MEALS) {
+                MEAL_TO_RECIPE.put(ameal, Recipe.REGISTRY.get(new ResourceLocation("harvestfestival", ameal.getName())));
+            }
+        }
         return MEAL_TO_RECIPE.get(meal);
     }
 
     @Nonnull
     public ItemStack getStackFromRecipe(RecipeHF recipeHF) {
-        Meal meal = Meal.valueOf(recipeHF.getResource().getResourcePath().toUpperCase(Locale.ENGLISH));
+        Meal meal = Meal.valueOf(recipeHF.getResource().getPath().toUpperCase(Locale.ENGLISH));
         return new ItemStack(this, 1, meal.ordinal());
     }
 
@@ -132,12 +148,12 @@ public class ItemMeal extends ItemHFFoodEnum<ItemMeal, Meal> {
     @Override
     @SideOnly(Side.CLIENT)
     @SuppressWarnings("ConstantConditions")
-    public void addInformation(@Nonnull ItemStack stack, EntityPlayer player, List<String> list, boolean debug) {
-        if (HFCore.DEBUG_MODE && debug) {
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+        if (HFCore.DEBUG_MODE && flagIn.isAdvanced()) {
             if (stack.hasTagCompound()) {
-                list.add(TextHelper.translate("meal.hunger") + " : " + stack.getTagCompound().getInteger(FOOD_LEVEL));
-                list.add(TextHelper.translate("meal.sat") + " : " + stack.getTagCompound().getFloat(SATURATION_LEVEL));
-                list.add(TextHelper.translate("meal.sell") + " : " + stack.getTagCompound().getLong(SELL_VALUE));
+            	tooltip.add(TextHelper.translate("meal.hunger") + " : " + stack.getTagCompound().getInteger(FOOD_LEVEL));
+            	tooltip.add(TextHelper.translate("meal.sat") + " : " + stack.getTagCompound().getFloat(SATURATION_LEVEL));
+            	tooltip.add(TextHelper.translate("meal.sell") + " : " + stack.getTagCompound().getLong(SELL_VALUE));
             }
         }
     }
@@ -197,12 +213,6 @@ public class ItemMeal extends ItemHFFoodEnum<ItemMeal, Meal> {
         }
 
         return ItemStack.EMPTY;
-    }
-
-    @Override
-    @Nonnull
-    public ItemStack getCreativeStack(Meal meal) {
-        return getCreativeStack(meal, 1);
     }
 
     @Override

@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-@MCVersion("1.10.2")
+@MCVersion("1.12.2")
 public class HFTransformer implements IFMLLoadingPlugin, IClassTransformer {
     public static boolean isObfuscated = false;
     private static final List<AbstractASM> asm = new ArrayList<>();
@@ -20,7 +20,7 @@ public class HFTransformer implements IFMLLoadingPlugin, IClassTransformer {
     static {
         asm.add(new PlayerWakeTransformer());
         asm.add(new RenderRainTransformer());
-        asm.add(new RenderItemTransformer());
+        //asm.add(new RenderItemTransformer());
         asm.add(new FishingTransformer(4, "net.minecraft.entity.projectile.EntityFishHook", "zc"));
         asm.add(new FishingTransformer(3, "com.teammetallurgy.aquaculture.handlers.EntityCustomFishHook"));
     }
@@ -32,7 +32,7 @@ public class HFTransformer implements IFMLLoadingPlugin, IClassTransformer {
             if (a.isClass(name)) {
                 if (a.isVisitor()) {
                     ClassReader cr = new ClassReader(modified);
-                    ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_MAXS);
+                    ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
                     ClassVisitor cv = a.newInstance(cw);
                     cr.accept(cv, ClassReader.EXPAND_FRAMES);
                     modified = cw.toByteArray();

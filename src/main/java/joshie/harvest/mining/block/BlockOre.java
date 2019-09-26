@@ -106,22 +106,25 @@ public class BlockOre extends BlockHFSmashable<BlockOre, Ore> implements ISmasha
         }
     }
 
-    private static NonNullList<ItemStack> getRandomStack(World world, Material material, int bonus) {
+    private static void getRandomStack(NonNullList<ItemStack> drops, World world, Material material, int bonus) {
         while (bonus > 0) {
             if (world.rand.nextInt(bonus) == 0)
-                return NonNullList.withSize(1, HFMining.MATERIALS.getStackFromEnum(material, 1 + world.rand.nextInt(bonus)));
+            {
+                drops.add(HFMining.MATERIALS.getStackFromEnum(material, 1 + world.rand.nextInt(bonus)));
+                return;
+            }
             bonus--;
         }
 
-        return NonNullList.withSize(1, HFMining.MATERIALS.getStackFromEnum(material, 1));
+        drops.add(HFMining.MATERIALS.getStackFromEnum(material, 1));
     }
 
-    private static NonNullList<ItemStack> getRandomStack(World world, Item item, int bonus) {
-        return NonNullList.withSize(1, new ItemStack(item, 1 + world.rand.nextInt(bonus)));
+    private static void getRandomStack(NonNullList<ItemStack> drops, World world, Item item, int bonus) {
+        drops.add(new ItemStack(item, 1 + world.rand.nextInt(bonus)));
     }
 
     @Override
-    public NonNullList<ItemStack> getDrops(EntityPlayer player, World world, BlockPos pos, IBlockState state, float luck) {
+    public void getDrops(final NonNullList<ItemStack> drops, EntityPlayer player, World world, BlockPos pos, IBlockState state, float luck) {
         Ore ore = getEnumFromState(state);
 
         if (world instanceof WorldServer) {
@@ -129,46 +132,61 @@ public class BlockOre extends BlockHFSmashable<BlockOre, Ore> implements ISmasha
             server.spawnParticle(EnumParticleTypes.BLOCK_CRACK, pos.getX(), pos.getY(), pos.getZ(), 10, 0.5D, 0.5D, 0.5D, 0.0D, Block.getStateId(Blocks.DIRT.getDefaultState()));
         }
 
-        NonNullList<ItemStack> drops;
         switch (ore) {
             case ROCK:
-                drops = world.isRemote ? NonNullList.withSize(1, new ItemStack(this)) : MiningHelper.getLoot(MINING, world, player, luck);
+                if (world.isRemote)
+                {
+                    drops.add(new ItemStack(this));
+                }
+                else {
+                    MiningHelper.getLoot(drops, MINING, world, player, luck);
+                }
                 break;
             case COPPER:
-                drops = getRandomStack(world, Material.COPPER, 5);
+                getRandomStack(drops, world, Material.COPPER, 5);
                 break;
             case SILVER:
-                drops = getRandomStack(world, Material.SILVER, 4);
+                getRandomStack(drops, world, Material.SILVER, 4);
                 break;
             case GOLD:
-                drops = getRandomStack(world, Material.GOLD, 3);
+                getRandomStack(drops, world, Material.GOLD, 3);
                 break;
             case MYSTRIL:
-                drops = getRandomStack(world, Material.MYSTRIL, 3);
+                getRandomStack(drops, world, Material.MYSTRIL, 3);
                 break;
             case EMERALD:
-                drops = getRandomStack(world, Items.EMERALD, 5);
+                getRandomStack(drops, world, Items.EMERALD, 5);
                 break;
             case DIAMOND:
-                drops = world.rand.nextInt(512) == 0 ? getRandomStack(world, Material.PINK_DIAMOND, 1) : getRandomStack(world, DIAMOND, 3);
+                if (world.rand.nextInt(512) == 0)
+                {
+                    getRandomStack(drops, world, Material.PINK_DIAMOND, 1);
+                }
+                else {
+                    getRandomStack(drops, world, DIAMOND, 3);
+                }
                 break;
             case RUBY:
-                drops = getRandomStack(world, Material.RUBY, 4);
+                getRandomStack(drops, world, Material.RUBY, 4);
                 break;
             case JADE:
-                drops = getRandomStack(world, Material.JADE, 5);
+                getRandomStack(drops, world, Material.JADE, 5);
                 break;
             case AMETHYST:
-                drops = getRandomStack(world, Material.AMETHYST, 3);
+                getRandomStack(drops, world, Material.AMETHYST, 3);
                 break;
             case TOPAZ:
-                drops = getRandomStack(world, Material.TOPAZ, 4);
+                getRandomStack(drops, world, Material.TOPAZ, 4);
                 break;
             case GEM:
-                drops = world.isRemote ? NonNullList.withSize(1, new ItemStack(this)) : MiningHelper.getLoot(MINING_GEMS, world, player, luck);
+                if (world.isRemote)
+                {
+                    drops.add(new ItemStack(this));
+                }
+                else {
+                    MiningHelper.getLoot(drops, MINING_GEMS, world, player, luck);
+                }
                 break;
-            default:
-                drops = NonNullList.create();
         }
 
         EntityBasket.findBasketAndShip(player, drops);
@@ -177,8 +195,6 @@ public class BlockOre extends BlockHFSmashable<BlockOre, Ore> implements ISmasha
                 HFTrackers.getPlayerTrackerFromPlayer(player).getTracking().addAsObtained(stack);
             }
         }
-
-        return drops;
     }
 
     @Override

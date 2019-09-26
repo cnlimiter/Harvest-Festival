@@ -54,7 +54,7 @@ public class PurchasableRandomMeal extends PurchasableMeal {
         }
 
         if (stack.getTagCompound() != null) {
-            adjustableCost = (long) ((double) stack.getTagCompound().getLong(SELL_VALUE) / 1.1);
+            adjustableCost = (long) (stack.getTagCompound().getLong(SELL_VALUE) / 1.1);
             adjustableCost = (long) Math.ceil((double) adjustableCost / 50) * 50;
             stack.getTagCompound().setLong(SELL_VALUE, 0L);
         }

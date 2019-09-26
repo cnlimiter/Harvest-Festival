@@ -2,6 +2,7 @@ package joshie.harvest.crops.item;
 
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.crops.Crop;
+import joshie.harvest.core.HFTab;
 import joshie.harvest.core.base.item.ItemHFFoodEnum;
 import joshie.harvest.core.lib.CreativeSort;
 import joshie.harvest.crops.item.ItemCrop.Crops;
@@ -17,6 +18,7 @@ import static joshie.harvest.core.lib.HFModInfo.MODID;
 public class ItemCrop extends ItemHFFoodEnum<ItemCrop, Crops> {
     public ItemCrop() {
         super(Crops.class);
+        setCreativeTab(HFTab.FARMING);
     }
 
     @Override
@@ -43,7 +45,7 @@ public class ItemCrop extends ItemHFFoodEnum<ItemCrop, Crops> {
 
     @Override
     @Nonnull
-    protected ItemStack getCreativeStack(Crops crop) {
+	public ItemStack getCreativeStack(Crops crop) {
         return crop.getCrop().getCropStack(1).getItem() == this ? getStackFromEnum(crop) : ItemStack.EMPTY;
     }
 

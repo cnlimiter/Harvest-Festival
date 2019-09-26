@@ -97,7 +97,7 @@ public class HFWorldProvider extends WorldProviderSurface {
             for (int z = -distance; z <= distance; ++z) {
                 BlockPos pos = center.add(x, 0, z);
                 Biome biome = world.getBiome(pos);
-                int colour = biome.getSkyColorByTemp(biome.getFloatTemperature(pos));
+                int colour = biome.getSkyColorByTemp(biome.getTemperature(pos));
                 r += (colour & 0xFF0000) >> 16;
                 g += (colour & 0x00FF00) >> 8;
                 b += colour & 0x0000FF;
@@ -133,9 +133,9 @@ public class HFWorldProvider extends WorldProviderSurface {
 
 
         int l = getSkyBlendColour(world, new BlockPos(cameraEntity));
-        float f4 = (float) (l >> 16 & 255) / 255.0F;
-        float f5 = (float) (l >> 8 & 255) / 255.0F;
-        float f6 = (float) (l & 255) / 255.0F;
+        float f4 = (l >> 16 & 255) / 255.0F;
+        float f5 = (l >> 8 & 255) / 255.0F;
+        float f6 = (l & 255) / 255.0F;
         f4 *= f2;
         f5 *= f2;
         f6 *= f2;
@@ -163,7 +163,7 @@ public class HFWorldProvider extends WorldProviderSurface {
         }
 
         if (world.getLastLightningBolt() > 0) {
-            f9 = (float) world.getLastLightningBolt() - partialTicks;
+            f9 = world.getLastLightningBolt() - partialTicks;
 
             if (f9 > 1.0F) {
                 f9 = 1.0F;
@@ -175,7 +175,7 @@ public class HFWorldProvider extends WorldProviderSurface {
             f6 = f6 * (1.0F - f9) + 1.0F * f9;
         }
 
-        return new Vec3d((double) f4, (double) f5, (double) f6);
+        return new Vec3d(f4, f5, f6);
     }
 
     @Override
@@ -207,7 +207,7 @@ public class HFWorldProvider extends WorldProviderSurface {
             return !weather.isRain() && super.canBlockFreeze(pos, byWater);
         } else {
             Weather weather = HFApi.calendar.getWeather(world);
-            float f = biome.getFloatTemperature(pos);
+            float f = biome.getTemperature(pos);
             if (weather.isSnow() && f > 0.15F) {
                 if (pos.getY() >= 0 && pos.getY() < 256 && world.getLightFor(EnumSkyBlock.BLOCK, pos) < 10) {
                     IBlockState iblockstate = world.getBlockState(pos);
@@ -241,7 +241,7 @@ public class HFWorldProvider extends WorldProviderSurface {
             return !weather.isRain() && super.canSnowAt(pos, checkLight);
         } else {
             Weather weather = HFApi.calendar.getWeather(world);
-            float f = biome.getFloatTemperature(pos);
+            float f = biome.getTemperature(pos);
             if (weather.isSnow() && f > 0.15F) {
                 if (!checkLight) {
                     return true;

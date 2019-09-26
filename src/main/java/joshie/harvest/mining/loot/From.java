@@ -27,10 +27,12 @@ public class From extends FloorCondition {
             super(new ResourceLocation(MODID, "from"), From.class);
         }
 
+        @Override
         public void serialize(@Nonnull JsonObject json, @Nonnull From value, @Nonnull JsonSerializationContext context) {
             json.addProperty("from", value.from);
         }
 
+        @Override
         @Nonnull
         public From deserialize(@Nonnull JsonObject json, @Nonnull JsonDeserializationContext context) {
             return new From(JsonUtils.getInt(json, "from", 0));

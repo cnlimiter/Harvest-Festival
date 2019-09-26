@@ -4,6 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
@@ -51,5 +52,9 @@ public class MCClientHelper {
     @SuppressWarnings("ConstantConditions")
     public static Entity getRenderViewEntity() {
         return Minecraft.getMinecraft().getRenderViewEntity();
+    }
+
+    public static boolean isClient(EntityLivingBase playerIn) {
+        return playerIn == getPlayer();
     }
 }

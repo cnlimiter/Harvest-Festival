@@ -85,23 +85,11 @@ public class BlockRock extends BlockHFSmashable<BlockRock, Rock> {
     }
 
     @Override
-    public NonNullList<ItemStack> getDrops(EntityPlayer player, World world, BlockPos pos, IBlockState state, float luck) {
-        switch (getEnumFromState(state)) {
-            case STONE_SMALL: return NonNullList.withSize(1, new ItemStack(Blocks.STONE, 1));
-            case STONE_MEDIUM: return NonNullList.withSize(1, new ItemStack(Blocks.STONE, 2));
-            case STONE_LARGE: return NonNullList.withSize(1, new ItemStack(Blocks.STONE, 4));
-            case BOULDER_SMALL: return NonNullList.withSize(1, new ItemStack(Blocks.STONE, 3));
-            case BOULDER_MEDIUM: return NonNullList.withSize(1, new ItemStack(Blocks.STONE, 6));
-            case BOULDER_LARGE: return NonNullList.withSize(1, new ItemStack(Blocks.STONE, 12));
-            default: return NonNullList.create();
-        }
-    }
-
-    @Override
     public ToolTier getRequiredTier(IBlockState state) {
         return ToolTier.BASIC;
     }
 
+    @Override
     @SuppressWarnings("deprecation")
     @Deprecated
     public float getBlockHardness(IBlockState state, World world, BlockPos pos) {
@@ -111,5 +99,18 @@ public class BlockRock extends BlockHFSmashable<BlockRock, Rock> {
     @Override
     public int getSortValue(@Nonnull ItemStack stack) {
         return CreativeSort.TOOLS - 30 + stack.getItemDamage();
+    }
+
+    @Override
+    public void getDrops(NonNullList<ItemStack> drops, EntityPlayer player, World world, BlockPos pos, IBlockState state, float luck)
+    {
+        switch (getEnumFromState(state)) {
+            case STONE_SMALL: drops.add(new ItemStack(Blocks.STONE, 1)); break;
+            case STONE_MEDIUM: drops.add(new ItemStack(Blocks.STONE, 2)); break;
+            case STONE_LARGE: drops.add(new ItemStack(Blocks.STONE, 4)); break;
+            case BOULDER_SMALL: drops.add(new ItemStack(Blocks.STONE, 3)); break;
+            case BOULDER_MEDIUM: drops.add(new ItemStack(Blocks.STONE, 6)); break;
+            case BOULDER_LARGE: drops.add(new ItemStack(Blocks.STONE, 12)); break;
+        }
     }
 }

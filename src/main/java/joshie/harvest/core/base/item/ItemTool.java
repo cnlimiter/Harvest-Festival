@@ -11,12 +11,11 @@ import joshie.harvest.mining.item.ItemMaterial.Material;
 import joshie.harvest.tools.ToolHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.EnumAction;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
@@ -42,7 +41,7 @@ public abstract class ItemTool<I extends ItemTool> extends ItemHFBase<I> impleme
      */
     public ItemTool(ToolTier tier, String toolClass, Set<Block> effective) {
         setMaxStackSize(1);
-        setHasSubtypes(true);
+        setHasSubtypes(false);
         setMaxDamage(tier.getMaximumDamage());
         this.effectiveBlocks = effective;
         this.toolClass = toolClass;
@@ -65,14 +64,14 @@ public abstract class ItemTool<I extends ItemTool> extends ItemHFBase<I> impleme
 
     @Override
     @Nonnull
-    public String getUnlocalizedName(@Nonnull ItemStack stack) {
-        return super.getUnlocalizedName(stack) + "_" + getTier(stack).name().toLowerCase(Locale.ENGLISH);
+    public String getTranslationKey(@Nonnull ItemStack stack) {
+        return super.getTranslationKey(stack) + "_" + getTier(stack).name().toLowerCase(Locale.ENGLISH);
     }
 
     @Override
     @Nonnull
     public String getItemStackDisplayName(@Nonnull ItemStack stack) {
-        String text = TextHelper.localize(super.getUnlocalizedName().replace("item.", "") + "." + getTier(stack).name().toLowerCase(Locale.ENGLISH));
+        String text = TextHelper.localize(super.getTranslationKey());
         return !canUse(stack) ? TextHelper.translate("tool.broken") + " " + text : text;
     }
 
@@ -100,7 +99,7 @@ public abstract class ItemTool<I extends ItemTool> extends ItemHFBase<I> impleme
 
     @Override
     public boolean showDurabilityBar(@Nonnull ItemStack stack) {
-        return true;
+        return stack.getItemDamage() > 0;
     }
 
     public boolean canBeDamaged() {
@@ -307,6 +306,7 @@ public abstract class ItemTool<I extends ItemTool> extends ItemHFBase<I> impleme
         world.playSound(null, pos, sound, category, world.rand.nextFloat() * 0.25F + 0.75F, world.rand.nextFloat() * 1.0F + 0.5F);
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public boolean isFull3D() {
         return true;
@@ -316,7 +316,7 @@ public abstract class ItemTool<I extends ItemTool> extends ItemHFBase<I> impleme
         float f = entity.rotationPitch;
         float f1 = entity.rotationYaw;
         double d0 = entity.posX;
-        double d1 = entity.posY + (double)entity.getEyeHeight();
+        double d1 = entity.posY + entity.getEyeHeight();
         double d2 = entity.posZ;
         Vec3d vec3 = new Vec3d(d0, d1, d2);
         float f2 = MathHelper.cos(-f1 * 0.017453292F - (float)Math.PI);
@@ -330,7 +330,7 @@ public abstract class ItemTool<I extends ItemTool> extends ItemHFBase<I> impleme
             d3 = ((EntityPlayerMP) entity).interactionManager.getBlockReachDistance();
         }
 
-        Vec3d vec31 = vec3.addVector((double)f6 * d3, (double)f5 * d3, (double)f7 * d3);
+        Vec3d vec31 = vec3.add(f6 * d3, f5 * d3, f7 * d3);
         return world.rayTraceBlocks(vec3, vec31, false, false, false);
     }
 
@@ -355,7 +355,7 @@ public abstract class ItemTool<I extends ItemTool> extends ItemHFBase<I> impleme
     }
 
     @Override
-    public float getStrVsBlock(@Nonnull ItemStack stack, IBlockState state) {
+    public float getDestroySpeed(@Nonnull ItemStack stack, IBlockState state) {
         for (String type : getToolClasses(stack)) {
             if (state.getBlock().isToolEffective(type, state))
                 return getEffiency(stack);
@@ -366,8 +366,8 @@ public abstract class ItemTool<I extends ItemTool> extends ItemHFBase<I> impleme
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void addInformation(@Nonnull ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
-        if (HFCore.DEBUG_MODE && advanced) {
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+        if (HFCore.DEBUG_MODE && flagIn.isAdvanced()) {
             tooltip.add("Level: " + getLevel(stack));
         }
     }

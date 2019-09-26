@@ -34,6 +34,7 @@ public class TrackingServer extends Tracking {
         addDefaultRecipes();
     }
 
+    @Override
     public void setMineFloorReached(int floor) {
         if (floor > getMineFloorReached()) {
             super.setMineFloorReached(floor);

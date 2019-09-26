@@ -21,7 +21,7 @@ import static joshie.harvest.core.helpers.ConfigHelper.setCategory;
 
 public class HFCommonProxy {
     private static final List<Class> LIST = new ArrayList<>();
-    private static final boolean ENABLE_LOGGING = true;
+    private static final boolean ENABLE_LOGGING = false;
 
     public List<Class> getList() {
         return LIST;

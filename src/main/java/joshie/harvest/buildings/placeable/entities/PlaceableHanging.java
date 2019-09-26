@@ -27,7 +27,7 @@ public abstract class PlaceableHanging extends PlaceableEntity {
             Validate.notNull(opposite);
             Validate.isTrue(opposite.getAxis().isHorizontal());
             entity.facingDirection = opposite;
-            entity.prevRotationYaw = entity.rotationYaw = (float)(entity.facingDirection.getHorizontalIndex() * 90);
+            entity.prevRotationYaw = entity.rotationYaw = entity.facingDirection.getHorizontalIndex() * 90;
             entity.setPosition(entity.posX, entity.posY, entity.posZ);
         }
 

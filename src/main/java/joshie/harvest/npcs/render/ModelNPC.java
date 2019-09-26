@@ -51,7 +51,7 @@ public class ModelNPC extends ModelBiped {
         ModelRenderer modelrenderer = this.getArmForSide(side);
 
         if (smallArms) {
-            float f = 0.5F * (float)(side == EnumHandSide.RIGHT ? 1 : -1);
+            float f = 0.5F * (side == EnumHandSide.RIGHT ? 1 : -1);
             modelrenderer.rotationPointX += f;
             modelrenderer.postRender(scale);
             modelrenderer.rotationPointX -= f;

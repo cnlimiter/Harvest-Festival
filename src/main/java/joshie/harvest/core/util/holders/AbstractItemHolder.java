@@ -10,6 +10,7 @@ public abstract class AbstractItemHolder extends AbstractHolder implements Compa
     protected NonNullList<ItemStack> matchingStacks;
     public abstract NonNullList<ItemStack> getMatchingStacks();
     public abstract boolean matches(@Nonnull ItemStack stack);
+    @Override
     public abstract NBTTagCompound writeToNBT(NBTTagCompound tag);
 
     @Override

@@ -33,7 +33,7 @@ public class TaskMove extends TaskElement {
         if (path != null) return path;
         else {
             //Grab a random block towards the target
-            Vec3d vec = RandomPositionGenerator.findRandomTargetBlockTowards(npc, 10, 7, new Vec3d((double) pos.getX() + 0.5D, (double) pos.getY() + 1D, (double) pos.getZ() + 0.5D));
+            Vec3d vec = RandomPositionGenerator.findRandomTargetBlockTowards(npc, 10, 7, new Vec3d(pos.getX() + 0.5D, pos.getY() + 1D, pos.getZ() + 0.5D));
             if (vec != null) {
                 return npc.getNavigator().getPathToPos(new BlockPos(vec));
             } else return null;

@@ -12,7 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.registries.GameData;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -32,9 +32,9 @@ public abstract class BlockHFBase<B extends BlockHFBase> extends Block {
     @SuppressWarnings("unchecked")
     public B register(String name) {
         this.unlocalizedName = MODID + "." + name.replace("_", ".");
-        setUnlocalizedName(name.replace("_", "."));
+        setTranslationKey(name.replace("_", "."));
         setRegistryName(new ResourceLocation(MODID, name));
-        GameRegistry.register(this);
+        GameData.register_impl(this);
         ItemBlockHF item = getItemBlock();
         if (item != null) item.register(name);
         return (B) this;
@@ -70,13 +70,13 @@ public abstract class BlockHFBase<B extends BlockHFBase> extends Block {
         return 0;
     }
 
-    public String getUnlocalizedName(@Nonnull ItemStack stack) {
-        return getUnlocalizedName();
+    public String getTranslationKey(@Nonnull ItemStack stack) {
+        return getTranslationKey();
     }
 
     public String getItemStackDisplayName(@Nonnull ItemStack stack) {
-        String unlocalized = getUnlocalizedName();
-        String name = stack.getItem().getUnlocalizedName(stack);
+        String unlocalized = getTranslationKey();
+        String name = stack.getItem().getTranslationKey(stack);
         return TextHelper.localizeFully(unlocalized + "." + name);
     }
 
@@ -90,7 +90,7 @@ public abstract class BlockHFBase<B extends BlockHFBase> extends Block {
 
     @Override
     @Nonnull
-    public String getUnlocalizedName() {
+    public String getTranslationKey() {
         return unlocalizedName;
     }
 

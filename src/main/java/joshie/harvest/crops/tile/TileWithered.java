@@ -16,6 +16,7 @@ public class TileWithered extends TileHarvest {
         return data;
     }
 
+    @Override
     public void saveAndRefresh() {
         MCServerHelper.markForUpdate(world, getPos(), 3);
         markDirty();

@@ -3,11 +3,13 @@ package joshie.harvest.core.base.item;
 import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
 import joshie.harvest.core.helpers.ChatHelper;
+import joshie.harvest.core.helpers.MCClientHelper;
 import joshie.harvest.core.helpers.TextHelper;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
@@ -36,11 +38,12 @@ public class ItemToolChargeable<I extends ItemToolChargeable> extends ItemTool<I
         return getTier(stack).getToolLevel();
     }
 
-    protected int getCharge(@Nonnull ItemStack stack) {
-        return stack.getOrCreateSubCompound("Data").getInteger("Charge");
+    protected int getCharge(ItemStack stack) {
+        NBTTagCompound compound = stack.getSubCompound("Data");
+        return compound == null ? 0 : compound.getInteger("Charge");
     }
 
-    private void setCharge(@Nonnull ItemStack stack, int amount) {
+    protected void setCharge(ItemStack stack, int amount) {
         stack.getOrCreateSubCompound("Data").setInteger("Charge", amount);
     }
 
@@ -52,7 +55,7 @@ public class ItemToolChargeable<I extends ItemToolChargeable> extends ItemTool<I
         if (tier != ToolTier.BASIC && canUse(stack)) {
             if (playerIn.isSneaking()) {
                 setCharge(stack, 0);
-                if (world.isRemote) ChatHelper.displayChat(TextFormatting.RED + TextHelper.translate("tool.discharge"));
+                if (world.isRemote && MCClientHelper.isClient(playerIn)) ChatHelper.displayChat(TextFormatting.RED + TextHelper.translate("tool.discharge"));
             } else if (getCharge(stack) < getMaxCharge(stack)) playerIn.setActiveHand(hand);
             else onPlayerStoppedUsing(stack, world, playerIn, 32000);
             return new ActionResult<>(EnumActionResult.SUCCESS, stack);
@@ -77,7 +80,7 @@ public class ItemToolChargeable<I extends ItemToolChargeable> extends ItemTool<I
     @Override
     public void onUsingTick(@Nonnull ItemStack stack, EntityLivingBase player, int count) {
         if (count != 32000 && count % 20 == 0) {
-            if (player.world.isRemote) {
+            if (player.world.isRemote && MCClientHelper.isClient(player)) {
                 String name =  getLevelName(stack, getCharges(count));
                 if (name != null) {
                     ChatHelper.displayChat(TextFormatting.GREEN + TextHelper.formatHF("tool.charge", name));

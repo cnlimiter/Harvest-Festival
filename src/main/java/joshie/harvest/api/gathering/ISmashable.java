@@ -40,7 +40,8 @@ public interface ISmashable {
         ToolTier required = getRequiredTier(state);
         if (required != null && tier.isGreaterThanOrEqualTo(required)) {
             float luck = tier.ordinal() * 0.25F;
-            NonNullList<ItemStack> drops = getDrops(player, world, pos, state, luck);
+            NonNullList<ItemStack> drops = NonNullList.create();
+            getDrops(drops, player, world, pos, state, luck);
             world.setBlockToAir(pos); //Clear out the block
             if (drops.size() > 0) {
                 if (!world.isRemote) {
@@ -56,12 +57,6 @@ public interface ISmashable {
         return false;
     }
 
-    @Deprecated
-    default ItemStack getDrop(EntityPlayer player, World world, BlockPos pos, IBlockState state, float luck) {
-        List<ItemStack> drops = getDrops(player, world, pos, state, luck);
-        return drops.size() > 0 ? drops.get(0) : null;
-    }
-
     /** The result of breaking this block
      * @param player    the player
      * @param world     the world object
@@ -69,5 +64,5 @@ public interface ISmashable {
      * @param state     the block state
      * @param luck      the luck to apply
      * @return the drops */
-    NonNullList<ItemStack> getDrops(EntityPlayer player, World world, BlockPos pos, IBlockState state, float luck);
+    void getDrops(NonNullList<ItemStack> drops, EntityPlayer player, World world, BlockPos pos, IBlockState state, float luck);
 }

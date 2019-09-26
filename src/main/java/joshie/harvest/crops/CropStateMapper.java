@@ -15,8 +15,8 @@ public class CropStateMapper extends StateMapperBase {
     @Override
     @Nonnull
     public Map<IBlockState, ModelResourceLocation> putStateModelLocations(Block blockIn) {
-        Crop.REGISTRY.values().stream().filter(crop -> crop != Crop.NULL_CROP && !crop.skipLoadingRender()).forEachOrdered(crop -> {
-            for (Object object : crop.getStateHandler().getValidStates()) {
+        Crop.REGISTRY.values().stream().filter(crop -> !crop.skipLoadingRender()).forEach(crop -> {
+        	for (Object object : crop.getStateHandler().getValidStates()) {
                 IBlockState state = (IBlockState) object;
                 mapStateModelLocations.put(state, getCropResourceLocation(crop, state));
             }
@@ -36,6 +36,6 @@ public class CropStateMapper extends StateMapperBase {
     private ModelResourceLocation getCropResourceLocation(Crop crop, IBlockState state) {
         Map <IProperty<?>, Comparable<? >> map = Maps.newLinkedHashMap(state.getProperties());
         map.remove(HFCrops.CROPS.property); //Remove the base property for rendering purposes
-        return new ModelResourceLocation(crop.getResource().getResourceDomain() + ":crops_" + crop.getResource().getResourcePath(), this.getPropertyString(map));
+        return new ModelResourceLocation(crop.getResource().getNamespace() + ":crops_" + crop.getResource().getPath(), this.getPropertyString(map));
     }
 }

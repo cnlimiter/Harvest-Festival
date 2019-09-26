@@ -35,7 +35,7 @@ public class EntityAIBuild extends EntityAIBase {
     }
 
     @Override
-    public boolean continueExecuting() {
+    public boolean shouldContinueExecuting() {
         if (npc.getBuilding() == null) {
             teleportTimer = 0;
             return false;
@@ -43,7 +43,7 @@ public class EntityAIBuild extends EntityAIBase {
     }
 
     private void attemptToTeleportToSafety(BlockPos go) {
-        Vec3d vec = RandomPositionGenerator.findRandomTargetBlockTowards(npc, 3, 32, new Vec3d((double) go.getX() + 0.5D, (double) go.getY() + 1D, (double) go.getZ() + 0.5D));
+        Vec3d vec = RandomPositionGenerator.findRandomTargetBlockTowards(npc, 3, 32, new Vec3d(go.getX() + 0.5D, go.getY() + 1D, go.getZ() + 0.5D));
         if (vec != null) {
             BlockPos pos = new BlockPos(vec);
             if (EntityHelper.isSpawnable(npc.world, pos) && EntityHelper.isSpawnable(npc.world, pos.up()) && npc.world.getBlockState(pos.down()).isSideSolid(npc.world, pos.down(), EnumFacing.UP)) {
@@ -77,7 +77,7 @@ public class EntityAIBuild extends EntityAIBase {
                     //Update the path
                     Path path = npc.getNavigator().getPathToPos(go);
                     if (path == null) {
-                        Vec3d vec = RandomPositionGenerator.findRandomTargetBlockTowards(npc, 32, 5, new Vec3d((double) go.getX() + 0.5D, (double) go.getY() + 1D, (double) go.getZ() + 0.5D));
+                        Vec3d vec = RandomPositionGenerator.findRandomTargetBlockTowards(npc, 32, 5, new Vec3d(go.getX() + 0.5D, go.getY() + 1D, go.getZ() + 0.5D));
                         if (vec != null) {
                             path = npc.getNavigator().getPathToPos(new BlockPos(vec));
                         }
@@ -92,7 +92,7 @@ public class EntityAIBuild extends EntityAIBase {
                         npc.getNavigator().setPath(npc.getNavigator().getPathToPos(go), 0.85D);
                         stuckTimer = 0;
                     } else {
-                        Vec3d vec = RandomPositionGenerator.findRandomTargetBlockTowards(npc, 1, 1, new Vec3d((double) go.getX() + 0.5D, (double) go.getY() + 1D, (double) go.getZ() + 0.5D));
+                        Vec3d vec = RandomPositionGenerator.findRandomTargetBlockTowards(npc, 1, 1, new Vec3d(go.getX() + 0.5D, go.getY() + 1D, go.getZ() + 0.5D));
                         if (vec != null) {
                             npc.getNavigator().setPath(npc.getNavigator().getPathToPos(new BlockPos(vec)), 0.85F);
                         }

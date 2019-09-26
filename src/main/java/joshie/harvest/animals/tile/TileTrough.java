@@ -10,6 +10,7 @@ import joshie.harvest.api.animals.AnimalStats;
 import joshie.harvest.api.animals.AnimalTest;
 import joshie.harvest.api.ticking.DailyTickableBlock;
 import joshie.harvest.api.ticking.DailyTickableBlock.Phases;
+import joshie.harvest.core.base.block.BlockHFEnumRotatableMeta;
 import joshie.harvest.core.base.tile.TileFillableConnected;
 import joshie.harvest.core.helpers.EntityHelper;
 import net.minecraft.block.state.IBlockState;
@@ -83,7 +84,7 @@ public class TileTrough extends TileFillableConnected<TileTrough> {
         else {
             IBlockState state = world.getBlockState(pos);
             IBlockState actualState = state.getActualState(world, pos);
-            facing = actualState.getValue(BlockTrough.FACING);
+            facing = actualState.getValue(BlockHFEnumRotatableMeta.FACING);
         }
 
         return facing;

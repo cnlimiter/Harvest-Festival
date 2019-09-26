@@ -1,6 +1,5 @@
 package joshie.harvest.mining.entity;
 
-import joshie.harvest.core.achievements.HFAchievements;
 import joshie.harvest.core.helpers.EntityHelper;
 import joshie.harvest.core.lib.LootStrings;
 import joshie.harvest.mining.MiningHelper;
@@ -31,6 +30,7 @@ public class EntityDarkSheep extends EntityMob {
         setPathPriority(PathNodeType.WATER, 0.0F);
     }
 
+    @Override
     @Nullable
     protected ResourceLocation getLootTable() {
         return LootStrings.DARK_SHEEP;
@@ -61,15 +61,6 @@ public class EntityDarkSheep extends EntityMob {
     }
 
     @Override
-    public void onDeath(@Nonnull DamageSource cause) {
-        super.onDeath(cause);
-        EntityPlayer player = EntityHelper.getPlayerFromSource(cause);
-        if (player != null) {
-            player.addStat(HFAchievements.killSheep);
-        }
-    }
-
-    @Override
     protected boolean isValidLightLevel() {
         int floor = MiningHelper.getFloor((int)posX >> 4, (int) posY);
         return floor >= GOLD_FLOOR && (ANIMALS_ON_EVERY_FLOOR || (((floor + 6) % SHEEP_FLOORS == 0)))
@@ -82,7 +73,7 @@ public class EntityDarkSheep extends EntityMob {
     }
 
     @Override
-    protected SoundEvent getHurtSound() {
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
         return SoundEvents.ENTITY_SHEEP_HURT;
     }
 

@@ -39,6 +39,7 @@ public class Gifts implements IGiftHandler {
         categoryRegistry.put(JUNK, Quality.BAD);
     }
 
+    @Override
     public Quality getQuality(@Nonnull ItemStack stack) {
         Quality itemQuality = stackRegistry.getValueOf(stack);
         if (itemQuality != null) return itemQuality;

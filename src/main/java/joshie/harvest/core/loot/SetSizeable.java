@@ -45,12 +45,14 @@ public class SetSizeable extends LootFunction {
             super(new ResourceLocation("hf_set_sizeable"), SetSizeable.class);
         }
 
+        @Override
         public void serialize(@Nonnull JsonObject object, @Nonnull SetSizeable functionClazz, @Nonnull JsonSerializationContext serializationContext) {
             object.addProperty("item", String.valueOf(((Item) functionClazz.provider).getRegistryName()));
             object.addProperty("object", functionClazz.object.toString());
             object.addProperty("size", functionClazz.size.name());
         }
 
+        @Override
         @Nonnull
         public SetSizeable deserialize(@Nonnull JsonObject object, @Nonnull JsonDeserializationContext deserializationContext, @Nonnull LootCondition[] conditionsIn) {
             return new SetSizeable(conditionsIn, object.get("item").getAsString(), object.get("object").getAsString(), object.get("size").getAsString());

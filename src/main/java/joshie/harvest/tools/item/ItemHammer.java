@@ -17,6 +17,7 @@ import joshie.harvest.tools.ToolHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -36,6 +37,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import java.util.List;
 import java.util.Set;
 
@@ -49,9 +52,11 @@ public class ItemHammer extends ItemToolSmashing<ItemHammer> {
     public ItemHammer(ToolTier tier) {
         super(tier, "pickaxe", EFFECTIVE_ON);
         setCreativeTab(HFTab.MINING);
-        blocks.register(Ore.of("stone"));
+        blocks.register(Blocks.STONE);
+        blocks.register(Ore.of("cobblestone"));
         blocks.register(Ore.of("blockLimestone"));
         blocks.register(Ore.of("blockMarble"));
+        blocks.register(Ore.of("sandstone"));
     }
 
     @Override
@@ -114,9 +119,9 @@ public class ItemHammer extends ItemToolSmashing<ItemHammer> {
     public ImmutableList<BlockPos> getBlocks(World world, BlockPos position, EntityPlayer player, ItemStack tool) {
         ToolTier tier = getTier(tool);
         IBlockState state = world.getBlockState(position);
-        ItemStack stackState = ToolHelper.getStackFromBlockState(state);
-        if (stackState == null) return ImmutableList.of();
-        if (!blocks.contains(stackState)) return ImmutableList.of();
+        NonNullList<ItemStack> drops = NonNullList.create();
+        state.getBlock().getDrops(drops, world, position, state, 0);
+        if (!drops.stream().anyMatch(blocks::contains)) return ImmutableList.of();
         if (tier == ToolTier.BASIC || player.isSneaking()) return ImmutableList.of(position);
 
         RayTraceResult rt = rayTrace(world, player, true);
@@ -164,20 +169,20 @@ public class ItemHammer extends ItemToolSmashing<ItemHammer> {
     }
 
     @Override
-    public float getStrVsBlock(@Nonnull ItemStack stack, IBlockState state) {
+    public float getDestroySpeed(@Nonnull ItemStack stack, IBlockState state) {
         if (canUse(stack)) {
             Material material = state.getMaterial();
-            return material != Material.IRON && material != Material.ANVIL && material != Material.ROCK ? super.getStrVsBlock(stack, state) : this.getEffiency(stack);
+            return material != Material.IRON && material != Material.ANVIL && material != Material.ROCK ? super.getDestroySpeed(stack, state) : this.getEffiency(stack);
         } else return 0.05F;
     }
 
     @Override
     public boolean onSmashed(EntityPlayer player, @Nonnull ItemStack stack, ToolTier tier, int harvestLevel, World world, BlockPos pos, IBlockState state) {
-        if (canUse(stack)) {
+        if (canUse(stack) && !world.isRemote) {
             WateringHandler handler = CropHelper.getWateringHandler(world, pos, state);
             if (handler != null) {
                 ToolHelper.performTask(player, stack, this);
-                handler.dehydrate(world, pos, state);
+                handler.dehydrate(world, pos, state, true);
                 return true;
             }
         }
@@ -206,18 +211,18 @@ public class ItemHammer extends ItemToolSmashing<ItemHammer> {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(@Nonnull ItemStack stack, EntityPlayer player, List<String> list, boolean flag) {
-        super.addInformation(stack, player, list, flag);
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+        super.addInformation(stack, worldIn, tooltip, flagIn);
         ToolTier tier = getTier(stack);
         if (getFront(tier) > 0) {
             int area = (1 + (getFront(tier) * 2));
-            list.add(TextFormatting.DARK_GREEN + TextHelper.formatHF("hammer.tooltip.smash", area, area));
+            tooltip.add(TextFormatting.DARK_GREEN + TextHelper.formatHF("hammer.tooltip.smash", area, area));
         }
 
         int width = getWidthAndHeight(tier) == 0 ? 1 : 3;
         int height = tier == ToolTier.BASIC ? 1: getWidthAndHeight(tier) == 0 ? 2 : 3;
         int depth = getDepth(tier) + 1;
-        list.add(TextFormatting.GOLD + TextHelper.formatHF("hammer.tooltip.dimensions", width, height, depth));
-        list.add(TextFormatting.AQUA + "" + TextFormatting.ITALIC + TextHelper.translate("hammer.tooltip.titles"));
+        tooltip.add(TextFormatting.GOLD + TextHelper.formatHF("hammer.tooltip.dimensions", width, height, depth));
+        tooltip.add(TextFormatting.AQUA + "" + TextFormatting.ITALIC + TextHelper.translate("hammer.tooltip.titles"));
     }
 }

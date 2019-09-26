@@ -29,6 +29,7 @@ public class ItemHFSizeable<I extends ItemHFFoodEnum, E extends Enum<E> & IStrin
         super(tab, clazz);
         for (E e: values) {
             for (Size size: Size.values()) {
+                if (size == Size.NONE) continue;
                 long value = e.getSellValue(size);
                 if (value > 0L) {
                     HFApi.shipping.registerSellable(getStack(e, size), value);
@@ -101,11 +102,14 @@ public class ItemHFSizeable<I extends ItemHFFoodEnum, E extends Enum<E> & IStrin
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void getSubItems(@Nonnull Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
-        for (E e: values) {
-            for (Size size: Size.values()) {
-                list.add(e.getStack(item, size));
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list) {
+        if (this.isInCreativeTab(tab))
+        {
+            for (E e: values) {
+                for (Size size: Size.values()) {
+                    if (size == Size.NONE) continue;
+                    list.add(e.getStack(this, size));
+                }
             }
         }
     }
@@ -115,6 +119,7 @@ public class ItemHFSizeable<I extends ItemHFFoodEnum, E extends Enum<E> & IStrin
     public void registerModels(Item item, String name) {
         for (E e: values) {
             for (Size size: Size.values()) {
+                if (size == Size.NONE) continue;
                 ItemStack stack = e.getStack(item, size);
                 ModelLoader.setCustomModelResourceLocation(stack.getItem(), stack.getItemDamage(), new ModelResourceLocation(getRegistryName(), e.getName() + "_" + size.getName()));
             }

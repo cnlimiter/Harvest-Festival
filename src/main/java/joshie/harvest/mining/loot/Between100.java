@@ -30,11 +30,13 @@ public class Between100 extends FloorCondition {
             super(new ResourceLocation(MODID, "between100"), Between100.class);
         }
 
+        @Override
         public void serialize(@Nonnull JsonObject json, @Nonnull Between100 value, @Nonnull JsonSerializationContext context) {
             json.addProperty("from", value.from);
             json.addProperty("to", value.to);
         }
 
+        @Override
         @Nonnull
         public Between100 deserialize(@Nonnull JsonObject json, @Nonnull JsonDeserializationContext context) {
             return new Between100(JsonUtils.getInt(json, "from", 0), JsonUtils.getInt(json, "to", 0));

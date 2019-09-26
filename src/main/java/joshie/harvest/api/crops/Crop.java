@@ -33,7 +33,7 @@ public class Crop extends HFRegistry<Crop> implements IPlantable {
     private static final GrowthHandler SEASONAL = new GrowthHandler() {};
     private static final DropHandler DROPS = new DropHandler();
     private static final ISpecialRules RULES = (w, p, a) -> true;
-    public static final Crop NULL_CROP = new Crop();
+    public static final Crop NULL_CROP = new Crop().setSkipRender();
 
     //CropData
     private IStateHandler stateHandler;
@@ -53,6 +53,7 @@ public class Crop extends HFRegistry<Crop> implements IPlantable {
     private long sell;
     private int stages;
     private int regrow;
+    private int maxHarvests;
     private int bagColor;
     private int doubleStage;
     private int minCut;
@@ -75,6 +76,7 @@ public class Crop extends HFRegistry<Crop> implements IPlantable {
         this.needsWatering = true;
         this.doubleStage = Integer.MAX_VALUE;
         this.type = EnumPlantType.Crop;
+        this.maxHarvests = 1;
     }
 
     /** Set how much this tree costs to buy and sell
@@ -115,6 +117,14 @@ public class Crop extends HFRegistry<Crop> implements IPlantable {
     }
 
     /**
+     * Set the maximum amount of harvests this crop can have
+     **/
+    public Crop setMaxHarvests(int maxHarvests) {
+        this.maxHarvests = maxHarvests;
+        return this;
+    }
+
+    /**
      * If the crop/seeds should have different names set this to true
      **/
     public Crop setHasAlternativeName() {
@@ -130,6 +140,9 @@ public class Crop extends HFRegistry<Crop> implements IPlantable {
             ItemFood food = (ItemFood)this.item.getItem();
             setIngredient(food.getHealAmount(item), food.getSaturationModifier(item));
         }
+        if (item.getItem().getRegistryName().getNamespace().equals("minecraft")) {
+			setSkipRender();
+		}
 
         return this;
     }
@@ -208,7 +221,7 @@ public class Crop extends HFRegistry<Crop> implements IPlantable {
      * Set the ingredient stats for this crop
      **/
     public Crop setIngredient(int hunger, float saturation) {
-        String name = getResource().getResourcePath();
+        String name = getResource().getPath();
         if (Ingredient.INGREDIENTS.containsKey(name)) {
             this.ingredient = Ingredient.INGREDIENTS.get(name);
         } else this.ingredient = new Ingredient(name, hunger, saturation);
@@ -329,6 +342,16 @@ public class Crop extends HFRegistry<Crop> implements IPlantable {
      */
     public int getRegrowStage() {
         return regrow;
+    }
+
+    /**
+     * This is the maximum amount of times this crop can be harvested
+     * Once it's reached, the crop will be destroyed instead
+     *
+     * @return the max harvests
+     */
+    public int getMaxHarvests() {
+        return maxHarvests;
     }
 
     /** Used when a crop requires the sickle,
@@ -465,7 +488,7 @@ public class Crop extends HFRegistry<Crop> implements IPlantable {
     @SuppressWarnings("deprecation")
     public String getLocalizedName(boolean isItem) {
         String suffix = alternativeName ? ((isItem) ? ".item" : ".block") : "";
-        return I18n.translateToLocal((getResource().getResourceDomain() + ".crop." + StringUtils.replace(getResource().getResourcePath(), "_", ".") + suffix));
+        return I18n.translateToLocal((getResource().getNamespace() + ".crop." + StringUtils.replace(getResource().getPath(), "_", ".") + suffix));
     }
 
     /**
@@ -475,7 +498,7 @@ public class Crop extends HFRegistry<Crop> implements IPlantable {
      */
     @SuppressWarnings("deprecation")
     public String getSeedsName() {
-        String name = alternativeName ? I18n.translateToLocalFormatted((getResource().getResourceDomain() + ".crop." + StringUtils.replace(getResource().getResourcePath(), "_", ".") + ".block")) : item.isEmpty() ? "NULL" : item.getDisplayName();
+        String name = alternativeName ? I18n.translateToLocalFormatted((getResource().getNamespace() + ".crop." + StringUtils.replace(getResource().getPath(), "_", ".") + ".block")) : item.isEmpty() ? "NULL" : item.getDisplayName();
         String seeds = I18n.translateToLocal("harvestfestival.crop.seeds");
         String format = I18n.translateToLocal("harvestfestival.crop.seeds.format");
         return String.format(format, name, seeds);

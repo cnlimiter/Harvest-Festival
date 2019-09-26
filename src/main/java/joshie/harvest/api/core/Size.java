@@ -5,7 +5,7 @@ import net.minecraft.util.IStringSerializable;
 import java.util.Locale;
 
 public enum Size implements IStringSerializable {
-    SMALL(0), MEDIUM(9000), LARGE(18000);
+    SMALL(0), MEDIUM(9000), LARGE(18000), NONE(0);
 
     private final int relationship;
 
@@ -20,5 +20,11 @@ public enum Size implements IStringSerializable {
     @Override
     public String getName() {
         return name().toLowerCase(Locale.ENGLISH);
+    }
+
+    public static Size _valueOf(String name)
+    {
+        Size size = valueOf(name);
+        return size == null ? NONE : size;
     }
 }

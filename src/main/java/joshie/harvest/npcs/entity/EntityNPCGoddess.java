@@ -75,15 +75,15 @@ public class EntityNPCGoddess extends EntityNPC<EntityNPCGoddess> {
     }
 
     @Override
-    public void moveEntityWithHeading(float strafe, float forward) {
+    public void travel(float strafe, float vertical, float forward) {
         if (isInWater()) {
-            moveRelative(strafe, forward, 0.02F);
+            moveRelative(strafe, vertical, forward, 0.02F);
             move(MoverType.SELF, motionX, motionY, motionZ);
             motionX *= 0.800000011920929D;
             motionY *= 0.800000011920929D;
             motionZ *= 0.800000011920929D;
         } else if (isInLava()) {
-            moveRelative(strafe, forward, 0.02F);
+            moveRelative(strafe, vertical, forward, 0.02F);
             move(MoverType.SELF, motionX, motionY, motionZ);
             motionX *= 0.5D;
             motionY *= 0.5D;
@@ -96,7 +96,7 @@ public class EntityNPCGoddess extends EntityNPC<EntityNPCGoddess> {
             }
 
             float f1 = 0.16277136F / (f * f * f);
-            moveRelative(strafe, forward, onGround ? 0.1F * f1 : 0.02F);
+            moveRelative(strafe, vertical, forward, onGround ? 0.1F * f1 : 0.02F);
             f = 0.91F;
 
             if (onGround) {
@@ -104,9 +104,9 @@ public class EntityNPCGoddess extends EntityNPC<EntityNPCGoddess> {
             }
 
             move(MoverType.SELF, motionX, motionY, motionZ);
-            motionX *= (double) f;
-            motionY *= (double) f;
-            motionZ *= (double) f;
+            motionX *= f;
+            motionY *= f;
+            motionZ *= f;
         }
 
         prevLimbSwingAmount = limbSwingAmount;

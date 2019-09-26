@@ -22,6 +22,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.WorldServerMulti;
 import net.minecraft.world.storage.loot.LootContext;
+import net.minecraft.world.storage.loot.LootTable;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
@@ -64,11 +65,12 @@ public class MiningHelper {
         HOLE_FLOORS.addAll(ints);
     }
 
-    public static NonNullList<ItemStack> getLoot(ResourceLocation loot, World world, EntityPlayer player, float luck) {
+    public static void getLoot(NonNullList<ItemStack> drops, ResourceLocation loot, World world, EntityPlayer player, float luck) {
         LootContext.Builder builder = new LootContext.Builder((WorldServer) world);
         builder.withLuck(player.getLuck() + luck);
         builder.withPlayer(player);
-        return (NonNullList<ItemStack>) world.getLootTableManager().getLootTableFromLocation(loot).generateLootForPools(world.rand, builder.build());
+        LootTable table = world.getLootTableManager().getLootTableFromLocation(loot);
+        drops.addAll(world.getLootTableManager().getLootTableFromLocation(loot).generateLootForPools(world.rand, builder.build()));
     }
 
     public static int getMineID(BlockPos pos) {
@@ -131,7 +133,7 @@ public class MiningHelper {
 
     public static boolean teleportToMine(Entity entity, int mineID) {
         MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
-        WorldServer newWorld = server.worldServerForDimension(MINING_ID);
+        WorldServer newWorld = server.getWorld(MINING_ID);
         preloadChunks(newWorld, mineID, 1);
         MiningProvider provider = ((MiningProvider) newWorld.provider);
         provider.onTeleportToMine(mineID); //Called to initiate after chunks are loaded
@@ -174,7 +176,7 @@ public class MiningHelper {
         boolean top = floor % MAX_FLOORS == 1;
         int newFloor = top ? floor - 1 : floor + 1;
         MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
-        WorldServer newWorld = server.worldServerForDimension(MINING_ID);
+        WorldServer newWorld = server.getWorld(MINING_ID);
         preloadChunks(newWorld, mineID, newFloor);
         MiningProvider provider = ((MiningProvider) newWorld.provider);
         provider.onTeleportToMine(mineID); //Called to initiate after chunks are loaded

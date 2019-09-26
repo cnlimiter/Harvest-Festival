@@ -12,7 +12,6 @@ import joshie.harvest.api.npc.gift.IGiftHandler;
 import joshie.harvest.calendar.HFFestivals;
 import joshie.harvest.core.base.render.MeshIdentical;
 import joshie.harvest.core.lib.EntityIDs;
-import joshie.harvest.core.proxy.HFClientProxy;
 import joshie.harvest.core.util.annotations.HFLoader;
 import joshie.harvest.npcs.entity.*;
 import joshie.harvest.npcs.greeting.*;
@@ -145,9 +144,9 @@ public class HFNPCs {
 
     private static void setupGifts(NPC npc) {
         npc.setGiftHandler(new IGiftHandler() {});
-        if (npc.getResource().getResourceDomain().equals(MODID)) {
+        if (npc.getResource().getNamespace().equals(MODID)) {
             try {
-                IGiftHandler handler = (IGiftHandler) Class.forName(GIFTPATH + WordUtils.capitalize(npc.getResource().getResourcePath())).newInstance();
+                IGiftHandler handler = (IGiftHandler) Class.forName(GIFTPATH + WordUtils.capitalize(npc.getResource().getPath())).newInstance();
                 if (handler != null) npc.setGiftHandler(handler);
             } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {/**/}
         }
@@ -156,8 +155,9 @@ public class HFNPCs {
     @SuppressWarnings("deprecation")
     @SideOnly(Side.CLIENT)
     public static void initClient() {
-        HFClientProxy.RENDER_MAP.put(SPAWNER_NPC, NPCTile.INSTANCE);
-        ClientRegistry.bindTileEntitySpecialRenderer(NPCTile.class, new NPCItemRenderer());
+    	NPCItemRenderer renderer = new NPCItemRenderer();
+    	SPAWNER_NPC.setTileEntityItemStackRenderer(new NPCItemRenderer.TEISR(NPCTile.INSTANCE, renderer));
+        ClientRegistry.bindTileEntitySpecialRenderer(NPCTile.class, renderer);
         for (NPC npc: NPC.REGISTRY.values()) {
             ItemStack stack = SPAWNER_NPC.getStackFromObject(npc);
             ForgeHooksClient.registerTESRItemStack(stack.getItem(), stack.getItemDamage(), NPCTile.class);

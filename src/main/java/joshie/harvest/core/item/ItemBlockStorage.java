@@ -8,6 +8,7 @@ import joshie.harvest.core.block.BlockStorage.Storage;
 import joshie.harvest.core.handlers.GuiHandler;
 import joshie.harvest.core.tile.TileBasket;
 import joshie.harvest.player.PlayerTrackerServer;
+import net.minecraft.block.BlockFence;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -22,6 +23,7 @@ import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
 
+import static joshie.harvest.core.block.BlockStorage.Storage.MAILBOX;
 import static joshie.harvest.core.tile.TileBasket.BASKET_INVENTORY;
 
 public class ItemBlockStorage extends ItemBlockHF<BlockStorage> {
@@ -46,7 +48,8 @@ public class ItemBlockStorage extends ItemBlockHF<BlockStorage> {
     @SuppressWarnings("ConstantConditions")
     public EnumActionResult onItemUse(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull EnumHand hand, @Nonnull EnumFacing facing, float hitX, float hitY, float hitZ) {
         ItemStack stack = player.getHeldItem(hand);
-        if (getBlock().getEnumFromStack(stack) == Storage.BASKET) {
+        Storage storage = getBlock().getEnumFromStack(stack);
+        if (storage == Storage.BASKET) {
             if (player.isSneaking()) return EnumActionResult.PASS;
             else {
                 IBlockState state = world.getBlockState(pos);
@@ -69,7 +72,12 @@ public class ItemBlockStorage extends ItemBlockHF<BlockStorage> {
                 }
             }
         }
-
+        else if (storage == MAILBOX) {
+        	if (facing.getAxis() == EnumFacing.Axis.Y || !(world.getBlockState(pos).getBlock() instanceof BlockFence))
+        	{
+        		return EnumActionResult.FAIL;
+        	}
+		}
         return super.onItemUse(player, world, pos, hand, facing, hitX, hitY, hitZ);
     }
 

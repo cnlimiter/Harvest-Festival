@@ -47,6 +47,7 @@ import net.minecraftforge.common.capabilities.Capability.IStorage;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
@@ -60,7 +61,6 @@ import static joshie.harvest.core.helpers.ConfigHelper.getInteger;
 import static joshie.harvest.core.helpers.RegistryHelper.registerSounds;
 import static joshie.harvest.core.helpers.RegistryHelper.registerTiles;
 import static joshie.harvest.core.lib.HFModInfo.MODID;
-import static net.minecraftforge.fml.common.registry.EntityRegistry.registerModEntity;
 
 @HFLoader
 public class HFAnimals {
@@ -84,9 +84,9 @@ public class HFAnimals {
     public static void preInit() {
         HFApi.shipping.registerSellable(new ItemStack(Items.FEATHER), 30);
         HFApi.shipping.registerSellable(new ItemStack(Items.LEATHER), 80);
-        registerModEntity(new ResourceLocation(MODID, "cow"), EntityHarvestCow.class, "cow", EntityIDs.COW, HarvestFestival.instance, 150, 3, true);
-        registerModEntity(new ResourceLocation(MODID, "sheep"), EntityHarvestSheep.class, "sheep", EntityIDs.SHEEP, HarvestFestival.instance, 150, 3, true);
-        registerModEntity(new ResourceLocation(MODID, "chicken"), EntityHarvestChicken.class, "chicken", EntityIDs.CHICKEN, HarvestFestival.instance, 150, 3, true);
+        EntityRegistry.registerModEntity(new ResourceLocation(MODID, "cow"), EntityHarvestCow.class, "cow", EntityIDs.COW, HarvestFestival.instance, 150, 3, true);
+        EntityRegistry.registerModEntity(new ResourceLocation(MODID, "sheep"), EntityHarvestSheep.class, "sheep", EntityIDs.SHEEP, HarvestFestival.instance, 150, 3, true);
+        EntityRegistry.registerModEntity(new ResourceLocation(MODID, "chicken"), EntityHarvestChicken.class, "chicken", EntityIDs.CHICKEN, HarvestFestival.instance, 150, 3, true);
         registerSounds("brush");
         registerFoodsAsType(CHICKEN, Items.CHICKEN, Items.COOKED_CHICKEN);
         registerFoodsAsType(FISH, Items.FISH, Items.COOKED_FISH);

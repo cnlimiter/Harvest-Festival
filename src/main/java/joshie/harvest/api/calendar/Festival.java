@@ -104,7 +104,7 @@ public final class Festival implements CalendarEntry {
 
     /** Returns how many days this festival lasts **/
     public int getFestivalLength() {
-        return (int)(((double)length / 30D) * DAYS_PER_SEASON);
+        return (int)((length / 30D) * DAYS_PER_SEASON);
     }
 
     public boolean isHidden() {
@@ -146,7 +146,7 @@ public final class Festival implements CalendarEntry {
     @SuppressWarnings("deprecation")
     public void addTooltipForCalendarEntry(List<String> tooltip) {
         if (note != null) tooltip.add(note.getTitle());
-        else tooltip.addAll(Arrays.asList(I18n.translateToLocal(resource.getResourceDomain() + ".festival." + resource.getResourcePath().replace("_", ".") + ".tooltip.").split("\n")));
+        else tooltip.addAll(Arrays.asList(I18n.translateToLocal(resource.getNamespace() + ".festival." + resource.getPath().replace("_", ".") + ".tooltip.").split("\n")));
     }
 
     public boolean doShopsOpen() {

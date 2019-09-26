@@ -6,6 +6,7 @@ import joshie.harvest.core.helpers.SpawnItemHelper;
 import joshie.harvest.core.helpers.TextHelper;
 import joshie.harvest.mining.MiningHelper;
 import joshie.harvest.npcs.item.ItemNPCTool.NPCTool;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -13,11 +14,14 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import java.util.List;
 import java.util.Locale;
 
@@ -77,7 +81,7 @@ public class ItemNPCTool extends ItemHFEnum<ItemNPCTool, NPCTool> {
     @SideOnly(Side.CLIENT)
     @Override
     @SuppressWarnings("ConstantConditions")
-    public void addInformation(@Nonnull ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         if (stack.hasTagCompound() && stack.getTagCompound().hasKey(SPECIAL)) {
             tooltip.add(TextHelper.translate("npctool.gift.special.tooltip"));
         }
@@ -90,7 +94,9 @@ public class ItemNPCTool extends ItemHFEnum<ItemNPCTool, NPCTool> {
         ItemStack held = player.getHeldItem(hand);
         if (held.hasTagCompound() && held.getTagCompound().hasKey(SPECIAL)) {
             if (!world.isRemote) {
-                for (ItemStack stack: MiningHelper.getLoot(MINING_GEMS, world, player, 3F)) {
+                NonNullList<ItemStack> drops = NonNullList.create();
+                MiningHelper.getLoot(drops, MINING_GEMS, world, player, 3F);
+                for (ItemStack stack : drops) {
                     SpawnItemHelper.spawnByEntity(player, stack);
                 }
             }

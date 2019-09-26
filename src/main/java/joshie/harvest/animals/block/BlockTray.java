@@ -6,7 +6,6 @@ import joshie.harvest.animals.tile.TileNest;
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.animals.*;
 import joshie.harvest.api.core.Size;
-import joshie.harvest.core.achievements.HFAchievements;
 import joshie.harvest.core.base.block.BlockHFEnum;
 import joshie.harvest.core.base.tile.TileFillable;
 import joshie.harvest.core.entity.EntityBasket;
@@ -14,6 +13,7 @@ import joshie.harvest.core.helpers.SpawnItemHelper;
 import joshie.harvest.core.lib.CreativeSort;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
@@ -100,11 +100,6 @@ public class BlockTray extends BlockHFEnum<BlockTray, Tray> implements IAnimalFe
 
                 if (!world.isRemote) {
                     world.setBlockState(pos, getStateFromEnum(NEST_EMPTY));
-                }
-
-                player.addStat(HFAchievements.egger);
-                if (HFApi.sizeable.getSize(drop) == Size.LARGE) {
-                    player.addStat(HFAchievements.eggerLarge);
                 }
 
                 return true;
@@ -194,5 +189,23 @@ public class BlockTray extends BlockHFEnum<BlockTray, Tray> implements IAnimalFe
     @Override
     public int getSortValue(@Nonnull ItemStack stack) {
         return CreativeSort.TROUGH;
+    }
+
+    @Override
+    public boolean isFullBlock(IBlockState state)
+    {
+        return false;
+    }
+
+    @Override
+    public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos)
+    {
+        return false;
+    }
+
+    @Override
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
+    {
+        return BlockFaceShape.UNDEFINED;
     }
 }

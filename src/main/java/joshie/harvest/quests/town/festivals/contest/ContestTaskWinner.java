@@ -18,6 +18,7 @@ public class ContestTaskWinner extends TaskElement {
         this.festival = festival;
     }
 
+    @Override
     public void execute(NPCEntity npc) {
         super.execute(npc);
         QuestContest quest = TownHelper.getClosestTownToEntity(npc.getAsEntity(), false).getQuests().getAQuest(festival.getQuest());

@@ -24,11 +24,11 @@ public class ButtonTab extends ButtonBook<GuiStats> {
         this.width = 26;
         this.height = 32;
         this.xTexture = xTexture;
-        this.xStack = xPosition + xStack;
+        this.xStack = this.x + xStack;
     }
 
     public void drawIcon() {
-        StackRenderHelper.drawStack(getIcon(), xStack, yPosition + 8, 1F);
+        StackRenderHelper.drawStack(getIcon(), xStack, y + 8, 1F);
     }
 
     @Nonnull
@@ -37,16 +37,16 @@ public class ButtonTab extends ButtonBook<GuiStats> {
     }
 
     @Override
-    public void drawButton(@Nonnull Minecraft mc, int mouseX, int mouseY) {
+    public void drawButton(@Nonnull Minecraft mc, int mouseX, int mouseY, float partialTicks) {
         if (visible) {
             mc.getTextureManager().bindTexture(TEXTURE);
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-            hovered = mouseX >= xPosition && mouseY >= yPosition && mouseX < xPosition + width && mouseY < yPosition + height;
+            hovered = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
             int state = getHoverState(hovered);
             GlStateManager.enableBlend();
             GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
             GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-            drawTexturedModalRect(xPosition, yPosition, xTexture, state * 32, width, height);
+            drawTexturedModalRect(x, y, xTexture, state * 32, width, height);
             drawIcon();
             if (hovered) gui.addTooltip(displayString);
             GlStateManager.color(1.0F, 1.0F, 1.0F);

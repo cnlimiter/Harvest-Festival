@@ -17,15 +17,15 @@ public class ButtonQuestNull extends ButtonBook<GuiStats> {
     }
 
     @Override
-    public void drawButton(@Nonnull Minecraft mc, int mouseX, int mouseY) {
+    public void drawButton(@Nonnull Minecraft mc, int mouseX, int mouseY, float partialTicks) {
         if (visible) {
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-            hovered = mouseX >= xPosition && mouseY >= yPosition && mouseX < xPosition + width && mouseY < yPosition + height;
+            hovered = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
             mouseDragged(mc, mouseX, mouseY);
-            boolean flag = mc.fontRendererObj.getUnicodeFlag();
-            mc.fontRendererObj.setUnicodeFlag(true);
-            mc.fontRendererObj.drawString(TextFormatting.BOLD + displayString, xPosition + 8, yPosition - 4, 0x857754);
-            mc.fontRendererObj.setUnicodeFlag(flag);
+            boolean flag = mc.fontRenderer.getUnicodeFlag();
+            mc.fontRenderer.setUnicodeFlag(true);
+            mc.fontRenderer.drawString(TextFormatting.BOLD + displayString, x + 8, y - 4, 0x857754);
+            mc.fontRenderer.setUnicodeFlag(flag);
             GlStateManager.color(1.0F, 1.0F, 1.0F);
         }
     }

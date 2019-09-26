@@ -19,7 +19,7 @@ public class GreetingShop implements IInfoButton {
     }
 
     public GreetingShop(ResourceLocation resourceLocation) {
-        this.text = resourceLocation.getResourceDomain() + ".npc." + resourceLocation.getResourcePath() + ".shop";
+        this.text = resourceLocation.getNamespace() + ".npc." + resourceLocation.getPath() + ".shop";
     }
 
     @SuppressWarnings("deprecation")
@@ -34,6 +34,7 @@ public class GreetingShop implements IInfoButton {
         gui.drawTexturedModalRect(x, y, 16, 0, 16, 16);
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public String getTooltip() {
         return "harvestfestival.npc.tooltip.clock";

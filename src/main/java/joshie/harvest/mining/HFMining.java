@@ -34,6 +34,7 @@ import net.minecraft.world.storage.loot.conditions.LootConditionManager;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
@@ -50,7 +51,6 @@ import static joshie.harvest.core.lib.HFModInfo.MODID;
 import static joshie.harvest.mining.MiningHelper.*;
 import static net.minecraft.init.Items.DIAMOND;
 import static net.minecraft.init.Items.EMERALD;
-import static net.minecraftforge.fml.common.registry.EntityRegistry.registerModEntity;
 
 @HFLoader
 @SuppressWarnings("unused")
@@ -71,10 +71,10 @@ public class HFMining {
     public static void preInit() {
         MINE_WORLD = DimensionType.register("The Mine", "_hf_mine", MINING_ID, MiningProvider.class, false);
         DimensionManager.registerDimension(MINING_ID, MINE_WORLD);
-        registerModEntity(new ResourceLocation(MODID, "dark_cow"), EntityDarkCow.class, "dark_cow", EntityIDs.DARK_COW, HarvestFestival.instance, 80, 3, true);
-        registerModEntity(new ResourceLocation(MODID, "dark_sheep"), EntityDarkSheep.class, "dark_sheep", EntityIDs.DARK_SHEEP, HarvestFestival.instance, 80, 3, true);
-        registerModEntity(new ResourceLocation(MODID, "dark_chicken"), EntityDarkChicken.class, "dark_chicken", EntityIDs.DARK_CHICKEN, HarvestFestival.instance, 80, 3, true);
-        registerModEntity(new ResourceLocation(MODID, "dark_chick"), EntityDarkChick.class, "dark_chick", EntityIDs.DARK_CHICK, HarvestFestival.instance, 80, 3, true);
+        EntityRegistry.registerModEntity(new ResourceLocation(MODID, "dark_cow"), EntityDarkCow.class, "dark_cow", EntityIDs.DARK_COW, HarvestFestival.instance, 80, 3, true);
+        EntityRegistry.registerModEntity(new ResourceLocation(MODID, "dark_sheep"), EntityDarkSheep.class, "dark_sheep", EntityIDs.DARK_SHEEP, HarvestFestival.instance, 80, 3, true);
+        EntityRegistry.registerModEntity(new ResourceLocation(MODID, "dark_chicken"), EntityDarkChicken.class, "dark_chicken", EntityIDs.DARK_CHICKEN, HarvestFestival.instance, 80, 3, true);
+        EntityRegistry.registerModEntity(new ResourceLocation(MODID, "dark_chick"), EntityDarkChick.class, "dark_chick", EntityIDs.DARK_CHICK, HarvestFestival.instance, 80, 3, true);
         OreDictionary.registerOre("feather", DARK_DROP.getStackFromEnum(DarkDrop.FEATHER));
         OreDictionary.registerOre("leather", DARK_DROP.getStackFromEnum(DarkDrop.LEATHER));
         registerTiles(TileElevator.class);

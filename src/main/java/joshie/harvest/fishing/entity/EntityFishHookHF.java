@@ -27,13 +27,17 @@ public class EntityFishHookHF extends EntityFishHook {
     @Override
     public boolean shouldStopFishing() {
         EntityPlayer angler = getAngler();
+        if (angler == null)
+        {
+            return true;
+        }
         ItemStack itemstack = angler.getHeldItemMainhand();
         ItemStack itemstack1 = angler.getHeldItemOffhand();
         //Changed by me, both flags
         boolean flag = itemstack.getItem() instanceof ItemFishingRod;
         boolean flag1 = itemstack1.getItem() instanceof ItemFishingRod;
 
-        if (!angler.isDead && angler.isEntityAlive() && (flag || flag1) && getDistanceSqToEntity(angler) <= 1024.0D) {
+        if (!angler.isDead && angler.isEntityAlive() && (flag || flag1) && getDistanceSq(angler) <= 1024.0D) {
             return false;
         } else {
             this.setDead();
@@ -54,7 +58,7 @@ public class EntityFishHookHF extends EntityFishHook {
             } else if (ticksCatchable > 0) {
                 //Line changed by me
                 LootContext.Builder builder = new LootContext.Builder((WorldServer) world);
-                builder.withLuck((float)this.field_191518_aw + getAngler().getLuck());
+                builder.withLuck(this.luck + getAngler().getLuck());
                 builder.withLootedEntity(this);
                 builder.withPlayer(getAngler());
                 //Line changed by me
@@ -65,9 +69,9 @@ public class EntityFishHookHF extends EntityFishHook {
                     double d0 = angler.posX - posX;
                     double d1 = angler.posY - posY;
                     double d2 = angler.posZ - posZ;
-                    double d3 = (double) MathHelper.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
+                    double d3 = MathHelper.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
                     entityItem.motionX = d0 * 0.1D;
-                    entityItem.motionY = d1 * 0.1D + (double) MathHelper.sqrt(d3) * 0.08D;
+                    entityItem.motionY = d1 * 0.1D + MathHelper.sqrt(d3) * 0.08D;
                     entityItem.motionZ = d2 * 0.1D;
                     world.spawnEntity(entityItem);
                     angler.world.spawnEntity(new EntityXPOrb(angler.world, angler.posX, angler.posY + 0.5D, angler.posZ + 0.5D, rand.nextInt(6) + 1));

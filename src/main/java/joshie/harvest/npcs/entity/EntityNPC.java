@@ -74,6 +74,7 @@ public abstract class EntityNPC<E extends EntityNPC> extends EntityAgeable imple
         else return home = TownHelper.getClosestTownToEntity(this, false).getID();
     }
 
+    @Override
     public NPC getNPC() {
         return npc;
     }

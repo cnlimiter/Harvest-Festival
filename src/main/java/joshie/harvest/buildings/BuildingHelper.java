@@ -26,11 +26,11 @@ import java.util.WeakHashMap;
 public class BuildingHelper {
     public static Vec3d getPositionEyes(EntityPlayer player, float partialTicks) {
         if (partialTicks == 1.0F) {
-            return new Vec3d(player.posX, player.posY + (double) player.getEyeHeight(), player.posZ);
+            return new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ);
         } else {
-            double d0 = player.prevPosX + (player.posX - player.prevPosX) * (double) partialTicks;
-            double d1 = player.prevPosY + (player.posY - player.prevPosY) * (double) partialTicks + (double) player.getEyeHeight();
-            double d2 = player.prevPosZ + (player.posZ - player.prevPosZ) * (double) partialTicks;
+            double d0 = player.prevPosX + (player.posX - player.prevPosX) * partialTicks;
+            double d1 = player.prevPosY + (player.posY - player.prevPosY) * partialTicks + player.getEyeHeight();
+            double d2 = player.prevPosZ + (player.posZ - player.prevPosZ) * partialTicks;
             return new Vec3d(d0, d1, d2);
         }
     }
@@ -39,7 +39,7 @@ public class BuildingHelper {
     public static RayTraceResult rayTrace(EntityPlayer player, double blockReachDistance, float partialTicks) {
         Vec3d vec3d = getPositionEyes(player, partialTicks);
         Vec3d vec3d1 = player.getLook(partialTicks);
-        Vec3d vec3d2 = vec3d.addVector(vec3d1.xCoord * blockReachDistance, vec3d1.yCoord * blockReachDistance, vec3d1.zCoord * blockReachDistance);
+        Vec3d vec3d2 = vec3d.add(vec3d1.x * blockReachDistance, vec3d1.y * blockReachDistance, vec3d1.z * blockReachDistance);
         RayTraceResult result = player.world.rayTraceBlocks(vec3d, vec3d2, false, false, true);
         return result;
     }

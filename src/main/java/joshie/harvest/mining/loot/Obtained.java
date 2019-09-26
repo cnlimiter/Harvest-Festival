@@ -36,11 +36,13 @@ public class Obtained implements LootCondition {
             super(new ResourceLocation(MODID, "obtained"), Obtained.class);
         }
 
+        @Override
         public void serialize(@Nonnull JsonObject json, @Nonnull Obtained value, @Nonnull JsonSerializationContext context) {
             json.addProperty("item", value.stack.getItem().getRegistryName().toString());
             json.addProperty("meta", value.stack.getItemDamage());
         }
 
+        @Override
         @Nonnull
         public Obtained deserialize(@Nonnull JsonObject json, @Nonnull JsonDeserializationContext context) {
             return new Obtained(JsonUtils.getItem(json, "item"), JsonUtils.getInt(json, "meta", 0));

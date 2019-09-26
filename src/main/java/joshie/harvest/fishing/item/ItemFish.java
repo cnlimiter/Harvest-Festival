@@ -8,6 +8,7 @@ import joshie.harvest.core.base.item.ItemHFFoodEnum;
 import joshie.harvest.core.lib.CreativeSort;
 import joshie.harvest.core.util.interfaces.ISellable;
 import joshie.harvest.fishing.item.ItemFish.Fish;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
@@ -18,6 +19,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import java.util.List;
 import java.util.Locale;
 
@@ -34,7 +37,7 @@ public class ItemFish extends ItemHFFoodEnum<ItemFish, Fish> {
     @Override
     @SideOnly(Side.CLIENT)
     @SuppressWarnings("ConstantConditions")
-    public void addInformation(@Nonnull ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         Fish fish = getEnumFromStack(stack);
         double weight = stack.hasTagCompound() ? stack.getTagCompound().getDouble(SIZE) : fish.getLengthFromSizeOfFish(SMALL_FISH);
         tooltip.add("Length: " + weight + "cm");
@@ -124,9 +127,9 @@ public class ItemFish extends ItemHFFoodEnum<ItemFish, Fish> {
         }
 
         public long getSellValue(double size) {
-            if (size >= giant) return (long)((double)sell * 1.75D);
-            else if (size >= large) return (long)((double)sell * 1.5D);
-            else if (size >= medium) return (long)((double)sell * 1.25D);
+            if (size >= giant) return (long)(sell * 1.75D);
+            else if (size >= large) return (long)(sell * 1.5D);
+            else if (size >= medium) return (long)(sell * 1.25D);
             else return sell;
         }
 

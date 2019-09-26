@@ -19,7 +19,7 @@ public class SpecialRendererFridge extends TileEntitySpecialRenderer<TileFridge>
     private final ModelFridgeDoor ovenModel = new ModelFridgeDoor();
 
     @Override
-    public final void renderTileEntityAt(@Nonnull TileFridge fridge, double x, double y, double z, float partialTicks, int destroyStage) {
+    public final void render(@Nonnull TileFridge fridge, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
         if (destroyStage >= 0) {
             bindTexture(DESTROY_STAGES[destroyStage]);
             GlStateManager.matrixMode(5890);
@@ -42,7 +42,7 @@ public class SpecialRendererFridge extends TileEntitySpecialRenderer<TileFridge>
         else if (facing == WEST) GlStateManager.translate(1F, 0F, 0F);
         else if (facing == EAST) GlStateManager.translate(0F, 0F, 1F);
 
-        GlStateManager.rotate((float) j, 0.0F, 1.0F, 0.0F);
+        GlStateManager.rotate(j, 0.0F, 1.0F, 0.0F);
         GlStateManager.translate(-0.5F, -0.5F, -0.5F);
         //Top Door
         float f = fridge.prevLidAngleTop + (fridge.lidAngleTop - fridge.prevLidAngleTop) * partialTicks;

@@ -14,7 +14,6 @@ import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.play.server.SPacketEntityAttach;
 import net.minecraft.network.play.server.SPacketSetPassengers;
 import net.minecraft.world.World;
 
@@ -100,13 +99,12 @@ public class PurchasableEntity implements IPurchasable {
             EntityPlayerMP player = (EntityPlayerMP)aPlayer;
             EntityAnimal theEntity = createEntity(player.world);
             if (theEntity != null) {
-
                 theEntity.setPosition(player.posX, player.posY, player.posZ);
                 AnimalStats stats = EntityHelper.getStats(theEntity);
                 if (stats != null) {
                     if (stats.performTest(AnimalTest.CAN_CARRY)) {
                         if (player.getPassengers().size() == 0) theEntity.startRiding(player, true);
-                    } else theEntity.setLeashedToEntity(theEntity, true);
+                    } else theEntity.setLeashHolder(theEntity, false);
                 }
 
                 //Spawn the entity
@@ -116,7 +114,7 @@ public class PurchasableEntity implements IPurchasable {
                 if (stats != null) {
                     if (stats.performTest(AnimalTest.CAN_CARRY)) {
                         player.connection.sendPacket(new SPacketSetPassengers(player));
-                    } else player.connection.sendPacket(new SPacketEntityAttach(theEntity, theEntity.getLeashedToEntity()));
+                    } else theEntity.setLeashHolder(theEntity, true);
                 }
             }
         }

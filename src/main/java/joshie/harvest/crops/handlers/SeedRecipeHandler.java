@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class SeedRecipeHandler extends ShapelessOreRecipe {
     public SeedRecipeHandler(ItemStack result, Object... recipe) {
-        super(result, recipe);
+        super(null, result, recipe);
     }
 
     @SuppressWarnings("unchecked")

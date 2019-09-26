@@ -11,10 +11,7 @@ import joshie.harvest.core.helpers.RegistryHelper;
 import joshie.harvest.core.lib.EntityIDs;
 import joshie.harvest.core.loot.SetEnum;
 import joshie.harvest.core.loot.SetSizeable;
-import joshie.harvest.core.render.RenderBasket;
-import joshie.harvest.core.render.SpecialRendererBasket;
-import joshie.harvest.core.render.SpecialRendererMailbox;
-import joshie.harvest.core.render.SpecialRendererPlate;
+import joshie.harvest.core.render.*;
 import joshie.harvest.core.tile.*;
 import joshie.harvest.core.util.annotations.HFLoader;
 import net.minecraft.block.BlockFlower.EnumFlowerColor;
@@ -33,7 +30,9 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -48,9 +47,9 @@ import static joshie.harvest.core.helpers.RegistryHelper.registerSounds;
 import static joshie.harvest.core.lib.HFModInfo.MODID;
 import static joshie.harvest.core.lib.LoadOrder.HFCORE;
 import static net.minecraft.block.BlockDoublePlant.EnumPlantType.*;
-import static net.minecraftforge.fml.common.registry.EntityRegistry.registerModEntity;
 
 @HFLoader(priority = HFCORE)
+@EventBusSubscriber
 @SuppressWarnings("unused")
 public class HFCore {
     public static final Fluid GODDESS = registerFluid(new Fluid("goddess_water", new ResourceLocation(MODID, "blocks/goddess_still"), new ResourceLocation(MODID, "blocks/goddess_flow")).setRarity(EnumRarity.RARE));
@@ -67,7 +66,7 @@ public class HFCore {
         LootFunctionManager.registerFunction(new SetEnum.Serializer());
         LootFunctionManager.registerFunction(new SetSizeable.Serializer());
         RegistryHelper.registerTiles(TileShipping.class, TileMailbox.class, TilePlate.class, TileBasket.class, TileFestivalPot.class);
-        registerModEntity(new ResourceLocation(MODID, "basket"), EntityBasket.class, "basket", EntityIDs.BASKET, HarvestFestival.instance, 150, 3, true);
+        EntityRegistry.registerModEntity(new ResourceLocation(MODID, "basket"), EntityBasket.class, "basket", EntityIDs.BASKET, HarvestFestival.instance, 150, 3, true);
         registerSounds("kerching");
         GODDESS.setBlock(GODDESS_WATER);
 
@@ -83,7 +82,7 @@ public class HFCore {
         registerIfNotRegistered("flowerPeony", new ItemStack(Blocks.DOUBLE_PLANT, 1, PAEONIA.getMeta()));
         registerIfNotRegistered("flowerDandelion", new ItemStack(Blocks.YELLOW_FLOWER));
         for (EnumFlowerType type: getTypes(EnumFlowerColor.RED)) {
-            registerIfNotRegistered("flower" + WordUtils.capitalize(type.getUnlocalizedName()), new ItemStack(Blocks.RED_FLOWER, 1, type.getMeta()));
+            registerIfNotRegistered("flower" + WordUtils.capitalize(type.getTranslationKey()), new ItemStack(Blocks.RED_FLOWER, 1, type.getMeta()));
         }
     }
 
@@ -105,10 +104,19 @@ public class HFCore {
                 Items.DIAMOND_HORSE_ARMOR, Items.GOLDEN_HORSE_ARMOR, Items.IRON_HORSE_ARMOR, Items.SPECTRAL_ARROW, Items.TIPPED_ARROW);
     }
 
+//    @Subscribe
+//    public static void serverStarting(FMLServerStartingEvent event)
+//    {
+//        MinecraftServer server = event.getServer();
+//        System.out.println(server.getServerHostname());
+//        System.out.println(123);
+//    }
+
     @SideOnly(Side.CLIENT)
     public static void initClient() {
         ClientRegistry.bindTileEntitySpecialRenderer(TileBasket.class, new SpecialRendererBasket());
         ClientRegistry.bindTileEntitySpecialRenderer(TilePlate.class, new SpecialRendererPlate());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileFestivalPot.class, new SpecialRendererFestivalPot());
         Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler((state, worldIn, pos, tintIndex) -> {
                 FlowerType type = HFCore.FLOWERS.getEnumFromState(state);
                 if (!type.isColored()) return -1;

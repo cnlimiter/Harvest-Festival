@@ -16,9 +16,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
-import net.minecraftforge.fml.common.registry.IForgeRegistry;
-import net.minecraftforge.fml.common.registry.IForgeRegistryEntry;
-import net.minecraftforge.fml.common.registry.RegistryBuilder;
+import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.IForgeRegistryEntry;
+import net.minecraftforge.registries.RegistryBuilder;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -152,7 +152,7 @@ public abstract class Quest extends IForgeRegistryEntry.Impl<Quest> {
     }
 
     protected String getPrefix() {
-        return getRegistryName().getResourceDomain() + ".quest." + getRegistryName().getResourcePath();
+        return getRegistryName().getNamespace() + ".quest." + getRegistryName().getPath();
     }
 
     /** The name of this quest line **/
@@ -213,6 +213,9 @@ public abstract class Quest extends IForgeRegistryEntry.Impl<Quest> {
      *  @param player       the player
      *  @param npc       the npc**/
     public void onChatClosed(EntityPlayer player, NPCEntity npc, boolean wasSneaking) {}
+
+    /** Called when a quest is started **/
+    public void onQuestActivated() {}
 
     /** Called when the quest is completed
      *  @param player       the player that completed the quest **/

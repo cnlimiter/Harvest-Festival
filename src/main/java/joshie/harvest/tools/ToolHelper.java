@@ -29,9 +29,6 @@ import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import javax.annotation.Nonnull;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
-
 import static joshie.harvest.animals.item.ItemAnimalTool.Tool.BRUSH;
 import static joshie.harvest.calendar.HFCalendar.TICKS_PER_DAY;
 import static joshie.harvest.tools.HFTools.*;
@@ -144,7 +141,7 @@ public class ToolHelper {
         }
     }
 
-    private static void restoreHunger(EntityPlayer player) {
+    public static void restoreHunger(EntityPlayer player) {
         ReflectionHelper.setPrivateValue(FoodStats.class, player.getFoodStats(), 20, "foodLevel", "field_75127_a");
         ReflectionHelper.setPrivateValue(FoodStats.class, player.getFoodStats(), 5F, "foodSaturationLevel", "field_75125_b");
         ReflectionHelper.setPrivateValue(FoodStats.class, player.getFoodStats(), 0, "foodExhaustionLevel", "field_75126_c");
@@ -154,10 +151,10 @@ public class ToolHelper {
     @SuppressWarnings("deprecation")
     public static void collectDrops(World world, BlockPos pos, IBlockState state, EntityPlayer player, NonNullList<ItemStack> drops) {
         Block block = state.getBlock();
-        List<ItemStack> blockDrops = new ArrayList<>();
+        NonNullList<ItemStack> blockDrops = NonNullList.create();
         if (block.canSilkHarvest(world, pos, state, player)) {
             try {
-                Method method = ReflectionHelper.findMethod(Block.class, null, new String[]{"getSilkTouchDrop", "func_180643_i"}, IBlockState.class);
+                Method method = ReflectionHelper.findMethod(Block.class, "getSilkTouchDrop", "func_180643_i", IBlockState.class);
                 ItemStack stack = (ItemStack) method.invoke(block, state);
                 if (!stack.isEmpty()) {
                     blockDrops.add(stack);
@@ -166,20 +163,9 @@ public class ToolHelper {
                 }
             } catch (IllegalAccessException | InvocationTargetException e) {/**/}
         } else {
-            blockDrops = block.getDrops(world, pos, state, 0);
+            block.getDrops(blockDrops, world, pos, state, 0);
             ForgeEventFactory.fireBlockHarvesting(blockDrops, world, pos, state, 0, 1F, false, player);
             drops.addAll(blockDrops); //Add all the drops to our list
         }
-    }
-
-    @Nonnull
-    public static ItemStack getStackFromBlockState(IBlockState state) {
-        ItemStack stack = ItemStack.EMPTY;
-        try {
-            Method method = ReflectionHelper.findMethod(Block.class, null, new String[] { "createStackedBlock", "func_180643_i" } , IBlockState.class);
-            stack = (ItemStack) method.invoke(state.getBlock(), state);
-        } catch (IllegalAccessException | InvocationTargetException ignored) {
-        }
-        return stack;
     }
 }

@@ -20,6 +20,7 @@ public class ShopHours implements OpeningHandler {
     private final HashMultimap<Weekday, OpeningHours> open = HashMultimap.create();
     private boolean opensOnHolidays;
 
+    @Override
     public ShopHours setOpensOnHolidays() {
         this.opensOnHolidays = true;
         return this;

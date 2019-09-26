@@ -9,6 +9,7 @@ import joshie.harvest.core.base.render.FakeEntityRenderer.EntityItemRenderer;
 import joshie.harvest.core.helpers.StackRenderHelper;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.tileentity.TileEntityItemStackRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -24,7 +25,7 @@ public class FakeEntityRenderer extends TileEntitySpecialRenderer<EntityItemRend
     public static final FakeEntityRenderer INSTANCE = new FakeEntityRenderer();
 
     @Override
-    public void renderTileEntityAt(@Nullable EntityItemRenderer fake, double x, double y, double z, float partialTicks, int destroyStage) {
+    public void render(@Nullable EntityItemRenderer fake, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
          if (fake != null) {
              GlStateManager.pushMatrix();
              GlStateManager.translate(fake.render.translation, -0.05F, 0.5F);
@@ -97,6 +98,21 @@ public class FakeEntityRenderer extends TileEntitySpecialRenderer<EntityItemRend
                 this.translation = 0.5F;
                 this.scale = 0.75F;
             }
+        }
+    }
+    
+    public static class TEISR extends TileEntityItemStackRenderer
+    {
+        private final EntityItemRenderer instance;
+        
+        public TEISR(EntityItemRenderer instance) {
+            this.instance = instance;
+        }
+
+        @Override
+        public void renderByItem(ItemStack itemStackIn, float partialTicks) {
+        	instance.setStack(itemStackIn);
+        	INSTANCE.render(instance, 0, 0, 0, partialTicks, 0, 0);
         }
     }
 }

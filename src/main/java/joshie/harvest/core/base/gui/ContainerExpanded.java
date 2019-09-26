@@ -244,7 +244,7 @@ public class ContainerExpanded extends ContainerBase {
                         stack = itemstack10.copy();
 
                         if (slot6.getStack().getItem() == item) {
-                            retrySlotClick(slotId, dragType, true, player);
+                            slotClick(slotId, dragType, clickType, player);
                         }
                     }
                 }

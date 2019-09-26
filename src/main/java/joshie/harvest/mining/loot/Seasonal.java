@@ -39,10 +39,12 @@ public class Seasonal implements LootCondition {
             super(new ResourceLocation(MODID, "season"), Seasonal.class);
         }
 
+        @Override
         public void serialize(@Nonnull JsonObject json, @Nonnull Seasonal value, @Nonnull JsonSerializationContext context) {
             json.addProperty("season", value.season.name().toLowerCase(Locale.ENGLISH));
         }
 
+        @Override
         @Nonnull
         public Seasonal deserialize(@Nonnull JsonObject json, @Nonnull JsonDeserializationContext context) {
             return new Seasonal(Season.valueOf(JsonUtils.getString(json, "season").toUpperCase(Locale.ENGLISH)));

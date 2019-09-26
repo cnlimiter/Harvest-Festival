@@ -13,8 +13,9 @@ import static joshie.harvest.core.helpers.MCServerHelper.markTileForUpdate;
 public class TileNest extends TileHarvest {
     private int relationship;
     @Nonnull
-    private ItemStack drop;
-    private Size size;
+    private ItemStack drop = ItemStack.EMPTY;
+    @Nonnull
+    private Size size = Size.NONE;
 
     public void setDrop(int mother, @Nonnull ItemStack stack) {
         this.relationship = mother;
@@ -27,7 +28,7 @@ public class TileNest extends TileHarvest {
     public void clear() {
         this.relationship = 0;
         this.drop = ItemStack.EMPTY;
-        this.size = null;
+        this.size = Size.NONE;
         this.markDirty();
         markTileForUpdate(this);
     }
@@ -49,7 +50,7 @@ public class TileNest extends TileHarvest {
     public void readFromNBT(NBTTagCompound nbt) {
         super.readFromNBT(nbt);
         relationship = nbt.getInteger("Relationship");
-        size = Size.valueOf(nbt.getString("Size"));
+        size = Size._valueOf(nbt.getString("Size"));
         drop = new ItemStack(nbt.getCompoundTag("Drop"));
     }
 

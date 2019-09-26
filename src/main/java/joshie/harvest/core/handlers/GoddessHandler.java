@@ -1,8 +1,6 @@
 package joshie.harvest.core.handlers;
 
-import joshie.harvest.api.npc.NPC;
 import joshie.harvest.core.HFCore;
-import joshie.harvest.core.achievements.HFAchievements;
 import joshie.harvest.core.block.BlockFlower.FlowerType;
 import joshie.harvest.core.lib.HFSounds;
 import joshie.harvest.core.util.annotations.HFEvents;
@@ -47,7 +45,7 @@ public class GoddessHandler {
     private static boolean spawnGoddess(World world, double x, double y, double z, boolean flower, boolean move) {
         List<EntityNPCGoddess> npcs = world.getEntitiesWithinAABB(EntityNPCGoddess.class, new AxisAlignedBB(x - 0.5F, y - 0.5F, z - 0.5F, x + 0.5F, y + 0.5F, z + 0.5F).expand(32D, 32D, 32D));
         boolean newGoddess = npcs.size() < 1;
-        EntityNPCGoddess goddess = !newGoddess ? npcs.get(0) : NPCHelper.getEntityForNPC(world, (NPC) HFNPCs.GODDESS);
+        EntityNPCGoddess goddess = !newGoddess ? npcs.get(0) : NPCHelper.getEntityForNPC(world, HFNPCs.GODDESS);
         if (flower) goddess.setFlower();
         if (move || (goddess.posX == 0 && goddess.posY == 0 && goddess.posZ == 0)) goddess.setPosition(x, y + 1, z);
         if (newGoddess) {
@@ -63,7 +61,7 @@ public class GoddessHandler {
     public void onItemExpire(ItemExpireEvent event) {
         World world = event.getEntityItem().world;
         if (!world.isRemote) {
-            ItemStack stack = event.getEntityItem().getEntityItem();
+            ItemStack stack = event.getEntityItem().getItem();
             if (isGoddessFlower(stack)) {
                 if (event.getEntityItem().isInsideOfMaterial(Material.WATER)) {
                     spawnGoddess(world, event.getEntityItem(), true, true);
@@ -133,7 +131,6 @@ public class GoddessHandler {
                 if (world.rand.nextInt(9) == 0) {
                     world.setBlockState(pos, HFCore.FLOWERS.getStateFromEnum(FlowerType.GODDESS));
                     world.playSound(null, player.posX, player.posY, player.posZ, HFSounds.GODDESS_SPAWN, SoundCategory.NEUTRAL, 0.5F, 1.1F);
-                    player.addStat(HFAchievements.summon);
                     lastGoddess = System.currentTimeMillis();
                 }
             }

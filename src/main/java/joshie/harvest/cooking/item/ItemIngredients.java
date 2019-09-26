@@ -58,7 +58,7 @@ public class ItemIngredients extends ItemHFFoodEnum<ItemIngredients, Ingredient>
 
     @Override
     @Nonnull
-    protected ItemStack getCreativeStack(Ingredient ingredient) {
+	public ItemStack getCreativeStack(Ingredient ingredient) {
         return ingredient.getSellValue() > 0L ? getStackFromEnum(ingredient) : ItemStack.EMPTY;
     }
 

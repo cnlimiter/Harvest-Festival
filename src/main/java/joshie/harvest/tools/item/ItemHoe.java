@@ -9,6 +9,7 @@ import joshie.harvest.tools.ToolHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirt;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -212,18 +213,18 @@ public class ItemHoe extends ItemToolChargeable<ItemHoe> {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(@Nonnull ItemStack stack, EntityPlayer player, List<String> list, boolean flag) {
-        super.addInformation(stack, player, list, flag);
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+        super.addInformation(stack, worldIn, tooltip, flagIn);
         int charge = getCharge(stack);
         ToolTier thisTier = getTier(stack);
         if (thisTier != ToolTier.BASIC) {
             ToolTier tier = LEVEL_TO_TIER.get(charge);
-            list.add(TextFormatting.GOLD + TextHelper.translate("hoe.tooltip.charge." + tier.name().toLowerCase(Locale.ENGLISH)));
-            list.add("-------");
+            tooltip.add(TextFormatting.GOLD + TextHelper.translate("hoe.tooltip.charge." + tier.name().toLowerCase(Locale.ENGLISH)));
+            tooltip.add("-------");
             if (charge < thisTier.getToolLevel())
-                list.add(TextFormatting.AQUA + "" + TextFormatting.ITALIC + TextHelper.translate("hoe.tooltip.charge"));
+            	tooltip.add(TextFormatting.AQUA + "" + TextFormatting.ITALIC + TextHelper.translate("hoe.tooltip.charge"));
             if (charge != 0)
-                list.add(TextFormatting.RED + "" + TextFormatting.ITALIC + TextHelper.translate("hoe.tooltip.discharge"));
+            	tooltip.add(TextFormatting.RED + "" + TextFormatting.ITALIC + TextHelper.translate("hoe.tooltip.discharge"));
         }
     }
 

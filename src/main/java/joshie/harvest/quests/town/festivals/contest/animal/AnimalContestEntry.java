@@ -47,6 +47,7 @@ public class AnimalContestEntry extends ContestEntry<QuestAnimalContest> {
         } else return null;
     }
 
+    @Override
     @SuppressWarnings("ConstantConditions")
     public int getScore(QuestAnimalContest quest, World world) {
         EntityAnimal animal  = EntityHelper.getAnimalFromUUID(world, entity);
@@ -101,6 +102,7 @@ public class AnimalContestEntry extends ContestEntry<QuestAnimalContest> {
         return animal == null ? "" : animal.getName();
     }
 
+    @Override
     public void reward(World world, Place place, NPC[] npcs, ItemStack reward) {
         AnimalStats stats = getStats(world);
         EntityPlayer player = getPlayer(world);

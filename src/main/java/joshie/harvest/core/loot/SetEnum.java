@@ -25,6 +25,7 @@ public class SetEnum extends LootFunction {
         this.name = name;
     }
 
+    @Override
     @Nonnull
     public ItemStack apply(@Nonnull ItemStack stack, @Nonnull Random rand, @Nonnull LootContext context) {
         if (stack.getItem() instanceof ItemHFFoodEnum) {
@@ -49,10 +50,12 @@ public class SetEnum extends LootFunction {
             super(new ResourceLocation("hf_set_enum"), SetEnum.class);
         }
 
+        @Override
         public void serialize(@Nonnull JsonObject object, @Nonnull SetEnum functionClazz, @Nonnull JsonSerializationContext serializationContext) {
             object.addProperty("enum", functionClazz.name);
         }
 
+        @Override
         @Nonnull
         public SetEnum deserialize(@Nonnull JsonObject object, @Nonnull JsonDeserializationContext deserializationContext, @Nonnull LootCondition[] conditionsIn) {
             return new SetEnum(conditionsIn, object.get("enum").getAsString());

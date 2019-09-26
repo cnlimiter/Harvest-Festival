@@ -66,11 +66,11 @@ public class SleepHandler {
                 return EntityPlayer.SleepResult.NOT_POSSIBLE_HERE;
             }
 
-            if (Math.abs(player.posX - (double) bedLocation.getX()) > 3.0D || Math.abs(player.posY - (double) bedLocation.getY()) > 2.0D || Math.abs(player.posZ - (double) bedLocation.getZ()) > 3.0D) {
+            if (Math.abs(player.posX - bedLocation.getX()) > 3.0D || Math.abs(player.posY - bedLocation.getY()) > 2.0D || Math.abs(player.posZ - bedLocation.getZ()) > 3.0D) {
                 return EntityPlayer.SleepResult.TOO_FAR_AWAY;
             }
 
-            List<EntityMob> list = player.world.getEntitiesWithinAABB(EntityMob.class, new AxisAlignedBB((double) bedLocation.getX() - 8.0D, (double) bedLocation.getY() - 5.0D, (double) bedLocation.getZ() - 8.0D, (double) bedLocation.getX() + 8.0D, (double) bedLocation.getY() + 5.0D, (double) bedLocation.getZ() + 8.0D));
+            List<EntityMob> list = player.world.getEntitiesWithinAABB(EntityMob.class, new AxisAlignedBB(bedLocation.getX() - 8.0D, bedLocation.getY() - 5.0D, bedLocation.getZ() - 8.0D, bedLocation.getX() + 8.0D, bedLocation.getY() + 5.0D, bedLocation.getZ() + 8.0D));
 
             if (!list.isEmpty()) {
                 return EntityPlayer.SleepResult.NOT_SAFE;
@@ -105,9 +105,9 @@ public class SleepHandler {
             }
 
             player.setRenderOffsetForSleep(enumfacing);
-            player.setPosition((double) ((float) bedLocation.getX() + f), (double) ((float) bedLocation.getY() + 0.6875F), (double) ((float) bedLocation.getZ() + f1));
+            player.setPosition(bedLocation.getX() + f, bedLocation.getY() + 0.6875F, bedLocation.getZ() + f1);
         } else {
-            player.setPosition((double) ((float) bedLocation.getX() + 0.5F), (double) ((float) bedLocation.getY() + 0.6875F), (double) ((float) bedLocation.getZ() + 0.5F));
+            player.setPosition(bedLocation.getX() + 0.5F, bedLocation.getY() + 0.6875F, bedLocation.getZ() + 0.5F);
         }
 
         player.sleeping = true;
@@ -130,10 +130,10 @@ public class SleepHandler {
             player.width = width;
             player.height = height;
             AxisAlignedBB axisalignedbb = player.getEntityBoundingBox();
-            player.setEntityBoundingBox(new AxisAlignedBB(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.minZ, axisalignedbb.minX + (double) player.width, axisalignedbb.minY + (double) player.height, axisalignedbb.minZ + (double) player.width));
+            player.setEntityBoundingBox(new AxisAlignedBB(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.minZ, axisalignedbb.minX + player.width, axisalignedbb.minY + player.height, axisalignedbb.minZ + player.width));
 
             if (player.width > f && !player.firstUpdate && !player.world.isRemote) {
-                player.move(MoverType.SELF, (double) (f - player.width), 0.0D, (double) (f - player.width));
+                player.move(MoverType.SELF, f - player.width, 0.0D, f - player.width);
             }
         }
     }

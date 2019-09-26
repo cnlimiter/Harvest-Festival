@@ -12,7 +12,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.NonNullList;
@@ -39,7 +38,7 @@ public class BlockInternalAir extends BlockHFBase<BlockInternalAir> {
 
     @Override
     public String getItemStackDisplayName(@Nonnull ItemStack stack) {
-        return TextHelper.localizeFully(getUnlocalizedName());
+        return TextHelper.localizeFully(getTranslationKey());
     }
 
     @Nullable
@@ -69,15 +68,14 @@ public class BlockInternalAir extends BlockHFBase<BlockInternalAir> {
     @Override
     @SideOnly(Side.CLIENT)
     @Nonnull
-    public BlockRenderLayer getBlockLayer() {
+    public BlockRenderLayer getRenderLayer() {
         return BlockRenderLayer.CUTOUT_MIPPED;
     }
 
-    @SideOnly(Side.CLIENT)
     @Override
-    public void getSubBlocks(@Nonnull Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list) {
+    public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list) {
         if (HFCore.DEBUG_MODE) {
-            super.getSubBlocks(itemIn, tab, list);
+            super.getSubBlocks(tab, list);
         }
     }
 
@@ -108,7 +106,7 @@ public class BlockInternalAir extends BlockHFBase<BlockInternalAir> {
                     world.setBlockToAir(pos);
                     try {
                         MinecraftForge.EVENT_BUS.unregister(this);
-                    } catch (Exception e) {/**/}
+                    } catch (Exception ignored) {}
                 }
             }
         }

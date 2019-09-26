@@ -54,10 +54,12 @@ public class SetCropType extends LootFunction {
             super(new ResourceLocation("hf_set_crop"), SetCropType.class);
         }
 
+        @Override
         public void serialize(@Nonnull JsonObject object, @Nonnull SetCropType functionClazz, @Nonnull JsonSerializationContext serializationContext) {
             object.addProperty("crop", functionClazz.crop);
         }
 
+        @Override
         @Nonnull
         public SetCropType deserialize(@Nonnull JsonObject object, @Nonnull JsonDeserializationContext deserializationContext, @Nonnull LootCondition[] conditionsIn) {
             return new SetCropType(conditionsIn, object.get("crop").getAsString());

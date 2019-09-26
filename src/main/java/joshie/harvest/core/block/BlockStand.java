@@ -27,6 +27,7 @@ import java.util.Locale;
 
 public class BlockStand extends BlockHFEnumRotatableTile<BlockStand, Stand> {
     public static final AxisAlignedBB PLATE_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.1D, 1.0D);
+    public static final AxisAlignedBB POT_AABB = new AxisAlignedBB(0.05D, 0.1D, 0.05D, 0.95D, 0.625D, 0.95D);
 
     @SuppressWarnings("WeakerAccess")
     public enum Stand implements IStringSerializable {
@@ -44,6 +45,11 @@ public class BlockStand extends BlockHFEnumRotatableTile<BlockStand, Stand> {
         setSoundType(SoundType.WOOD);
     }
 
+    @Override
+    protected boolean shouldDisplayInCreative(Stand stand) {
+        return stand != BlockStand.Stand.POT;
+    }
+
     @SuppressWarnings("deprecation")
     @Override
     @Nonnull
@@ -51,11 +57,14 @@ public class BlockStand extends BlockHFEnumRotatableTile<BlockStand, Stand> {
         switch (getEnumFromState(state)) {
             case PLATE:
                 return PLATE_AABB;
+            case POT:
+                return POT_AABB;
             default:
                 return FULL_BLOCK_AABB;
         }
     }
 
+    @Override
     @SuppressWarnings("deprecation")
     @Deprecated
     public float getBlockHardness(IBlockState state, World world, BlockPos pos) {
@@ -73,9 +82,9 @@ public class BlockStand extends BlockHFEnumRotatableTile<BlockStand, Stand> {
         if (tile instanceof TileStand) {
             TileStand stand = ((TileStand)tile);
             ItemStack held = player.getHeldItem(hand);
-            if (stand.isEmpty() && stand.isItemValid(held) && stand.setContents(player, held)) {
+            if (stand.isEmpty() && !held.isEmpty() && stand.isItemValid(held) && stand.setContents(player, held)) {
                 return true;
-            } else if (!stand.isEmpty()) {
+            } else if (!stand.isEmpty() && stand.canEmpty()) {
                 ItemStack contents = stand.removeContents();
                 if (!contents.isEmpty()) {
                     SpawnItemHelper.addToPlayerInventory(player, contents);
@@ -98,7 +107,7 @@ public class BlockStand extends BlockHFEnumRotatableTile<BlockStand, Stand> {
         TileEntity tile = world.getTileEntity(pos);
         if (tile instanceof TileStand) {
             TileStand stand = ((TileStand)tile);
-            if (!stand.getContents().isEmpty()) {
+            if (!stand.getContents().isEmpty() && stand.canEmpty()) {
                 InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), stand.getContents());
             }
         }

@@ -56,7 +56,7 @@ public class RenderBasket extends Render<EntityBasket> {
                 GlStateManager.pushMatrix();
                 GlStateManager.disableLighting();
                 Tessellator tessellator = Tessellator.getInstance();
-                VertexBuffer vertexbuffer = tessellator.getBuffer();
+                BufferBuilder vertexbuffer = tessellator.getBuffer();
 
                 if (renderOutlines) {
                     GlStateManager.enableColorMaterial();
@@ -65,7 +65,7 @@ public class RenderBasket extends Render<EntityBasket> {
 
                 vertexbuffer.begin(7, DefaultVertexFormats.BLOCK);
                 BlockPos blockpos = new BlockPos(entity.posX, entity.getEntityBoundingBox().maxY, entity.posZ);
-                GlStateManager.translate((float)(x - (double)blockpos.getX() - 0.5D), (float)(y - (double)blockpos.getY() + 0.5F), (float)(z - (double)blockpos.getZ() - 0.5D));
+                GlStateManager.translate((float)(x - blockpos.getX() - 0.5D), (float)(y - blockpos.getY() + 0.5F), (float)(z - blockpos.getZ() - 0.5D));
                 BlockRendererDispatcher blockrendererdispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
                 blockrendererdispatcher.getBlockModelRenderer().renderModel(world, blockrendererdispatcher.getModelForState(state), state, blockpos, vertexbuffer, false, MathHelper.getPositionRandom(entity.getPosition()));
                 tessellator.draw();
@@ -98,7 +98,7 @@ public class RenderBasket extends Render<EntityBasket> {
             i = 187;
         }
 
-        this.random.setSeed((long)i);
+        this.random.setSeed(i);
         boolean flag = false;
 
         if (this.bindEntityTexture(entity))
@@ -120,9 +120,9 @@ public class RenderBasket extends Render<EntityBasket> {
 
         if (!flag1)
         {
-            float f3 = -0.0F * (float)(j - 1) * 0.5F;
-            float f4 = -0.0F * (float)(j - 1) * 0.5F;
-            float f5 = -0.09375F * (float)(j - 1) * 0.5F;
+            float f3 = -0.0F * (j - 1) * 0.5F;
+            float f4 = -0.0F * (j - 1) * 0.5F;
+            float f5 = -0.09375F * (j - 1) * 0.5F;
             GlStateManager.translate(f3, f4, f5);
         }
 

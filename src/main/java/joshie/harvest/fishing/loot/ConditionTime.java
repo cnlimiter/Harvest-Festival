@@ -33,11 +33,13 @@ public class ConditionTime implements LootCondition {
             super(new ResourceLocation(MODID, "time"), ConditionTime.class);
         }
 
+        @Override
         public void serialize(@Nonnull JsonObject json, @Nonnull ConditionTime value, @Nonnull JsonSerializationContext context) {
             json.addProperty("from", value.from);
             json.addProperty("to", value.to);
         }
 
+        @Override
         @Nonnull
         public ConditionTime deserialize(@Nonnull JsonObject json, @Nonnull JsonDeserializationContext context) {
             return new ConditionTime(JsonUtils.getInt(json, "from", 0), JsonUtils.getInt(json, "to", 24000));

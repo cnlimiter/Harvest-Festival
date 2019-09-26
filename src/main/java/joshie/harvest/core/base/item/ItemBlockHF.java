@@ -8,7 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.registries.GameData;
 import net.minecraftforge.fml.relauncher.Side;
 
 import javax.annotation.Nonnull;
@@ -51,8 +51,8 @@ public class ItemBlockHF<B extends BlockHFBase> extends ItemBlock implements ICr
 
     @Override
     @Nonnull
-    public String getUnlocalizedName(@Nonnull ItemStack stack) {
-        return block.getUnlocalizedName(stack);
+    public String getTranslationKey(@Nonnull ItemStack stack) {
+        return block.getTranslationKey(stack);
     }
 
     @Override
@@ -61,9 +61,9 @@ public class ItemBlockHF<B extends BlockHFBase> extends ItemBlock implements ICr
     }
 
     public void register(String name) {
-        setUnlocalizedName(name.replace("_", "."));
+        setTranslationKey(name.replace("_", "."));
         setRegistryName(new ResourceLocation(MODID, name));
-        GameRegistry.register(this);
+        GameData.register_impl(this);
         if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) {
             block.registerModels(this, name);
         }

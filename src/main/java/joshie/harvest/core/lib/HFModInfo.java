@@ -4,9 +4,9 @@ import net.minecraft.util.ResourceLocation;
 
 public class HFModInfo {
     public static final String MODID = "harvestfestival";
-    public static final String MODNAME = "Harvest Festival";
+    public static final String MODNAME = "Harvest Festival Reloaded";
     public static final String VERSION = "@VERSION@";
-    public static final String DEPENDENCIES = "required-after:forge@[13.20,);after:immersiveengineering";
+    public static final String DEPENDENCIES = "required-after:forge@[14.23.4.2750,);after:immersiveengineering";
     public static final String GUI_FACTORY = "joshie.harvest.core.util.HFGuiFactory";
     public static final String JAVAPATH = "joshie.harvest.";
     public static final String CAPNAME = "HF";
