@@ -22,9 +22,9 @@ harvestfestival.spawner.tooltip=Halte Shift um Babies zu erzeugen
 harvestfestival.spawner.cow=Kuh
 harvestfestival.spawner.sheep=Schaf
 harvestfestival.spawner.chicken=Huhn
-entity.harvestfestival.cow.name=Kuh
-entity.harvestfestival.sheep.name=Schaf
-entity.harvestfestival.chicken.name=Huhn
+entity.harvestfestival:cow.name=Kuh
+entity.harvestfestival:sheep.name=Schaf
+entity.harvestfestival:chicken.name=Huhn
 #Animal Related Items
 harvestfestival.tool.milker=Melker
 harvestfestival.tool.brush=Tierbürste
@@ -422,10 +422,10 @@ harvestfestival.darkspawner.cow=Dunkelkuh
 harvestfestival.darkspawner.sheep=Dunkelschaf
 harvestfestival.darkspawner.chicken=Dunkelhuhn
 harvestfestival.darkspawner.chick=Dunkelküken
-entity.harvestfestival.dark_cow.name=Dunkelkuh
-entity.harvestfestival.dark_sheep.name=Dunkelschaf
-entity.harvestfestival.dark_chicken.name=Dunkelhuhn
-entity.harvestfestival.dark_chick.name=Dunkelküken
+entity.harvestfestival:dark_cow.name=Dunkelkuh
+entity.harvestfestival:dark_sheep.name=Dunkelschaf
+entity.harvestfestival:dark_chicken.name=Dunkelhuhn
+entity.harvestfestival:dark_chick.name=Dunkelküken
 
 #Mine Tools
 harvestfestival.miningtool.escape.rope=Fluchtseil
