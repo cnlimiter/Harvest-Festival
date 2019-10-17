@@ -24,7 +24,7 @@ public class BuildingVertexUploader extends WorldVertexBufferUploader {
             OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
             Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
             VertexFormat vertexformat = vertexBufferIn.getVertexFormat();
-            int i = vertexformat.getSize();
+            int i = vertexformat.getNextOffset();
             ByteBuffer bytebuffer = vertexBufferIn.getByteBuffer();
             List<VertexFormatElement> list = vertexformat.getElements();
 

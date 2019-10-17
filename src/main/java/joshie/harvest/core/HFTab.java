@@ -31,32 +31,32 @@ import static joshie.harvest.mining.item.ItemMaterial.Material.ADAMANTITE;
 public abstract class HFTab extends CreativeTabs {
     public static final HFTab TOWN = new HFTab("town") {
 		@Override
-		public ItemStack createIcon() {
+		public ItemStack getTabIconItem() {
 			return new ItemStack(HFBuildings.STRUCTURES, 1, 0);
 		}};
     public static final HFTab MINING = new HFTab("mining") {
 		@Override
-		public ItemStack createIcon() {
+		public ItemStack getTabIconItem() {
 			return HFMining.MATERIALS.getStackFromEnum(ADAMANTITE);
 		}};
     public static final HFTab FARMING = new HFTab("farming") {
 		@Override
-		public ItemStack createIcon() {
+		public ItemStack getTabIconItem() {
 			return HFCrops.STRAWBERRY.getCropStack(1);
 		}};
     public static final HFTab COOKING = new HFTab("cooking") {
 		@Override
-		public ItemStack createIcon() {
+		public ItemStack getTabIconItem() {
 			return HFCooking.MEAL.getStackFromEnum(Meal.SALAD);
 		}};
     public static final HFTab GATHERING = new HFTab("gathering") {
 		@Override
-		public ItemStack createIcon() {
+		public ItemStack getTabIconItem() {
 			return HFTools.AXES.get(ToolTier.BASIC).getStack();
 		}};
     public static final HFTab FISHING = new HFTab("fishing") {
 		@Override
-		public ItemStack createIcon() {
+		public ItemStack getTabIconItem() {
 			return HFFishing.FISH.getStackFromEnum(Fish.PUPFISH);
 		}};
 
@@ -69,7 +69,7 @@ public abstract class HFTab extends CreativeTabs {
     @Override
     @SideOnly(Side.CLIENT)
     @Nonnull
-    public String getTranslationKey() {
+    public String getTranslatedTabLabel() {
         return HFModInfo.MODID + ".tab." + this.getTabLabel();
     }
 

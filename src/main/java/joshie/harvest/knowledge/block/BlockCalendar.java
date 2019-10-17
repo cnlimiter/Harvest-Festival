@@ -143,7 +143,7 @@ public class BlockCalendar extends BlockHFBase<BlockCalendar> {
 
     @Override
     public BlockCalendar register(String name) {
-        setTranslationKey(name.replace("_", "."));
+        setUnlocalizedName(name.replace("_", "."));
         setRegistryName(new ResourceLocation(MODID, name));
         GameData.register_impl(this);
         return this;
@@ -156,7 +156,7 @@ public class BlockCalendar extends BlockHFBase<BlockCalendar> {
     @Nonnull
     @SuppressWarnings("deprecation")
     public IBlockState getStateFromMeta(int meta) {
-        EnumFacing facing = EnumFacing.byIndex(meta);
+        EnumFacing facing = EnumFacing.getFront(meta);
 
         if (facing.getAxis() == EnumFacing.Axis.Y) {
             facing = EnumFacing.NORTH;

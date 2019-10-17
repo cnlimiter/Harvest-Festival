@@ -1,21 +1,19 @@
 buildscript {
     repositories {
         jcenter()
-        maven {
-            name = "forge"
-            url = "http://files.minecraftforge.net/maven"
-        }
+        maven { url = "https://files.minecraftforge.net/maven" }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
     }
 }
-
 apply plugin: 'net.minecraftforge.gradle.forge'
 apply plugin: 'maven-publish'
 
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
+sourceCompatibility = targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
+compileJava {
+    sourceCompatibility = targetCompatibility = '1.8'
+}
 
 repositories {
   maven { url "http://dvs1.progwml6.com/files/maven" }
@@ -45,7 +43,7 @@ minecraft {
 dependencies {
   deobfCompile "mezz.jei:jei_${minecraft_version}:${jei_version}"
   //deobfCompile "info.tehnut.buttons:Buttons:${minecraft_version}-${buttons_version}"
-  deobfCompile "MineTweaker3:MineTweaker3-API:${minetweaker_version}"
+  deobfCompile "CraftTweaker2:CraftTweaker2-MC1120-Main:${crafttweaker_version}"
 }
 
 processResources

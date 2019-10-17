@@ -41,7 +41,7 @@ public class BlockGoddessWater extends BlockFluidClassic {
 
     @Override
     @SuppressWarnings("ConstantConditions")
-    public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity) {
+    public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
         if (!world.isRemote && entity instanceof EntityItem) {
             EntityItem item = ((EntityItem)entity);
             ItemStack stack = item.getItem();
@@ -70,7 +70,7 @@ public class BlockGoddessWater extends BlockFluidClassic {
     }
 
     public BlockGoddessWater register(String name) {
-        setTranslationKey(name.replace("_", "."));
+        setUnlocalizedName(name.replace("_", "."));
         setRegistryName(new ResourceLocation(MODID, name));
         GameData.register_impl(this);
         return this;

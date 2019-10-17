@@ -69,7 +69,7 @@ public class BlockDirt extends BlockHFBase<BlockDirt> {
 
     @Override
     public String getItemStackDisplayName(@Nonnull ItemStack stack) {
-        return TextHelper.localizeFully(getTranslationKey());
+        return TextHelper.localizeFully(getUnlocalizedName());
     }
 
     @Override
@@ -111,7 +111,7 @@ public class BlockDirt extends BlockHFBase<BlockDirt> {
     @Override
     @SideOnly(Side.CLIENT)
     @Nonnull
-    public BlockRenderLayer getRenderLayer() {
+    public BlockRenderLayer getBlockLayer() {
         return BlockRenderLayer.CUTOUT;
     }
 

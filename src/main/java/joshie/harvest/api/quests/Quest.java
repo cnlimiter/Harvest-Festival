@@ -152,7 +152,7 @@ public abstract class Quest extends IForgeRegistryEntry.Impl<Quest> {
     }
 
     protected String getPrefix() {
-        return getRegistryName().getNamespace() + ".quest." + getRegistryName().getPath();
+        return getRegistryName().getResourceDomain() + ".quest." + getRegistryName().getResourcePath();
     }
 
     /** The name of this quest line **/

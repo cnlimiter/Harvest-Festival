@@ -38,7 +38,7 @@ public class BlockInternalAir extends BlockHFBase<BlockInternalAir> {
 
     @Override
     public String getItemStackDisplayName(@Nonnull ItemStack stack) {
-        return TextHelper.localizeFully(getTranslationKey());
+        return TextHelper.localizeFully(getUnlocalizedName());
     }
 
     @Nullable
@@ -68,7 +68,7 @@ public class BlockInternalAir extends BlockHFBase<BlockInternalAir> {
     @Override
     @SideOnly(Side.CLIENT)
     @Nonnull
-    public BlockRenderLayer getRenderLayer() {
+    public BlockRenderLayer getBlockLayer() {
         return BlockRenderLayer.CUTOUT_MIPPED;
     }
 

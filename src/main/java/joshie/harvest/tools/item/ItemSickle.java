@@ -108,7 +108,7 @@ public class ItemSickle extends ItemToolChargeable<ItemSickle> {
                                     if (state.getBlock().canHarvestBlock(worldIn, newPos, player)) {
                                         boolean flag = state.getBlock().removedByPlayer(state, worldIn, newPos, player, true);
                                         if (flag) {
-                                            state.getBlock().onPlayerDestroy(worldIn, newPos, state);
+                                            state.getBlock().onBlockDestroyedByPlayer(worldIn, newPos, state);
                                             state.getBlock().harvestBlock(worldIn, player, newPos, state, worldIn.getTileEntity(newPos), stack);
                                         }
                                     }

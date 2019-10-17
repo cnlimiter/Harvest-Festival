@@ -117,7 +117,7 @@ public class RegistryHelper {
 
         //Add a bag > seed recipe
         if (crop.getCropStack(1).getItem() != seeds.getItem()) {
-        	GameData.register_impl(new SeedRecipeHandler(seeds, crop.getSeedStack(1)).setRegistryName("harvestfestival", seeds.getItem().getRegistryName().getPath()));
+        	GameData.register_impl(new SeedRecipeHandler(seeds, crop.getSeedStack(1)).setRegistryName("harvestfestival", seeds.getItem().getRegistryName().getResourcePath()));
         }
     }
 

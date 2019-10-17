@@ -64,14 +64,14 @@ public abstract class ItemTool<I extends ItemTool> extends ItemHFBase<I> impleme
 
     @Override
     @Nonnull
-    public String getTranslationKey(@Nonnull ItemStack stack) {
-        return super.getTranslationKey(stack) + "_" + getTier(stack).name().toLowerCase(Locale.ENGLISH);
+    public String getUnlocalizedName(@Nonnull ItemStack stack) {
+        return super.getUnlocalizedName(stack) + "_" + getTier(stack).name().toLowerCase(Locale.ENGLISH);
     }
 
     @Override
     @Nonnull
     public String getItemStackDisplayName(@Nonnull ItemStack stack) {
-        String text = TextHelper.localize(super.getTranslationKey());
+        String text = TextHelper.localize(super.getUnlocalizedName());
         return !canUse(stack) ? TextHelper.translate("tool.broken") + " " + text : text;
     }
 
@@ -330,7 +330,7 @@ public abstract class ItemTool<I extends ItemTool> extends ItemHFBase<I> impleme
             d3 = ((EntityPlayerMP) entity).interactionManager.getBlockReachDistance();
         }
 
-        Vec3d vec31 = vec3.add(f6 * d3, f5 * d3, f7 * d3);
+        Vec3d vec31 = vec3.addVector(f6 * d3, f5 * d3, f7 * d3);
         return world.rayTraceBlocks(vec3, vec31, false, false, false);
     }
 

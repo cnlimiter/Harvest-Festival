@@ -100,7 +100,7 @@ public class  BlockPortal extends BlockHFEnum<BlockPortal, Portal> {
 
     @Override
     public String getItemStackDisplayName(@Nonnull ItemStack stack) {
-        return TextHelper.localizeFully(getTranslationKey());
+        return TextHelper.localizeFully(getUnlocalizedName());
     }
 
     @SuppressWarnings("deprecation")
@@ -120,7 +120,7 @@ public class  BlockPortal extends BlockHFEnum<BlockPortal, Portal> {
     }
 
     @Override
-    public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity) {
+    public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
         if (!world.isRemote) {
             if (entity.timeUntilPortal == 0 && !(entity instanceof EntityNPC) && !(entity instanceof EntityItem)) {
                 IBlockState actual = getActualState(state, world, pos);

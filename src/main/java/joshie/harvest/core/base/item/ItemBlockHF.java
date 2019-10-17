@@ -51,8 +51,8 @@ public class ItemBlockHF<B extends BlockHFBase> extends ItemBlock implements ICr
 
     @Override
     @Nonnull
-    public String getTranslationKey(@Nonnull ItemStack stack) {
-        return block.getTranslationKey(stack);
+    public String getUnlocalizedName(@Nonnull ItemStack stack) {
+        return block.getUnlocalizedName(stack);
     }
 
     @Override
@@ -61,7 +61,7 @@ public class ItemBlockHF<B extends BlockHFBase> extends ItemBlock implements ICr
     }
 
     public void register(String name) {
-        setTranslationKey(name.replace("_", "."));
+        setUnlocalizedName(name.replace("_", "."));
         setRegistryName(new ResourceLocation(MODID, name));
         GameData.register_impl(this);
         if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) {

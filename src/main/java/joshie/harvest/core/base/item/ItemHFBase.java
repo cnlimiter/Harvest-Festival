@@ -31,18 +31,18 @@ public abstract class ItemHFBase<I extends ItemHFBase> extends Item {
     @Override
     @Nonnull
     public String getItemStackDisplayName(@Nonnull ItemStack stack) {
-        return TextHelper.localize(getTranslationKey());
+        return TextHelper.localize(getUnlocalizedName());
     }
 
     @Override
     @Nonnull
-    public String getTranslationKey() {
-        return HFModInfo.MODID + "." + super.getTranslationKey().replace("item.", "");
+    public String getUnlocalizedName() {
+        return HFModInfo.MODID + "." + super.getUnlocalizedName().replace("item.", "");
     }
 
     @SuppressWarnings("unchecked")
     public I register(String name) {
-        setTranslationKey(name.replace("_", "."));
+        setUnlocalizedName(name.replace("_", "."));
         setRegistryName(new ResourceLocation(MODID, name));
         GameData.register_impl(this);
         if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) {
@@ -63,7 +63,7 @@ public abstract class ItemHFBase<I extends ItemHFBase> extends Item {
             }
 
             for (ItemStack stack : subItems) {
-                String subItemName = item.getTranslationKey(stack).replace("item.", "").replace(".", "_");
+                String subItemName = item.getUnlocalizedName(stack).replace("item.", "").replace(".", "_");
                 ModelLoader.setCustomModelResourceLocation(item, item.getDamage(stack), new ModelResourceLocation(new ResourceLocation(MODID, subItemName), "inventory"));
             }
         } else {

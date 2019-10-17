@@ -25,7 +25,7 @@ public abstract class BlockHFEnumCube<B extends BlockHFEnumCube, E extends Enum<
     @Override
     @SideOnly(Side.CLIENT)
     @Nonnull
-    public BlockRenderLayer getRenderLayer() {
+    public BlockRenderLayer getBlockLayer() {
         return BlockRenderLayer.SOLID;
     }
 

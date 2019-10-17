@@ -18,7 +18,7 @@ public class SpecialRulesQuest implements ISpecialRules {
     }
 
     public SpecialRulesQuest(Quest quest) {
-        this.unlocalised = quest.getRegistryName().getNamespace();
+        this.unlocalised = quest.getRegistryName().getResourceDomain();
         this.quest = quest;
     }
 

@@ -32,7 +32,7 @@ public abstract class BlockHFBase<B extends BlockHFBase> extends Block {
     @SuppressWarnings("unchecked")
     public B register(String name) {
         this.unlocalizedName = MODID + "." + name.replace("_", ".");
-        setTranslationKey(name.replace("_", "."));
+        setUnlocalizedName(name.replace("_", "."));
         setRegistryName(new ResourceLocation(MODID, name));
         GameData.register_impl(this);
         ItemBlockHF item = getItemBlock();
@@ -70,13 +70,13 @@ public abstract class BlockHFBase<B extends BlockHFBase> extends Block {
         return 0;
     }
 
-    public String getTranslationKey(@Nonnull ItemStack stack) {
-        return getTranslationKey();
+    public String getUnlocalizedName(@Nonnull ItemStack stack) {
+        return getUnlocalizedName();
     }
 
     public String getItemStackDisplayName(@Nonnull ItemStack stack) {
-        String unlocalized = getTranslationKey();
-        String name = stack.getItem().getTranslationKey(stack);
+        String unlocalized = getUnlocalizedName();
+        String name = stack.getItem().getUnlocalizedName(stack);
         return TextHelper.localizeFully(unlocalized + "." + name);
     }
 
@@ -90,7 +90,7 @@ public abstract class BlockHFBase<B extends BlockHFBase> extends Block {
 
     @Override
     @Nonnull
-    public String getTranslationKey() {
+    public String getUnlocalizedName() {
         return unlocalizedName;
     }
 
