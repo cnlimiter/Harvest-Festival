@@ -19,6 +19,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
+import net.minecraftforge.event.entity.player.SleepingTimeCheckEvent;
+import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.List;
@@ -54,6 +56,20 @@ public class SleepHandler {
         }
 
         if (HFCore.SLEEP_ANYTIME) event.setResult(trySleep(event.getEntityPlayer(), event.getPos()));
+    }
+
+    @SubscribeEvent
+    public void checkSleepTime(SleepingTimeCheckEvent event) {
+        if (HFCore.SLEEP_ONLY_AT_NIGHT) {
+            World world = event.getEntityPlayer().world;
+            long time = CalendarHelper.getTime(world);
+            Season season = HFApi.calendar.getDate(world).getSeason();
+            SeasonData data = CalendarAPI.INSTANCE.getDataForSeason(season);
+            if (time >= 6000 && time <= data.getSunset()) {
+                return;
+            }
+        }
+        if (HFCore.SLEEP_ANYTIME) event.setResult(Result.ALLOW);
     }
 
     private SleepResult trySleep(EntityPlayer player, BlockPos bedLocation) {
