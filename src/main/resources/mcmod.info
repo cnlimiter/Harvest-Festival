@@ -1,13 +1,11 @@
 [
 {
   "modid": "harvestfestival",
-  "name": "Harvest Festival",
-  "description": "A Harvest Moon inspired mod with seasons, crops, animals, mining and town building.",
+  "name": "Harvest Festival Reloaded",
+  "description": "All Rights Reserved.",
   "version": "${version}",
   "mcversion": "${mcversion}",
-  "url": "https://github.com/PenguinSquad/Harvest-Festival",
-  "updateUrl": "",
-  "authorList": ["joshie", "Yulife"],
+  "authorList": ["Snownee", "joshie", "Yulife"],
   "credits": "Girafi for his awesomeness. See credits.txt in jar for extra",
   "logoFile": "assets/harvestfestival/logo.png",
   "screenshots": [],
