@@ -62,7 +62,7 @@ public abstract class ItemHFFoodEnum<I extends ItemHFFoodEnum, E extends Enum<E>
     }
 
     public E getEnumFromStack(@Nonnull ItemStack stack) {
-        if (stack.getItem() != this) return null;
+        if (stack.getItem() != this) return getEnumFromMeta(0);
 
         return getEnumFromMeta(stack.getItemDamage());
     }

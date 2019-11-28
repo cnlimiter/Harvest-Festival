@@ -74,13 +74,10 @@ public class ItemHFFood<I extends ItemHFFood> extends ItemFood {
     public ItemStack onItemUseFinish(@Nonnull ItemStack stack, @Nonnull World world, EntityLivingBase entityLiving) {
         if (entityLiving instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) entityLiving;
-            if (!player.capabilities.isCreativeMode) stack.shrink(1);
             player.getFoodStats().addStats(this, stack);
+            if (!player.isCreative()) stack.shrink(1);
             world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.PLAYERS, 0.5F, world.rand.nextFloat() * 0.1F + 0.9F);
-
-            return stack;
         }
-
         return stack;
     }
 
