@@ -1,5 +1,19 @@
 package joshie.harvest.animals.item;
 
+import static joshie.harvest.animals.item.ItemAnimalTool.Tool.BRUSH;
+import static joshie.harvest.animals.item.ItemAnimalTool.Tool.MEDICINE;
+import static joshie.harvest.animals.item.ItemAnimalTool.Tool.MILKER;
+import static joshie.harvest.animals.item.ItemAnimalTool.Tool.MIRACLE_POTION;
+import static net.minecraft.util.text.TextFormatting.AQUA;
+
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
+
+import javax.annotation.Nonnull;
+
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
+
 import joshie.harvest.animals.item.ItemAnimalTool.Tool;
 import joshie.harvest.api.animals.AnimalAction;
 import joshie.harvest.api.animals.AnimalStats;
@@ -16,22 +30,14 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.*;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import javax.annotation.Nonnull;
-
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
-
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.concurrent.TimeUnit;
-
-import static joshie.harvest.animals.item.ItemAnimalTool.Tool.*;
-import static net.minecraft.util.text.TextFormatting.AQUA;
 
 public class ItemAnimalTool extends ItemHFEnum<ItemAnimalTool, Tool> {
     private static final double MAX_DAMAGE = 512;
