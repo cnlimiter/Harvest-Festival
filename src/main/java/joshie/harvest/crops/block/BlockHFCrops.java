@@ -105,6 +105,7 @@ public class BlockHFCrops extends BlockHFEnum<BlockHFCrops, CropType> implements
         return false;
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     @Nonnull
     public BlockRenderLayer getBlockLayer() {

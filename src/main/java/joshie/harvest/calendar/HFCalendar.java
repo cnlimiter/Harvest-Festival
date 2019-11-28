@@ -4,14 +4,11 @@ import joshie.harvest.api.HFApi;
 import joshie.harvest.api.calendar.CalendarDate;
 import joshie.harvest.api.calendar.SeasonProvider;
 import joshie.harvest.calendar.data.CalendarServer;
-import joshie.harvest.calendar.provider.HFWorldProvider;
 import joshie.harvest.calendar.provider.SeasonProviderHidden;
 import joshie.harvest.core.HFTrackers;
 import joshie.harvest.core.helpers.ConfigHelper;
 import joshie.harvest.core.util.annotations.HFLoader;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.DimensionType;
-import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
@@ -45,9 +42,9 @@ public class HFCalendar {
     public static boolean CLOCK_24H;
 
     public static void preInit() {
-        DimensionType seasons = DimensionType.register("seasons", "seasons", OVERWORLD_ID, HFWorldProvider.class, true);
-        DimensionManager.unregisterDimension(0);
-        DimensionManager.registerDimension(0, seasons);
+        //DimensionType seasons = DimensionType.register("seasons", "seasons", OVERWORLD_ID, HFWorldProvider.class, true);
+        //DimensionManager.unregisterDimension(0);
+        //DimensionManager.registerDimension(0, seasons);
         HFApi.calendar.registerSeasonProvider(1, HIDDEN);
         HFApi.calendar.registerSeasonProvider(-1, HIDDEN);
     }
@@ -67,7 +64,7 @@ public class HFCalendar {
     //Configuration
     public static void configure() {
         CONFIG = ConfigHelper.getConfig();
-        OVERWORLD_ID = getInteger("Overworld ID", 3);
+        //OVERWORLD_ID = getInteger("Overworld ID", 3);
         DAYS_PER_SEASON_INTEGRATED = getInteger("Integrated Server > Days per season", 30, 30, 3000);
         DAYS_PER_SEASON_DEDICATED = getInteger("Dedicated Server > Days per season", 300, 30, 3000);
         TICKS_PER_DAY = getInteger("Ticks per day", 24000);

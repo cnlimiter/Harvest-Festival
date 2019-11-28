@@ -23,6 +23,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.entity.player.PlayerWakeUpEvent;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
@@ -63,7 +64,8 @@ public class ToolHelper {
     }
 
     public static void levelTool(@Nonnull ItemStack stack) {
-        if (stack.isEmpty()) return;
+        if (stack.isEmpty())
+            return;
         if (stack.getItem() instanceof ITiered) {
             ((ITiered) stack.getItem()).levelTool(stack);
         }
@@ -80,16 +82,19 @@ public class ToolHelper {
         if (tool.canBeDamaged()) {
             int max = tool.getMaxDamage(stack);
             int current = tool.getDamage(stack);
-            if (current + 1 >= max) player.renderBrokenItemStack(stack);
+            if (current + 1 >= max)
+                player.renderBrokenItemStack(stack);
             stack.damageItem(1, player);
         }
     }
 
     @SuppressWarnings("ConstantConditions")
     public static void consumeHunger(EntityPlayer player, float amount) {
-        if (player == null) return; //No null players allowed
+        if (player == null)
+            return; //No null players allowed
         int level = player.getFoodStats().getFoodLevel();
-        if (amount > 0F) player.getFoodStats().addExhaustion(HFTools.EXHAUSTION_AMOUNT * amount); //Add Exhaustion
+        if (amount > 0F)
+            player.getFoodStats().addExhaustion(HFTools.EXHAUSTION_AMOUNT * amount); //Add Exhaustion
         if (level > 2 && level <= 6) {
             player.removePotionEffect(EXHAUSTION); //Don't ever have fatigue/exhaustion at same time
             player.addPotionEffect(new PotionEffect(FATIGUE, 6000));
@@ -101,7 +106,8 @@ public class ToolHelper {
             if (effect != null && ((level == 0 && effect.getDuration() <= 1990) || (ENABLE_EARLY_FAINTING && effect.getDuration() <= 1500))) {
                 player.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, 100, 7));
                 if (!player.world.isRemote && ENABLE_FAINTING) {
-                    if (ENABLE_DEATH_FAINTING) player.attackEntityFrom(EXHAUSTED, 1000F);
+                    if (ENABLE_DEATH_FAINTING)
+                        player.attackEntityFrom(EXHAUSTED, 1000F);
                     else {
                         int dimension = player.world.provider.canRespawnHere() ? player.world.provider.getDimension() : 0;
                         BlockPos spawn = player.getBedLocation(dimension) != null ? player.getBedLocation(dimension) : DimensionManager.getWorld(dimension).provider.getRandomizedSpawnPoint();
@@ -134,18 +140,20 @@ public class ToolHelper {
         public void onWakeup(PlayerWakeUpEvent event) {
             EntityPlayer player = event.getEntityPlayer();
             if (player.world.getWorldTime() % TICKS_PER_DAY == 0) {
-                if (player.isPotionActive(EXHAUSTION)) player.removePotionEffect(EXHAUSTION);
-                if (player.isPotionActive(FATIGUE)) player.removePotionEffect(FATIGUE);
+                if (player.isPotionActive(EXHAUSTION))
+                    player.removePotionEffect(EXHAUSTION);
+                if (player.isPotionActive(FATIGUE))
+                    player.removePotionEffect(FATIGUE);
                 restoreHunger(player);
             }
         }
     }
 
     public static void restoreHunger(EntityPlayer player) {
-        ReflectionHelper.setPrivateValue(FoodStats.class, player.getFoodStats(), 20, "foodLevel", "field_75127_a");
-        ReflectionHelper.setPrivateValue(FoodStats.class, player.getFoodStats(), 5F, "foodSaturationLevel", "field_75125_b");
-        ReflectionHelper.setPrivateValue(FoodStats.class, player.getFoodStats(), 0, "foodExhaustionLevel", "field_75126_c");
-        ReflectionHelper.setPrivateValue(FoodStats.class, player.getFoodStats(), 0, "foodTimer", "field_75123_d");
+        ObfuscationReflectionHelper.setPrivateValue(FoodStats.class, player.getFoodStats(), 20, "foodLevel", "field_75127_a");
+        ObfuscationReflectionHelper.setPrivateValue(FoodStats.class, player.getFoodStats(), 5F, "foodSaturationLevel", "field_75125_b");
+        ObfuscationReflectionHelper.setPrivateValue(FoodStats.class, player.getFoodStats(), 0, "foodExhaustionLevel", "field_75126_c");
+        ObfuscationReflectionHelper.setPrivateValue(FoodStats.class, player.getFoodStats(), 0, "foodTimer", "field_75123_d");
     }
 
     @SuppressWarnings("deprecation")

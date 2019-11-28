@@ -3,7 +3,6 @@ package joshie.harvest.asm;
 import joshie.harvest.asm.transformers.*;
 import net.minecraft.launchwrapper.IClassTransformer;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
-import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin.MCVersion;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
@@ -12,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-@MCVersion("1.12.2")
 public class HFTransformer implements IFMLLoadingPlugin, IClassTransformer {
     public static boolean isObfuscated = false;
     private static final List<AbstractASM> asm = new ArrayList<>();
@@ -23,6 +21,7 @@ public class HFTransformer implements IFMLLoadingPlugin, IClassTransformer {
         //asm.add(new RenderItemTransformer());
         asm.add(new FishingTransformer(4, "net.minecraft.entity.projectile.EntityFishHook", "zc"));
         asm.add(new FishingTransformer(3, "com.teammetallurgy.aquaculture.handlers.EntityCustomFishHook"));
+        asm.add(new DimensionTransformer());
     }
 
     @Override

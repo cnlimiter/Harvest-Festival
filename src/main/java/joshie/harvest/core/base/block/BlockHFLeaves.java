@@ -220,6 +220,7 @@ public abstract class BlockHFLeaves<B extends BlockHFLeaves, E extends Enum<E> &
         return false;
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     @Nonnull
     public BlockRenderLayer getBlockLayer() {

@@ -8,8 +8,6 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import java.util.List;
-
 import static joshie.harvest.api.core.ITiered.ToolTier.BASIC;
 import static net.minecraft.block.Block.spawnAsEntity;
 
