@@ -21,6 +21,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.UsernameCache;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 import javax.annotation.Nullable;
@@ -86,7 +87,7 @@ public class EntityHelper {
             if (entity instanceof EntityPlayer) {
                 EntityPlayerMP player = (EntityPlayerMP) entity;
                 if (!player.world.isRemote) {
-                    ReflectionHelper.setPrivateValue(EntityPlayerMP.class, player, true, "invulnerableDimensionChange", "field_184851_cj");
+                    ObfuscationReflectionHelper.setPrivateValue(EntityPlayerMP.class, player, true, "invulnerableDimensionChange", "field_184851_cj");
                     newWorld.getMinecraftServer().getPlayerList().transferPlayerToDimension(player, dimension, new HFTeleporter(newWorld, spawn));
                     player.setPositionAndUpdate(spawn.getX(), spawn.getY(), spawn.getZ());
                     player.world.updateEntityWithOptionalForce(player, false);

@@ -25,8 +25,7 @@ import net.minecraft.world.storage.loot.LootContext;
 import net.minecraft.world.storage.loot.LootTable;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
-
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import javax.annotation.Nonnull;
 import java.util.Random;
 
@@ -163,7 +162,7 @@ public class MiningHelper {
 
     static void teleportToCoordinates(Entity entity, BlockPos spawn, float yaw) {
         if (entity instanceof EntityPlayerMP) {
-            ReflectionHelper.setPrivateValue(EntityPlayerMP.class, (EntityPlayerMP) entity, true, "invulnerableDimensionChange", "field_184851_cj");
+            ObfuscationReflectionHelper.setPrivateValue(EntityPlayerMP.class, (EntityPlayerMP) entity, true, "invulnerableDimensionChange", "field_184851_cj");
             ((EntityPlayerMP) entity).connection.setPlayerLocation(spawn.getX() + 0.5D, spawn.getY(), spawn.getZ() + 0.5D, yaw, entity.rotationPitch);
         } else {
             entity.setLocationAndAngles(spawn.getX() + 0.5D, spawn.getY(), spawn.getZ() + 0.5D, yaw, entity.rotationPitch);
@@ -184,7 +183,7 @@ public class MiningHelper {
         if (entity.timeUntilPortal == 0) {
             entity.timeUntilPortal = 100;
             if (entity instanceof EntityPlayerMP) {
-                ReflectionHelper.setPrivateValue(EntityPlayerMP.class, (EntityPlayerMP) entity, true, "invulnerableDimensionChange", "field_184851_cj");
+                ObfuscationReflectionHelper.setPrivateValue(EntityPlayerMP.class, (EntityPlayerMP) entity, true, "invulnerableDimensionChange", "field_184851_cj");
             }
 
             entity.setPositionAndUpdate(spawn.getX() + 0.5D, spawn.getY() + 0.1D, spawn.getZ() + 0.5D);
