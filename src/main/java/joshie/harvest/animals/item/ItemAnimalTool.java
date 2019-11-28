@@ -1,11 +1,5 @@
 package joshie.harvest.animals.item;
 
-import static joshie.harvest.animals.item.ItemAnimalTool.Tool.BRUSH;
-import static joshie.harvest.animals.item.ItemAnimalTool.Tool.MEDICINE;
-import static joshie.harvest.animals.item.ItemAnimalTool.Tool.MILKER;
-import static joshie.harvest.animals.item.ItemAnimalTool.Tool.MIRACLE_POTION;
-import static net.minecraft.util.text.TextFormatting.AQUA;
-
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
@@ -35,12 +29,14 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemAnimalTool extends ItemHFEnum<ItemAnimalTool, Tool> {
     private static final double MAX_DAMAGE = 512;
+
     public enum Tool implements IStringSerializable, ISellable {
         MILKER(true), BRUSH(true), MEDICINE(false), CHICKEN_FEED(false), MIRACLE_POTION(false);
 
@@ -73,18 +69,18 @@ public class ItemAnimalTool extends ItemHFEnum<ItemAnimalTool, Tool> {
 
     @Override
     public int getItemStackLimit(@Nonnull ItemStack stack) {
-        return getEnumFromStack(stack).isDamageable ? 1: 64;
+        return getEnumFromStack(stack).isDamageable ? 1 : 64;
     }
 
     @Override
     public int getMaxItemUseDuration(@Nonnull ItemStack stack) {
-        return getEnumFromStack(stack) == MILKER ? 32 : 0;
+        return getEnumFromStack(stack) == Tool.MILKER ? 32 : 0;
     }
 
     @Override
     @Nonnull
     public EnumAction getItemUseAction(@Nonnull ItemStack stack) {
-        return getEnumFromStack(stack) == MILKER ? EnumAction.BOW : EnumAction.NONE;
+        return getEnumFromStack(stack) == Tool.MILKER ? EnumAction.BOW : EnumAction.NONE;
     }
 
     private final Cache<EntityPlayer, AnimalStats> milkables = CacheBuilder.newBuilder().weakKeys().expireAfterWrite(1, TimeUnit.MINUTES).build();
@@ -92,7 +88,7 @@ public class ItemAnimalTool extends ItemHFEnum<ItemAnimalTool, Tool> {
     @Override
     @Nonnull
     public ItemStack onItemUseFinish(@Nonnull ItemStack held, World world, EntityLivingBase entityLiving) {
-        if (entityLiving instanceof EntityPlayer && getEnumFromStack(held) == MILKER) {
+        if (entityLiving instanceof EntityPlayer && getEnumFromStack(held) == Tool.MILKER) {
             EntityPlayer player = (EntityPlayer) entityLiving;
             AnimalStats stats = milkables.getIfPresent(player);
             if (stats != null) {
@@ -132,7 +128,8 @@ public class ItemAnimalTool extends ItemHFEnum<ItemAnimalTool, Tool> {
         if (stats.performAction(player.world, stack, AnimalAction.IMPREGNATE)) {
             stack.splitStack(1);
             return true;
-        } else return false;
+        } else
+            return false;
     }
 
     private boolean heal(EntityPlayer player, AnimalStats stats, @Nonnull ItemStack stack) {
@@ -140,7 +137,8 @@ public class ItemAnimalTool extends ItemHFEnum<ItemAnimalTool, Tool> {
             stack.splitStack(1);
             ToolHelper.consumeHunger(player, 5F);
             return true;
-        } else return false;
+        } else
+            return false;
     }
 
     private boolean clean(EntityPlayer player, ItemStack held, EntityLivingBase animal, AnimalStats stats) {
@@ -179,13 +177,13 @@ public class ItemAnimalTool extends ItemHFEnum<ItemAnimalTool, Tool> {
         AnimalStats stats = EntityHelper.getStats(living);
         if (stats != null) {
             Tool tool = getEnumFromStack(stack);
-            if (tool == BRUSH ) {
+            if (tool == Tool.BRUSH) {
                 return clean(player, stack, living, stats);
-            } else if (tool == MEDICINE) {
+            } else if (tool == Tool.MEDICINE) {
                 return heal(player, stats, stack);
-            } else if (tool == MIRACLE_POTION) {
+            } else if (tool == Tool.MIRACLE_POTION) {
                 return impregnate(player, stats, stack);
-            } else if (tool == MILKER) {
+            } else if (tool == Tool.MILKER) {
                 return milk(player, hand, stats);
             }
         }
@@ -199,7 +197,7 @@ public class ItemAnimalTool extends ItemHFEnum<ItemAnimalTool, Tool> {
     }
 
     @Override
-    public double getDurabilityForDisplay(@Nonnull ItemStack stack)  {
+    public double getDurabilityForDisplay(@Nonnull ItemStack stack) {
         return canBeDamaged(stack) ? (getDamageForDisplay(stack) / MAX_DAMAGE) : 0;
     }
 
@@ -214,7 +212,7 @@ public class ItemAnimalTool extends ItemHFEnum<ItemAnimalTool, Tool> {
     @Override
     @Nonnull
     public String getItemStackDisplayName(@Nonnull ItemStack stack) {
-        return (getEnumFromStack(stack) == MIRACLE_POTION ? AQUA : "") + super.getItemStackDisplayName(stack);
+        return (getEnumFromStack(stack) == Tool.MIRACLE_POTION ? TextFormatting.AQUA : "") + super.getItemStackDisplayName(stack);
     }
 
     @Override
