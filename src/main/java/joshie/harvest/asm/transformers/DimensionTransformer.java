@@ -9,7 +9,6 @@ import org.objectweb.asm.Type;
 import joshie.harvest.calendar.provider.HFWorldProvider;
 
 public class DimensionTransformer extends AbstractASM {
-    private int aload;
 
     @Override
     public boolean isClass(String name) {
