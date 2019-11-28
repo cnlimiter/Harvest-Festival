@@ -28,7 +28,7 @@ if (System.getenv().BUILD_NUMBER) {
 
 version = "${minecraft_version}-${mod_version}${buildnumber}"
 group= "uk.joshiejack.harvest"
-archivesBaseName = "Harvest-Festival"
+archivesBaseName = "Harvest-Festival-Legacy"
 
 minecraft {
     version = "${minecraft_version}-${forge_version}"
