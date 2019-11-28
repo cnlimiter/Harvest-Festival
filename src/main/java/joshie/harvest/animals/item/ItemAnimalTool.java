@@ -22,8 +22,13 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
+
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
+
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import static joshie.harvest.animals.item.ItemAnimalTool.Tool.*;
 import static net.minecraft.util.text.TextFormatting.AQUA;
@@ -76,14 +81,14 @@ public class ItemAnimalTool extends ItemHFEnum<ItemAnimalTool, Tool> {
         return getEnumFromStack(stack) == MILKER ? EnumAction.BOW : EnumAction.NONE;
     }
 
-    private final HashMap<EntityPlayer, AnimalStats> milkables = new HashMap<>();
+    private final Cache<EntityPlayer, AnimalStats> milkables = CacheBuilder.newBuilder().weakKeys().expireAfterWrite(1, TimeUnit.MINUTES).build();
 
     @Override
     @Nonnull
     public ItemStack onItemUseFinish(@Nonnull ItemStack held, World world, EntityLivingBase entityLiving) {
         if (entityLiving instanceof EntityPlayer && getEnumFromStack(held) == MILKER) {
             EntityPlayer player = (EntityPlayer) entityLiving;
-            AnimalStats stats = milkables.get(player);
+            AnimalStats stats = milkables.getIfPresent(player);
             if (stats != null) {
                 if (stats.performAction(world, held, AnimalAction.CLAIM_PRODUCT)) {
                     ItemStack product = stats.getType().getProduct(stats);
