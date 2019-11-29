@@ -4,16 +4,22 @@ import joshie.harvest.api.HFApi;
 import joshie.harvest.api.calendar.CalendarDate;
 import joshie.harvest.api.calendar.SeasonProvider;
 import joshie.harvest.calendar.data.CalendarServer;
+import joshie.harvest.calendar.provider.HFWorldProvider;
 import joshie.harvest.calendar.provider.SeasonProviderHidden;
 import joshie.harvest.core.HFTrackers;
 import joshie.harvest.core.helpers.ConfigHelper;
 import joshie.harvest.core.util.annotations.HFLoader;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.DimensionType;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 import static joshie.harvest.core.helpers.ConfigHelper.*;
 import static joshie.harvest.core.lib.LoadOrder.HFCALENDAR;
+
+import java.lang.reflect.Field;
 
 @HFLoader(priority = HFCALENDAR)
 public class HFCalendar {
@@ -42,6 +48,12 @@ public class HFCalendar {
     public static boolean CLOCK_24H;
 
     public static void preInit() {
+        try {
+            Field field = ObfuscationReflectionHelper.findField(DimensionType.class, "field_186077_g");
+            EnumHelper.setFailsafeFieldValue(field, DimensionType.OVERWORLD, HFWorldProvider.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         //DimensionType seasons = DimensionType.register("seasons", "seasons", OVERWORLD_ID, HFWorldProvider.class, true);
         //DimensionManager.unregisterDimension(0);
         //DimensionManager.registerDimension(0, seasons);

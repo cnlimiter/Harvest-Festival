@@ -19,16 +19,15 @@ public class HFTransformer implements IFMLLoadingPlugin, IClassTransformer {
         //asm.add(new PlayerWakeTransformer());
         asm.add(new RenderRainTransformer());
         //asm.add(new RenderItemTransformer());
-        asm.add(new FishingTransformer(4, "net.minecraft.entity.projectile.EntityFishHook", "zc"));
+        asm.add(new FishingTransformer(4, "net.minecraft.entity.projectile.EntityFishHook"));
         asm.add(new FishingTransformer(3, "com.teammetallurgy.aquaculture.handlers.EntityCustomFishHook"));
-        asm.add(new DimensionTransformer());
     }
 
     @Override
     public byte[] transform(String name, String transformedName, byte[] data) {
         byte[] modified = data;
         for (AbstractASM a : asm) {
-            if (a.isClass(name)) {
+            if (a.isClass(transformedName)) {
                 if (a.isVisitor()) {
                     ClassReader cr = new ClassReader(modified);
                     ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES);

@@ -9,21 +9,19 @@ import static org.objectweb.asm.Opcodes.*;
 
 /** Adds a hook to fishing so that fish caught with it's fishing rods can count as having been caught in the fishing collection **/
 public class FishingTransformer extends AbstractASM {
-    private final String[] names;
+    private final String name;
     private final String path;
     private int aload;
 
-    public FishingTransformer(int aload, String... names) {
-        this.names = names;
+    public FishingTransformer(int aload, String name) {
+        this.name = name;
         this.aload = aload;
-        this.path = names[0].replace(".", "/");
+        this.path = name.replace(".", "/");
     }
 
     @Override
-    public boolean isClass(String name) {
-        for (String n: names)
-            if (n.equals(name)) return true;
-        return false;
+    public boolean isClass(String clazz) {
+        return name.equals(clazz);
     }
 
     @Override
