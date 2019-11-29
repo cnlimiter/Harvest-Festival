@@ -14,7 +14,7 @@ public interface ISizeable {
 
     /** Returns a stack of this size **/
     default ItemStack getStackOfSize(Item item, Size size, int stackSize) {
-        return new ItemStack(item, stackSize, (getMeta() * 3) + size.ordinal());
+        return new ItemStack(item, stackSize, getMeta() + size.ordinal() * 3);
     }
 
     /** Return the metadata for this sizeable **/
