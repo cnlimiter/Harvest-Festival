@@ -172,7 +172,7 @@ public class BlockTray extends BlockHFEnum<BlockTray, Tray> implements IAnimalFe
             if (nest.getDrop().isEmpty()) return getStateFromEnum(Tray.NEST_EMPTY);
             else {
                 Size size = nest.getSize();
-                if (size == null || size == Size.SMALL) return getStateFromEnum(Tray.SMALL_CHICKEN);
+                if (size == Size.NONE || size == Size.SMALL) return getStateFromEnum(Tray.SMALL_CHICKEN);
                 else if (size == Size.MEDIUM) return getStateFromEnum(Tray.MEDIUM_CHICKEN);
                 else if (size == Size.LARGE) return getStateFromEnum(Tray.LARGE_CHICKEN);
             }

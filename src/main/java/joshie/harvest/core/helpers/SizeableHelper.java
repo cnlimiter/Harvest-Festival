@@ -60,6 +60,9 @@ public class SizeableHelper {
     private static Size getSizeFromAnimal(int happiness, EntityAnimal animal) {
         WeightedSize weighted = new WeightedSize();
         for (Size size: Size.values()) {
+            if (size == Size.NONE) {
+                continue;
+            }
             int value = RelationshipType.ANIMAL.getMaximumRP() -(RelationshipType.ANIMAL.getMaximumRP() -(happiness - size.getRelationshipRequirement()));
             if (value > 0) {
                 weighted.add(size, value);
