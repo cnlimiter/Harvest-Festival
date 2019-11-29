@@ -23,7 +23,7 @@ public class MCClientHelper {
     }
 
     public static World getWorld() {
-        return getPlayer().world;
+        return getMinecraft().world;
     }
 
     /** Calls a for a re-render of all surrounding blocks **/
