@@ -49,6 +49,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -165,6 +166,9 @@ public class BlockStorage extends BlockHFEnumRotatableTile<BlockStorage, Storage
         {
             if (held.isEmpty())
             {
+                if (player instanceof FakePlayer) {
+                    return false;
+                }
                 EntityBasket basket = BasketHandler.getWearingBasket(player);
                 if (basket != null)
                 {
@@ -210,9 +214,8 @@ public class BlockStorage extends BlockHFEnumRotatableTile<BlockStorage, Storage
                 if (!world.isRemote)
                 {
                     EntityBasket basket = new EntityBasket(world);
-                    basket.setPositionAndUpdate(player.posX, player.posY + 1.5D, player.posZ);
+                    basket.setPosition(player.posX, player.posY + 1.5D, player.posZ);
                     basket.setEntityInvulnerable(true);
-                    basket.startRiding(player, true);
                     TileEntity tile = world.getTileEntity(pos);
                     if (tile instanceof TileBasket)
                     {
@@ -220,8 +223,9 @@ public class BlockStorage extends BlockHFEnumRotatableTile<BlockStorage, Storage
                     }
 
                     world.spawnEntity(basket);
-                    ((EntityPlayerMP) player).connection.sendPacket(new SPacketSetPassengers(player));
                     world.setBlockToAir(pos); //Remove the basket
+                    basket.startRiding(player, true);
+                    ((EntityPlayerMP) player).connection.sendPacket(new SPacketSetPassengers(player)); // why?
                 }
 
                 return true;

@@ -1,24 +1,29 @@
 package joshie.harvest.core.entity;
 
+import static joshie.harvest.core.tile.TileBasket.BASKET_INVENTORY;
+
+import java.util.Iterator;
+
+import javax.annotation.Nonnull;
+
 import joshie.harvest.api.HFApi;
+import joshie.harvest.core.HFCore;
+import joshie.harvest.core.block.BlockStorage.Storage;
+import joshie.harvest.core.handlers.BasketHandler;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
-
-import javax.annotation.Nonnull;
-import java.util.Iterator;
-import java.util.List;
-
-import static joshie.harvest.core.tile.TileBasket.BASKET_INVENTORY;
 
 public class EntityBasket extends Entity {
     public static final DataParameter<ItemStack> ITEM = EntityDataManager.createKey(EntityItem.class, DataSerializers.ITEM_STACK);
@@ -42,8 +47,49 @@ public class EntityBasket extends Entity {
     }
 
     @Nonnull
-    public ItemStack getEntityItem()  {
+    public ItemStack getEntityItem() {
         return getDataManager().get(ITEM);
+    }
+
+    @Override
+    public void dismountRidingEntity() {
+        super.dismountRidingEntity();
+        if (isEntityAlive() && !this.isRiding()) {
+            boolean placed = false;
+            BlockPos pos = new BlockPos(this).down();
+            if (world.isAirBlock(pos)) {
+                BasketHandler.setBasket(world, pos, handler);
+                placed = true;
+            } else {
+                int attempts = 0;
+                while (!placed && attempts < 512) {
+                    BlockPos placing = pos.add(world.rand.nextInt(10) - 5, world.rand.nextInt(3), world.rand.nextInt(10) - 5);
+                    if (world.isAirBlock(placing)) {
+                        BasketHandler.setBasket(world, placing, handler);
+                        placed = true;
+                    }
+                    attempts++;
+                }
+            }
+
+            if (placed) {
+                setDead();
+            } else {
+                drop();
+            }
+        }
+    }
+
+    public void drop() {
+        setDead();
+        if (world.isRemote) {
+            return;
+        }
+        for (int i = 0; i < handler.getSlots(); i++) {
+            ItemStack stack = handler.getStackInSlot(i);
+            InventoryHelper.spawnItemStack(world, posX, posY, posZ, stack);
+        }
+        InventoryHelper.spawnItemStack(world, posX, posY, posZ, HFCore.STORAGE.getStackFromEnum(Storage.BASKET));
     }
 
     @Override
@@ -57,18 +103,21 @@ public class EntityBasket extends Entity {
     }
 
     /* Autoshipping some items **/
-    private void autoship(List<ItemStack> list) {
+    private boolean autoship(NonNullList<ItemStack> list) {
+        boolean empty = true;
         Iterator<ItemStack> it = list.iterator();
         while (it.hasNext()) {
             ItemStack stack = it.next();
             if (HFApi.shipping.getSellValue(stack) > 0) {
-                ItemStack remainder = ItemHandlerHelper.insertItemStacked(handler, stack, false);
-                if (remainder.isEmpty()) it.remove();
-                else {
-                    stack.setCount(remainder.getCount()); //Update the internal contents
-                }
+                ItemStack remainder = ItemHandlerHelper.insertItemStacked(handler, stack.copy(), false);
+                stack.setCount(remainder.getCount());
+                if (!remainder.isEmpty())
+                    empty = false;
+            } else {
+                empty = false;
             }
         }
+        return empty;
     }
 
     public static boolean findBasketAndShip(EntityPlayer player, NonNullList<ItemStack> list) {
@@ -80,8 +129,7 @@ public class EntityBasket extends Entity {
                     basket.getDataManager().setDirty(ITEM);
                 }
 
-                basket.autoship(list);
-                return list.isEmpty();
+                return basket.autoship(list);
             }
         }
 

@@ -45,6 +45,7 @@ public abstract class GuiBaseContainer extends GuiContainer {
     @Override
     protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
         GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
+        drawDefaultBackground();
         mc.renderEngine.bindTexture(TEXTURE);
         int x = (width - xSize) / 2;
         int y = (height - ySize) / 2;
@@ -61,7 +62,9 @@ public abstract class GuiBaseContainer extends GuiContainer {
         return 46;
     }
 
-    public void drawForeground(int x, int y) {}
+    public void drawForeground(int x, int y) {
+        this.renderHoveredToolTip(mouseX, mouseY);
+    }
     public void drawBackground(int x, int y) {}
     
     public void addTooltip(List<String> list) {

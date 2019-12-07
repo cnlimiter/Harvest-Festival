@@ -113,7 +113,7 @@ public class RenderBasket extends Render<EntityBasket> {
         RenderHelper.enableStandardItemLighting();
         GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
         GlStateManager.pushMatrix();
-        GlStateManager.translate(0F, 2F, 0F);
+        GlStateManager.translate(0F, Minecraft.getMinecraft().player.getMountedYOffset() + 0.75F, 0F);
         IBakedModel ibakedmodel = this.itemRenderer.getItemModelWithOverrides(itemstack, entity.world, null);
         int j = 3;
         boolean flag1 = ibakedmodel.isGui3d();
