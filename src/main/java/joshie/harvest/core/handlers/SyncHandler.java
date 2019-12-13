@@ -31,7 +31,6 @@ public class SyncHandler {
         }
     }
 
-
     //Sync data on login
     @SubscribeEvent
     public void onPlayerLogin(PlayerLoggedInEvent event) {

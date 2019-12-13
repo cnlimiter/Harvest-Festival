@@ -5,6 +5,7 @@ import joshie.harvest.api.calendar.Season;
 import joshie.harvest.api.calendar.Weather;
 import joshie.harvest.calendar.SnowLoader;
 import joshie.harvest.calendar.data.Calendar;
+import joshie.harvest.calendar.data.SeasonData;
 import joshie.harvest.calendar.render.WeatherRenderer;
 import joshie.harvest.core.HFTrackers;
 import joshie.harvest.core.helpers.MCClientHelper;
@@ -84,7 +85,9 @@ public class HFWorldProvider extends WorldProviderSurface {
             distance = ranges[settings.renderDistanceChunks];
         }
 
-        int original = HFTrackers.getCalendar(MCClientHelper.getWorld()).getSeasonData().skyColor;
+        Calendar calendar = HFTrackers.getCalendar(MCClientHelper.getWorld());
+        SeasonData seasonData = calendar.getSeasonData();
+        int original = seasonData.skyColor;
         int r = (original & 0xFF0000) >> 16;
         int g = (original & 0x00FF00) >> 8;
         int b = original & 0x0000FF;

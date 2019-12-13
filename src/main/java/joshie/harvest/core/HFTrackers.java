@@ -104,6 +104,9 @@ public class HFTrackers {
 
     @SuppressWarnings("unchecked")
     public static <C extends Calendar> C getCalendar(World world) {
+        if (world.isRemote && CLIENT_CALENDAR == null) {
+            resetClient();
+        }
         return (world.isRemote) ? (C) CLIENT_CALENDAR : (C) getServerCalendar(world);
     }
 
