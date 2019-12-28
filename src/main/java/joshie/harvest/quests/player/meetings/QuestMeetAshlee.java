@@ -162,7 +162,7 @@ public class QuestMeetAshlee extends QuestMeetingTutorial {
     public void onChatClosed(EntityPlayer player, NPC npc) {
         if (quest_stage == THROW) {
             increaseStage(player);
-            rewardEntity(player, "harvestfestival.chicken");
+            rewardEntity(player, "chicken");
             rewardItem(player, new ItemStack(HFAnimals.TOOLS, 16, CHICKEN_FEED.ordinal()));
         } else if (quest_stage == EGG) {
             increaseStage(player);
@@ -184,7 +184,7 @@ public class QuestMeetAshlee extends QuestMeetingTutorial {
     public void onQuestCompleted(EntityPlayer player) {
         //If we finished early
         if (isCompletedEarly()) {
-            rewardEntity(player, "harvestfestival.chicken");
+            rewardEntity(player, "chicken");
             rewardItem(player, new ItemStack(HFAnimals.TOOLS, 16, CHICKEN_FEED.ordinal()));
             rewardItem(player, HFAnimals.TRAY.getStackFromEnum(NEST_EMPTY));
         }

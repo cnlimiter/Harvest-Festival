@@ -148,7 +148,7 @@ public class QuestMeetJim extends QuestMeetingTutorial {
     public void onChatClosed(EntityPlayer player, NPC npc) {
         if (quest_stage == INFO || isCompletedEarly()) {
             increaseStage(player);
-            rewardEntity(player, "harvestfestival.cow");
+            rewardEntity(player, "cow");
             rewardItem(player, new ItemStack(Items.LEAD));
             rewardItem(player, HFCrops.GRASS.getCropStack(16));
             rewardItem(player, HFAnimals.TOOLS.getStackFromEnum(BRUSH));
@@ -170,7 +170,7 @@ public class QuestMeetJim extends QuestMeetingTutorial {
     @Override
     public void onQuestCompleted(EntityPlayer player) {
         if (isCompletedEarly()) {
-            rewardEntity(player, "harvestfestival.cow");
+            rewardEntity(player, "cow");
             rewardItem(player, HFAnimals.TOOLS.getStackFromEnum(Tool.MILKER));
             rewardItem(player, new ItemStack(Items.LEAD));
             rewardItem(player, HFCrops.GRASS.getCropStack(16));
