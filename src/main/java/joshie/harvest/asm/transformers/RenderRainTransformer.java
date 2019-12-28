@@ -24,7 +24,7 @@ public class RenderRainTransformer extends AbstractASM {
         @Override
         public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
             MethodVisitor visitor = super.visitMethod(access, name, desc, signature, exceptions);
-            if (desc.equals("()V") && (name.equals("addRainParticles") || name.equals("func_78484_h") || name.equals("p"))) {
+            if (desc.equals("()V") && (name.equals("addRainParticles") || name.equals("func_78484_h") || name.equals("q"))) {
                 return new MethodVisitor(Opcodes.ASM4, visitor) {
                     @Override
                     public void visitCode() {

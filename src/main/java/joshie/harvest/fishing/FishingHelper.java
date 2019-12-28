@@ -1,5 +1,11 @@
 package joshie.harvest.fishing;
 
+import java.util.HashMap;
+
+import javax.annotation.Nonnull;
+
+import org.apache.commons.lang3.tuple.Pair;
+
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.calendar.Season;
 import joshie.harvest.core.HFTrackers;
@@ -17,18 +23,18 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
-import org.apache.commons.lang3.tuple.Pair;
-
-import javax.annotation.Nonnull;
-import java.util.HashMap;
+import net.minecraftforge.event.entity.player.ItemFishedEvent;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @HFEvents
 public class FishingHelper {
     static final HashMap<Pair<Season, WaterType>, ResourceLocation> FISHING_LOOT = new HashMap<>();
 
     public static boolean isWater(World world, BlockPos... positions) {
-        for (BlockPos pos: positions) {
-            if (world.getBlockState(pos).getBlock() != Blocks.WATER) return false;
+        for (BlockPos pos : positions) {
+            if (world.getBlockState(pos).getBlock() != Blocks.WATER)
+                return false;
         }
 
         return true;
@@ -38,6 +44,12 @@ public class FishingHelper {
         if (CollectionHelper.isInFishCollection(stack)) {
             HFTrackers.getPlayerTrackerFromPlayer(angler).getTracking().addAsObtained(stack);
         }
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOW)
+    public void track(ItemFishedEvent event) {
+        EntityPlayer player = event.getEntityPlayer();
+        event.getDrops().forEach(stack -> track(stack, player));
     }
 
     enum WaterType {
@@ -53,9 +65,12 @@ public class FishingHelper {
             type = WaterType.POND;
         } else {
             Biome biome = world.getBiome(pos);
-            if (BiomeDictionary.hasType(biome, Type.OCEAN)) type = WaterType.OCEAN;
-            else if (BiomeDictionary.hasType(biome, Type.RIVER)) type = WaterType.RIVER;
-            else type = WaterType.LAKE;
+            if (BiomeDictionary.hasType(biome, Type.OCEAN))
+                type = WaterType.OCEAN;
+            else if (BiomeDictionary.hasType(biome, Type.RIVER))
+                type = WaterType.RIVER;
+            else
+                type = WaterType.LAKE;
         }
 
         return Pair.of(season, type);
