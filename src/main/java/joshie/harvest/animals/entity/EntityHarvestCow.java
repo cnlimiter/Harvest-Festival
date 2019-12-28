@@ -136,4 +136,9 @@ public class EntityHarvestCow extends EntityCow implements IEntityAdditionalSpaw
         stats.setEntity(this);
         stats.deserializeNBT(ByteBufUtils.readTag(buffer));
     }
+
+    @Override
+    public float getEyeHeight() {
+        return height * 0.65f;
+    }
 }

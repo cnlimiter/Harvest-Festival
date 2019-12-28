@@ -46,7 +46,7 @@ public class EntityHarvestSheep extends EntitySheep implements IEntityAdditional
 
     public EntityHarvestSheep(World world) {
         super(world);
-        setSize(1.4F, 1.4F);
+        setSize(0.9F, 1.0F);
         setPathPriority(PathNodeType.WATER, 0.0F);
     }
 
@@ -165,5 +165,10 @@ public class EntityHarvestSheep extends EntitySheep implements IEntityAdditional
     public void readSpawnData(ByteBuf buffer) {
         stats.setEntity(this);
         stats.deserializeNBT(ByteBufUtils.readTag(buffer));
+    }
+
+    @Override
+    public float getEyeHeight() {
+        return height * 0.65f;
     }
 }
