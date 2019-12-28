@@ -45,16 +45,16 @@ public class PlayerWakeTransformer extends AbstractASM {
 
         topLabel:
         for (MethodNode method : classNode.methods) {
-            System.out.println(method.name + " " + method.desc);
+            //System.out.println(method.name + " " + method.desc);
             if (isOnUpdate(method.name, method.desc)) {
                 for (int i = 0; i < method.instructions.size(); i++) {
                     AbstractInsnNode node = method.instructions.get(i);
                     if (node instanceof MethodInsnNode) {
                         MethodInsnNode mNode = ((MethodInsnNode) node);
-                        System.out.println(mNode.name + " " + mNode.desc);
+                        //System.out.println(mNode.name + " " + mNode.desc);
                         if ((isWakeupPlayer(mNode.name, mNode.desc)) && method.instructions.get(i - 8) instanceof MethodInsnNode) {
                             MethodInsnNode previous = ((MethodInsnNode) method.instructions.get(i - 8));
-                            System.out.println(previous.name + " " + previous.desc);
+                            //System.out.println(previous.name + " " + previous.desc);
                             if (isDaytime(previous.name, previous.desc)) {
                                 Set<AbstractInsnNode> remove = new HashSet<>();
                                 for (int j = 0; j <= 5; j++) {
