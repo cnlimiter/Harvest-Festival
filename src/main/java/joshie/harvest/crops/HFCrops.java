@@ -138,9 +138,9 @@ public class HFCrops {
         LootFunctionManager.registerFunction(new SetCropType.Serializer());
         RecipeSorter.register("harvestfestival:seeds", SeedRecipeHandler.class, Category.SHAPELESS, "after:minecraft:shapeless");
         GameRegistry.addShapedRecipe(new ResourceLocation("harvestfestival", "melon"), null, new ItemStack(Items.MELON, 9), "*", '*', Blocks.MELON_BLOCK);
-        GameRegistry.addShapedRecipe(new ResourceLocation("harvestfestival", "wheat_seeds"), null, new ItemStack(Items.WHEAT_SEEDS), "*", '*', Items.WHEAT);
+        GameRegistry.addShapedRecipe(new ResourceLocation("harvestfestival", "_wheat_seeds"), null, new ItemStack(Items.WHEAT_SEEDS), "*", '*', Items.WHEAT);
         Ingredient beetroot = Ingredient.fromItem(Items.BEETROOT);
-        GameRegistry.addShapelessRecipe(new ResourceLocation("harvestfestival", "beetroot_seeds"), null, new ItemStack(Items.BEETROOT_SEEDS, 2), beetroot, beetroot);
+        GameRegistry.addShapelessRecipe(new ResourceLocation("harvestfestival", "_beetroot_seeds"), null, new ItemStack(Items.BEETROOT_SEEDS, 2), beetroot, beetroot);
         HFApi.crops.registerCropProvider(new ItemStack(Items.NETHER_WART), NETHER_WART);
         //registerVanillaCrop(Blocks.NETHER_WART, Items.NETHER_WART, NETHER_WART);
         HFApi.crops.registerWateringHandler(new WateringHandler());
