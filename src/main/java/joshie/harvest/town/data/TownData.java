@@ -62,6 +62,10 @@ public abstract class TownData<Q extends QuestData, L extends LetterData> implem
         return buildings.get(building.getResource());
     }
 
+    public TownBuilding getBuilding(ResourceLocation building) {
+        return buildings.get(building);
+    }
+
     /** Building currently being worked on **/
     public BuildingStage getCurrentlyBuilding() {
         return buildingQueue.size() > 0 ? buildingQueue.getFirst() : null;
