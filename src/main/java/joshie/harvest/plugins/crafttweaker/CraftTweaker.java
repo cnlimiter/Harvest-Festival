@@ -50,15 +50,10 @@ public class CraftTweaker {
             IBracketHandler handler = getItemBracketHandler();
             CraftTweakerAPI.registerBracketHandler(handler);
             rebuildItemRegistry(handler);
-            CraftTweakerAPI.registerClass(Crops.class);
-            CraftTweakerAPI.registerClass(Shops.class);
             CrafttweakerImplementationAPI.setScriptProvider(new ScriptProviderDirectory(directory));
             // CrafttweakerImplementationAPI.reload();
         }
 
-        CraftTweakerAPI.registerClass(Blacklist.class);
-        CraftTweakerAPI.registerClass(Shipping.class);
-        CraftTweakerAPI.registerClass(Gifting.class);
         CommandManager.INSTANCE.addSubcommand(new HFCommandNPC());
         CommandManager.INSTANCE.addSubcommand(new HFCommandPurchasable());
         CommandManager.INSTANCE.addSubcommand(new HFCommandShops());

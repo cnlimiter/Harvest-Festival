@@ -3,6 +3,7 @@ package joshie.harvest.plugins.crafttweaker.handlers;
 import com.google.common.collect.ImmutableList;
 
 import crafttweaker.CraftTweakerAPI;
+import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IItemStack;
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.animals.AnimalFoodType;
@@ -34,6 +35,7 @@ import static joshie.harvest.plugins.crafttweaker.CraftTweaker.asBlock;
 import static joshie.harvest.plugins.crafttweaker.CraftTweaker.asStack;
 
 @ZenClass("mods.harvestfestival.Crops")
+@ZenRegister
 public class Crops {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @ZenMethod

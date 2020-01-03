@@ -24,6 +24,7 @@ import javax.annotation.Nullable;
 
 import crafttweaker.CraftTweakerAPI;
 import crafttweaker.IAction;
+import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
 
@@ -33,6 +34,7 @@ import static joshie.harvest.core.lib.HFModInfo.MODID;
 import static joshie.harvest.plugins.crafttweaker.CraftTweaker.asStack;
 
 @ZenClass("mods.harvestfestival.Shops")
+@ZenRegister
 public class Shops {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////Creating Shops////////////////////////////////////////////////////////////////////////////////////////////////////                                                                                             ///////

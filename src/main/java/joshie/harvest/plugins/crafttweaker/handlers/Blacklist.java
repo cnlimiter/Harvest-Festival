@@ -11,11 +11,13 @@ import javax.annotation.Nonnull;
 
 import crafttweaker.CraftTweakerAPI;
 import crafttweaker.IAction;
+import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IItemStack;
 
 import static joshie.harvest.plugins.crafttweaker.CraftTweaker.asStack;
 
 @ZenClass("mods.harvestfestival.Blacklist")
+@ZenRegister
 public class Blacklist {
     @ZenMethod
     @SuppressWarnings("unused")

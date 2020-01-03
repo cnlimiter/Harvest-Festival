@@ -10,6 +10,7 @@ import stanhebben.zenscript.annotations.ZenMethod;
 import javax.annotation.Nonnull;
 
 import crafttweaker.CraftTweakerAPI;
+import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.oredict.IOreDictEntry;
@@ -18,6 +19,7 @@ import static joshie.harvest.plugins.crafttweaker.CraftTweaker.asOre;
 import static joshie.harvest.plugins.crafttweaker.CraftTweaker.asStack;
 
 @ZenClass("mods.harvestfestival.Shipping")
+@ZenRegister
 public class Shipping {
     @ZenMethod
     @SuppressWarnings("unused")

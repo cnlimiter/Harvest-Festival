@@ -13,11 +13,13 @@ import static joshie.harvest.plugins.crafttweaker.CraftTweaker.asOre;
 import static joshie.harvest.plugins.crafttweaker.CraftTweaker.asStack;
 
 import crafttweaker.CraftTweakerAPI;
+import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.oredict.IOreDictEntry;
 
 @ZenClass("mods.harvestfestival.Gifts")
+@ZenRegister
 public class Gifting {
     @ZenMethod
     @SuppressWarnings("unused")
