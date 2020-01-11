@@ -16,6 +16,8 @@ import joshie.harvest.mining.HFMining;
 import joshie.harvest.mining.item.ItemMaterial.Material;
 import joshie.harvest.npcs.HFNPCs;
 import joshie.harvest.quests.base.QuestTrade;
+import joshie.harvest.tools.HFTools;
+import joshie.harvest.tools.ToolHelper;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
@@ -170,6 +172,8 @@ public class QuestBlacksmithing extends QuestTrade {
             if (holding != null) {
                 //Blacksmith complains that the tool isn't even ready to be upgraded, it needs to be at 100%
                 if (getLevel(player) != 100D) return getLocalized("level");
+                ItemTool itemTool = (ItemTool) player.getHeldItemMainhand().getItem();
+                if (!HFTools.TOOLTYPE_MAP.containsKey(itemTool.toolClass)) return getLocalized("repair.no");
 
                 long required = getCost(holding);
                 boolean hasGold = HFTrackers.getPlayerTrackerFromPlayer(player).getStats().getGold() >= required;
@@ -209,8 +213,7 @@ public class QuestBlacksmithing extends QuestTrade {
                 if (InventoryHelper.takeItemsInInventory(player, ITEM_STACK, material)) {
                     date = HFApi.calendar.getDate(player.world).copy();
                     tool = player.getHeldItemMainhand().copy();
-                    tool.getOrCreateSubCompound("Data").setInteger("Damage", 0);
-                    tool.getOrCreateSubCompound("Data").setDouble("Level", tool.getOrCreateSubCompound("Data").getDouble("Level"));
+                    tool.setItemDamage(0);
                     days = today.getWeekday() == Weekday.WEDNESDAY ? 2: 1; //Takes 1 day to repair
                     increaseStage(player);
                     rewardGold(player, -required);
@@ -228,9 +231,10 @@ public class QuestBlacksmithing extends QuestTrade {
                 if (HFTrackers.getPlayerTrackerFromPlayer(player).getStats().getGold() < required) return;
                 if(InventoryHelper.takeItemsInInventory(player, ITEM_STACK, new ItemStack(HFMining.MATERIALS, 1, getMaterial(holding)), getRequired(holding))) {
                     date = HFApi.calendar.getDate(player.world).copy();
-                    tool = player.getHeldItemMainhand().copy();
-                    tool.setTagCompound(null);
-                    tool.setItemDamage(tool.getItemDamage() + 1);
+                    tool = player.getHeldItemMainhand();
+                    ItemTool toolItem = (ItemTool)tool.getItem();
+                    ToolTier tier = toolItem.getTier(tool);
+                    tool = new ItemStack(HFTools.TOOLTYPE_MAP.get(toolItem.toolClass).get(tier.getNext()));
                     days = today.getWeekday() == Weekday.TUESDAY || today.getWeekday() == Weekday.WEDNESDAY ? 4: 3; //Takes three days
                     increaseStage(player);
                     rewardGold(player, -required);

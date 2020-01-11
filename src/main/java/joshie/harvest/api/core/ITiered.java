@@ -44,6 +44,16 @@ public interface ITiered {
             return level;
         }
 
+        public ToolTier getNext() {
+            int next = level + 1;
+            for (ToolTier tier : values()) {
+                if (tier.level == next) {
+                    return tier;
+                }
+            }
+            return this;
+        }
+
         public int getMaximumDamage() {
             return maxDamage;
         }

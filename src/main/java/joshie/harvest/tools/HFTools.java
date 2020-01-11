@@ -1,24 +1,35 @@
 package joshie.harvest.tools;
 
-import joshie.harvest.api.HFApi;
-import joshie.harvest.api.core.ITiered.ToolTier;
-import joshie.harvest.core.util.annotations.HFLoader;
-import joshie.harvest.tools.item.*;
-import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.registries.GameData;
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.oredict.OreDictionary;
-
-import java.util.EnumMap;
-import java.util.Locale;
-
 import static joshie.harvest.core.helpers.ConfigHelper.getBoolean;
 import static joshie.harvest.core.helpers.ConfigHelper.getInteger;
 import static joshie.harvest.core.helpers.RegistryHelper.registerSounds;
 import static joshie.harvest.core.lib.HFModInfo.MODID;
-import static net.minecraft.entity.SharedMonsterAttributes.*;
+import static net.minecraft.entity.SharedMonsterAttributes.ATTACK_DAMAGE;
+import static net.minecraft.entity.SharedMonsterAttributes.ATTACK_SPEED;
+import static net.minecraft.entity.SharedMonsterAttributes.MAX_HEALTH;
+import static net.minecraft.entity.SharedMonsterAttributes.MOVEMENT_SPEED;
+
+import java.util.EnumMap;
+import java.util.Locale;
+import java.util.Map;
+
+import com.google.common.collect.Maps;
+
+import joshie.harvest.api.HFApi;
+import joshie.harvest.api.core.ITiered.ToolTier;
+import joshie.harvest.core.base.item.ItemTool;
+import joshie.harvest.core.util.annotations.HFLoader;
+import joshie.harvest.tools.item.ItemAxe;
+import joshie.harvest.tools.item.ItemHammer;
+import joshie.harvest.tools.item.ItemHoe;
+import joshie.harvest.tools.item.ItemSickle;
+import joshie.harvest.tools.item.ItemWateringCan;
+import net.minecraft.item.ItemStack;
+import net.minecraft.potion.Potion;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.registries.GameData;
 
 @HFLoader
 public class HFTools {
@@ -27,6 +38,8 @@ public class HFTools {
     public static final EnumMap<ToolTier, ItemSickle> SICKLES = new EnumMap<>(ToolTier.class);
     public static final EnumMap<ToolTier, ItemHoe> HOES = new EnumMap<>(ToolTier.class);
     public static final EnumMap<ToolTier, ItemWateringCan> WATERING_CANS = new EnumMap<>(ToolTier.class);
+    public static final Map<String, EnumMap<ToolTier, ? extends ItemTool<?>>> TOOLTYPE_MAP = Maps.newHashMap();
+
     static {
         for (ToolTier tier: ToolTier.values()) {
             HAMMERS.put(tier, new ItemHammer(tier).register("hammer_" + tier.name().toLowerCase(Locale.ENGLISH)));
@@ -35,6 +48,11 @@ public class HFTools {
             HOES.put(tier, new ItemHoe(tier).register("hoe_" + tier.name().toLowerCase(Locale.ENGLISH)));
             WATERING_CANS.put(tier, new ItemWateringCan(tier).register("watering_can_" + tier.name().toLowerCase(Locale.ENGLISH)));
         }
+        TOOLTYPE_MAP.put("pickaxe", HAMMERS);
+        TOOLTYPE_MAP.put("axe", AXES);
+        TOOLTYPE_MAP.put("sickle", SICKLES);
+        TOOLTYPE_MAP.put("hoe", HOES);
+        TOOLTYPE_MAP.put("watering_can", WATERING_CANS);
     }
 
     //Potion Effects

@@ -57,6 +57,7 @@ public class ItemHammer extends ItemToolSmashing<ItemHammer> {
         blocks.register(Ore.of("blockLimestone"));
         blocks.register(Ore.of("blockMarble"));
         blocks.register(Ore.of("sandstone"));
+        blocks.register(Ore.of("stone"));
     }
 
     @Override
