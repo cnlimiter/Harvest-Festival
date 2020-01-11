@@ -1,7 +1,13 @@
 package joshie.harvest.core.handlers;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+
 import joshie.harvest.api.HFApi;
 import joshie.harvest.core.HFCore;
 import joshie.harvest.core.block.BlockStorage;
@@ -13,7 +19,12 @@ import joshie.harvest.core.network.PacketOpenBasket;
 import joshie.harvest.core.tile.TileBasket;
 import joshie.harvest.core.util.annotations.HFEvents;
 import joshie.harvest.crops.block.BlockHFCrops;
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockButton;
+import net.minecraft.block.BlockDoor;
+import net.minecraft.block.BlockFenceGate;
+import net.minecraft.block.BlockLever;
+import net.minecraft.block.BlockTrapDoor;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -25,15 +36,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
-
-import javax.annotation.Nonnull;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 
 @HFEvents
 public class BasketHandler {
@@ -101,16 +104,18 @@ public class BasketHandler {
     @SuppressWarnings("ConstantConditions")
     public void onRightClickGround(PlayerInteractEvent.RightClickBlock event) {
         EntityPlayer player = event.getEntityPlayer();
-        if (!player.isSneaking() && player.getHeldItemMainhand().isEmpty() && player.getHeldItemOffhand().isEmpty() && !forbidsDrop(event.getWorld().getBlockState(event.getPos()).getBlock())) {
+        if (event.getHand() == EnumHand.MAIN_HAND && !player.isSneaking() && player.getHeldItemMainhand().isEmpty() && player.getHeldItemOffhand().isEmpty() && !forbidsDrop(event.getWorld().getBlockState(event.getPos()).getBlock())) {
             Set<Entity> set = getSetFromPlayer(player);
             player.getPassengers().stream().filter(entity -> entity instanceof EntityBasket && !set.contains(entity)).forEach(entity -> {
                 ItemStack basket = HFCore.STORAGE.getStackFromEnum(Storage.BASKET);
+                player.setHeldItem(EnumHand.MAIN_HAND, basket);
                 TileEntity tile = (((ItemBlockStorage) basket.getItem()).onBasketUsed(basket, player, player.world, event.getPos(), EnumHand.MAIN_HAND, event.getFace(), 0F, 0F, 0F));
                 if (tile instanceof TileBasket) {
                     ((TileBasket) tile).setAppearanceAndContents(((EntityBasket) entity).getEntityItem(), ((EntityBasket) entity).handler);
                     set.add(entity);
                     entity.setDead();
                 }
+                player.setHeldItem(EnumHand.MAIN_HAND, ItemStack.EMPTY);
             });
         } else if (player.isSneaking() && player.world.isRemote) {
             EntityBasket basket = getWearingBasket(player);
