@@ -29,7 +29,7 @@ public class StateHandlerWatermelon extends StateHandlerStem {
     @Override
     public IBlockState getState(IBlockAccess world, BlockPos pos, PlantSection section, Crop crop, int stage, boolean withered) {
         int meta = getMetaFromStage(stage);
-        IBlockState state = block.getDefaultState().withProperty(BlockStem.FACING, EnumFacing.UP).withProperty(BlockStem.AGE, meta);
+        IBlockState state = block.get().getDefaultState().withProperty(BlockStem.FACING, EnumFacing.UP).withProperty(BlockStem.AGE, meta);
         for (EnumFacing enumfacing : EnumFacing.Plane.HORIZONTAL)  {
             if (world.getBlockState(pos.offset(enumfacing)).getBlock() == Blocks.MELON_BLOCK && meta == 7) {
                 state = state.withProperty(BlockStem.FACING, enumfacing);

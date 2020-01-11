@@ -17,6 +17,7 @@ import joshie.harvest.plugins.crafttweaker.base.BaseOnce;
 import joshie.harvest.plugins.crafttweaker.wrappers.MultiDropHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -254,7 +255,7 @@ public class Crops {
         private final IBlockState[] states;
 
         StateHandlerBlockWithStates(int[] values, IBlockState[] states) {
-            super(null, values);
+            super(Blocks.AIR, values);
             this.states = states;
         }
 

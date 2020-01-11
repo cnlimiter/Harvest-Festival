@@ -29,7 +29,7 @@ public class StateHandlerPumpkin extends StateHandlerStem {
     @Override
     public IBlockState getState(IBlockAccess world, BlockPos pos, PlantSection section, Crop crop, int stage, boolean withered) {
         int meta = getMetaFromStage(stage);
-        IBlockState state = block.getDefaultState().withProperty(BlockStem.FACING, EnumFacing.UP).withProperty(BlockStem.AGE, meta);
+        IBlockState state = block.get().getDefaultState().withProperty(BlockStem.FACING, EnumFacing.UP).withProperty(BlockStem.AGE, meta);
         for (EnumFacing enumfacing : EnumFacing.Plane.HORIZONTAL)  {
             if (world.getBlockState(pos.offset(enumfacing)).getBlock() == Blocks.PUMPKIN && meta == 7) {
                 return state.withProperty(BlockStem.FACING, enumfacing);
