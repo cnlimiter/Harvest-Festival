@@ -7,6 +7,7 @@ import joshie.harvest.api.cooking.Ingredient;
 import joshie.harvest.api.core.HFRegistry;
 import joshie.harvest.api.core.ISpecialRules;
 import joshie.harvest.api.crops.IStateHandler.PlantSection;
+import joshie.harvest.core.util.Util;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Items;
@@ -501,7 +502,7 @@ public class Crop extends HFRegistry<Crop> implements IPlantable {
         String name = alternativeName ? I18n.translateToLocalFormatted((getResource().getResourceDomain() + ".crop." + StringUtils.replace(getResource().getResourcePath(), "_", ".") + ".block")) : item.isEmpty() ? "NULL" : item.getDisplayName();
         String seeds = I18n.translateToLocal("harvestfestival.crop.seeds");
         String format = I18n.translateToLocal("harvestfestival.crop.seeds.format");
-        return String.format(format, name, seeds);
+        return Util.safeFormat(format, name, seeds);
     }
 
     @Override

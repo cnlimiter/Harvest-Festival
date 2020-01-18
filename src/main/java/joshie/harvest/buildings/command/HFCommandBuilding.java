@@ -40,7 +40,7 @@ public class HFCommandBuilding extends CommandBase {
         TownDataServer town = TownHelper.getClosestTownToBlockPos(world, pos, false);
         if (args.length == 1 && args[0].equals("show")) {
             town.getBuildings().forEach(building -> {
-                sender.sendMessage(new TextComponentString(((TownBuilding) building).building.getResource().toString()));
+                sender.sendMessage(new TextComponentString(building.building.getResource().toString()));
             });
             return;
         }

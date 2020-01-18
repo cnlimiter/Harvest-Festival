@@ -4,6 +4,7 @@ import joshie.harvest.api.calendar.Festival;
 import joshie.harvest.api.npc.NPC;
 import joshie.harvest.api.npc.greeting.IConditionalGreeting;
 import joshie.harvest.core.helpers.TextHelper;
+import joshie.harvest.core.util.Util;
 import joshie.harvest.town.TownHelper;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.player.EntityPlayer;
@@ -29,6 +30,6 @@ public class GreetingFestival implements IConditionalGreeting {
 
     @Override
     public String getLocalizedText(EntityPlayer player, EntityAgeable ageable, NPC npc) {
-        return TextHelper.getRandomSpeech(npc, String.format(text, npc.getResource().getResourcePath()), 10);
+        return TextHelper.getRandomSpeech(npc, Util.safeFormat(text, npc.getResource().getResourcePath()), 10);
     }
 }

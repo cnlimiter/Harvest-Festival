@@ -5,6 +5,7 @@ import joshie.harvest.core.base.gui.ContainerBase;
 import joshie.harvest.core.handlers.GuiHandler;
 import joshie.harvest.core.helpers.TextHelper;
 import joshie.harvest.core.network.PacketHandler;
+import joshie.harvest.core.util.Util;
 import joshie.harvest.npcs.HFNPCs;
 import joshie.harvest.npcs.NPCHelper;
 import joshie.harvest.npcs.entity.EntityNPC;
@@ -34,7 +35,7 @@ public class GuiNPCChat extends GuiNPCBase {
         Stats stats = HFTrackers.getClientPlayerTracker().getStats();
         String npcLover = npc.getLover() != null ? npc.getLover().getNPC().getLocalizedName() : TextHelper.translate("nolover");
         String playerLover = HFTrackers.getClientPlayerTracker().getRelationships().getLover();
-        return String.format(string, stats.getGold(), playerLover, npcLover, player.getDisplayNameString(), npc.getNPC().getLocalizedName());
+        return Util.safeFormat(string, stats.getGold(), playerLover, npcLover, player.getDisplayNameString(), npc.getNPC().getLocalizedName());
     }
 
     public GuiNPCChat(ContainerBase container, EntityPlayer player, EntityNPC npc) {

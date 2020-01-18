@@ -6,6 +6,7 @@ import joshie.harvest.api.core.Size;
 import joshie.harvest.core.HFTab;
 import joshie.harvest.core.helpers.TextHelper;
 import joshie.harvest.core.lib.CreativeSort;
+import joshie.harvest.core.util.Util;
 import joshie.harvest.core.util.interfaces.ISizeable;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
@@ -93,7 +94,7 @@ public class ItemHFSizeable<I extends ItemHFFoodEnum, E extends Enum<E> & IStrin
         String size = TextHelper.translate("sizeable." + getSize(stack).name().toLowerCase(Locale.ENGLISH));
         String name = TextHelper.translate(prefix + "." + getEnumFromStack(stack).getName());
         String format = TextHelper.translate("sizeable.format");
-        return String.format(format, size, name);
+        return Util.safeFormat(format, size, name);
     }
 
     @Override

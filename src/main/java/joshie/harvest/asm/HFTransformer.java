@@ -5,9 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import joshie.harvest.asm.transformers.AbstractASM;
-import joshie.harvest.asm.transformers.FishingTransformer;
 import joshie.harvest.asm.transformers.PlayerWakeTransformer;
-import joshie.harvest.asm.transformers.RenderRainTransformer;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin.SortingIndex;
 

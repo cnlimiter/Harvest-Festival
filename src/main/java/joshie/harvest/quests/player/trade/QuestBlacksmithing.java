@@ -17,7 +17,6 @@ import joshie.harvest.mining.item.ItemMaterial.Material;
 import joshie.harvest.npcs.HFNPCs;
 import joshie.harvest.quests.base.QuestTrade;
 import joshie.harvest.tools.HFTools;
-import joshie.harvest.tools.ToolHelper;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;

@@ -10,6 +10,7 @@ import joshie.harvest.core.helpers.MCClientHelper;
 import joshie.harvest.core.helpers.StackRenderHelper;
 import joshie.harvest.core.helpers.TextHelper;
 import joshie.harvest.core.lib.HFModInfo;
+import joshie.harvest.core.util.Util;
 import joshie.harvest.npcs.NPCHelper;
 import joshie.harvest.npcs.entity.EntityNPC;
 import joshie.harvest.npcs.gui.GuiNPCBase;
@@ -253,7 +254,7 @@ public class GuiNPCShop extends GuiNPCBase {
         long remainder = cost % 1000;
         int decimal = remainder == 0 ? 0 : remainder % 100 == 0 ? 1: remainder %10 == 0 ? 2: 3;
         int exp = (int) (Math.log(cost) / Math.log(1000));
-        return String.format("%." + decimal + "f%c", cost / Math.pow(1000, exp), "kMGTPE".charAt(exp-1));
+        return Util.safeFormat("%." + decimal + "f%c", cost / Math.pow(1000, exp), "kMGTPE".charAt(exp-1));
     }
 
     private static final DecimalFormat formatter = new DecimalFormat("#,###");
