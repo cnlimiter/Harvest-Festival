@@ -12,11 +12,14 @@ import joshie.harvest.core.util.annotations.HFLoader;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.DimensionType;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 import static joshie.harvest.core.helpers.ConfigHelper.*;
 import static joshie.harvest.core.lib.LoadOrder.HFCALENDAR;
+
+import java.lang.reflect.Field;
 
 @HFLoader(priority = HFCALENDAR)
 public class HFCalendar {

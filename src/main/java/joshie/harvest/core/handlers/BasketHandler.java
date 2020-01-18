@@ -111,7 +111,7 @@ public class BasketHandler {
                 player.setHeldItem(EnumHand.MAIN_HAND, basket);
                 TileEntity tile = (((ItemBlockStorage) basket.getItem()).onBasketUsed(basket, player, player.world, event.getPos(), EnumHand.MAIN_HAND, event.getFace(), 0F, 0F, 0F));
                 if (tile instanceof TileBasket) {
-                    ((TileBasket) tile).setAppearanceAndContents(((EntityBasket) entity).getEntityItem(), ((EntityBasket) entity).handler);
+                    ((TileBasket) tile).setAppearanceAndContents(((EntityBasket) entity).getEntityItem().copy(), ((EntityBasket) entity).handler);
                     set.add(entity);
                     entity.setDead();
                 }

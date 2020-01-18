@@ -27,7 +27,13 @@ import net.minecraftforge.items.ItemStackHandler;
 
 public class EntityBasket extends Entity {
     public static final DataParameter<ItemStack> ITEM = EntityDataManager.createKey(EntityItem.class, DataSerializers.ITEM_STACK);
-    public final ItemStackHandler handler = new ItemStackHandler(BASKET_INVENTORY);
+    public final ItemStackHandler handler = new ItemStackHandler(BASKET_INVENTORY) {
+        protected void onContentsChanged(int slot) {
+            if (stacks.stream().allMatch(ItemStack::isEmpty)) {
+                getDataManager().set(ITEM, ItemStack.EMPTY);
+            }
+        };
+    };
 
     public EntityBasket(World worldIn) {
         super(worldIn);
@@ -40,7 +46,6 @@ public class EntityBasket extends Entity {
 
     public void setAppearanceAndContents(@Nonnull ItemStack stack, ItemStackHandler handler) {
         getDataManager().set(ITEM, stack);
-        getDataManager().setDirty(ITEM);
         for (int i = 0; i < handler.getSlots(); i++) {
             this.handler.setStackInSlot(i, handler.getStackInSlot(i));
         }
@@ -126,7 +131,6 @@ public class EntityBasket extends Entity {
                 EntityBasket basket = (EntityBasket) entity;
                 if (list.size() > 0) {
                     basket.getDataManager().set(ITEM, list.get(list.size() - 1).copy());
-                    basket.getDataManager().setDirty(ITEM);
                 }
 
                 return basket.autoship(list);
