@@ -1349,7 +1349,7 @@ harvestfestival.npc.fenn.festival.starry.night1=今晚妈妈会不会回来煮�
 harvestfestival.npc.fenn.festival.starry.night2=我们今天晚上都穿得非常的正式，不过我一直不明白为什么。
 
 #Jim/SpitefulFox
-harvestfestival.npc.jim.shop=养鸡场每周一到周六的10:00到15:00营业。
+harvestfestival.npc.jim.shop=饲养场每周一到周六的10:00到15:00营业。
 harvestfestival.npc.jim.greeting1=你最喜欢的动物是什么？我喜欢狐狸，这些磨人的小妖精。
 harvestfestival.npc.jim.greeting2=如果你想要让你的动物生宝宝，可以随时来找我!
 harvestfestival.npc.jim.greeting3=最近我一直在调整自己喂鸡的方法，这是个有教育意义的经验。
@@ -1677,7 +1677,7 @@ harvestfestival.shop.kitchen.greeting3=我现在购买一些食物，总会派�
 #Animal Ranch
 harvestfestival.shop.barn=饲养场
 harvestfestival.shop.barn.sign1=周一开放至...
-harvestfestival.shop.barn.sign2=周六从...
+harvestfestival.shop.barn.sign2=周六...
 harvestfestival.shop.barn.sign3=10:00-15:00
 harvestfestival.shop.barn.greeting1=我们不止出售动物，还有强有力的支持！
 harvestfestival.shop.barn.greeting2=欢迎光临，您还需要点什么？
