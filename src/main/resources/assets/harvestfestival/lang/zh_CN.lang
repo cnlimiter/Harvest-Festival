@@ -16,8 +16,8 @@ hf.commands.help.header=--- 显示丰收物语.帮助界面 %d of %d (/hf.help <
 
 #Tooltips
 harvestfestival.tooltip.cosmetic=装饰
-harvestfestival.tooltip.mythic_stone=用于升级
 harvestfestival.tooltip.flower=女神的召唤物
+harvestfestival.tooltip.mailbox=潜行放置在栅栏侧面
 
 #Animals
 harvestfestival.spawner.tooltip=按住shift键来产出宝宝
