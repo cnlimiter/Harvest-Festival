@@ -72,19 +72,21 @@ public class PurchasableEntity implements IPurchasable {
             loaded = true;
             EntityAnimal animal = createEntity(MCClientHelper.getWorld());
             AnimalStats stats = EntityHelper.getStats(animal);
-            if (stats != null && stats.performTest(AnimalTest.CAN_CARRY)) carry = true;
+            if (stats != null && stats.performTest(AnimalTest.CAN_CARRY))
+                carry = true;
         }
 
         if (carry) {
             list.add(TextHelper.translate("check.head"));
-        } else list.add(TextHelper.translate("check.lead"));
+        } else
+            list.add(TextHelper.translate("check.lead"));
     }
 
     public EntityAnimal createEntity(World world) {
         EntityAnimal entity = null;
         try {
             if (eClass != null) {
-                entity = (EntityAnimal) eClass.getConstructor(new Class[]{World.class}).newInstance(world);
+                entity = (EntityAnimal) eClass.getConstructor(new Class[] { World.class }).newInstance(world);
             }
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -96,30 +98,35 @@ public class PurchasableEntity implements IPurchasable {
     @Override
     public void onPurchased(EntityPlayer aPlayer) {
         if (!aPlayer.world.isRemote) {
-            EntityPlayerMP player = (EntityPlayerMP)aPlayer;
+            EntityPlayerMP player = (EntityPlayerMP) aPlayer;
             EntityAnimal theEntity = createEntity(player.world);
             if (theEntity != null) {
                 theEntity.setPosition(player.posX, player.posY, player.posZ);
-                AnimalStats stats = EntityHelper.getStats(theEntity);
-                if (stats != null) {
-                    if (stats.performTest(AnimalTest.CAN_CARRY)) {
-                        if (player.getPassengers().size() == 0) theEntity.startRiding(player, true);
-                    } else theEntity.setLeashHolder(theEntity, false);
-                }
 
                 //Spawn the entity
                 player.world.spawnEntity(theEntity);
 
+                AnimalStats stats = EntityHelper.getStats(theEntity);
+                if (stats != null && theEntity.canBeLeashedTo(player)) {
+                    if (stats.performTest(AnimalTest.CAN_CARRY)) {
+                        if (player.getPassengers().size() == 0)
+                            theEntity.startRiding(player, true);
+                    } else
+                        theEntity.setLeashHolder(player, true);
+                }
+
                 //Notify the client
-                if (stats != null) {
+                if (stats != null && theEntity.canBeLeashedTo(player)) {
                     if (stats.performTest(AnimalTest.CAN_CARRY)) {
                         player.connection.sendPacket(new SPacketSetPassengers(player));
-                    } else theEntity.setLeashHolder(theEntity, true);
+                    } else
+                        theEntity.setLeashHolder(player, true);
                 }
             }
         }
 
-        if (note != null) HFApi.player.getTrackingForPlayer(aPlayer).learnNote(note);
+        if (note != null)
+            HFApi.player.getTrackingForPlayer(aPlayer).learnNote(note);
         HFApi.player.getTrackingForPlayer(aPlayer).learnNote(HFNotes.ANIMAL_HAPPINESS);
         HFApi.player.getTrackingForPlayer(aPlayer).learnNote(HFNotes.ANIMAL_STRESS);
     }
