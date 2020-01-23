@@ -221,8 +221,8 @@ public class BlockStorage extends BlockHFEnumRotatableTile<BlockStorage, Storage
                     {
                         basket.setAppearanceAndContents(((TileBasket) tile).getStack(), ((TileBasket) tile).handler);
                     }
-
                     world.spawnEntity(basket);
+
                     world.setBlockToAir(pos); //Remove the basket
                     basket.startRiding(player, true);
                     ((EntityPlayerMP) player).connection.sendPacket(new SPacketSetPassengers(player)); // why?
@@ -285,7 +285,7 @@ public class BlockStorage extends BlockHFEnumRotatableTile<BlockStorage, Storage
     public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase entity, @Nonnull ItemStack stack, EnumFacing facing)
     {
         TileEntity tile = world.getTileEntity(pos);
-        if (entity instanceof EntityPlayer & tile instanceof TileShipping)
+        if (entity instanceof EntityPlayer && tile instanceof TileShipping)
         {
             super.onBlockPlacedBy(world, pos, state, entity, stack);
             ((TileShipping) tile).setOwner(EntityHelper.getPlayerUUID((EntityPlayer) entity));

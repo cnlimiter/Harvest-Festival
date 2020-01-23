@@ -3,6 +3,7 @@ package joshie.harvest.core.render;
 import joshie.harvest.core.base.render.TileSpecialRendererItem;
 import joshie.harvest.core.tile.TileBasket;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -14,10 +15,12 @@ public class SpecialRendererBasket extends TileSpecialRendererItem<TileBasket> {
     public void render(@Nonnull TileBasket tile, double x, double y, double z, float tick, int destroyStage, float alpha) {
         GlStateManager.pushMatrix();
         GlStateManager.translate(x, y, z);
-        if (!tile.getStack().isEmpty()) {
-            renderItem(tile.getStack(), 0F, 0F, 0F, 0F);
-            renderItem(tile.getStack(), 1F, 0F, 0F, 0F);
-            renderItem(tile.getStack(), 2F, 0F, 0F, 0F);
+        ItemStack itemstack = tile.getStack();
+        if (!itemstack.isEmpty()) {
+            int i = Math.min(3, itemstack.getCount());
+            for (int j = 0; j < i; j++) {
+                renderItem(itemstack, i, 0F, 0F, 0F);
+            }
         }
 
         GlStateManager.popMatrix();

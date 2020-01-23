@@ -29,9 +29,17 @@ public class EntityBasket extends Entity {
     public static final DataParameter<ItemStack> ITEM = EntityDataManager.createKey(EntityItem.class, DataSerializers.ITEM_STACK);
     public final ItemStackHandler handler = new ItemStackHandler(BASKET_INVENTORY) {
         protected void onContentsChanged(int slot) {
-            if (stacks.stream().allMatch(ItemStack::isEmpty)) {
-                getDataManager().set(ITEM, ItemStack.EMPTY);
+            if (!getStackInSlot(slot).isEmpty()) {
+                getDataManager().set(ITEM, getStackInSlot(slot));
+                return;
             }
+            for (ItemStack stack2 : stacks) {
+                if (!stack2.isEmpty()) {
+                    getDataManager().set(ITEM, stack2);
+                    return;
+                }
+            }
+            getDataManager().set(ITEM, ItemStack.EMPTY);
         };
     };
 
