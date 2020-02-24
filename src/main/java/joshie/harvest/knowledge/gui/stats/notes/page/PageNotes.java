@@ -1,5 +1,13 @@
 package joshie.harvest.knowledge.gui.stats.notes.page;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.annotation.Nonnull;
+
+import org.apache.commons.lang3.text.WordUtils;
+
 import joshie.harvest.api.knowledge.Category;
 import joshie.harvest.api.knowledge.Note;
 import joshie.harvest.api.knowledge.NoteRender;
@@ -18,12 +26,6 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiLabel;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextFormatting;
-import org.apache.commons.lang3.text.WordUtils;
-
-import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class PageNotes extends BookPage<GuiStats> {
     public static Note note = HFNotes.BLUEPRINTS;
@@ -46,11 +48,14 @@ public class PageNotes extends BookPage<GuiStats> {
     public static void setNote(Note note) {
         PageNotes.note = note;
         PageNotes.page = 0;
-        String[] split = WordUtils.wrap(note.getDescription(), 26, "\n", false).split("\n");
-        if (split.length < 20) PageNotes.split = null;
-        else {
-            PageNotes.split = split;
-            pages = split.length / 18;
+        try {
+            String[] split = WordUtils.wrap(note.getDescription(), 26, "\n", false).split("\n");
+            if (split.length < 20) PageNotes.split = null;
+            else {
+                PageNotes.split = split;
+                pages = split.length / 18;
+            }
+        } catch (Exception e) {
         }
 
         MCClientHelper.initGui();
