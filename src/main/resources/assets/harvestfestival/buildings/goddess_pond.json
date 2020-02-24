@@ -2750,18 +2750,8 @@
       "type": "blocks.Double"
     },
     {
-      "state": "harvestfestival:goddess_water 9",
-      "pos": "11 3 12",
-      "type": "blocks.Decorative"
-    },
-    {
       "state": "stone",
       "pos": "11 3 11"
-    },
-    {
-      "state": "harvestfestival:goddess_water 9",
-      "pos": "11 3 10",
-      "type": "blocks.Decorative"
     },
     {
       "state": "sand",
@@ -2803,16 +2793,6 @@
     {
       "state": "vine 4",
       "pos": "12 3 9",
-      "type": "blocks.Decorative"
-    },
-    {
-      "state": "harvestfestival:goddess_water 10",
-      "pos": "12 3 10",
-      "type": "blocks.Decorative"
-    },
-    {
-      "state": "harvestfestival:goddess_water 9",
-      "pos": "12 3 11",
       "type": "blocks.Decorative"
     },
     {
@@ -3110,18 +3090,8 @@
       "pos": "10 4 9"
     },
     {
-      "state": "harvestfestival:goddess_water 9",
-      "pos": "10 4 10",
-      "type": "blocks.Decorative"
-    },
-    {
       "state": "stone",
       "pos": "10 4 11"
-    },
-    {
-      "state": "harvestfestival:goddess_water 9",
-      "pos": "10 4 12",
-      "type": "blocks.Decorative"
     },
     {
       "state": "stone",
@@ -3152,21 +3122,6 @@
     {
       "state": "red_flower 4",
       "pos": "11 4 14",
-      "type": "blocks.Decorative"
-    },
-    {
-      "state": "harvestfestival:goddess_water 1",
-      "pos": "11 4 12",
-      "type": "blocks.Decorative"
-    },
-    {
-      "state": "harvestfestival:goddess_water 9",
-      "pos": "11 4 11",
-      "type": "blocks.Decorative"
-    },
-    {
-      "state": "harvestfestival:goddess_water 1",
-      "pos": "11 4 10",
       "type": "blocks.Decorative"
     },
     {
@@ -3202,16 +3157,6 @@
     {
       "state": "vine 4",
       "pos": "12 4 9",
-      "type": "blocks.Decorative"
-    },
-    {
-      "state": "harvestfestival:goddess_water 2",
-      "pos": "12 4 10",
-      "type": "blocks.Decorative"
-    },
-    {
-      "state": "harvestfestival:goddess_water 1",
-      "pos": "12 4 11",
       "type": "blocks.Decorative"
     },
     {
@@ -3447,21 +3392,6 @@
       "type": "blocks.Decorative"
     },
     {
-      "state": "harvestfestival:goddess_water 1",
-      "pos": "10 5 10",
-      "type": "blocks.Decorative"
-    },
-    {
-      "state": "harvestfestival:goddess_water 9",
-      "pos": "10 5 11",
-      "type": "blocks.Decorative"
-    },
-    {
-      "state": "harvestfestival:goddess_water 1",
-      "pos": "10 5 12",
-      "type": "blocks.Decorative"
-    },
-    {
       "state": "vine 2",
       "pos": "10 5 13",
       "type": "blocks.Decorative"
@@ -3493,11 +3423,6 @@
     },
     {
       "pos": "11 5 12"
-    },
-    {
-      "state": "harvestfestival:goddess_water 1",
-      "pos": "11 5 11",
-      "type": "blocks.Decorative"
     },
     {
       "pos": "11 5 10"
@@ -3706,11 +3631,6 @@
     {
       "state": "vine 2",
       "pos": "10 6 10",
-      "type": "blocks.Decorative"
-    },
-    {
-      "state": "harvestfestival:goddess_water 1",
-      "pos": "10 6 11",
       "type": "blocks.Decorative"
     },
     {
