@@ -4,13 +4,14 @@ import com.google.gson.annotations.Expose;
 import joshie.harvest.buildings.placeable.Placeable;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class PlaceableBlock extends Placeable {
     @Expose
-    protected IBlockState state;
+    protected IBlockState state = Blocks.AIR.getDefaultState();
 
     public PlaceableBlock() {}
     public PlaceableBlock(IBlockState state, int x, int y, int z) {
