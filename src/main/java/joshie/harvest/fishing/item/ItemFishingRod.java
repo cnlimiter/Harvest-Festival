@@ -90,6 +90,7 @@ public class ItemFishingRod extends ItemTool<ItemFishingRod> {
                 world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_BOBBER_THROW, SoundCategory.NEUTRAL, 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
                 if (!world.isRemote) {
                     EntityFishHookHF entityfishhook = new EntityFishHookHF(world, player);
+                    System.out.println(entityfishhook);
                     ToolTier tier = getTier(stack);
                     //Lure replacement
                     int j = (tier.getToolLevel() + 1) * (getBaitAmount(stack) > 0 ? 2 : 1);

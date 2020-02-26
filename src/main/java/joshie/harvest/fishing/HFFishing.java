@@ -1,5 +1,23 @@
 package joshie.harvest.fishing;
 
+import static joshie.harvest.api.calendar.Season.AUTUMN;
+import static joshie.harvest.api.calendar.Season.SPRING;
+import static joshie.harvest.api.calendar.Season.SUMMER;
+import static joshie.harvest.api.calendar.Season.WINTER;
+import static joshie.harvest.cooking.HFCooking.COOKING_SELL_MODIFIER;
+import static joshie.harvest.core.helpers.RegistryHelper.registerOreIfNotExists;
+import static joshie.harvest.core.helpers.RegistryHelper.registerTiles;
+import static joshie.harvest.core.lib.HFModInfo.MODID;
+import static joshie.harvest.fishing.FishingHelper.WaterType.LAKE;
+import static joshie.harvest.fishing.FishingHelper.WaterType.OCEAN;
+import static joshie.harvest.fishing.FishingHelper.WaterType.POND;
+import static joshie.harvest.fishing.FishingHelper.WaterType.RIVER;
+
+import java.util.EnumMap;
+import java.util.Locale;
+
+import org.apache.commons.lang3.tuple.Pair;
+
 import joshie.harvest.HarvestFestival;
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.calendar.Season;
@@ -19,11 +37,12 @@ import joshie.harvest.fishing.item.ItemJunk.Junk;
 import joshie.harvest.fishing.loot.ConditionTier;
 import joshie.harvest.fishing.loot.ConditionTime;
 import joshie.harvest.fishing.loot.SetWeight;
+import joshie.harvest.fishing.render.RenderFishHook;
 import joshie.harvest.fishing.render.SpecialRendererHatchery;
 import joshie.harvest.fishing.render.SpecialRendererTrap;
 import joshie.harvest.fishing.tile.TileHatchery;
 import joshie.harvest.fishing.tile.TileTrap;
-import net.minecraft.client.renderer.entity.RenderFish;
+import net.minecraft.entity.projectile.EntityFishHook;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemFishFood.FishType;
 import net.minecraft.item.ItemStack;
@@ -36,17 +55,6 @@ import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.apache.commons.lang3.tuple.Pair;
-
-import java.util.EnumMap;
-import java.util.Locale;
-
-import static joshie.harvest.api.calendar.Season.*;
-import static joshie.harvest.cooking.HFCooking.COOKING_SELL_MODIFIER;
-import static joshie.harvest.core.helpers.RegistryHelper.registerOreIfNotExists;
-import static joshie.harvest.core.helpers.RegistryHelper.registerTiles;
-import static joshie.harvest.core.lib.HFModInfo.MODID;
-import static joshie.harvest.fishing.FishingHelper.WaterType.*;
 
 @HFLoader
 @SuppressWarnings("unused")
@@ -57,13 +65,13 @@ public class HFFishing {
     public static final BlockAquatic AQUATIC_BLOCKS = new BlockAquatic().register("aquatic");
     public static final BlockFloating FLOATING_BLOCKS = new BlockFloating().register("floating");
     static {
-        for (ToolTier tier: ToolTier.values()) {
+        for (ToolTier tier : ToolTier.values()) {
             FISHING_RODS.put(tier, new ItemFishingRod(tier).register("fishing_rod_" + tier.name().toLowerCase(Locale.ENGLISH)));
         }
     }
 
     @SuppressWarnings("unchecked, ConstantConditions")
-    public static void preInit(){
+    public static void preInit() {
         LootFunctionManager.registerFunction(new SetWeight.Serializer());
         LootConditionManager.registerCondition(new ConditionTime.Serializer());
         LootConditionManager.registerCondition(new ConditionTier.Serializer());
@@ -80,23 +88,23 @@ public class HFFishing {
 
         FishingAPI.INSTANCE.breeding.register(Ore.of("fish"), 3);
         //Register vanilla fish
-        for (FishType fish: FishType.values()) {
+        for (FishType fish : FishType.values()) {
             registerOreIfNotExists("fish", new ItemStack(Items.FISH, 1, fish.getMetadata()));
         }
 
         //Register my fish
-        for (Fish fish: Fish.values()) {
+        for (Fish fish : Fish.values()) {
             registerOreIfNotExists("fish", FISH.getStackFromEnum(fish));
         }
     }
 
     @SideOnly(Side.CLIENT)
     public static void preInitClient() throws Exception {
-        RenderingRegistry.registerEntityRenderingHandler(EntityFishHookHF.class, RenderFish::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityFishHook.class, RenderFishHook::new);
     }
 
     public static void init() {
-        for (ToolTier tier: ToolTier.values()) {
+        for (ToolTier tier : ToolTier.values()) {
             HFApi.npc.getGifts().addToBlacklist(FISHING_RODS.get(tier));
         }
 

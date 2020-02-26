@@ -20,7 +20,7 @@ import net.minecraftforge.fml.relauncher.Side;
 public class RenderBait {
     @SubscribeEvent
     public void onTooltipRender(RenderTooltipEvent.PostText event) {
-        if (event.getStack() == null || Minecraft.getMinecraft().currentScreen == null) return; //Do nothing if stack is null
+        if (event.getStack().isEmpty() || Minecraft.getMinecraft().currentScreen == null) return; //Do nothing if stack is null
         ItemStack stack = event.getStack();
         if (stack.getItem() instanceof ItemFishingRod) {
             int amount = ((ItemFishingRod)stack.getItem()).getBaitAmount(stack);
