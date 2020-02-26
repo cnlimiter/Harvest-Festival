@@ -119,10 +119,8 @@ public class RenderBasket extends Render<EntityBasket> {
 
         if (!flag1)
         {
-            float f3 = -0.0F * (j - 1) * 0.5F;
-            float f4 = -0.0F * (j - 1) * 0.5F;
             float f5 = -0.09375F * (j - 1) * 0.5F;
-            GlStateManager.translate(f3, f4, f5);
+            GlStateManager.translate(0, 0, f5);
         }
 
         if (this.renderOutlines)

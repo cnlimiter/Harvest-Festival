@@ -1,13 +1,13 @@
 package joshie.harvest.core.render;
 
+import javax.annotation.Nonnull;
+
 import joshie.harvest.core.base.render.TileSpecialRendererItem;
 import joshie.harvest.core.tile.TileBasket;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import javax.annotation.Nonnull;
 
 @SideOnly(Side.CLIENT)
 public class SpecialRendererBasket extends TileSpecialRendererItem<TileBasket> {
@@ -17,9 +17,14 @@ public class SpecialRendererBasket extends TileSpecialRendererItem<TileBasket> {
         GlStateManager.translate(x, y, z);
         ItemStack itemstack = tile.getStack();
         if (!itemstack.isEmpty()) {
+            GlStateManager.translate(0.55F, 0.3F, 0.2F);
+            GlStateManager.rotate(90, 0F, 0F, 1F);
+            GlStateManager.scale(0.5F, 0.5F, 0.5F);
+            GlStateManager.rotate(-90, 0F, 0F, 1F);
             int i = Math.min(3, itemstack.getCount());
             for (int j = 0; j < i; j++) {
-                renderItem(itemstack, i, 0F, 0F, 0F);
+                GlStateManager.translate(0, 0, 0.3);
+                renderItem(itemstack, j, 0F, 0F, 0F);
             }
         }
 
@@ -27,14 +32,5 @@ public class SpecialRendererBasket extends TileSpecialRendererItem<TileBasket> {
     }
 
     @Override
-    protected void translateItem(boolean isBlock, float position, float rotation, float offset1, float offset2) {
-        if (position == 0F) GlStateManager.translate(0.55F, 0.3F, 0.5F);
-        else if (position == 1F) GlStateManager.translate(0.45F, 0.3F, 0.3F);
-        else if (position == 2F) GlStateManager.translate(0.45F, 0.3F, -0.4F);
-        GlStateManager.rotate(90, 0F, 0F, 1F);
-        GlStateManager.scale(0.5F, 0.5F, 0.5F);
-        GlStateManager.rotate(rotation, 1F, 0F, 0F);
-        GlStateManager.rotate(-90, 0F, 0F, 1F);
-        GlStateManager.translate(offset1 * 3F, offset2 * 3.5F, position * 0.75F);
-    }
+    protected void translateItem(boolean isBlock, float position, float rotation, float offset1, float offset2) {}
 }
