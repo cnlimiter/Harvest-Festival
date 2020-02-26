@@ -6,7 +6,6 @@ import joshie.harvest.core.util.annotations.HFLoader;
 import joshie.harvest.plugins.crafttweaker.command.HFCommandNPC;
 import joshie.harvest.plugins.crafttweaker.command.HFCommandPurchasable;
 import joshie.harvest.plugins.crafttweaker.command.HFCommandShops;
-import joshie.harvest.plugins.crafttweaker.handlers.*;
 import joshie.harvest.plugins.crafttweaker.wrappers.RequirementItemWrapper;
 import joshie.harvest.plugins.crafttweaker.wrappers.RequirementOreWrapper;
 import net.minecraft.block.Block;

@@ -24,7 +24,7 @@ public class PurchasableTrade extends PurchasableMaterials {
 
     public PurchasableTrade(@Nonnull ItemStack stack, Sizeable sizeable) {
         super(0, stack);
-        this.requirement = new RequirementSizeable(this, sizeable);
+        this.requirement = new RequirementSizeable(sizeable);
         this.requirements = new IRequirement[] { requirement };
         this.large = StackHelper.toStack(stack, 3);
         this.medium = StackHelper.toStack(stack, 2);

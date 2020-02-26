@@ -18,11 +18,8 @@ public class RequirementSizeable implements IRequirement {
     private final ItemStack large;
     private final ItemStack medium;
     private final ItemStack small;
-    private PurchasableTrade ticker;
-    private int amount;
 
-    public RequirementSizeable(PurchasableTrade ticker, Sizeable sizeable) {
-        this.ticker = ticker;
+    public RequirementSizeable(Sizeable sizeable) {
         this.large = HFAnimals.ANIMAL_PRODUCT.getStack(sizeable, Size.LARGE);
         this.medium = HFAnimals.ANIMAL_PRODUCT.getStack(sizeable, Size.MEDIUM);
         this.small = HFAnimals.ANIMAL_PRODUCT.getStack(sizeable, Size.SMALL);

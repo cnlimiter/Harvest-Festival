@@ -94,7 +94,7 @@ public abstract class EntityNPCHuman<E extends EntityNPCHuman> extends EntityNPC
         if (!world.isRemote) {
             //Respawn a new bugger
             if (npc.respawns()) {
-                this.<TownDataServer>getHomeTown().markNPCDead(getNPC().getResource(), new BlockPos(this));
+                this.getHomeTown().markNPCDead(getNPC().getResource(), new BlockPos(this));
                 HFTrackers.markTownsDirty(); //Mark this npc as dead, ready for tomorrow to be reborn
             }
         }

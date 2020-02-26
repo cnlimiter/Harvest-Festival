@@ -14,7 +14,6 @@ import joshie.harvest.api.player.RelationshipType;
 import joshie.harvest.core.network.PacketHandler;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.passive.EntityAnimal;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -25,7 +24,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 import javax.annotation.Nonnull;
-import java.lang.ref.WeakReference;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Random;
 
@@ -33,7 +31,6 @@ import static joshie.harvest.core.network.PacketHandler.sendToEveryone;
 
 public class AnimalStatsHF implements AnimalStats<NBTTagCompound> {
     protected static final Random rand = new Random();
-    private WeakReference<EntityPlayer> owner;
     protected EntityAnimal animal;
     protected IAnimalType type;
     private int currentLifespan = 0; //How many days this animal has lived for

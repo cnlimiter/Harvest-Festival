@@ -4,7 +4,6 @@ import joshie.harvest.core.HFCore;
 import joshie.harvest.core.block.BlockStorage.Storage;
 import joshie.harvest.core.entity.EntityBasket;
 import joshie.harvest.core.lib.HFModInfo;
-import joshie.harvest.core.tile.TileBasket;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.*;

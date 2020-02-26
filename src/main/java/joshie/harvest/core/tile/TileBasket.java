@@ -2,14 +2,11 @@ package joshie.harvest.core.tile;
 
 import joshie.harvest.core.base.tile.TileSingleStack;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 public class TileBasket extends TileSingleStack {
     public static final int BASKET_INVENTORY = 27;

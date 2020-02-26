@@ -22,7 +22,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.WorldServerMulti;
 import net.minecraft.world.storage.loot.LootContext;
-import net.minecraft.world.storage.loot.LootTable;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
@@ -68,7 +67,6 @@ public class MiningHelper {
         LootContext.Builder builder = new LootContext.Builder((WorldServer) world);
         builder.withLuck(player.getLuck() + luck);
         builder.withPlayer(player);
-        LootTable table = world.getLootTableManager().getLootTableFromLocation(loot);
         drops.addAll(world.getLootTableManager().getLootTableFromLocation(loot).generateLootForPools(world.rand, builder.build()));
     }
 

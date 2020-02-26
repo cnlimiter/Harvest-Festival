@@ -28,6 +28,7 @@ import net.minecraftforge.items.ItemStackHandler;
 public class EntityBasket extends Entity {
     public static final DataParameter<ItemStack> ITEM = EntityDataManager.createKey(EntityItem.class, DataSerializers.ITEM_STACK);
     public final ItemStackHandler handler = new ItemStackHandler(BASKET_INVENTORY) {
+        @Override
         protected void onContentsChanged(int slot) {
             if (!getStackInSlot(slot).isEmpty()) {
                 getDataManager().set(ITEM, getStackInSlot(slot));
