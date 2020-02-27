@@ -19,6 +19,7 @@ import joshie.harvest.api.HFApi;
 import joshie.harvest.api.core.ITiered.ToolTier;
 import joshie.harvest.core.base.item.ItemTool;
 import joshie.harvest.core.util.annotations.HFLoader;
+import joshie.harvest.fishing.HFFishing;
 import joshie.harvest.tools.item.ItemAxe;
 import joshie.harvest.tools.item.ItemHammer;
 import joshie.harvest.tools.item.ItemHoe;
@@ -53,6 +54,7 @@ public class HFTools {
         TOOLTYPE_MAP.put("sickle", SICKLES);
         TOOLTYPE_MAP.put("hoe", HOES);
         TOOLTYPE_MAP.put("watering_can", WATERING_CANS);
+        TOOLTYPE_MAP.put("fishing_rod", HFFishing.FISHING_RODS);
     }
 
     //Potion Effects
