@@ -1,5 +1,11 @@
 package joshie.harvest.tools.item;
 
+import java.util.Collections;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.crops.IStateHandler.PlantSection;
 import joshie.harvest.core.HFCore;
@@ -20,7 +26,13 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.*;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.TextFormatting;
@@ -35,16 +47,11 @@ import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.HashSet;
-import java.util.List;
-
 public class ItemWateringCan extends ItemTool<ItemWateringCan> {
     private static final double MAX_WATER = 128D;
 
     public ItemWateringCan(ToolTier tier) {
-        super(tier, "watering_can", new HashSet<>());
+        super(tier, "watering_can", Collections.EMPTY_SET);
     }
 
     @Override
@@ -55,45 +62,45 @@ public class ItemWateringCan extends ItemTool<ItemWateringCan> {
     @Override
     public int getFront(ToolTier tier) {
         switch (tier) {
-            case BASIC:
-            case COPPER:
-                return 0;
-            case SILVER:
-                return 2;
-            case GOLD:
-                return 2;
-            case MYSTRIL:
-                return 2;
-            case CURSED:
-            case BLESSED:
-                return 5;
-            case MYTHIC:
-                return 11;
-            default:
-                return 0;
+        case BASIC:
+        case COPPER:
+            return 0;
+        case SILVER:
+            return 2;
+        case GOLD:
+            return 2;
+        case MYSTRIL:
+            return 2;
+        case CURSED:
+        case BLESSED:
+            return 5;
+        case MYTHIC:
+            return 11;
+        default:
+            return 0;
         }
     }
 
     @Override
     public int getSides(ToolTier tier) {
         switch (tier) {
-            case BASIC:
-                return 0;
-            case COPPER:
-                return 1;
-            case SILVER:
-                return 1;
-            case GOLD:
-                return 2;
-            case MYSTRIL:
-                return 3;
-            case CURSED:
-            case BLESSED:
-                return 6;
-            case MYTHIC:
-                return 10;
-            default:
-                return 0;
+        case BASIC:
+            return 0;
+        case COPPER:
+            return 1;
+        case SILVER:
+            return 1;
+        case GOLD:
+            return 2;
+        case MYSTRIL:
+            return 3;
+        case CURSED:
+        case BLESSED:
+            return 6;
+        case MYTHIC:
+            return 10;
+        default:
+            return 0;
         }
     }
 
@@ -108,13 +115,22 @@ public class ItemWateringCan extends ItemTool<ItemWateringCan> {
         return (MAX_WATER - water) / MAX_WATER;
     }
 
-    //TODO: Make the damage bar render as blue
+    @Override
+    public boolean showDurabilityBar(@Nonnull ItemStack stack) {
+        return true;
+    }
+
+    @Override
+    public int getRGBDurabilityForDisplay(ItemStack stack) {
+        return 0x3147f4;
+    }
 
     @Override
     @Nonnull
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, @Nonnull EnumHand hand) {
         ItemStack stack = player.getHeldItem(hand);
-        if(attemptToFill(world, player, stack)) return new ActionResult<>(EnumActionResult.SUCCESS, stack);
+        if (attemptToFill(world, player, stack))
+            return new ActionResult<>(EnumActionResult.SUCCESS, stack);
         else {
             waterCrops(world, player, getMovingObjectPositionFromPlayer(world, player), stack, getTier(stack));
             return new ActionResult<>(EnumActionResult.SUCCESS, stack);
@@ -130,7 +146,8 @@ public class ItemWateringCan extends ItemTool<ItemWateringCan> {
                 getCapability(stack).drain(1, true);
             }
             return EnumActionResult.SUCCESS;
-        } else return EnumActionResult.FAIL;
+        } else
+            return EnumActionResult.FAIL;
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -152,8 +169,10 @@ public class ItemWateringCan extends ItemTool<ItemWateringCan> {
 
     private int getCapacity(@Nonnull ItemStack stack) {
         IFluidTankProperties properties = getCapability(stack).getTankProperties()[0];
-        if (properties.getContents() == null) return 0;
-        else return properties.getContents().amount;
+        if (properties.getContents() == null)
+            return 0;
+        else
+            return properties.getContents().amount;
     }
 
     private void waterCrops(World world, EntityPlayer player, @Nullable RayTraceResult result, ItemStack stack, ToolTier tier) {
@@ -177,7 +196,8 @@ public class ItemWateringCan extends ItemTool<ItemWateringCan> {
                             if (section != null) {
                                 int down = section == PlantSection.BOTTOM ? 1 : 2;
                                 hydrate(player, stack, world, position.down(down));
-                            } else hydrate(player, stack, world, position);
+                            } else
+                                hydrate(player, stack, world, position);
                         }
                     }
                 }
@@ -201,8 +221,7 @@ public class ItemWateringCan extends ItemTool<ItemWateringCan> {
 
     @Override
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
-        if (this.isInCreativeTab(tab))
-        {
+        if (this.isInCreativeTab(tab)) {
             ItemStack unleveled = new ItemStack(this);
             getCapability(unleveled).fill(new FluidStack(FluidRegistry.WATER, 128), true);
             items.add(unleveled);
