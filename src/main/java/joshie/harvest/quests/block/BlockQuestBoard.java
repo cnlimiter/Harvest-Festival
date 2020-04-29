@@ -1,5 +1,9 @@
 package joshie.harvest.quests.block;
 
+import java.util.Locale;
+
+import javax.annotation.Nonnull;
+
 import joshie.harvest.HarvestFestival;
 import joshie.harvest.api.quests.Quest;
 import joshie.harvest.core.HFTab;
@@ -23,9 +27,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import javax.annotation.Nonnull;
-import java.util.Locale;
 
 public class BlockQuestBoard extends BlockHFEnumRotatableMeta<BlockQuestBoard, QuestBlock> {
     private static final AxisAlignedBB WEST = new AxisAlignedBB(0.8D, 0D, 0D, 1.0D, 1D, 1D);
@@ -53,12 +54,16 @@ public class BlockQuestBoard extends BlockHFEnumRotatableMeta<BlockQuestBoard, Q
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
         EnumFacing facing = state.getValue(FACING);
         switch (facing) {
-            case NORTH: return BlockQuestBoard.NORTH;
-            case EAST: return BlockQuestBoard.EAST;
-            case WEST: return BlockQuestBoard.WEST;
-            case SOUTH: return BlockQuestBoard.SOUTH;
-            default:
-                return FULL_BLOCK_AABB;
+        case NORTH:
+            return BlockQuestBoard.NORTH;
+        case EAST:
+            return BlockQuestBoard.EAST;
+        case WEST:
+            return BlockQuestBoard.WEST;
+        case SOUTH:
+            return BlockQuestBoard.SOUTH;
+        default:
+            return FULL_BLOCK_AABB;
         }
     }
 
@@ -74,7 +79,11 @@ public class BlockQuestBoard extends BlockHFEnumRotatableMeta<BlockQuestBoard, Q
     @Nonnull
     @SuppressWarnings("ConstantConditions, deprecation")
     public IBlockState getActualState(@Nonnull IBlockState state, IBlockAccess world, BlockPos pos) {
-        TownData data = TownHelper.getClosestTownToBlockPos(world.getTileEntity(pos).getWorld(), pos, false);
+        TileEntity tile = world.getTileEntity(pos);
+        if (tile == null) {
+            return state;
+        }
+        TownData data = TownHelper.getClosestTownToBlockPos(tile.getWorld(), pos, false);
         Quest quest = data.getDailyQuest();
         if (quest != null && !data.getQuests().getCurrent().contains(quest)) {
             return state.withProperty(property, QuestBlock.ACTIVE);
@@ -106,20 +115,17 @@ public class BlockQuestBoard extends BlockHFEnumRotatableMeta<BlockQuestBoard, Q
     }
 
     @Override
-    public boolean isFullBlock(IBlockState state)
-    {
+    public boolean isFullBlock(IBlockState state) {
         return false;
     }
 
     @Override
-    public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos)
-    {
+    public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
         return false;
     }
 
     @Override
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
-    {
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
         return BlockFaceShape.UNDEFINED;
     }
 }

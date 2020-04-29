@@ -1,5 +1,7 @@
 package joshie.harvest.buildings.render;
 
+import java.util.Map.Entry;
+
 import joshie.harvest.api.buildings.Building;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -13,8 +15,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.Map.Entry;
 
 @SideOnly(Side.CLIENT)
 @SuppressWarnings("WeakerAccess")
@@ -31,10 +31,10 @@ public class BuildingRenderer {
     }
 
     protected void setupRender(BuildingAccess world) {
-        for (BlockRenderLayer layer: BlockRenderLayer.values()) {
+        for (BlockRenderLayer layer : BlockRenderLayer.values()) {
             BufferBuilder buffer = renderer.getWorldRendererByLayer(layer);
             buffer.begin(7, DefaultVertexFormats.BLOCK);
-            for (Entry<BlockPos, IBlockState> placeable: world.getBlockMap().entrySet()) {
+            for (Entry<BlockPos, IBlockState> placeable : world.getBlockMap().entrySet()) {
                 addRender(world, placeable.getValue(), placeable.getKey(), layer, buffer);
             }
         }
@@ -42,7 +42,12 @@ public class BuildingRenderer {
 
     void addRender(IBlockAccess world, IBlockState state, BlockPos pos, BlockRenderLayer layer, BufferBuilder buffer) {
         if (state.getBlock().canRenderInLayer(state, layer)) {
-            Minecraft.getMinecraft().getBlockRendererDispatcher().renderBlock(state, pos, world, buffer);
+            try {
+                Minecraft.getMinecraft().getBlockRendererDispatcher().renderBlock(state, pos, world, buffer);
+            } catch (Exception e) {
+                System.err.println(e);
+                //WTF
+            }
         }
     }
 
@@ -82,8 +87,10 @@ public class BuildingRenderer {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         BuildingRenderer renderer = (BuildingRenderer) o;
         return key != null ? key.equals(renderer.key) : renderer.key == null;
 
