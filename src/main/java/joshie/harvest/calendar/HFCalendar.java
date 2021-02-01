@@ -49,8 +49,9 @@ public class HFCalendar {
 
     public static void preInit() {
         try {
-            Field field = ObfuscationReflectionHelper.findField(DimensionType.class, "field_186077_g");
-            EnumHelper.setFailsafeFieldValue(field, DimensionType.OVERWORLD, HFWorldProvider.class);
+            ObfuscationReflectionHelper.setPrivateValue(DimensionType.class, DimensionType.OVERWORLD, HFWorldProvider.class, "field_186077_g");
+            // Field field = ObfuscationReflectionHelper.findField(DimensionType.class, "field_186077_g");
+            // EnumHelper.setFailsafeFieldValue(field, DimensionType.OVERWORLD, HFWorldProvider.class);
         } catch (Exception e) {
             e.printStackTrace();
         }
