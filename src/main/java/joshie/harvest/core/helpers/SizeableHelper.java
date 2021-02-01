@@ -19,6 +19,8 @@ public class SizeableHelper {
     public static NonNullList<ItemStack> getSizeablesForDisplay(AnimalStats stats, Sizeable type) {
         NonNullList<ItemStack> list = NonNullList.create();
         for (Size size: Size.values()) {
+            if (size == Size.NONE)
+                continue;
             int value = RelationshipType.ANIMAL.getMaximumRP() -(RelationshipType.ANIMAL.getMaximumRP() -(stats.getHappiness() - size.getRelationshipRequirement()));
             if (value > 0 || (size == Size.LARGE && stats.performTest(AnimalTest.WON_CONTEST) && stats.getHappiness() >= (Size.LARGE.getRelationshipRequirement() + 3000))) {
                 list.add(type.getStackOfSize(HFAnimals.ANIMAL_PRODUCT, size, stats.getProductsPerDay()));
@@ -26,7 +28,7 @@ public class SizeableHelper {
         }
 
         //Add the small size to the list, if we have none added
-        if (list.size() == 0) {
+        if (list.isEmpty()) {
             list.add(type.getStackOfSize(HFAnimals.ANIMAL_PRODUCT, Size.SMALL, stats.getProductsPerDay()));
         }
 

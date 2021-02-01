@@ -15,7 +15,7 @@ import static joshie.harvest.api.animals.AnimalFoodType.SEED;
 
 public class AnimalChicken extends AnimalAbstract {
     public AnimalChicken() {
-        super("chicken", 3, 10, SEED);
+        super("Chicken", 3, 10, SEED);
     }
 
     @Override

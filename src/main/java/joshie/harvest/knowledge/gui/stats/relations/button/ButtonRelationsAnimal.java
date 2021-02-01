@@ -98,7 +98,7 @@ public class ButtonRelationsAnimal extends ButtonBook<GuiStats> {
             for (int i = 0; i < 9; i++) {
                 drawTexturedModalRect(x + 24 + 10 * i, y + 6, 16, 0, 9, 9);
                 if (i < hearts) {
-                    drawTexturedModalRect(x + 24 + + 10 * i, y + 6, 52, 0, 9, 9);
+                    drawTexturedModalRect(x + 24 + 10 * i, y + 6, 52, 0, 9, 9);
                 }
             }
         }
@@ -132,8 +132,8 @@ public class ButtonRelationsAnimal extends ButtonBook<GuiStats> {
     }
 
     private void drawStack(boolean value, @Nonnull ItemStack icon, int x, int y, float scale) {
-        if (!value) StackRenderHelper.drawGreyStack(icon, x + x, y + y, scale);
-        else StackRenderHelper.drawStack(icon, x + x, y + y, scale);
+        if (!value) StackRenderHelper.drawGreyStack(icon, this.x + x, this.y + y, scale);
+        else StackRenderHelper.drawStack(icon, this.x + x, this.y + y, scale);
     }
 
     @Nonnull

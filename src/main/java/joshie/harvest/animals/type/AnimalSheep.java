@@ -16,7 +16,7 @@ import static joshie.harvest.api.animals.AnimalFoodType.GRASS;
 
 public class AnimalSheep extends AnimalLivestock {
     public AnimalSheep() {
-        super("sheep", 8, 12, GRASS);
+        super("Sheep", 8, 12, GRASS);
     }
 
     @Override

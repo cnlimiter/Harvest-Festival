@@ -84,9 +84,9 @@ public class HFAnimals {
     public static void preInit() {
         HFApi.shipping.registerSellable(new ItemStack(Items.FEATHER), 30);
         HFApi.shipping.registerSellable(new ItemStack(Items.LEATHER), 80);
-        EntityRegistry.registerModEntity(new ResourceLocation(MODID, "cow"), EntityHarvestCow.class, "cow", EntityIDs.COW, HarvestFestival.instance, 150, 3, true);
-        EntityRegistry.registerModEntity(new ResourceLocation(MODID, "sheep"), EntityHarvestSheep.class, "sheep", EntityIDs.SHEEP, HarvestFestival.instance, 150, 3, true);
-        EntityRegistry.registerModEntity(new ResourceLocation(MODID, "chicken"), EntityHarvestChicken.class, "chicken", EntityIDs.CHICKEN, HarvestFestival.instance, 150, 3, true);
+        EntityRegistry.registerModEntity(new ResourceLocation(MODID, "cow"), EntityHarvestCow.class, "Cow", EntityIDs.COW, HarvestFestival.instance, 150, 3, true);
+        EntityRegistry.registerModEntity(new ResourceLocation(MODID, "sheep"), EntityHarvestSheep.class, "Sheep", EntityIDs.SHEEP, HarvestFestival.instance, 150, 3, true);
+        EntityRegistry.registerModEntity(new ResourceLocation(MODID, "chicken"), EntityHarvestChicken.class, "Chicken", EntityIDs.CHICKEN, HarvestFestival.instance, 150, 3, true);
         registerSounds("brush");
         registerFoodsAsType(CHICKEN, Items.CHICKEN, Items.COOKED_CHICKEN);
         registerFoodsAsType(FISH, Items.FISH, Items.COOKED_FISH);
