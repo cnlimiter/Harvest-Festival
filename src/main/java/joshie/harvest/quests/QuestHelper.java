@@ -20,6 +20,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.registries.ForgeRegistry;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -146,7 +147,7 @@ public class QuestHelper implements IQuestHelper {
     }
 
     public static Quest getSelectiomFromID(EntityPlayer player, int selection) {
-        Quest toFetch = Quest.REGISTRY.getValues().get(selection);
+        Quest toFetch = Quest.REGISTRY.getValue(selection);
         if (toFetch.getQuestType() == TargetType.PLAYER) return HFTrackers.getPlayerTrackerFromPlayer(player).getQuests().getAQuest(toFetch);
         else return TownHelper.getClosestTownToEntity(player, false).getQuests().getAQuest(toFetch);
     }

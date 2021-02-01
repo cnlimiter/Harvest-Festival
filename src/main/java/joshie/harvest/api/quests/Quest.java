@@ -16,7 +16,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
-import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.ForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.minecraftforge.registries.RegistryBuilder;
 import net.minecraftforge.fml.relauncher.Side;
@@ -30,7 +30,7 @@ import java.util.Set;
 
 public abstract class Quest extends IForgeRegistryEntry.Impl<Quest> {
     /** DO NOT MODIFY THE ENTRIES IN THE OLD_REGISTRY, ALWAYS MAKE A COPY OF THE QUESTS **/
-    public static final IForgeRegistry<Quest> REGISTRY = new RegistryBuilder<Quest>().setName(new ResourceLocation("harvestfestival", "quests")).setType(Quest.class).setIDRange(0, 32000).create();
+    public static final ForgeRegistry<Quest> REGISTRY = (ForgeRegistry<Quest>) new RegistryBuilder<Quest>().setName(new ResourceLocation("harvestfestival", "quests")).setType(Quest.class).setIDRange(0, 32000).create();
     private Set<NPC> npcs = new HashSet<>();
     @Nonnull
     protected ItemStack primary = ItemStack.EMPTY;

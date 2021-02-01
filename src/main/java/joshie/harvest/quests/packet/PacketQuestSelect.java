@@ -24,7 +24,7 @@ public class PacketQuestSelect extends PacketSharedSync {
     @SuppressWarnings("unused")
     public PacketQuestSelect() {}
     public PacketQuestSelect(Quest quest, EntityNPC npc, int selected) {
-        this.quest = Quest.REGISTRY.getValues().indexOf(quest);
+        this.quest = Quest.REGISTRY.getID(quest);
         this.npcID = npc.getEntityId();
         this.selected = selected;
     }

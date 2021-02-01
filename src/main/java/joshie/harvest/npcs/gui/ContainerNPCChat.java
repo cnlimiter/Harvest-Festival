@@ -10,6 +10,7 @@ import joshie.harvest.npcs.entity.EntityNPC;
 import joshie.harvest.player.PlayerTrackerServer;
 import joshie.harvest.quests.QuestHelper;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.registries.ForgeRegistry;
 
 import static joshie.harvest.core.handlers.GuiHandler.*;
 
@@ -42,6 +43,8 @@ public class ContainerNPCChat extends ContainerBase {
 
     @Override
     public void onContainerClosed(EntityPlayer player) {
+        if (player.world.isRemote)
+            return;
         if (!hasBeenClosed) {
             npc.setTalking(null);
             hasBeenClosed = true; //Mark as having been closed, so we don't keep reopening guis
@@ -50,7 +53,7 @@ public class ContainerNPCChat extends ContainerBase {
             } else if (nextGui == SHOP_OPTIONS) {
                 player.openGui(HarvestFestival.instance, SHOP_OPTIONS, player.world, npc.getEntityId(), 0, NEXT_NONE);
             } else if (quest != null) {
-                player.openGui(HarvestFestival.instance, SELECTION, player.world, npc.getEntityId(), 0, Quest.REGISTRY.getValues().indexOf(Quest.REGISTRY.getValue(quest.getRegistryName())));
+                player.openGui(HarvestFestival.instance, SELECTION, player.world, npc.getEntityId(), 0, Quest.REGISTRY.getID(quest));
             }
 
             //Add the bonus RP after doing quest based stuff.

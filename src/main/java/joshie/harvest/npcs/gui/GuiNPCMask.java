@@ -14,7 +14,7 @@ public class GuiNPCMask extends GuiNPCChat {
 
     public GuiNPCMask(EntityPlayer player, EntityNPC npc, int scriptID) {
         super(new ContainerNull(), player, npc);
-        script = Script.REGISTRY.getValues().get(scriptID);
+        script = Script.REGISTRY.getValue(scriptID);
         posingAs = script.getNPC() != null ? script.getNPC() : npc.getNPC();
         inside = posingAs.getInsideColor();
         outside = posingAs.getOutsideColor();

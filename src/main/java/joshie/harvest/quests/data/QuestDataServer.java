@@ -102,7 +102,7 @@ public class QuestDataServer extends QuestData {
     }
     
     private void updateQuests(boolean sync) {
-        for (Quest quest : Quest.REGISTRY.getValues()) {
+        for (Quest quest : Quest.REGISTRY.getValuesCollection()) {
             updateQuests(quest, sync);
         }
     }

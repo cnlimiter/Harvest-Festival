@@ -65,7 +65,7 @@ public class NPCHelper implements INPCHelper {
 
     @Override
     public void forceScriptOpen(EntityPlayer player, EntityAgeable npc, Script script) {
-        player.openGui(HarvestFestival.instance, GuiHandler.FORCED_NPC, player.world, npc.getEntityId(), Script.REGISTRY.getValues().indexOf(script), -1);
+        player.openGui(HarvestFestival.instance, GuiHandler.FORCED_NPC, player.world, npc.getEntityId(), Script.REGISTRY.getID(script), -1);
     }
 
     public static BlockPos getCoordinatesForLocation(EntityNPCHuman npc, @Nonnull BuildingLocation location) {
