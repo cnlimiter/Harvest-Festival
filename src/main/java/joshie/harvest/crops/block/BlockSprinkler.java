@@ -69,9 +69,11 @@ public class BlockSprinkler extends BlockHFEnum<BlockSprinkler, Sprinkler> {
                 TileSprinkler sprinkler = ((TileSprinkler) tile);
                 FluidActionResult result = FluidUtil.tryEmptyContainer(heldItem, sprinkler.getTank(), 1000, player, true);
 
-                player.setHeldItem(hand, result.getResult());
-                sprinkler.saveAndRefresh();
-                return true;
+                if (result.isSuccess()) {
+                    player.setHeldItem(hand, result.getResult());
+                    sprinkler.saveAndRefresh();
+                    return true;
+                }
             }
         }
 
