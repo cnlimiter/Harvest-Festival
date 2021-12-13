@@ -1,5 +1,13 @@
 package joshie.harvest.calendar.render;
 
+import static joshie.harvest.calendar.HFCalendar.HIDE_GOLD_TEXTURE;
+import static joshie.harvest.core.lib.HFModInfo.MODID;
+
+import java.text.NumberFormat;
+import java.util.Locale;
+
+import org.lwjgl.input.Keyboard;
+
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.calendar.CalendarDate;
 import joshie.harvest.api.calendar.Season;
@@ -23,15 +31,9 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.client.event.GuiScreenEvent.KeyboardInputEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
-import org.lwjgl.input.Keyboard;
-
-import java.text.NumberFormat;
-import java.util.Locale;
-
-import static joshie.harvest.calendar.HFCalendar.HIDE_GOLD_TEXTURE;
-import static joshie.harvest.core.lib.HFModInfo.MODID;
 
 @HFEvents(Side.CLIENT)
 public class CalendarHUD {
@@ -70,36 +72,59 @@ public class CalendarHUD {
             Keyboard.enableRepeatEvents(true);
             boolean save = false;
             if (Keyboard.isKeyDown(Keyboard.KEY_H)) {
-                if (editingCalendar) HFCalendar.HIDE_CALENDAR_TEXTURE = !HFCalendar.HIDE_CALENDAR_TEXTURE; else HFCalendar.HIDE_GOLD_TEXTURE = !HFCalendar.HIDE_GOLD_TEXTURE;
+                if (editingCalendar)
+                    HFCalendar.HIDE_CALENDAR_TEXTURE = !HFCalendar.HIDE_CALENDAR_TEXTURE;
+                else
+                    HFCalendar.HIDE_GOLD_TEXTURE = !HFCalendar.HIDE_GOLD_TEXTURE;
             } else if (Keyboard.isKeyDown(Keyboard.KEY_W) || Keyboard.isKeyDown(Keyboard.KEY_UP)) {
-                if (editingCalendar) HFCalendar.Y_CALENDAR--; else HFCalendar.Y_GOLD--;
+                if (editingCalendar)
+                    HFCalendar.Y_CALENDAR--;
+                else
+                    HFCalendar.Y_GOLD--;
             } else if (Keyboard.isKeyDown(Keyboard.KEY_S) || Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
-                if (editingCalendar) HFCalendar.Y_CALENDAR++; else HFCalendar.Y_GOLD++;
-            } else if (Keyboard.isKeyDown(Keyboard.KEY_D)  || Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
-                if (editingCalendar) HFCalendar.X_CALENDAR++; else HFCalendar.X_GOLD++;
+                if (editingCalendar)
+                    HFCalendar.Y_CALENDAR++;
+                else
+                    HFCalendar.Y_GOLD++;
+            } else if (Keyboard.isKeyDown(Keyboard.KEY_D) || Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
+                if (editingCalendar)
+                    HFCalendar.X_CALENDAR++;
+                else
+                    HFCalendar.X_GOLD++;
             } else if (Keyboard.isKeyDown(Keyboard.KEY_A) || Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
-                if (editingCalendar) HFCalendar.X_CALENDAR--; else HFCalendar.X_GOLD--;
+                if (editingCalendar)
+                    HFCalendar.X_CALENDAR--;
+                else
+                    HFCalendar.X_GOLD--;
             } else if (Keyboard.isKeyDown(Keyboard.KEY_RETURN)) {
                 editingCalendar = false;
                 editingGold = false;
                 save = true;
             }
 
-            if (HFCalendar.X_CALENDAR >= 80) HFCalendar.X_CALENDAR = 80;
-            if (HFCalendar.X_CALENDAR <= -6) HFCalendar.X_CALENDAR = -6;
-            if (HFCalendar.Y_CALENDAR >= 90) HFCalendar.Y_CALENDAR = 90;
-            if (HFCalendar.Y_CALENDAR <= -2) HFCalendar.Y_CALENDAR = -2;
-            if (HFCalendar.X_GOLD >= 0) HFCalendar.X_GOLD = 0;
-            if (HFCalendar.X_GOLD <= -90) HFCalendar.X_GOLD = -90;
-            if (HFCalendar.Y_GOLD >= 95) HFCalendar.Y_GOLD = 95;
-            if (HFCalendar.Y_GOLD <= 0) HFCalendar.Y_GOLD = 0;
+            if (HFCalendar.X_CALENDAR >= 80)
+                HFCalendar.X_CALENDAR = 80;
+            if (HFCalendar.X_CALENDAR <= -6)
+                HFCalendar.X_CALENDAR = -6;
+            if (HFCalendar.Y_CALENDAR >= 90)
+                HFCalendar.Y_CALENDAR = 90;
+            if (HFCalendar.Y_CALENDAR <= -2)
+                HFCalendar.Y_CALENDAR = -2;
+            if (HFCalendar.X_GOLD >= 0)
+                HFCalendar.X_GOLD = 0;
+            if (HFCalendar.X_GOLD <= -90)
+                HFCalendar.X_GOLD = -90;
+            if (HFCalendar.Y_GOLD >= 95)
+                HFCalendar.Y_GOLD = 95;
+            if (HFCalendar.Y_GOLD <= 0)
+                HFCalendar.Y_GOLD = 0;
             if (save) {
                 HFCalendar.save();
             }
         }
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onRenderOverlay(RenderGameOverlayEvent.Pre event) {
         if (event.getType() == ElementType.HOTBAR) {
             Minecraft mc = MCClientHelper.getMinecraft();
@@ -127,9 +152,7 @@ public class CalendarHUD {
                     //Enlarge the Day
                     GlStateManager.pushMatrix();
                     GlStateManager.scale(1.4F, 1.4F, 1.4F);
-                    String header = inMine ? TextFormatting.GRAY + TextHelper.format("harvestfestival.mine.format", "" +
-                            MiningHelper.getFloor((int)mc.player.posX >> 4, (int) Math.min(247, Math.max(1, mc.player.posY)))) :
-                            TextHelper.format("harvestfestival.calendar.date", season.getDisplayName(), (date.getDay() + 1));
+                    String header = inMine ? TextFormatting.GRAY + TextHelper.format("harvestfestival.mine.format", "" + MiningHelper.getFloor((int) mc.player.posX >> 4, (int) Math.min(247, Math.max(1, mc.player.posY)))) : TextHelper.format("harvestfestival.calendar.date", season.getDisplayName(), (date.getDay() + 1));
                     mc.fontRenderer.drawStringWithShadow(header, (adjustedX / 1.4F) + 30, (adjustedY / 1.4F) + 7, 0xFFFFFFFF);
                     GlStateManager.popMatrix();
 
@@ -155,6 +178,16 @@ public class CalendarHUD {
             }
 
             GlStateManager.disableBlend();
+            GlStateManager.popMatrix();
+        } else if (HFCalendar.ENABLE_GOLD_HUD && event.getType() == ElementType.POTION_ICONS) {
+            GlStateManager.pushMatrix();
+            GlStateManager.translate(0, 20, 0);
+        }
+    }
+
+    @SubscribeEvent
+    public void onRenderOverlayPost(RenderGameOverlayEvent.Post event) {
+        if (HFCalendar.ENABLE_GOLD_HUD && event.getType() == ElementType.POTION_ICONS) {
             GlStateManager.popMatrix();
         }
     }
