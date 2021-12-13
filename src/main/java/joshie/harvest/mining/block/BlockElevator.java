@@ -94,11 +94,13 @@ public class BlockElevator extends BlockHFEnumRotatableTile<BlockElevator, Eleva
         TileElevator elevator = getElevator(world, pos, state);
         if (elevator != null) {
             if (player.getHeldItem(hand).getItem() == HFMining.MINING_TOOL) return false;
-            BlockPos twin = elevator.getTwin();
-            if (twin == null) {
-                if (world.isRemote) ChatHelper.displayChat(TextHelper.translate("elevator.link"));
-            } else {
-                ChatHelper.displayChat(TextHelper.formatHF("elevator.go", MiningHelper.getFloor(twin)));
+            if (world.isRemote) {
+                BlockPos twin = elevator.getTwin();
+                if (twin == null) {
+                    ChatHelper.displayChat(TextHelper.translate("elevator.link"));
+                } else {
+                    ChatHelper.displayChat(TextHelper.formatHF("elevator.go", MiningHelper.getFloor(twin)));
+                }
             }
 
             return true;
