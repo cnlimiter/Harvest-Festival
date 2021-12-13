@@ -1,5 +1,13 @@
 package joshie.harvest.quests.player.trade;
 
+import static joshie.harvest.api.core.ITiered.ToolTier.CURSED;
+import static joshie.harvest.core.helpers.SpawnItemHelper.spawnXP;
+import static joshie.harvest.quests.Quests.TOMAS_MEET;
+
+import java.util.Set;
+
+import javax.annotation.Nonnull;
+
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.calendar.CalendarDate;
 import joshie.harvest.api.core.ITiered.ToolTier;
@@ -13,6 +21,7 @@ import joshie.harvest.core.lib.HFSounds;
 import joshie.harvest.npcs.HFNPCs;
 import joshie.harvest.quests.Quests;
 import joshie.harvest.quests.base.QuestTrade;
+import joshie.harvest.tools.HFTools;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -21,14 +30,6 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import javax.annotation.Nonnull;
-import java.util.Set;
-
-import static joshie.harvest.api.core.ITiered.ToolTier.CURSED;
-import static joshie.harvest.core.helpers.SpawnItemHelper.spawnXP;
-import static joshie.harvest.quests.Quests.TOMAS_MEET;
-
 
 @HFQuest("trade.cursed")
 public class QuestBlessing extends QuestTrade {
@@ -58,7 +59,8 @@ public class QuestBlessing extends QuestTrade {
                 return getLocalized("accept");
             } else if (hasTool) {
                 return getLocalized("gold", cost);
-            } else return player.world.rand.nextDouble() <= 0.05D ? getLocalized("reminder", cost) : null;
+            } else
+                return player.world.rand.nextDouble() <= 0.05D ? getLocalized("reminder", cost) : null;
         } else {
             CalendarDate today = HFApi.calendar.getDate(player.world);
             if (CalendarHelper.getDays(date, today) >= 3) {
@@ -77,13 +79,14 @@ public class QuestBlessing extends QuestTrade {
             boolean hasGold = HFTrackers.getPlayerTrackerFromPlayer(player).getStats().getGold() >= cost;
             boolean hasTool = isHolding(player);
             if (hasGold && hasTool) {
-                increaseStage(player);
                 date = HFApi.calendar.getDate(player.world).copy();
-                ItemStack stack = player.getHeldItemMainhand().copy();
-                tool = new ItemStack(stack.getItem(), 1, stack.getItemDamage() + 1);
+                ItemStack stack = player.getHeldItemMainhand();
+                ItemTool item = (ItemTool) stack.getItem();
+                tool = new ItemStack(HFTools.TOOLTYPE_MAP.get(item.toolClass).get(ToolTier.BLESSED));
                 tool.setTagCompound(stack.getTagCompound().copy());
                 rewardGold(player, -cost);
                 takeHeldStack(player, 1);
+                increaseStage(player);
             }
         } else {
             CalendarDate today = HFApi.calendar.getDate(player.world);
@@ -102,7 +105,7 @@ public class QuestBlessing extends QuestTrade {
     public void onQuestCompleted(EntityPlayer player) {
         rewardItem(player, tool);
         HFTrackers.getPlayerTrackerFromPlayer(player).getTracking().addAsObtained(tool);
-        spawnXP(player.world, (int)player.posX, (int)player.posY, (int)player.posZ, 5);
+        spawnXP(player.world, (int) player.posX, (int) player.posY, (int) player.posZ, 5);
     }
 
     @Override
@@ -132,7 +135,7 @@ public class QuestBlessing extends QuestTrade {
         ItemStack held = player.getHeldItemMainhand();
         if (!held.isEmpty()) {
             if (held.getItem() instanceof ItemTool) {
-                ItemTool tool = ((ItemTool)held.getItem());
+                ItemTool tool = ((ItemTool) held.getItem());
                 ToolTier tier = tool.getTier(held);
                 return tier == CURSED;
             }
