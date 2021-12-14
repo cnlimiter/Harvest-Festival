@@ -11,6 +11,7 @@ import joshie.harvest.api.town.Town;
 import joshie.harvest.buildings.BuildingStage;
 import joshie.harvest.core.helpers.NBTHelper;
 import joshie.harvest.knowledge.letter.LetterData;
+import joshie.harvest.npcs.HFNPCs;
 import joshie.harvest.quests.data.QuestData;
 import joshie.harvest.shops.data.ShopData;
 import net.minecraft.nbt.NBTTagCompound;
@@ -36,6 +37,7 @@ public abstract class TownData<Q extends QuestData, L extends LetterData> implem
 
     /** Overriden to actually return what we should **/
     public abstract Q getQuests();
+
     public abstract L getLetters();
 
     public boolean isNull() {
@@ -73,7 +75,8 @@ public abstract class TownData<Q extends QuestData, L extends LetterData> implem
 
     /** If this building is being built currently **/
     public boolean isBuilding(Building building) {
-        if (building == null) return buildingQueue.size() > 0;
+        if (building == null)
+            return buildingQueue.size() > 0;
         return buildingQueue.contains(new BuildingStage(building, BlockPos.ORIGIN, Rotation.NONE));
     }
 
@@ -92,8 +95,9 @@ public abstract class TownData<Q extends QuestData, L extends LetterData> implem
     }
 
     public boolean hasBuildings(ResourceLocation[] buildings) {
-        for (ResourceLocation building: buildings) {
-            if (this.buildings.get(building) == null) return false;
+        for (ResourceLocation building : buildings) {
+            if (this.buildings.get(building) == null)
+                return false;
         }
 
         return true;
@@ -136,15 +140,21 @@ public abstract class TownData<Q extends QuestData, L extends LetterData> implem
         return townCentre;
     }
 
+    public double getRange() {
+        return HFNPCs.TOWN_DISTANCE;
+    }
+
     public void readFromNBT(NBTTagCompound nbt) {
-        if (nbt.hasKey("Created")) birthday = CalendarDate.fromNBT(nbt.getCompoundTag("Created"));
-        else birthday = new CalendarDate(0, Season.SPRING, 0);
+        if (nbt.hasKey("Created"))
+            birthday = CalendarDate.fromNBT(nbt.getCompoundTag("Created"));
+        else
+            birthday = new CalendarDate(0, Season.SPRING, 0);
         shops.readFromNBT(nbt);
         uuid = NBTHelper.readUUID("Town", nbt);
         townCentre = NBTHelper.readBlockPos("TownCentre", nbt);
         NBTHelper.readMap("TownBuildingList", TownBuilding.class, buildings, nbt);
         NBTHelper.readList("CurrentlyBuilding", BuildingStage.class, buildingQueue, nbt);
-        for (TownBuilding building: buildings.values()) {
+        for (TownBuilding building : buildings.values()) {
             inhabitants.addAll(building.building.getInhabitants());
         }
 
@@ -159,7 +169,8 @@ public abstract class TownData<Q extends QuestData, L extends LetterData> implem
         }
 
         //Fix the broken festivla if it applies
-        if (festival == null) festival = Festival.NONE;
+        if (festival == null)
+            festival = Festival.NONE;
     }
 
     public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
@@ -184,8 +195,10 @@ public abstract class TownData<Q extends QuestData, L extends LetterData> implem
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         TownData townData = (TownData) o;
         return uuid != null ? uuid.equals(townData.uuid) : townData.uuid == null;
     }

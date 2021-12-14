@@ -1,5 +1,10 @@
 package joshie.harvest.animals;
 
+import static joshie.harvest.core.handlers.BasketHandler.forbidsDrop;
+import static joshie.harvest.core.helpers.InventoryHelper.*;
+
+import javax.annotation.Nonnull;
+
 import joshie.harvest.animals.item.ItemAnimalTool.Tool;
 import joshie.harvest.animals.tracker.AnimalTrackerServer;
 import joshie.harvest.api.HFApi;
@@ -27,12 +32,6 @@ import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
 
-import javax.annotation.Nonnull;
-
-import static joshie.harvest.core.handlers.BasketHandler.forbidsDrop;
-import static joshie.harvest.core.helpers.InventoryHelper.ITEM;
-import static joshie.harvest.core.helpers.InventoryHelper.ITEM_STACK;
-
 @HFEvents
 @SuppressWarnings("unused")
 public class AnimalEvents {
@@ -43,7 +42,7 @@ public class AnimalEvents {
         AnimalStats stats = EntityHelper.getStats(entity);
         if (stats != null && entity instanceof EntityAnimal) {
             if (!entity.world.isRemote) {
-                stats.setEntity((EntityAnimal)entity);
+                stats.setEntity((EntityAnimal) entity);
                 HFTrackers.<AnimalTrackerServer>getAnimalTracker(event.getWorld()).add(stats);
             }
         }
@@ -52,10 +51,14 @@ public class AnimalEvents {
     @SubscribeEvent
     @SuppressWarnings("ConstantConditions")
     public void onEntityDeath(LivingDeathEvent event) {
-        AnimalStats stats = EntityHelper.getStats(event.getEntityLiving());
-        if (stats != null && !event.getEntity().world.isRemote) {
-            HFTrackers.<AnimalTrackerServer>getAnimalTracker(event.getEntityLiving().world).onDeath(stats);
+        if (event.getEntity().world.isRemote) {
+            return;
         }
+        AnimalStats stats = EntityHelper.getStats(event.getEntityLiving());
+        if (stats == null) {
+            return;
+        }
+        HFTrackers.<AnimalTrackerServer>getAnimalTracker(event.getEntityLiving().world).onDeath(stats);
     }
 
     @SubscribeEvent
@@ -89,15 +92,16 @@ public class AnimalEvents {
     /* When right clicking poultry, will throw any poultry on your head **/
     @HFEvents
     public static class PickupPoultry {
-        public static boolean register() { return HFAnimals.PICKUP_POULTRY; }
+        public static boolean register() {
+            return HFAnimals.PICKUP_POULTRY;
+        }
+
         private ItemStack[] stacks;
 
         private ItemStack[] getStacks() {
-            if (stacks != null) return stacks;
-            stacks = new ItemStack[] {
-                    HFAnimals.TOOLS.getStackFromEnum(Tool.CHICKEN_FEED),
-                    HFAnimals.TOOLS.getStackFromEnum(Tool.MEDICINE)
-            };
+            if (stacks != null)
+                return stacks;
+            stacks = new ItemStack[] { HFAnimals.TOOLS.getStackFromEnum(Tool.CHICKEN_FEED), HFAnimals.TOOLS.getStackFromEnum(Tool.MEDICINE) };
 
             return stacks;
         }

@@ -26,7 +26,7 @@ public abstract class TownTracker<T extends TownData> extends HFTracker {
     private T getClosestTown(@Nonnull final BlockPos pos) {
         T closest = null;
         double thatTownDistance = Double.MAX_VALUE;
-        for (T town: uuidMap.values()) {
+        for (T town : uuidMap.values()) {
             double thisTownDistance = town.getTownCentre().getDistance(pos.getX(), pos.getY(), pos.getZ());
             if (closest == null || thisTownDistance < thatTownDistance) {
                 thatTownDistance = thisTownDistance;
@@ -34,7 +34,7 @@ public abstract class TownTracker<T extends TownData> extends HFTracker {
             }
         }
 
-        return thatTownDistance > HFNPCs.TOWN_DISTANCE || closest == null ? getNullTown(): closest;
+        return closest == null || thatTownDistance > closest.getRange() ? getNullTown() : closest;
     }
 
     @Nonnull
