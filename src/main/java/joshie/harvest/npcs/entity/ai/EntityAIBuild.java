@@ -1,6 +1,7 @@
 package joshie.harvest.npcs.entity.ai;
 
 import joshie.harvest.buildings.BuildingStage;
+import joshie.harvest.buildings.HFBuildings;
 import joshie.harvest.buildings.placeable.Placeable;
 import joshie.harvest.core.helpers.EntityHelper;
 import joshie.harvest.npcs.entity.EntityNPCBuilder;
@@ -55,7 +56,7 @@ public class EntityAIBuild extends EntityAIBase {
     @Override
     public void updateTask() {
         BuildingStage building = npc.getBuilding();
-        if (buildingTimer % building.getTickTime() == 0) {
+        if (buildingTimer % building.getTickTime() < HFBuildings.BUILDING_SPEED) {
             Placeable placeable = building.next();
             if (placeable != null) {
                 BlockPos go = building.getPos(building.previous());

@@ -44,7 +44,7 @@ import org.apache.logging.log4j.Level;
 
 import java.lang.reflect.InvocationTargetException;
 
-import static joshie.harvest.core.helpers.ConfigHelper.getBoolean;
+import static joshie.harvest.core.helpers.ConfigHelper.*;
 import static joshie.harvest.core.lib.LoadOrder.HFBUILDING;
 import static joshie.harvest.npcs.HFNPCs.CLOCKMAKER_CHILD;
 
@@ -164,10 +164,12 @@ public class HFBuildings {
     public static boolean FULL_BUILDING_RENDER;
     public static boolean CHEAT_BUILDINGS;
     public static boolean ENABLE_DEMOLITION;
+    public static int BUILDING_SPEED;
 
     public static void configure() {
         FULL_BUILDING_RENDER = getBoolean("Use Full Building Render", true);
         CHEAT_BUILDINGS = getBoolean("Use Cheat Buildings", false);
         ENABLE_DEMOLITION = getBoolean("Enable demolition", true);
+        BUILDING_SPEED = getInteger("Building Speed", 1);
     }
 }
