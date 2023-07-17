@@ -7,9 +7,6 @@ import joshie.harvest.core.HFTrackers;
 import joshie.harvest.npcs.entity.ai.EntityAIPathing;
 import joshie.harvest.npcs.entity.ai.EntityAISchedule;
 import joshie.harvest.npcs.entity.ai.EntityAITalkingTo;
-import joshie.harvest.town.TownHelper;
-import joshie.harvest.town.data.TownDataServer;
-import joshie.harvest.town.tracker.TownTrackerServer;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIOpenDoor;
 import net.minecraft.entity.ai.EntityAISwimming;
@@ -20,18 +17,12 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-
-import javax.annotation.Nonnull;
 
 import static joshie.harvest.npcs.HFNPCs.NPC_AI_DISTANCE;
 
 public abstract class EntityNPCHuman<E extends EntityNPCHuman> extends EntityNPC<E> {
     private EntityAIPathing pathing;
-    @SuppressWarnings("WeakerAccess")
-    private TownDataServer homeTown;
-    private int nullChecker;
 
     EntityNPCHuman(World world) {
         super(world);
@@ -70,40 +61,24 @@ public abstract class EntityNPCHuman<E extends EntityNPCHuman> extends EntityNPC
         return pathing;
     }
 
-    @SuppressWarnings("unchecked")
-    public TownDataServer getHomeTown() {
-        if (homeTown == null) {
-            homeTown = TownHelper.getClosestTownToEntity(this, false);
-        } else if (homeTown == TownTrackerServer.NULL_TOWN) {
-            nullChecker++;
-            if (nullChecker %200 == 0) {
-                homeTown = TownHelper.getClosestTownToEntity(this, false);
-            }
-        }
-
-        return homeTown;
-    }
-
     @Override
     public void setPath(TaskElement... tasks) {
         pathing.setPath(tasks);
     }
 
     @Override
-    public void onDeath(@Nonnull DamageSource cause) {
-        if (!world.isRemote) {
-            //Respawn a new bugger
-            if (npc.respawns()) {
-                this.getHomeTown().markNPCDead(getNPC().getResource(), new BlockPos(this));
-                HFTrackers.markTownsDirty(); //Mark this npc as dead, ready for tomorrow to be reborn
-            }
+    public void onDeath(DamageSource cause) {
+        //Respawn a new bugger
+        if (npc.respawns()) {
+            this.getTownData().markNPCDead(getNPC());
+            HFTrackers.markTownsDirty(); //Mark this npc as dead, ready for tomorrow to be reborn
         }
 
         super.onDeath(cause);
     }
 
     @Override
-    public boolean attackEntityFrom(@Nonnull DamageSource source, float amount) {
+    public boolean attackEntityFrom(DamageSource source, float amount) {
         if (source != DamageSource.OUT_OF_WORLD) {
             addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 200, 0, true, false));
             if (source.getTrueSource() instanceof EntityPlayer) {

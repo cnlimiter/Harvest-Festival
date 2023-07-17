@@ -25,7 +25,7 @@ public class EntityNPCBuilder extends EntityNPCHuman<EntityNPCBuilder> {
     }
 
     public BuildingStage getBuilding() {
-        return getHomeTown().getCurrentlyBuilding();
+        return getTownData().getCurrentlyBuilding();
     }
 
     public void finishBuilding() {

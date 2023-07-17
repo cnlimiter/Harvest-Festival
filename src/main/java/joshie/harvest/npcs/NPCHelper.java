@@ -14,7 +14,6 @@ import joshie.harvest.api.shops.Shop;
 import joshie.harvest.cooking.HFCooking;
 import joshie.harvest.core.HFTrackers;
 import joshie.harvest.core.handlers.GuiHandler;
-import joshie.harvest.core.helpers.EntityHelper;
 import joshie.harvest.core.helpers.TextHelper;
 import joshie.harvest.core.util.annotations.HFApiImplementation;
 import joshie.harvest.npcs.entity.*;
@@ -34,7 +33,6 @@ import net.minecraft.world.WorldServer;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.List;
 import java.util.UUID;
 
 @HFApiImplementation
@@ -69,14 +67,14 @@ public class NPCHelper implements INPCHelper {
     }
 
     public static BlockPos getCoordinatesForLocation(EntityNPCHuman npc, @Nonnull BuildingLocation location) {
-        return npc.getHomeTown().getCoordinatesFor(location);
+        return npc.getTown().getCoordinatesFor(location);
     }
 
     public static Selection getShopSelection(World world, BlockPos pos, NPC npc, EntityPlayer player) {
         return new ShopSelection(npc.getShop(world, pos, player), player);
     }
 
-    public static BlockPos getHomeForEntity(EntityNPC entity) {
+    public static BlockPos getHomeForEntity(EntityNPC<?> entity) {
         NPC npc = entity.getNPC(); //Shorthand
         return npc.getHome() == null ? null : TownHelper.getClosestTownToEntity(entity, false).getCoordinatesFor(npc.getHome());
     }
@@ -94,13 +92,8 @@ public class NPCHelper implements INPCHelper {
 
     @Nullable
     public static Entity getNPCIfExists(WorldServer server, BlockPos pos, NPC npc) {
-        UUID uuid = TownHelper.getClosestTownToBlockPos(server, pos, false).getID();
-        List<EntityNPC> npcs = EntityHelper.getEntities(EntityNPC.class, server, pos, 128D, 256D);
-        for (EntityNPC entity: npcs) {
-            if (entity.getNPC() == npc && (entity.getHome() != null && entity.getHome().equals(uuid))) return entity;
-        }
-
-        return npc == HFNPCs.CARPENTER ? server.getEntityFromUuid(uuid) : null;
+        UUID uuid = TownHelper.getClosestTownToBlockPos(server, pos, false).getUUIDFor(npc);
+        return uuid == null ? null : server.getEntityFromUuid(uuid);
     }
 
     private static boolean canPlayerOpenShop(NPC npc, Shop shop, @Nonnull EntityPlayer player) {

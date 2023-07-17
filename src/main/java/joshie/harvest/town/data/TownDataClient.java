@@ -2,6 +2,7 @@ package joshie.harvest.town.data;
 
 import joshie.harvest.api.buildings.Building;
 import joshie.harvest.api.calendar.Festival;
+import joshie.harvest.api.npc.NPC;
 import joshie.harvest.api.quests.Quest;
 import joshie.harvest.buildings.BuildingStage;
 import joshie.harvest.knowledge.letter.LetterDataClient;
@@ -26,12 +27,16 @@ public class TownDataClient extends TownData<QuestDataClient, LetterDataClient> 
 
     public void removeBuilding(Building building) {
         buildings.remove(building.getResource());
-        inhabitants.removeAll(building.getInhabitants());
+        for (NPC inhabitant : building.getInhabitants()) {
+            inhabitants.remove(inhabitant);
+        }
     }
 
     public void addBuilding(TownBuilding building) {
         buildings.put(building.building.getResource(), building);
-        inhabitants.addAll(building.building.getInhabitants());
+        for (NPC inhabitant : building.building.getInhabitants()) {
+            inhabitants.computeIfAbsent(inhabitant, $ -> null);
+        }
     }
 
     public void setBuilding(LinkedList<BuildingStage> buildingQueue) {

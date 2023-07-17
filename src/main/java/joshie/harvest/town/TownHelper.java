@@ -5,6 +5,7 @@ import joshie.harvest.api.town.Town;
 import joshie.harvest.core.util.annotations.HFApiImplementation;
 import joshie.harvest.mining.HFMining;
 import joshie.harvest.mining.MiningHelper;
+import joshie.harvest.npcs.entity.EntityNPC;
 import joshie.harvest.town.data.TownData;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -53,6 +54,10 @@ public class TownHelper implements ITownHelper {
     @SuppressWarnings("unchecked")
     @Nonnull
     public static <T extends TownData> T getClosestTownToEntity(@Nonnull Entity entity, boolean create) {
+        if (entity instanceof EntityNPC<?>) {
+            TownData data = ((EntityNPC<?>) entity).getTownData();
+            if (data != null) return (T) data;
+        }
         return getClosestTownToBlockPos(entity.getEntityWorld(), new BlockPos(entity), entity, create);
     }
 

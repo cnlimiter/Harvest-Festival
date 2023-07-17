@@ -49,25 +49,11 @@ public class EntityHelper {
 
     /** Gets the player from the uuid **/
     public static EntityPlayerMP getPlayerFromUUID(UUID uuid) {
-        //Loops through every single player
-        for (EntityPlayer player : FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayers()) {
-            if (getPlayerUUID(player).equals(uuid)) {
-                return (EntityPlayerMP) player;
-            }
-        }
-
-        return null;
+        return FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayerByUUID(uuid);
     }
 
     public static EntityPlayer getPlayerFromUUID(World world, UUID uuid) {
-        //Loops through every single player
-        for (EntityPlayer player : world.playerEntities) {
-            if (getPlayerUUID(player).equals(uuid)) {
-                return player;
-            }
-        }
-
-        return null;
+        return world.getPlayerEntityByUUID(uuid);
     }
 
     public static <T extends Entity> List<T> getEntities(Class<? extends T> t, World world, BlockPos pos, double size, double ySize) {

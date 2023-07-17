@@ -1,5 +1,11 @@
 package joshie.harvest.npcs.entity;
 
+import java.util.Objects;
+import java.util.UUID;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import io.netty.buffer.ByteBuf;
 import joshie.harvest.HarvestFestival;
 import joshie.harvest.api.npc.INPCHelper;
@@ -10,6 +16,9 @@ import joshie.harvest.api.town.Town;
 import joshie.harvest.npcs.HFNPCs;
 import joshie.harvest.npcs.NPCHelper;
 import joshie.harvest.town.TownHelper;
+import joshie.harvest.town.data.TownData;
+import joshie.harvest.town.data.TownDataServer;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,15 +30,14 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.UUID;
-
 public abstract class EntityNPC<E extends EntityNPC> extends EntityAgeable implements IEntityAdditionalSpawnData, NPCEntity {
-    protected UUID home;
+    public static final UUID NIL_UUID = new UUID(0, 0);
+    @Nullable
+    protected UUID town;
     protected NPC npc;
     private EntityPlayer talkingTo;
     private Mode mode = Mode.DEFAULT;
@@ -69,9 +77,18 @@ public abstract class EntityNPC<E extends EntityNPC> extends EntityAgeable imple
         return false;
     }
 
-    public UUID getHome() {
-        if (home != null) return home;
-        else return home = TownHelper.getClosestTownToEntity(this, false).getID();
+    public UUID getTownUUID() {
+        if (town != null) return town;
+        if (world.isRemote) return NIL_UUID;
+        Entity entity = NPCHelper.getNPCIfExists((WorldServer) world, new BlockPos(this), npc);
+        if (entity != null) {
+            if (npc != HFNPCs.GODDESS)
+                setDead();
+            return NIL_UUID;
+        }
+        TownDataServer townInstance = TownHelper.getClosestTownToBlockPos(world, new BlockPos(this), true);
+        townInstance.addInhabitant(this);
+        return town = townInstance.getID();
     }
 
     @Override
@@ -98,7 +115,11 @@ public abstract class EntityNPC<E extends EntityNPC> extends EntityAgeable imple
 
     @Override
     public Town getTown() {
-        return TownHelper.getClosestTownToEntity(this, false);
+        return TownHelper.getTownByID(world, Objects.requireNonNull(getTownUUID()));
+    }
+
+    public TownData<?, ?> getTownData() {
+        return (TownData<?, ?>) getTown();
     }
 
     @Override
@@ -139,7 +160,7 @@ public abstract class EntityNPC<E extends EntityNPC> extends EntityAgeable imple
     }
 
     @Override
-    public boolean processInteract(@Nonnull EntityPlayer player, @Nullable EnumHand hand) {
+    public boolean processInteract(EntityPlayer player, EnumHand hand) {
         ItemStack held = player.getHeldItem(hand);
         boolean flag = held.getItem() == Items.SPAWN_EGG;
         if (!flag && isEntityAlive()) {
@@ -157,7 +178,7 @@ public abstract class EntityNPC<E extends EntityNPC> extends EntityAgeable imple
         super.readEntityFromNBT(nbt);
         npc = NPC.REGISTRY.get(new ResourceLocation(nbt.getString("NPC")));
         if (nbt.hasKey("Town")) {
-            home = UUID.fromString(nbt.getString("Town"));
+            town = UUID.fromString(nbt.getString("Town"));
         }
     }
 
@@ -165,27 +186,29 @@ public abstract class EntityNPC<E extends EntityNPC> extends EntityAgeable imple
     public void writeEntityToNBT(NBTTagCompound nbt) {
         super.writeEntityToNBT(nbt);
         if (npc != null) nbt.setString("NPC", npc.getResource().toString());
-        if (home != null) nbt.setString("Town", home.toString());
+        if (town != null) nbt.setString("Town", town.toString());
     }
 
     @Override
     public void writeSpawnData(ByteBuf buf) {
-        buf.writeBoolean(npc != null);
-        if (npc != null) {
-            ByteBufUtils.writeUTF8String(buf, npc.getResource().toString());
+        if (npc == null) {
+            npc = HFNPCs.MAYOR;
         }
+        ByteBufUtils.writeUTF8String(buf, npc.getResource().toString());
+        ByteBufUtils.writeUTF8String(buf, getTownUUID().toString());
     }
 
     @Override
     public void readSpawnData(ByteBuf buf) {
-        String name = buf.readBoolean() ? ByteBufUtils.readUTF8String(buf) : "";
-        npc = name.equals("") ? HFNPCs.MAYOR : NPC.REGISTRY.get(new ResourceLocation(name));
+        String name = ByteBufUtils.readUTF8String(buf);
+        npc = NPC.REGISTRY.get(new ResourceLocation(name));
+        town = UUID.fromString(ByteBufUtils.readUTF8String(buf));
     }
 
     @SuppressWarnings("unchecked")
     @Override
     @Nonnull
-    public EntityAgeable createChild(@Nonnull EntityAgeable ageable) {
+    public EntityAgeable createChild(EntityAgeable ageable) {
         return getNewEntity((E)ageable);
     }
 }

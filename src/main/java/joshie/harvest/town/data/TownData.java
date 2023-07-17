@@ -12,19 +12,24 @@ import joshie.harvest.buildings.BuildingStage;
 import joshie.harvest.core.helpers.NBTHelper;
 import joshie.harvest.knowledge.letter.LetterData;
 import joshie.harvest.npcs.HFNPCs;
+import joshie.harvest.npcs.entity.EntityNPC;
 import joshie.harvest.quests.data.QuestData;
 import joshie.harvest.shops.data.ShopData;
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import net.minecraftforge.common.util.Constants;
+
 import java.util.*;
 
 public abstract class TownData<Q extends QuestData, L extends LetterData> implements Town {
-    protected final Set<NPC> inhabitants = new HashSet<>();
+    protected final Map<NPC, UUID> inhabitants = new HashMap<>();
     protected final ShopData shops = new ShopData();
     protected Map<ResourceLocation, TownBuilding> buildings = new HashMap<>();
     protected LinkedList<BuildingStage> buildingQueue = new LinkedList<>();
@@ -128,7 +133,23 @@ public abstract class TownData<Q extends QuestData, L extends LetterData> implem
     }
 
     public Set<NPC> getInhabitants() {
-        return inhabitants;
+        return inhabitants.keySet();
+    }
+
+    public UUID getUUIDFor(NPC npc) {
+        return inhabitants.get(npc);
+    }
+
+    public void addInhabitant(EntityNPC<?> entity) {
+        if (entity.getNPC() == HFNPCs.GODDESS)
+            return; //Don't add the goddess
+        inhabitants.put(entity.getNPC(), entity.getUniqueID());
+    }
+
+    public void markNPCDead(NPC npc) {
+        if (inhabitants.containsKey(npc)) {
+            inhabitants.put(npc, null);
+        }
     }
 
     public Collection<TownBuilding> getBuildings() {
@@ -154,9 +175,6 @@ public abstract class TownData<Q extends QuestData, L extends LetterData> implem
         townCentre = NBTHelper.readBlockPos("TownCentre", nbt);
         NBTHelper.readMap("TownBuildingList", TownBuilding.class, buildings, nbt);
         NBTHelper.readList("CurrentlyBuilding", BuildingStage.class, buildingQueue, nbt);
-        for (TownBuilding building : buildings.values()) {
-            inhabitants.addAll(building.building.getInhabitants());
-        }
 
         if (nbt.hasKey("DailyQuest")) {
             dailyQuest = Quest.REGISTRY.getValue(new ResourceLocation(nbt.getString("DailyQuest")));
@@ -171,6 +189,23 @@ public abstract class TownData<Q extends QuestData, L extends LetterData> implem
         //Fix the broken festivla if it applies
         if (festival == null)
             festival = Festival.NONE;
+
+        for (TownBuilding building : buildings.values()) {
+            for (NPC inhabitant : building.building.getInhabitants()) {
+                inhabitants.put(inhabitant, null);
+            }
+        }
+        if (nbt.hasKey("Inhabitants")) {
+            NBTTagList inhabitantList = nbt.getTagList("Inhabitants", Constants.NBT.TAG_COMPOUND);
+            for (NBTBase nbtBase : inhabitantList) {
+                NBTTagCompound compound = (NBTTagCompound) nbtBase;
+                NPC npc = NPC.REGISTRY.get(new ResourceLocation(compound.getString("NPC")));
+                UUID uuid = UUID.fromString(compound.getString("UUID"));
+                if (npc != null) {
+                    inhabitants.put(npc, uuid);
+                }
+            }
+        }
     }
 
     public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
@@ -190,6 +225,19 @@ public abstract class TownData<Q extends QuestData, L extends LetterData> implem
             nbt.setInteger("FestivalDaysRemaining", festivalDays);
         }
 
+        if (!inhabitants.isEmpty()) {
+            NBTTagList inhabitantList = new NBTTagList();
+            for (Map.Entry<NPC, UUID> entry : inhabitants.entrySet()) {
+                if (entry.getValue() == null)
+                    continue;
+                NBTTagCompound compound = new NBTTagCompound();
+                compound.setString("NPC", entry.getKey().getResource().toString());
+                compound.setString("UUID", entry.getValue().toString());
+                inhabitantList.appendTag(compound);
+            }
+
+            nbt.setTag("Inhabitants", inhabitantList);
+        }
         return nbt;
     }
 
@@ -200,7 +248,7 @@ public abstract class TownData<Q extends QuestData, L extends LetterData> implem
         if (o == null || getClass() != o.getClass())
             return false;
         TownData townData = (TownData) o;
-        return uuid != null ? uuid.equals(townData.uuid) : townData.uuid == null;
+        return Objects.equals(uuid, townData.uuid);
     }
 
     @Override
