@@ -39,12 +39,10 @@ import joshie.harvest.npcs.HFNPCs;
 import joshie.harvest.npcs.NPCHelper;
 import joshie.harvest.npcs.entity.EntityNPC;
 import joshie.harvest.npcs.entity.EntityNPCBuilder;
-import joshie.harvest.npcs.entity.EntityNPCHuman;
 import joshie.harvest.npcs.entity.EntityNPCMiner;
 import joshie.harvest.npcs.item.ItemNPCSpawner;
 import joshie.harvest.quests.data.QuestDataServer;
 import joshie.harvest.quests.packet.PacketSharedSync;
-import joshie.harvest.town.TownHelper;
 import joshie.harvest.town.packet.PacketDailyQuest;
 import joshie.harvest.town.packet.PacketNewBuilding;
 import joshie.harvest.town.packet.PacketRemoveBuilding;
@@ -113,6 +111,9 @@ public class TownDataServer extends TownData<QuestDataServer, LetterDataServer> 
     }
 
     private boolean isDead(WorldServer world, NPC npc) {
+        if (!hasNPC(npc)) {
+            return false;
+        }
         UUID uuid = inhabitants.get(npc);
         if (uuid == null) {
             return true;
@@ -215,6 +216,9 @@ public class TownDataServer extends TownData<QuestDataServer, LetterDataServer> 
         gathering.newDay(world, townCentre, buildings.values(), isFar);
         generateNewDailyQuest(world);
         WorldServer worldServer = (WorldServer) world;
+        if (isBuilding(null) && !hasNPC(HFNPCs.CARPENTER)) {
+            inhabitants.put(HFNPCs.CARPENTER, null);
+        }
         Set<Map.Entry<NPC, UUID>> entries = ImmutableSet.copyOf(inhabitants.entrySet());
         for (Map.Entry<NPC, UUID> entry : entries) {
             if (entry.getValue() != null && worldServer.getEntityFromUuid(entry.getValue()) != null) {
