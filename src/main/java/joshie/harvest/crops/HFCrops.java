@@ -6,6 +6,7 @@ import joshie.harvest.api.calendar.Season;
 import joshie.harvest.api.core.ISpecialRules;
 import joshie.harvest.api.crops.Crop;
 import joshie.harvest.api.crops.GrowthHandler;
+import joshie.harvest.api.crops.IStateHandler;
 import joshie.harvest.api.crops.WateringHandler;
 import joshie.harvest.core.base.render.MeshIdentical;
 import joshie.harvest.core.helpers.RegistryHelper;
@@ -203,12 +204,20 @@ public class HFCrops {
         BlockColors colors = Minecraft.getMinecraft().getBlockColors();
         IBlockColor coloring = (state, world, pos, tintIndex) -> {
             if (world != null && pos != null) {
-                IBlockState actual = world.getBlockState(pos);
-                if (actual.getBlock() == HFCrops.CROPS) {
+                if (state.getBlock() == HFCrops.CROPS) {
                     CropData data = CropHelper.getCropDataAt(world, pos);
                     if (data != null) {
                         Season season = CropHelper.getSeasonAt(world, pos);
-                        return data.getCrop().getStateHandler().getColor(world, pos, state, season, data.getCrop(), BlockHFCrops.isWithered(actual));
+						boolean withered = BlockHFCrops.isWithered(state);
+						IStateHandler stateHandler = data.getCrop().getStateHandler();
+						IBlockState renderState = stateHandler.getState(
+								world,
+								pos,
+								BlockHFCrops.getSection(state),
+								data.getCrop(),
+								data.getStage(),
+								withered);
+						return stateHandler.getColor(world, pos, renderState, season, data.getCrop(), withered);
                     }
                 }
             }
@@ -218,8 +227,8 @@ public class HFCrops {
 
         //Register all the normal blocks as using the tint index
         colors.registerBlockColorHandler(coloring, CROPS);
-        Crop.REGISTRY.values().stream().filter(crop -> crop != Crop.NULL_CROP && crop.skipLoadingRender())
-                .forEachOrdered(crop -> colors.registerBlockColorHandler(coloring, ((IBlockState) crop.getStateHandler().getValidStates().get(0)).getBlock()));
+//        Crop.REGISTRY.values().stream().filter(crop -> crop != Crop.NULL_CROP && crop.skipLoadingRender())
+//                .forEachOrdered(crop -> colors.registerBlockColorHandler(coloring, ((IBlockState) crop.getStateHandler().getValidStates().get(0)).getBlock()));
     }
 
     public static ItemStack getCropStack(Crops crop) {
