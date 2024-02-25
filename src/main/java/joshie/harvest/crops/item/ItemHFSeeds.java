@@ -73,11 +73,14 @@ public class ItemHFSeeds extends ItemSeeds implements ICreativeSorted {
         } else {
             ItemStack stack = player.getHeldItem(hand);
             Crop crop = getCropFromStack(stack);
-            if (crop != null) {
-                int planted = 0;
+			BlockPos original = pos.up();
+			if (crop != null) {
+				BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos(pos);
+				int planted = 0;
                 for (int x = -1; x <= 1; x++) {
                     for (int z = -1; z <= 1; z++) {
-                        planted = plantSeedAt(player, stack, world, pos.add(x, 1, z), facing, crop, planted, pos.up());
+						mutablePos.setPos(original.getX() + x, original.getY(), original.getZ() + z);
+                        planted = plantSeedAt(player, stack, world, mutablePos, facing, crop, planted, original);
                     }
                 }
 
@@ -95,15 +98,15 @@ public class ItemHFSeeds extends ItemSeeds implements ICreativeSorted {
 
     @SuppressWarnings("unchecked")
     private int plantSeedAt(EntityPlayer player, @Nonnull ItemStack stack, World world, BlockPos pos, EnumFacing facing, Crop crop, int planted, BlockPos original) {
-        if (player.canPlayerEdit(pos, facing, stack) && player.canPlayerEdit(pos.up(), facing, stack) && world.isAirBlock(pos)) {
-            IBlockState down = world.getBlockState(pos.down());
-            if (crop.getGrowthHandler().canPlantSeedAt(world, pos, down, crop, original)) {
-                HFApi.crops.plantCrop(player, world, pos, crop, 1);
-                planted++;
-            }
-        }
+		if (player.canPlayerEdit(pos, facing, stack) && player.canPlayerEdit(pos.up(), facing, stack) && world.isAirBlock(pos)) {
+			IBlockState down = world.getBlockState(pos.down());
+			if (crop.getGrowthHandler().canPlantSeedAt(world, pos, down, crop, original)) {
+				HFApi.crops.plantCrop(player, world, pos, crop, 1);
+				planted++;
+			}
+		}
 
-        return planted;
+		return planted;
     }
 
     @Nonnull

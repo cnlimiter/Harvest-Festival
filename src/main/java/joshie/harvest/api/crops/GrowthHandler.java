@@ -32,7 +32,7 @@ public abstract class GrowthHandler<C extends Crop> {
      *  @param crop     the crop itself
      *  @param original the original position clicked**/
     public boolean canPlantSeedAt(World world, BlockPos pos, IBlockState soil, C crop, BlockPos original) {
-        return soil != Blocks.AIR && soil.getBlock().canSustainPlant(soil, world, pos, EnumFacing.UP, crop) && world.isAirBlock(pos.up());
+        return soil != Blocks.AIR && soil.getBlock().canSustainPlant(soil, world, pos.down(), EnumFacing.UP, crop) && world.isAirBlock(pos.up());
     }
 
     /** Return true if this crop can grow in this location
