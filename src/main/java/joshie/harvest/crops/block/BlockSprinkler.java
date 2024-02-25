@@ -23,6 +23,8 @@ import net.minecraftforge.fluids.FluidActionResult;
 import net.minecraftforge.fluids.FluidUtil;
 
 import javax.annotation.Nonnull;
+import net.minecraftforge.items.ItemHandlerHelper;
+
 import java.util.Locale;
 
 import static joshie.harvest.crops.HFCrops.SPRINKLER_DRAIN_RATE;
@@ -67,10 +69,16 @@ public class BlockSprinkler extends BlockHFEnum<BlockSprinkler, Sprinkler> {
             TileEntity tile = worldIn.getTileEntity(pos);
             if (tile instanceof TileSprinkler) {
                 TileSprinkler sprinkler = ((TileSprinkler) tile);
+				boolean doDrain = !player.isCreative();
+				if (!doDrain) {
+					heldItem = ItemHandlerHelper.copyStackWithSize(heldItem, 1);
+				}
                 FluidActionResult result = FluidUtil.tryEmptyContainer(heldItem, sprinkler.getTank(), 1000, player, true);
 
                 if (result.isSuccess()) {
-                    player.setHeldItem(hand, result.getResult());
+					if (doDrain) {
+						player.setHeldItem(hand, result.getResult());
+					}
                     sprinkler.saveAndRefresh();
                     return true;
                 }
