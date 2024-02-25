@@ -464,7 +464,26 @@ public class BlockHFCrops extends BlockHFEnum<BlockHFCrops, CropType> implements
         return true;
     }
 
-    @Override
+	@Override
+	public boolean addRunningEffects(IBlockState state, World world, BlockPos pos, Entity entity) {
+		state = getActualState(state, world, pos);
+		if (state.getBlock() == this) {
+			// crops added by HF do not have a mapping to the actual blockstate
+			return true;
+		}
+		world.spawnParticle(
+				EnumParticleTypes.BLOCK_CRACK,
+				entity.posX + ((double) world.rand.nextFloat() - 0.5D) * (double) entity.width,
+				entity.getEntityBoundingBox().minY + 0.1D,
+				entity.posZ + ((double) world.rand.nextFloat() - 0.5D) * (double) entity.width,
+				-entity.motionX * 4.0D,
+				1.5D,
+				-entity.motionZ * 4.0D,
+				Block.getStateId(state));
+		return true;
+	}
+
+	@Override
     @SideOnly(Side.CLIENT)
     public void registerModels(Item item, String name) {
         for (int i = 0; i < values.length; i++) {
