@@ -1,6 +1,10 @@
 package joshie.harvest.crops;
 
+import java.util.Map;
+
 import com.google.common.collect.Maps;
+
+import javax.annotation.Nonnull;
 import joshie.harvest.api.crops.Crop;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
@@ -8,13 +12,13 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 
-import javax.annotation.Nonnull;
-import java.util.Map;
-
 public class CropStateMapper extends StateMapperBase {
     @Override
     @Nonnull
     public Map<IBlockState, ModelResourceLocation> putStateModelLocations(Block blockIn) {
+		if (!mapStateModelLocations.isEmpty()) {
+			return mapStateModelLocations;
+		}
         Crop.REGISTRY.values().stream().filter(crop -> !crop.skipLoadingRender()).forEach(crop -> {
         	for (Object object : crop.getStateHandler().getValidStates()) {
                 IBlockState state = (IBlockState) object;
