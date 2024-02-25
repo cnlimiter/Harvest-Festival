@@ -86,25 +86,25 @@ public class RegistryHelper {
         //Atempt to add a drop handler
         try {
             DropHandler handler = (DropHandler) Class.forName(DROPHANDLERS + WordUtils.capitalizeFully(name.replace("_", " ")).replace(" ", "")).newInstance();
-            if (handler != null) crop.setDropHandler(handler);
+			crop.setDropHandler(handler);
         } catch (IllegalAccessException | ClassNotFoundException | InstantiationException e) {/**/}
 
         //Atempt to add a growth handler
         try {
             GrowthHandler handler = (GrowthHandler) Class.forName(GROWTHHANDLERS + WordUtils.capitalizeFully(name.replace("_", " ")).replace(" ", "")).newInstance();
-            if (handler != null) crop.setGrowthHandler(handler);
+			crop.setGrowthHandler(handler);
         } catch (IllegalAccessException | ClassNotFoundException | InstantiationException e) {/**/}
 
         //Atempt to add a state handler
         try {
             IStateHandler handler = (IStateHandler) Class.forName(CROPSTATES + WordUtils.capitalizeFully(name.replace("_", " ")).replace(" ", "")).newInstance();
-            if (handler != null) crop.setStateHandler(handler);
+			crop.setStateHandler(handler);
         } catch (IllegalAccessException | ClassNotFoundException | InstantiationException e) {/**/}
 
         //Atempt to add a rules handler
         try {
             ISpecialRules handler = (ISpecialRules) Class.forName(RULES + WordUtils.capitalizeFully(name.replace("_", " ")).replace(" ", "")).newInstance();
-            if (handler != null) crop.setPurchaseRules(handler);
+			crop.setPurchaseRules(handler);
         } catch (IllegalAccessException | ClassNotFoundException | InstantiationException e) {/**/}
 
         return crop;

@@ -141,9 +141,6 @@ public class Crop extends HFRegistry<Crop> implements IPlantable {
             ItemFood food = (ItemFood)this.item.getItem();
             setIngredient(food.getHealAmount(item), food.getSaturationModifier(item));
         }
-        if (item.getItem().getRegistryName().getResourceDomain().equals("minecraft")) {
-			setSkipRender();
-		}
 
         return this;
     }
