@@ -58,11 +58,18 @@ public class CraftTweaker {
         CommandManager.INSTANCE.addSubcommand(new HFCommandShops());
     }
 
-    public static Block asBlock(IItemStack ingredient) {
-        ItemStack stack = asStack(ingredient);
-        if (stack.getItem() instanceof ItemBlock) {
-            return ((ItemBlock)stack.getItem()).getBlock();
-        } else return null;
+    public static Block asBlock(Object obj) {
+		if (obj instanceof IItemStack) {
+			ItemStack stack = asStack((IItemStack) obj);
+			if (stack.getItem() instanceof ItemBlock) {
+				return ((ItemBlock) stack.getItem()).getBlock();
+			}
+		} else if (obj instanceof String) {
+			return Block.getBlockFromName((String) obj);
+		} else if (obj instanceof Block) {
+			return (Block) obj;
+		}
+		return null;
     }
 
     //Helpers

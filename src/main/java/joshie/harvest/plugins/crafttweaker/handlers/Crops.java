@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableList;
 import crafttweaker.CraftTweakerAPI;
 import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IItemStack;
+import javax.annotation.Nullable;
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.animals.AnimalFoodType;
 import joshie.harvest.api.calendar.Season;
@@ -30,6 +31,7 @@ import stanhebben.zenscript.annotations.ZenMethod;
 import javax.annotation.Nonnull;
 import java.util.Arrays;
 import java.util.Locale;
+import java.util.stream.Stream;
 
 import static joshie.harvest.core.lib.HFModInfo.MODID;
 import static joshie.harvest.plugins.crafttweaker.CraftTweaker.asBlock;
@@ -167,54 +169,77 @@ public class Crops {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    @ZenMethod
-    @SuppressWarnings("unused, deprecation")
-    public static void setStages(String name, int[] stages, IItemStack[] blocks, int[] meta) {
-        if (stages.length != meta.length || blocks.length != meta.length) CraftTweaker.logError(String.format("Could not set the stages for %s as the array lengths didn't match", name));
-        else {
-            IBlockState[] states = new IBlockState[stages.length];
-            for (int i = 0; i < states.length; i++) {
-                Block theBlock = asBlock(blocks[i]);
-                if (theBlock == null) {
-                    CraftTweaker.logError(String.format("Could not set the stages for %s as one of the items was not a block", name));
-                    return; //Don't continue any further
-                }
+	@SuppressWarnings("deprecation")
+	private static void setStages(String name, int[] stages, @Nullable Block block, @Nullable Block[] blocks, @Nullable int[] meta) {
+		if ((blocks == null) != (meta == null)) {
+			CraftTweaker.logError(String.format("Could not set the stages for %s as the blocks and meta arrays didn't match", name));
+			return;
+		}
+		IBlockState[] states = null;
+		if (blocks != null) {
+			if (blocks.length != meta.length) {
+				CraftTweaker.logError(String.format("Could not set the stages for %s as the blocks and meta arrays didn't match", name));
+				return;
+			}
+			if (blocks.length != stages.length) {
+				CraftTweaker.logError(String.format("Could not set the stages for %s as the blocks and stages arrays didn't match", name));
+				return;
+			}
+			states = new IBlockState[blocks.length];
+			for (int i = 0; i < states.length; i++) {
+				if (blocks[i] == null) {
+					CraftTweaker.logError(String.format("Could not set the stages for %s as the block at index %s was null", name, i));
+					return;
+				}
+				states[i] = blocks[i].getStateFromMeta(meta[i]);
+			}
+		}
+		CraftTweakerAPI.apply(new SetStages(name, block, stages, states));
+	}
 
-                states[i] = theBlock.getStateFromMeta(meta[i]);
-            }
+	@ZenMethod
+	public static void setStages(String name, int[] stages, IItemStack[] blocks, int[] meta) {
+		setStages(name, stages, null, Stream.of(blocks).map(CraftTweaker::asBlock).toArray(Block[]::new), meta);
+	}
 
-            CraftTweakerAPI.apply(new SetStages(name, null, stages, states));
-        }
-    }
+	@ZenMethod
+	public static void setStages(String name, int[] stages, String[] blocks, int[] meta) {
+		setStages(name, stages, null, Stream.of(blocks).map(CraftTweaker::asBlock).toArray(Block[]::new), meta);
+	}
 
-    @ZenMethod
-    @SuppressWarnings("unused, deprecation")
-    public static void setStages(String name, IItemStack block, int[] stages, int[] meta) {
-        Block theBlock = asBlock(block);
-        if (theBlock == null) CraftTweaker.logError(String.format("Could not set the stages for %s as the stack item was null or not a block", name));
-        else if (stages.length != meta.length) CraftTweaker.logError(String.format("Could not set the stages for %s as the meta values didn't match the stage values", name));
-        else {
-            IBlockState[] states = new IBlockState[stages.length];
-            for (int i = 0; i < states.length; i++) states[i] = theBlock.getStateFromMeta(meta[i]);
-            CraftTweakerAPI.apply(new SetStages(name, null, stages, states));
-        }
-    }
+	@ZenMethod
+	public static void setStages(String name, IItemStack block, int[] stages, int[] meta) {
+		Block[] blocks = new Block[meta.length];
+		Arrays.fill(blocks, asBlock(block));
+		setStages(name, stages, null, blocks, meta);
+	}
 
+	@ZenMethod
+	public static void setStages(String name, String block, int[] stages, int[] meta) {
+		Block[] blocks = new Block[meta.length];
+		Arrays.fill(blocks, asBlock(block));
+		setStages(name, stages, null, blocks, meta);
+	}
 
-    @ZenMethod
-    @SuppressWarnings("unused, deprecation")
-    public static void setStages(String name, IItemStack block, int[] stages) {
-        Block theBlock = asBlock(block);
-        if (theBlock == null) CraftTweaker.logError(String.format("Could not set the stages for %s as the stack item was null or not a block", name));
-        else CraftTweakerAPI.apply(new SetStages(name, theBlock, stages, null));
+	@ZenMethod
+	public static void setStages(String name, IItemStack block, int[] stages, IItemStack[] blocks, int[] meta) {
+		setStages(name, stages, asBlock(block), Stream.of(blocks).map(CraftTweaker::asBlock).toArray(Block[]::new), meta);
+	}
 
-    }
+	@ZenMethod
+	public static void setStages(String name, IItemStack block, int[] stages) {
+		setStages(name, stages, asBlock(block), null, null);
+	}
 
-    @ZenMethod
-    @SuppressWarnings("unused")
-    public static void setStages(String name, int[] stages) {
-        CraftTweakerAPI.apply(new SetStages(name, stages));
-    }
+	@ZenMethod
+	public static void setStages(String name, String block, int[] stages) {
+		setStages(name, stages, asBlock(block), null, null);
+	}
+
+	@ZenMethod
+	public static void setStages(String name, int[] stages) {
+		CraftTweakerAPI.apply(new SetStages(name, stages));
+	}
 
     private static class SetStages extends BaseCrop {
         private final Block block;
@@ -237,7 +262,7 @@ public class Crops {
 
         @Override
         public String getDescription() {
-            return "Setting stages for " + resource + " to " + stages;
+            return "Setting stages for " + resource + " to " + Arrays.toString(stages);
         }
 
         @Override
@@ -296,7 +321,7 @@ public class Crops {
 
         @Override
         public String getDescription() {
-            return "Setting seasons for " + resource + " to " + seasons;
+            return "Setting seasons for " + resource + " to " + Arrays.toString(seasons);
         }
 
         @Override
