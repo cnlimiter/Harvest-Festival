@@ -6,9 +6,9 @@
   "version": "${version}",
   "mcversion": "${mcversion}",
   "authorList": ["Snownee", "joshie", "Yulife"],
-  "credits": "Girafi for his awesomeness. See credits.txt in jar for extra",
+  "credits": "Girafi for his awesomeness. See CREDITS.md in jar for extra",
   "logoFile": "assets/harvestfestival/logo.png",
   "screenshots": [],
-  "dependencies": []
+  "requiredMods": ["mixinbooter"]
 }
 ]

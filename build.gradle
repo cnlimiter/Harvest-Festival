@@ -1,76 +1,104 @@
 buildscript {
     repositories {
         maven { url = "https://maven.minecraftforge.net/" }
+        maven { url = "https://repo.spongepowered.org/maven" }
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+        classpath 'org.spongepowered:mixingradle:0.6-SNAPSHOT'
     }
 }
+
 apply plugin: 'net.minecraftforge.gradle.forge'
 apply plugin: 'maven-publish'
+apply plugin: 'org.spongepowered.mixin'
+apply plugin: 'eclipse'
+//apply plugin: 'com.diffplug.eclipse.apt'
+
+sourceSets {
+    main {
+        ext.refMap = "harvestfestival.refmap.json"
+    }
+}
+
+//mixin {
+//    add sourceSets.main, "harvestfestival.refmap.json"
+//}
 
 sourceCompatibility = targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 compileJava {
     sourceCompatibility = targetCompatibility = '1.8'
 }
 
-repositories {
-  maven { url "http://dvs1.progwml6.com/files/maven" }
-  //maven { url "http://tehnut.info/maven" }
-  maven { url "http://maven.blamejared.com/" }
-}
-
-ext.buildnumber=""
+ext.buildnumber = ""
 if (System.getenv().BUILD_NUMBER) {
-    ext.buildnumber="-" + System.getenv().BUILD_NUMBER
+    ext.buildnumber = "-" + System.getenv().BUILD_NUMBER
 }
 
 version = "${minecraft_version}-${mod_version}${buildnumber}"
-group= "uk.joshiejack.harvest"
+group = "uk.joshiejack.harvest"
 archivesBaseName = "Harvest-Festival-Legacy"
 
 minecraft {
     version = "${minecraft_version}-${forge_version}"
     runDir = "run"
     mappings = "${mappings_version}"
-    coreMod = "joshie.harvest.asm.HFTransformer"
+    String resolved_core_config = mod_mixin_configs.replace('${mod_id}', mod_id);
+    clientRunArgs += "--mixin ${resolved_core_config}"
+    serverRunArgs += "--mixin ${resolved_core_config}"
 
     replace "@VERSION@", "${mod_version}"
     replaceIn "HFModInfo.java"
+}
 
-    clientJvmArgs += "-Dfml.coreMods.load=joshie.harvest.asm.HFTransformer"
-    serverJvmArgs += "-Dfml.coreMods.load=joshie.harvest.asm.HFTransformer"
+repositories {
+    maven { url 'https://maven.cleanroommc.com' }
+    maven { url "http://dvs1.progwml6.com/files/maven" }
+    maven { url "http://maven.blamejared.com/" }
 }
 
 dependencies {
-  deobfCompile "mezz.jei:jei_${minecraft_version}:${jei_version}"
-  //deobfCompile "info.tehnut.buttons:Buttons:${minecraft_version}-${buttons_version}"
-  deobfCompile "CraftTweaker2:CraftTweaker2-MC1120-Main:${crafttweaker_version}"
+    annotationProcessor 'org.ow2.asm:asm-debug-all:5.2'
+    annotationProcessor 'com.google.guava:guava:32.1.2-jre'
+    annotationProcessor 'com.google.code.gson:gson:2.8.9'
+    implementation('zone.rong:mixinbooter:10.0') {
+        transitive = false
+    }
+    annotationProcessor('zone.rong:mixinbooter:10.0') {
+        transitive = false
+    }
+
+    deobfCompile "mezz.jei:jei_${minecraft_version}:${jei_version}"
+    deobfCompile "CraftTweaker2:CraftTweaker2-MC1120-Main:${crafttweaker_version}"
 }
 
 processResources
-{
-    inputs.property "version", project.version
-    inputs.property "mcversion", project.minecraft.version
+        {
+            inputs.property "version", project.version
+            inputs.property "mcversion", project.minecraft.version
 
-    from(sourceSets.main.resources.srcDirs) {
-        include 'mcmod.info'
-                
-        expand 'version':project.version, 'mcversion':project.minecraft.version
-    }
+            from(sourceSets.main.resources.srcDirs) {
+                include 'mcmod.info'
 
-    from(sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
-    }
-}
+                expand 'version': project.version, 'mcversion': project.minecraft.version
+            }
+
+            from(sourceSets.main.resources.srcDirs) {
+                exclude 'mcmod.info'
+            }
+        }
 
 jar {
     manifest {
-        attributes 'FMLAT': 'harvestfestival_at.cfg'
-        attributes 'FMLCorePlugin': 'joshie.harvest.asm.HFTransformer'
-        attributes 'FMLCorePluginContainsFMLMod': 'true'
+        attributes "FMLAT": "harvestfestival_at.cfg"
+//        attributes "TweakClass": "org.spongepowered.asm.launch.MixinTweaker"
+//        attributes "FMLCorePluginContainsFMLMod": "true"
+//        attributes "ForceLoadAsMod": "true"
+//        attributes "MixinConfigs": mod_mixin_configs.replace('${mod_id}', mod_id)
     }
-	exclude 'joshie/harvest/debug'
+    exclude 'joshie/harvest/debug'
+
+    from 'CREDITS.md'
 }
 
 task apiJar(type: Jar) {

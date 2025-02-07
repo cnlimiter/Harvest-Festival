@@ -1,0 +1,12 @@
+{
+	"required": true,
+	"package": "joshie.harvest.mixin",
+	"minVersion": "0.8.0",
+	"compatibilityLevel": "JAVA_8",
+	"refmap": "harvestfestival.refmap.json",
+	"mixins": [
+	],
+	"client": [
+		"client.EntityRendererMixin"
+	]
+}
