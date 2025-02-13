@@ -134,14 +134,6 @@ public class HFCore {
         }
     }
 
-    //    @Subscribe
-    //    public static void serverStarting(FMLServerStartingEvent event)
-    //    {
-    //        MinecraftServer server = event.getServer();
-    //        System.out.println(server.getServerHostname());
-    //        System.out.println(123);
-    //    }
-
     @SideOnly(Side.CLIENT)
     public static void initClient() {
         ClientRegistry.bindTileEntitySpecialRenderer(TileBasket.class, new SpecialRendererBasket());

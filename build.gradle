@@ -91,9 +91,9 @@ processResources
 jar {
     manifest {
         attributes "FMLAT": "harvestfestival_at.cfg"
-//        attributes "TweakClass": "org.spongepowered.asm.launch.MixinTweaker"
-//        attributes "FMLCorePluginContainsFMLMod": "true"
-//        attributes "ForceLoadAsMod": "true"
+        attributes "FMLCorePlugin": "joshie.harvest.InitMixins"
+        attributes "FMLCorePluginContainsFMLMod": "true"
+        attributes "ForceLoadAsMod": "true"
 //        attributes "MixinConfigs": mod_mixin_configs.replace('${mod_id}', mod_id)
     }
     exclude 'joshie/harvest/debug'
