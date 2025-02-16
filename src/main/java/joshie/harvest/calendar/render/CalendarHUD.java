@@ -28,6 +28,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.World;
 import net.minecraftforge.client.event.GuiScreenEvent.KeyboardInputEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
@@ -61,8 +62,8 @@ public class CalendarHUD {
         }
     }
 
-    private boolean isHUDVisible() {
-        return CalendarAPI.INSTANCE.getSeasonProvider(MCClientHelper.getWorld()).displayHUD();
+    private boolean isHUDVisible(World world) {
+        return CalendarAPI.INSTANCE.getSeasonProvider(world).displayHUD();
     }
 
     @SubscribeEvent
@@ -127,17 +128,19 @@ public class CalendarHUD {
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onRenderOverlay(RenderGameOverlayEvent.Pre event) {
         if (event.getType() == ElementType.HOTBAR) {
+			World world = MCClientHelper.getWorld();
+			if (world == null) return;
             Minecraft mc = MCClientHelper.getMinecraft();
             GlStateManager.pushMatrix();
             GlStateManager.enableBlend();
             GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
             int maxWidth = event.getResolution().getScaledWidth();
             int maxHeight = event.getResolution().getScaledHeight();
-            if (HFCalendar.ENABLE_DATE_HUD && isHUDVisible()) {
-                Calendar calendar = HFTrackers.getCalendar(MCClientHelper.getWorld());
+            if (HFCalendar.ENABLE_DATE_HUD && isHUDVisible(world)) {
+				Calendar calendar = HFTrackers.getCalendar(world);
                 CalendarDate date = calendar.getDate();
                 boolean inMine = mc.world.provider.getDimension() == HFMining.MINING_ID;
-                Season season = HFApi.calendar.getSeasonAtCoordinates(MCClientHelper.getWorld(), new BlockPos(MCClientHelper.getPlayer()));
+                Season season = HFApi.calendar.getSeasonAtCoordinates(world, new BlockPos(MCClientHelper.getPlayer()));
                 if (season != null) {
                     SeasonData data = CalendarAPI.INSTANCE.getDataForSeason(season);
                     GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
@@ -158,7 +161,7 @@ public class CalendarHUD {
 
                     //Draw the time
                     GlStateManager.pushMatrix();
-                    String time = formatTime(CalendarHelper.getScaledTime((int) CalendarHelper.getTime(MCClientHelper.getWorld())));
+                    String time = formatTime(CalendarHelper.getScaledTime((int) CalendarHelper.getTime(world)));
                     mc.fontRenderer.drawStringWithShadow("(" + date.getWeekday().getLocalizedName() + ")" + "  " + time, adjustedX + 42, adjustedY + 23, 0xFFFFFFFF);
                     GlStateManager.popMatrix();
                 }

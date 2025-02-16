@@ -15,6 +15,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.client.event.EntityViewRenderEvent.FogColors;
 import net.minecraftforge.client.event.EntityViewRenderEvent.RenderFogEvent;
@@ -51,7 +52,7 @@ public class CalendarRender {
                 if (fogTarget != fogStart) {
                     if (fogTarget > fogStart) {
                         fogStart += 5;
-                    } else if (fogTarget < fogStart) {
+                    } else {
                         fogStart -= 5;
                     }
                 }
@@ -101,8 +102,8 @@ public class CalendarRender {
     public void onFogColor(FogColors event) {
         if (HFCalendar.ENABLE_SNOW_FOG && event.getEntity().world.provider.getDimension() == 0) {
             if (!event.getState().getMaterial().isLiquid()) {
-                Weather weather = HFApi.calendar.getWeather(MCClientHelper.getWorld());
-                if (weather != null && (weather == Weather.SNOW || weather == Weather.BLIZZARD)) {
+                Weather weather = HFApi.calendar.getWeather(event.getEntity().world);
+                if (weather == Weather.SNOW || weather == Weather.BLIZZARD) {
                     event.setRed(1F);
                     event.setBlue(1F);
                     event.setGreen(1F);
@@ -114,10 +115,12 @@ public class CalendarRender {
     @SubscribeEvent
     public void getFoliageColor(GetFoliageColor event) {
         if (!event.getBiome().canRain() || event.getBiome().isHighHumidity()) return;
-        if (HFApi.calendar.getDate(MCClientHelper.getWorld()).getSeason() == Season.AUTUMN) {
+		World world = MCClientHelper.getWorld();
+		if (world == null) return;
+		if (HFApi.calendar.getDate(world).getSeason() == Season.AUTUMN) {
             event.setNewColor(0xFF9900);
         } else {
-            int leaves = HFTrackers.getCalendar(MCClientHelper.getWorld()).getSeasonData().leavesColor;
+            int leaves = HFTrackers.getCalendar(world).getSeasonData().leavesColor;
             if (leaves != 0) {
                 event.setNewColor(CalendarHelper.getBlendedColour(leavesToBlend, event.getOriginalColor(), leaves));
             }
@@ -127,7 +130,9 @@ public class CalendarRender {
     @SubscribeEvent
     public void getGrassColor(GetGrassColor event) {
         if (!event.getBiome().canRain() || event.getBiome().isHighHumidity()) return;
-        int grass = HFTrackers.getCalendar(MCClientHelper.getWorld()).getSeasonData().grassColor;
+		World world = MCClientHelper.getWorld();
+		if (world == null) return;
+		int grass = HFTrackers.getCalendar(world).getSeasonData().grassColor;
         if (grass != 0) {
             event.setNewColor(CalendarHelper.getBlendedColour(grassToBlend, event.getOriginalColor(), grass));
         }

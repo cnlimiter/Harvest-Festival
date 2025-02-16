@@ -1,5 +1,8 @@
 package joshie.harvest.calendar.provider;
 
+import static joshie.harvest.calendar.HFCalendar.TICKS_PER_DAY;
+
+import javax.annotation.Nonnull;
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.calendar.Season;
 import joshie.harvest.api.calendar.Weather;
@@ -8,7 +11,6 @@ import joshie.harvest.calendar.data.Calendar;
 import joshie.harvest.calendar.data.SeasonData;
 import joshie.harvest.calendar.render.WeatherRenderer;
 import joshie.harvest.core.HFTrackers;
-import joshie.harvest.core.helpers.MCClientHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
@@ -29,10 +31,6 @@ import net.minecraftforge.common.ForgeModContainer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
-
-import static joshie.harvest.calendar.HFCalendar.TICKS_PER_DAY;
-
 public class HFWorldProvider extends WorldProviderSurface {
     @SideOnly(Side.CLIENT)
     private IRenderHandler WEATHER_RENDERER;
@@ -50,14 +48,14 @@ public class HFWorldProvider extends WorldProviderSurface {
     @Override
     public float getStarBrightness(float f) {
         float brightness = super.getStarBrightness(f);
-        return HFTrackers.getCalendar(MCClientHelper.getWorld()).getDate().getSeason() == Season.WINTER ? brightness * 1.25F : brightness;
+        return HFTrackers.getCalendar(world).getDate().getSeason() == Season.WINTER ? brightness * 1.25F : brightness;
     }
 
     @SideOnly(Side.CLIENT)
     @Override
     public float getSunBrightness(float f) {
         float brightness = world.getSunBrightnessBody(f);
-        return HFTrackers.getCalendar(MCClientHelper.getWorld()).getDate().getSeason() == Season.SUMMER ? brightness * 1.25F : brightness;
+        return HFTrackers.getCalendar(world).getDate().getSeason() == Season.SUMMER ? brightness * 1.25F : brightness;
     }
 
     private static int skyX, skyZ;
@@ -85,7 +83,7 @@ public class HFWorldProvider extends WorldProviderSurface {
             distance = ranges[settings.renderDistanceChunks];
         }
 
-        Calendar calendar = HFTrackers.getCalendar(MCClientHelper.getWorld());
+        Calendar calendar = HFTrackers.getCalendar(world);
         SeasonData seasonData = calendar.getSeasonData();
         int original = seasonData.skyColor;
         int r = (original & 0xFF0000) >> 16;

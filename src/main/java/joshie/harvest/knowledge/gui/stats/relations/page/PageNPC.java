@@ -1,7 +1,9 @@
 package joshie.harvest.knowledge.gui.stats.relations.page;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import joshie.harvest.api.npc.NPC;
-import joshie.harvest.core.base.gui.BookPage;
 import joshie.harvest.knowledge.gui.stats.GuiStats;
 import joshie.harvest.knowledge.gui.stats.button.ButtonNext;
 import joshie.harvest.knowledge.gui.stats.button.ButtonPrevious;
@@ -10,11 +12,8 @@ import joshie.harvest.npcs.HFNPCs;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiLabel;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class PageNPC extends PageRelationship {
-    public static final BookPage INSTANCE = new PageNPC();
+    public static final PageNPC INSTANCE = new PageNPC();
 
     private PageNPC() {
         super("npc", HFNPCs.SPAWNER_NPC.getStackFromObject(HFNPCs.CARPENTER));

@@ -23,6 +23,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.IRegistry;
+import net.minecraft.world.World;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -54,7 +55,8 @@ public class BakedLeaves extends BakedHF {
         List<BakedQuad> quads = new ArrayList<>();
         if (MCClientHelper.getMinecraft().gameSettings.fancyGraphics) quads.addAll(base.getQuads(state, side, rand));
         else base.getQuads(state, side, rand).stream().map(quad -> new BakedQuadRetextured(quad, sprite)).forEachOrdered(quads::add);
-        if (HFApi.calendar.getDate(MCClientHelper.getWorld()).getSeason() == Season.SPRING) {
+		World world = MCClientHelper.getWorld();
+		if (world != null && HFApi.calendar.getDate(world).getSeason() == Season.SPRING) {
             BakedLeaves.super.getQuads(state, side, rand).stream().map(BakedTintedQuad :: new).forEachOrdered(quads::add);
         }
 

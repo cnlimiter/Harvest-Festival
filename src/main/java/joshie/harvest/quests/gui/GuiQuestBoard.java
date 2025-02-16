@@ -19,7 +19,7 @@ public class GuiQuestBoard extends GuiBaseContainer {
     public GuiQuestBoard(BlockPos pos, EntityPlayer player) {
         super(new ContainerNull(), "sign", 34);
         this.quest = TownHelper.getClosestTownToEntity(player, false).getDailyQuest();
-        this.world = MCClientHelper.getWorld();
+        this.world = player.world;
         this.pos = pos;
         this.xSize = 226;
     }

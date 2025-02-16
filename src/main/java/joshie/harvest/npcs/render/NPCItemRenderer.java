@@ -84,6 +84,7 @@ public class NPCItemRenderer extends TileEntitySpecialRenderer<NPCTile> {
     }
 
     private EntityNPC getNPC() {
+		//FIXME memory leak
         if (fake == null) fake = new EntityNPCVillager(MCClientHelper.getWorld());
         return fake;
     }

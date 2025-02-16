@@ -1,9 +1,11 @@
 package joshie.harvest.knowledge.gui.stats.relations.page;
 
+import java.util.Iterator;
+import java.util.List;
+
 import joshie.harvest.animals.HFAnimals;
 import joshie.harvest.animals.item.ItemAnimalSpawner.Spawner;
 import joshie.harvest.api.animals.AnimalStats;
-import joshie.harvest.core.base.gui.BookPage;
 import joshie.harvest.core.helpers.EntityHelper;
 import joshie.harvest.core.helpers.MCClientHelper;
 import joshie.harvest.knowledge.gui.stats.GuiStats;
@@ -16,11 +18,8 @@ import net.minecraft.client.gui.GuiLabel;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.util.math.BlockPos;
 
-import java.util.Iterator;
-import java.util.List;
-
 public class PageAnimals extends PageRelationship {
-    public static final BookPage INSTANCE = new PageAnimals();
+    public static final PageAnimals INSTANCE = new PageAnimals();
 
     private PageAnimals() {
         super("animals", HFAnimals.ANIMAL.getStackFromEnum(Spawner.COW));

@@ -1,5 +1,7 @@
 package joshie.harvest.animals.packet;
 
+import java.util.Objects;
+
 import io.netty.buffer.ByteBuf;
 import joshie.harvest.api.animals.AnimalStats;
 import joshie.harvest.core.helpers.EntityHelper;
@@ -51,6 +53,6 @@ public class PacketSyncAnimal extends PenguinPacket {
     }
 
     private EntityAnimal getEntityAsAnimal() {
-        return (EntityAnimal) MCClientHelper.getWorld().getEntityByID(id);
+        return (EntityAnimal) Objects.requireNonNull(MCClientHelper.getWorld()).getEntityByID(id);
     }
 }

@@ -39,7 +39,7 @@ public class PacketQuestSetCurrent extends PacketSharedSync {
                 quest = q.getClass().newInstance().setRegistryName(q.getRegistryName());
                 quest.readFromNBT(ByteBufUtils.readTag(buf));
                 quest.onQuestActivated();
-            } catch (Exception e) {}
+            } catch (Exception ignored) {}
         }
     }
 
