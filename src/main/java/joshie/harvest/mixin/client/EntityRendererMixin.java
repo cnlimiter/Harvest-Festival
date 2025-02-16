@@ -20,7 +20,7 @@ public class EntityRendererMixin {
 
 	@Inject(method = "addRainParticles", at = @At("HEAD"), cancellable = true)
 	private void addRainParticles(CallbackInfo ci) {
-		Weather weather = HFApi.calendar.getWeather(mc.world);
+		Weather weather = HFApi.calendar.getRecentNonSunnyWeather(mc.world);
 		if (!weather.isRain()) {
 			ci.cancel();
 		}

@@ -39,4 +39,8 @@ public class CalendarClient extends Calendar {
         this.rainStrength = rain;
         this.stormStrength = storm;
     }
+
+	public void setRecentNonSunnyWeather(Weather weather) {
+		this.recentNonSunnyWeather = weather;
+	}
 }

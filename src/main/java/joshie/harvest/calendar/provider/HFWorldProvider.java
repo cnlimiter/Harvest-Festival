@@ -33,7 +33,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class HFWorldProvider extends WorldProviderSurface {
     @SideOnly(Side.CLIENT)
-    private IRenderHandler WEATHER_RENDERER;
+    private WeatherRenderer WEATHER_RENDERER;
 
     @SideOnly(Side.CLIENT)
     @Override

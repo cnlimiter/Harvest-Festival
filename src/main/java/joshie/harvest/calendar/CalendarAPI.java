@@ -73,7 +73,12 @@ public class CalendarAPI implements CalendarManager {
         return HFTrackers.getCalendar(world).getTodaysWeather();
     }
 
-    //We're offsetting the day in the calendar, so that the letter gets sent the day before the event
+	@Override
+	public Weather getRecentNonSunnyWeather(World world) {
+        return HFTrackers.getCalendar(world).getRecentNonSunnyWeather();
+	}
+
+	//We're offsetting the day in the calendar, so that the letter gets sent the day before the event
     private int getOffsetDay(int originalDay) {
         if (originalDay > 1) return originalDay - 1;
         else return 30;

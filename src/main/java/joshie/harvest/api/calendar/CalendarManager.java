@@ -34,6 +34,8 @@ public interface CalendarManager {
      * @param world a world object **/
     Weather getWeather(World world);
 
+	Weather getRecentNonSunnyWeather(World world);
+
     /** Register a holiday
      *  @param festival the holiday data
      *  @param day the date this holiday occurs (will be fit in to a 30 day calendar)

@@ -56,7 +56,7 @@ public class CalendarServer extends Calendar {
     public void syncToPlayer(EntityPlayer player) {
         PacketHandler.sendToClient(new PacketSyncCalendar(DATE), player);
         PacketHandler.sendToClient(new PacketSyncForecast(forecast), player);
-        PacketHandler.sendToClient(new PacketSyncStrength(rainStrength, stormStrength), player);
+        PacketHandler.sendToClient(new PacketSyncStrength(recentNonSunnyWeather, rainStrength, stormStrength), player);
     }
 
     public void recalculate(World world) {
@@ -134,11 +134,15 @@ public class CalendarServer extends Calendar {
         //TODO: Remove in 0.7+
         if (nbt.hasKey("Storm")) stormStrength = (int) nbt.getFloat("Storm") * 100;
         for (int i = 0; i < 7; i++) {
-            forecast[i] = Weather.values()[nbt.getByte("Day" + i)];
+            forecast[i] = Weather.VALUES.get(nbt.getByte("Day" + i));
             if (forecast[i] == null) {
                 forecast[i] = Weather.SUNNY;
             }
         }
+
+		if (nbt.hasKey("RecentNonSunnyWeather")) {
+			recentNonSunnyWeather = Weather.VALUES.get(nbt.getByte("RecentNonSunnyWeather"));
+		}
     }
 
     public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
@@ -150,6 +154,10 @@ public class CalendarServer extends Calendar {
             if (weather == null) weather = Weather.SUNNY;
             nbt.setByte("Day" + i, (byte) weather.ordinal());
         }
+
+		if (recentNonSunnyWeather != Weather.SUNNY && recentNonSunnyWeather != getTodaysWeather()) {
+			nbt.setByte("RecentNonSunnyWeather", (byte) recentNonSunnyWeather.ordinal());
+		}
 
         return nbt;
     }

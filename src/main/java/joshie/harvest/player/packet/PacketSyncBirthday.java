@@ -31,7 +31,7 @@ public class PacketSyncBirthday extends PenguinPacket {
     @Override
     public void fromBytes(ByteBuf buf) {
         day = buf.readByte();
-        season = Season.values()[buf.readByte()];
+        season = Season.VALUES.get(buf.readByte());
         year = buf.readShort();
     }
 

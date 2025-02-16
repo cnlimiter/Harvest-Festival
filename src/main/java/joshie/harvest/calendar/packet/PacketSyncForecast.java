@@ -28,7 +28,7 @@ public class PacketSyncForecast extends PenguinPacket {
     public void fromBytes(ByteBuf buf) {
         forecast = new Weather[7];
         for (int i = 0; i < 7; i++) {
-            forecast[i] = Weather.values()[buf.readByte()];
+            forecast[i] = Weather.VALUES.get(buf.readByte());
         }
     }
 

@@ -39,6 +39,7 @@ public abstract class Calendar extends HFTracker implements SeasonProvider {
 
     /* ############# Weather ################*/
     Weather[] forecast = new Weather[7];
+	Weather recentNonSunnyWeather = SUNNY;
     int rainStrength;
     int stormStrength;
 
@@ -51,6 +52,10 @@ public abstract class Calendar extends HFTracker implements SeasonProvider {
     public Weather getTodaysWeather() {
         return forecast[0] != null ? forecast[0] : SUNNY;
     }
+
+	public Weather getRecentNonSunnyWeather() {
+		return recentNonSunnyWeather;
+	}
 
     public int getTodaysRainStrength() {
         return rainStrength;
@@ -82,5 +87,9 @@ public abstract class Calendar extends HFTracker implements SeasonProvider {
             default:
                 break;
         }
+
+		if (forecast[0] != SUNNY) {
+			recentNonSunnyWeather = forecast[0];
+		}
     }
 }

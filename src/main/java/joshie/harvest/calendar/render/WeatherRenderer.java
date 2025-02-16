@@ -1,5 +1,7 @@
 package joshie.harvest.calendar.render;
 
+import static net.minecraft.client.renderer.EntityRenderer.SNOW_TEXTURES;
+
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.calendar.Weather;
 import net.minecraft.client.Minecraft;
@@ -12,21 +14,17 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.client.IRenderHandler;
 
-import static net.minecraft.client.renderer.EntityRenderer.SNOW_TEXTURES;
-
 public class WeatherRenderer extends IRenderHandler {
     @Override
-    public void render(float rain, WorldClient worldClient, Minecraft mc) {
-        float f = mc.world.getRainStrength(rain);
-        EntityRenderer renderer = mc.entityRenderer;
+    public void render(float partialTicks, WorldClient world, Minecraft mc) {
+        float f = world.getRainStrength(partialTicks);
         if (f > 0.0F) {
+			EntityRenderer renderer = mc.entityRenderer;
             renderer.enableLightmap();
             Entity entity = mc.getRenderViewEntity();
-            World world = mc.world;
             int i = MathHelper.floor(entity.posX);
             int j = MathHelper.floor(entity.posY);
             int k = MathHelper.floor(entity.posZ);
@@ -37,9 +35,9 @@ public class WeatherRenderer extends IRenderHandler {
             GlStateManager.enableBlend();
             GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
             GlStateManager.alphaFunc(516, 0.1F);
-            double d0 = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * rain;
-            double d1 = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * rain;
-            double d2 = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * rain;
+            double d0 = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * partialTicks;
+            double d1 = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * partialTicks;
+            double d2 = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * partialTicks;
             int l = MathHelper.floor(d1);
             int i1 = 5;
 
@@ -48,12 +46,11 @@ public class WeatherRenderer extends IRenderHandler {
             }
 
             int j1 = -1;
-            float f1 = renderer.rendererUpdateCount + rain;
+            float f1 = renderer.rendererUpdateCount + partialTicks;
             vertexbuffer.setTranslation(-d0, -d1, -d2);
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
             BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
 
-            Weather weather = HFApi.calendar.getWeather(world);
             for (int k1 = k - i1; k1 <= k + i1; ++k1) {
                 for (int l1 = i - i1; l1 <= i + i1; ++l1) {
                     int i2 = (k1 - k + 16) * 32 + l1 - i + 16;
@@ -84,6 +81,7 @@ public class WeatherRenderer extends IRenderHandler {
                         if (k2 != l2) {
                             renderer.random.setSeed(l1 * l1 * 3121 + l1 * 45238971 ^ k1 * k1 * 418711 + k1 * 13761);
                             blockpos$mutableblockpos.setPos(l1, k2, k1);
+							Weather weather = HFApi.calendar.getRecentNonSunnyWeather(world);
                             if ((!weather.isSnow() && !biome.isSnowyBiome()) || biome.isHighHumidity()) {
                                 if (j1 != 0) {
                                     if (j1 >= 0) {
@@ -95,7 +93,7 @@ public class WeatherRenderer extends IRenderHandler {
                                     vertexbuffer.begin(7, DefaultVertexFormats.PARTICLE_POSITION_TEX_COLOR_LMAP);
                                 }
 
-                                double d5 = -((double)(renderer.rendererUpdateCount + l1 * l1 * 3121 + l1 * 45238971 + k1 * k1 * 418711 + k1 * 13761 & 31) + (double)rain) / 32.0D * (3.0D + renderer.random.nextDouble());
+                                double d5 = -((double)(renderer.rendererUpdateCount + l1 * l1 * 3121 + l1 * 45238971 + k1 * k1 * 418711 + k1 * 13761 & 31) + (double)partialTicks) / 32.0D * (3.0D + renderer.random.nextDouble());
                                 double d6 = l1 + 0.5F - entity.posX;
                                 double d7 = k1 + 0.5F - entity.posZ;
                                 float f3 = MathHelper.sqrt(d6 * d6 + d7 * d7) / i1;
@@ -119,7 +117,7 @@ public class WeatherRenderer extends IRenderHandler {
                                     vertexbuffer.begin(7, DefaultVertexFormats.PARTICLE_POSITION_TEX_COLOR_LMAP);
                                 }
 
-                                double d8 = -((renderer.rendererUpdateCount & 511) + rain) / 512.0F;
+                                double d8 = -((renderer.rendererUpdateCount & 511) + partialTicks) / 512.0F;
                                 double d9 = renderer.random.nextDouble() + f1 * 0.01D * ((float)renderer.random.nextGaussian());
                                 double d10 = renderer.random.nextDouble() + f1 * (float)renderer.random.nextGaussian() * 0.001D;
                                 double d11 = l1 + 0.5F - entity.posX;

@@ -1,9 +1,15 @@
 package joshie.harvest.api.calendar;
 
+import java.util.List;
+
+import com.google.common.collect.ImmutableList;
+
 public enum Weather {
-    SUNNY, RAIN, TYPHOON, SNOW, BLIZZARD;
-    
-    public boolean isRain() {
+	SUNNY, RAIN, TYPHOON, SNOW, BLIZZARD;
+
+	public static final List<Weather> VALUES = ImmutableList.copyOf(values());
+
+	public boolean isRain() {
         return this == RAIN || this == TYPHOON;
     }
        

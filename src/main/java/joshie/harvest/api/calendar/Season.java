@@ -4,13 +4,19 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 
 import javax.annotation.Nonnull;
+
+import java.util.List;
 import java.util.Locale;
+
+import com.google.common.collect.ImmutableList;
 
 public enum Season {
     SPRING(TextFormatting.GREEN),
     SUMMER(TextFormatting.YELLOW),
     AUTUMN(TextFormatting.GOLD),
     WINTER(TextFormatting.WHITE);
+
+	public static final List<Season> VALUES = ImmutableList.copyOf(values());
 
     private final TextFormatting textColor;
 
