@@ -203,7 +203,7 @@ public class Crops {
 	}
 
 	@ZenMethod
-	public static void setStages(String name, int[] stages, String[] blocks, int[] meta) {
+	public static void setStagesAsString(String name, int[] stages, String[] blocks, int[] meta) {
 		setStages(name, stages, null, Stream.of(blocks).map(CraftTweaker::asBlock).toArray(Block[]::new), meta);
 	}
 
@@ -215,7 +215,7 @@ public class Crops {
 	}
 
 	@ZenMethod
-	public static void setStages(String name, String block, int[] stages, int[] meta) {
+	public static void setStagesAsString(String name, String block, int[] stages, int[] meta) {
 		Block[] blocks = new Block[meta.length];
 		Arrays.fill(blocks, asBlock(block));
 		setStages(name, stages, null, blocks, meta);
@@ -232,7 +232,7 @@ public class Crops {
 	}
 
 	@ZenMethod
-	public static void setStages(String name, String block, int[] stages) {
+	public static void setStagesAsString(String name, String block, int[] stages) {
 		setStages(name, stages, asBlock(block), null, null);
 	}
 
