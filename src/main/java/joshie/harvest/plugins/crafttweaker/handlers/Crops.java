@@ -53,12 +53,11 @@ public class Crops {
         CraftTweakerAPI.apply(new Add(name, localised));
     }
 
-    private static class Add extends BaseOnce {
-        private final ResourceLocation resource;
+    private static class Add extends BaseCrop {
         private final String localised;
 
         public Add(String name, String localised) {
-            this.resource = new ResourceLocation(MODID, name);
+			super(name);
             this.localised = localised;
         }
 
@@ -68,13 +67,13 @@ public class Crops {
         }
 
         @Override
-        public boolean isApplied() {
-            return false;
-        }
-
-        @Override
         @SuppressWarnings("deprecation")
         public void applyOnce() {
+			Crop crop = Crop.REGISTRY.get(resource);
+			if (crop != null) {
+				CraftTweaker.logError(String.format("Could not add %s as a crop as it already exists", resource));
+				return;
+			}
             new Crop(resource) {
                 @Override
                 public String getLocalizedName(boolean isItem) {
@@ -89,7 +88,12 @@ public class Crops {
                 }
             }.setSkipRender();
         }
-    }
+
+		@Override
+		protected void applyToCrop(Crop crop) {
+			// NO-OP
+		}
+	}
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @ZenMethod
