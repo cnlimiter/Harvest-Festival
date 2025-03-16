@@ -1,5 +1,6 @@
 package joshie.harvest.plugins.crafttweaker.handlers;
 
+import crafttweaker.api.minecraft.CraftTweakerMC;
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.core.Ore;
 import joshie.harvest.api.npc.gift.GiftCategory;
@@ -18,7 +19,7 @@ import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.oredict.IOreDictEntry;
 
-@ZenClass("mods.harvestfestival.Gifts")
+@ZenClass("mods.harvestfestival.Gifting")
 @ZenRegister
 public class Gifting {
     @ZenMethod
@@ -29,8 +30,16 @@ public class Gifting {
                 GiftCategory theCategory = GiftCategory.valueOf(category.toUpperCase());
                 CraftTweakerAPI.apply(new Add(ingredient, theCategory));
             } catch (IllegalArgumentException ex) { CraftTweaker.logError(String.format("No category with the name %s could be found", category)); }
-        }
+        } else {
+			CraftTweaker.logError("Invalid ingredient type, must be an itemstack or oredict entry");
+		}
     }
+
+	@ZenMethod
+	@SuppressWarnings("unused")
+	public static void addGift(String ore, String category) {
+		addGift(CraftTweakerMC.getOreDict(ore), category);
+	}
 
     private static class Add extends BaseOnce {
         private final GiftCategory category;
