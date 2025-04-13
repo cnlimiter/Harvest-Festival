@@ -11,36 +11,40 @@ import net.minecraft.util.ResourceLocation;
 
 @HFTask("winner")
 public class ContestTaskWinner extends TaskElement {
-    private Festival festival;
+	private Festival festival;
 
-    @SuppressWarnings("WeakerAccess")
-    public ContestTaskWinner(Festival festival) {
-        this.festival = festival;
-    }
+	@SuppressWarnings("WeakerAccess")
+	public ContestTaskWinner(Festival festival) {
+		this.festival = festival;
+	}
 
-    @Override
-    public void execute(NPCEntity npc) {
-        super.execute(npc);
-        QuestContest quest = TownHelper.getClosestTownToEntity(npc.getAsEntity(), false).getQuests().getAQuest(festival.getQuest());
-        if (quest != null) {
-            ContestEntries entries = quest.getEntries();
-            for (Place place: Place.VALUES) {
-                quest.reward(npc.getAsEntity().world, place);
-            }
+	@Override
+	public void execute(NPCEntity npc) {
+		super.execute(npc);
+		QuestContest quest = TownHelper.getClosestTownToEntity(npc.getAsEntity(), false).getQuests().getAQuest(festival.getQuest());
+		if (quest != null) {
+			ContestEntries entries = quest.getEntries();
+			for (Place place : Place.VALUES) {
+				quest.reward(npc.getAsEntity().world, place);
+			}
 
-            entries.complete(npc.getAsEntity().world);
-            TownHelper.getClosestTownToEntity(npc.getAsEntity(), false).getQuests().markCompleted(npc.getAsEntity().world, null, quest, false);
-        }
-    }
+			entries.complete(npc.getAsEntity().world);
+			TownHelper.getClosestTownToEntity(npc.getAsEntity(), false).getQuests().markCompleted(
+					npc.getAsEntity().world,
+					null,
+					quest,
+					false);
+		}
+	}
 
-    @Override
-    public void readFromNBT(NBTTagCompound tag) {
-        festival = Festival.REGISTRY.get(new ResourceLocation(tag.getString("Festival")));
-    }
+	@Override
+	public void readFromNBT(NBTTagCompound tag) {
+		festival = Festival.REGISTRY.get(new ResourceLocation(tag.getString("Festival")));
+	}
 
-    @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
-        tag.setString("Festival", festival.getResource().toString());
-        return tag;
-    }
+	@Override
+	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
+		tag.setString("Festival", festival.getResource().toString());
+		return tag;
+	}
 }

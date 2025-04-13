@@ -1,7 +1,18 @@
 package joshie.harvest.crops.render;
 
+import static joshie.harvest.core.lib.HFModInfo.MODID;
+import static net.minecraft.block.BlockLeaves.CHECK_DECAY;
+import static net.minecraft.block.BlockLeaves.DECAYABLE;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.calendar.Season;
 import joshie.harvest.core.base.render.BakedHF;
@@ -28,82 +39,82 @@ import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import static joshie.harvest.core.lib.HFModInfo.MODID;
-import static net.minecraft.block.BlockLeaves.CHECK_DECAY;
-import static net.minecraft.block.BlockLeaves.DECAYABLE;
-
 @SuppressWarnings("unused")
 public class BakedLeaves extends BakedHF {
-    private final TextureAtlasSprite sprite;
-    private final IBakedModel base;
+	private final TextureAtlasSprite sprite;
+	private final IBakedModel base;
 
-    public BakedLeaves(IBakedModel parent, IBakedModel base, TextureAtlasSprite sprite) {
-        super(parent);
-        this.base = base;
-        this.sprite = sprite;
-    }
+	public BakedLeaves(IBakedModel parent, IBakedModel base, TextureAtlasSprite sprite) {
+		super(parent);
+		this.base = base;
+		this.sprite = sprite;
+	}
 
-    @Override
-    @Nonnull
-    public List<BakedQuad> getQuads(final @Nullable IBlockState state, final @Nullable EnumFacing side, final long rand) {
-        List<BakedQuad> quads = new ArrayList<>();
-        if (MCClientHelper.getMinecraft().gameSettings.fancyGraphics) quads.addAll(base.getQuads(state, side, rand));
-        else base.getQuads(state, side, rand).stream().map(quad -> new BakedQuadRetextured(quad, sprite)).forEachOrdered(quads::add);
+	@Override
+	@Nonnull
+	public List<BakedQuad> getQuads(final @Nullable IBlockState state, final @Nullable EnumFacing side, final long rand) {
+		List<BakedQuad> quads = new ArrayList<>();
+		if (MCClientHelper.getMinecraft().gameSettings.fancyGraphics) {
+			quads.addAll(base.getQuads(state, side, rand));
+		} else {
+			base.getQuads(state, side, rand).stream().map(quad -> new BakedQuadRetextured(quad, sprite)).forEachOrdered(quads::add);
+		}
 		World world = MCClientHelper.getWorld();
 		if (world != null && HFApi.calendar.getDate(world).getSeason() == Season.SPRING) {
-            BakedLeaves.super.getQuads(state, side, rand).stream().map(BakedTintedQuad :: new).forEachOrdered(quads::add);
-        }
+			BakedLeaves.super.getQuads(state, side, rand).stream().map(BakedTintedQuad::new).forEachOrdered(quads::add);
+		}
 
-        return quads;
-    }
+		return quads;
+	}
 
-    @HFEvents
-    @SuppressWarnings("unused")
-    public static class LeavesMapper extends DefaultStateMapper {
-        private static final List <IProperty<?>> ignored = Lists.newArrayList();
-        static {
-            ignored.add(CHECK_DECAY);
-            ignored.add(DECAYABLE);
-        }
+	@HFEvents
+	@SuppressWarnings("unused")
+	public static class LeavesMapper extends DefaultStateMapper {
+		private static final List<IProperty<?>> ignored = Lists.newArrayList();
 
-        @Override
-        @Nonnull
-        protected ModelResourceLocation getModelResourceLocation(@Nonnull IBlockState state) {
-            Map< IProperty<?>, Comparable<? >> map = Maps.newLinkedHashMap(state.getProperties());
-            String s = (Block.REGISTRY.getNameForObject(state.getBlock())).toString();
-            ignored.forEach(map::remove);
-            return new ModelResourceLocation(s, getPropertyString(map));
-        }
+		static {
+			ignored.add(CHECK_DECAY);
+			ignored.add(DECAYABLE);
+		}
 
-        @SubscribeEvent
-        public void onStitch(TextureStitchEvent event) {
-            event.getMap().registerSprite(new ResourceLocation(MODID, "blocks/leaves_oak_black"));
-            event.getMap().registerSprite(new ResourceLocation(MODID, "blocks/leaves_jungle_black"));
-        }
+		@Override
+		@Nonnull
+		protected ModelResourceLocation getModelResourceLocation(@Nonnull IBlockState state) {
+			Map<IProperty<?>, Comparable<?>> map = Maps.newLinkedHashMap(state.getProperties());
+			String s = (Block.REGISTRY.getNameForObject(state.getBlock())).toString();
+			ignored.forEach(map::remove);
+			return new ModelResourceLocation(s, getPropertyString(map));
+		}
 
-        @SubscribeEvent
-        public void onBaking(ModelBakeEvent event) {
-            IRegistry<ModelResourceLocation, IBakedModel> registry = event.getModelRegistry();
-            IBakedModel oak = registry.getObject(new ModelResourceLocation("minecraft:oak_leaves#normal"));
-            TextureAtlasSprite spriteOak = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite("harvestfestival:blocks/leaves_oak_black");
-            for (LeavesFruit leaves: LeavesFruit.values()) {
-                IBlockState state = HFCrops.LEAVES_FRUIT.getStateFromEnum(leaves);
-                registry.putObject(getModelResourceLocation(state), new BakedLeaves(registry.getObject(getModelResourceLocation(state)), oak, spriteOak));
-            }
+		@SubscribeEvent
+		public void onStitch(TextureStitchEvent event) {
+			event.getMap().registerSprite(new ResourceLocation(MODID, "blocks/leaves_oak_black"));
+			event.getMap().registerSprite(new ResourceLocation(MODID, "blocks/leaves_jungle_black"));
+		}
 
-            IBakedModel jungle = registry.getObject(new ModelResourceLocation("minecraft:jungle_leaves#normal"));
-            TextureAtlasSprite spriteJungle = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite("harvestfestival:blocks/leaves_jungle_black");
-            for (LeavesTropical leaves: LeavesTropical.values()) {
-                IBlockState state = HFCrops.LEAVES_TROPICAL.getStateFromEnum(leaves);
-                registry.putObject(getModelResourceLocation(state), new BakedLeaves(registry.getObject(getModelResourceLocation(state)), jungle, spriteJungle));
-            }
-        }
-    }
+		@SubscribeEvent
+		public void onBaking(ModelBakeEvent event) {
+			IRegistry<ModelResourceLocation, IBakedModel> registry = event.getModelRegistry();
+			IBakedModel oak = registry.getObject(new ModelResourceLocation("minecraft:oak_leaves#normal"));
+			TextureAtlasSprite spriteOak = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(
+					"harvestfestival:blocks/leaves_oak_black");
+			for (LeavesFruit leaves : LeavesFruit.values()) {
+				IBlockState state = HFCrops.LEAVES_FRUIT.getStateFromEnum(leaves);
+				registry.putObject(
+						getModelResourceLocation(state),
+						new BakedLeaves(registry.getObject(getModelResourceLocation(state)), oak, spriteOak));
+			}
+
+			IBakedModel jungle = registry.getObject(new ModelResourceLocation("minecraft:jungle_leaves#normal"));
+			TextureAtlasSprite spriteJungle = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(
+					"harvestfestival:blocks/leaves_jungle_black");
+			for (LeavesTropical leaves : LeavesTropical.values()) {
+				IBlockState state = HFCrops.LEAVES_TROPICAL.getStateFromEnum(leaves);
+				registry.putObject(
+						getModelResourceLocation(state),
+						new BakedLeaves(registry.getObject(getModelResourceLocation(state)), jungle, spriteJungle));
+			}
+		}
+	}
 }
 

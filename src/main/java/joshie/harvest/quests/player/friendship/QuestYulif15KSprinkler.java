@@ -1,5 +1,8 @@
 package joshie.harvest.quests.player.friendship;
 
+import java.util.Set;
+
+import javax.annotation.Nonnull;
 import joshie.harvest.api.quests.HFQuest;
 import joshie.harvest.api.quests.Quest;
 import joshie.harvest.crops.HFCrops;
@@ -9,28 +12,25 @@ import joshie.harvest.quests.Quests;
 import joshie.harvest.quests.base.QuestFriendshipStore;
 import net.minecraft.item.ItemStack;
 
-import javax.annotation.Nonnull;
-import java.util.Set;
-
 @HFQuest("friendship.yulif.sprinkler")
 public class QuestYulif15KSprinkler extends QuestFriendshipStore {
-    public QuestYulif15KSprinkler() {
-        super(HFNPCs.CARPENTER, 15000);
-    }
+	public QuestYulif15KSprinkler() {
+		super(HFNPCs.CARPENTER, 15000);
+	}
 
-    @Override
-    public boolean canStartQuest(Set<Quest> active, Set<Quest> finished) {
-        return finished.contains(Quests.YULIF_10K);
-    }
+	@Override
+	public boolean canStartQuest(Set<Quest> active, Set<Quest> finished) {
+		return finished.contains(Quests.YULIF_10K);
+	}
 
-    @Override
-    protected Quest getQuest() {
-        return Quests.SELL_SPRINKLER;
-    }
+	@Override
+	protected Quest getQuest() {
+		return Quests.SELL_SPRINKLER;
+	}
 
-    @Override
-    @Nonnull
-    protected ItemStack getRewardStack() {
-        return HFCrops.SPRINKLER.getStackFromEnum(Sprinkler.IRON);
-    }
+	@Override
+	@Nonnull
+	protected ItemStack getRewardStack() {
+		return HFCrops.SPRINKLER.getStackFromEnum(Sprinkler.IRON);
+	}
 }

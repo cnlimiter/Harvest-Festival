@@ -5,7 +5,6 @@ import static joshie.harvest.core.tile.TileBasket.BASKET_INVENTORY;
 import java.util.Iterator;
 
 import javax.annotation.Nonnull;
-
 import joshie.harvest.api.HFApi;
 import joshie.harvest.core.HFCore;
 import joshie.harvest.core.block.BlockStorage.Storage;
@@ -26,136 +25,139 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 
 public class EntityBasket extends Entity {
-    public static final DataParameter<ItemStack> ITEM = EntityDataManager.createKey(EntityItem.class, DataSerializers.ITEM_STACK);
-    public final ItemStackHandler handler = new ItemStackHandler(BASKET_INVENTORY) {
-        @Override
-        protected void onContentsChanged(int slot) {
-            if (!getStackInSlot(slot).isEmpty()) {
-                getDataManager().set(ITEM, getStackInSlot(slot));
-                return;
-            }
-            for (ItemStack stack2 : stacks) {
-                if (!stack2.isEmpty()) {
-                    getDataManager().set(ITEM, stack2);
-                    return;
-                }
-            }
-            getDataManager().set(ITEM, ItemStack.EMPTY);
-        };
-    };
+	public static final DataParameter<ItemStack> ITEM = EntityDataManager.createKey(EntityItem.class, DataSerializers.ITEM_STACK);
+	public final ItemStackHandler handler = new ItemStackHandler(BASKET_INVENTORY) {
+		@Override
+		protected void onContentsChanged(int slot) {
+			if (!getStackInSlot(slot).isEmpty()) {
+				getDataManager().set(ITEM, getStackInSlot(slot));
+				return;
+			}
+			for (ItemStack stack2 : stacks) {
+				if (!stack2.isEmpty()) {
+					getDataManager().set(ITEM, stack2);
+					return;
+				}
+			}
+			getDataManager().set(ITEM, ItemStack.EMPTY);
+		}
 
-    public EntityBasket(World worldIn) {
-        super(worldIn);
-    }
+		;
+	};
 
-    @Override
-    protected void entityInit() {
-        getDataManager().register(ITEM, ItemStack.EMPTY);
-    }
+	public EntityBasket(World worldIn) {
+		super(worldIn);
+	}
 
-    public void setAppearanceAndContents(@Nonnull ItemStack stack, ItemStackHandler handler) {
-        getDataManager().set(ITEM, stack);
-        for (int i = 0; i < handler.getSlots(); i++) {
-            this.handler.setStackInSlot(i, handler.getStackInSlot(i));
-        }
-    }
+	@Override
+	protected void entityInit() {
+		getDataManager().register(ITEM, ItemStack.EMPTY);
+	}
 
-    @Nonnull
-    public ItemStack getEntityItem() {
-        return getDataManager().get(ITEM);
-    }
+	public void setAppearanceAndContents(@Nonnull ItemStack stack, ItemStackHandler handler) {
+		getDataManager().set(ITEM, stack);
+		for (int i = 0; i < handler.getSlots(); i++) {
+			this.handler.setStackInSlot(i, handler.getStackInSlot(i));
+		}
+	}
 
-    @Override
-    public void dismountRidingEntity() {
-        super.dismountRidingEntity();
-        if (isEntityAlive() && !this.isRiding()) {
-            boolean placed = false;
-            BlockPos pos = new BlockPos(this).down();
-            if (world.isAirBlock(pos)) {
-                BasketHandler.setBasket(world, pos, handler);
-                placed = true;
-            } else {
-                int attempts = 0;
-                while (!placed && attempts < 512) {
-                    BlockPos placing = pos.add(world.rand.nextInt(10) - 5, world.rand.nextInt(3), world.rand.nextInt(10) - 5);
-                    if (world.isAirBlock(placing)) {
-                        BasketHandler.setBasket(world, placing, handler);
-                        placed = true;
-                    }
-                    attempts++;
-                }
-            }
+	@Nonnull
+	public ItemStack getEntityItem() {
+		return getDataManager().get(ITEM);
+	}
 
-            if (placed) {
-                setDead();
-            } else {
-                drop();
-            }
-        }
-    }
+	@Override
+	public void dismountRidingEntity() {
+		super.dismountRidingEntity();
+		if (isEntityAlive() && !this.isRiding()) {
+			boolean placed = false;
+			BlockPos pos = new BlockPos(this).down();
+			if (world.isAirBlock(pos)) {
+				BasketHandler.setBasket(world, pos, handler);
+				placed = true;
+			} else {
+				int attempts = 0;
+				while (!placed && attempts < 512) {
+					BlockPos placing = pos.add(world.rand.nextInt(10) - 5, world.rand.nextInt(3), world.rand.nextInt(10) - 5);
+					if (world.isAirBlock(placing)) {
+						BasketHandler.setBasket(world, placing, handler);
+						placed = true;
+					}
+					attempts++;
+				}
+			}
 
-    public void drop() {
-        setDead();
-        if (world.isRemote) {
-            return;
-        }
-        for (int i = 0; i < handler.getSlots(); i++) {
-            ItemStack stack = handler.getStackInSlot(i);
-            InventoryHelper.spawnItemStack(world, posX, posY, posZ, stack);
-        }
-        InventoryHelper.spawnItemStack(world, posX, posY, posZ, HFCore.STORAGE.getStackFromEnum(Storage.BASKET));
-    }
+			if (placed) {
+				setDead();
+			} else {
+				drop();
+			}
+		}
+	}
 
-    @Override
-    protected void readEntityFromNBT(@Nonnull NBTTagCompound compound) {
-        handler.deserializeNBT(compound.getCompoundTag("inventory"));
-    }
+	public void drop() {
+		setDead();
+		if (world.isRemote) {
+			return;
+		}
+		for (int i = 0; i < handler.getSlots(); i++) {
+			ItemStack stack = handler.getStackInSlot(i);
+			InventoryHelper.spawnItemStack(world, posX, posY, posZ, stack);
+		}
+		InventoryHelper.spawnItemStack(world, posX, posY, posZ, HFCore.STORAGE.getStackFromEnum(Storage.BASKET));
+	}
 
-    @Override
-    protected void writeEntityToNBT(@Nonnull NBTTagCompound compound) {
-        compound.setTag("inventory", handler.serializeNBT());
-    }
+	@Override
+	protected void readEntityFromNBT(@Nonnull NBTTagCompound compound) {
+		handler.deserializeNBT(compound.getCompoundTag("inventory"));
+	}
 
-    /* Autoshipping some items **/
-    private boolean autoship(NonNullList<ItemStack> list) {
-        boolean empty = true;
-        Iterator<ItemStack> it = list.iterator();
-        while (it.hasNext()) {
-            ItemStack stack = it.next();
-            if (HFApi.shipping.getSellValue(stack) > 0) {
-                ItemStack remainder = ItemHandlerHelper.insertItemStacked(handler, stack.copy(), false);
-                stack.setCount(remainder.getCount());
-                if (!remainder.isEmpty())
-                    empty = false;
-            } else {
-                empty = false;
-            }
-        }
-        return empty;
-    }
+	@Override
+	protected void writeEntityToNBT(@Nonnull NBTTagCompound compound) {
+		compound.setTag("inventory", handler.serializeNBT());
+	}
 
-    public static boolean findBasketAndShip(EntityPlayer player, NonNullList<ItemStack> list) {
-        for (Entity entity : player.getPassengers()) {
-            if (entity instanceof EntityBasket) {
-                EntityBasket basket = (EntityBasket) entity;
-                if (list.size() > 0) {
-                    basket.getDataManager().set(ITEM, list.get(list.size() - 1).copy());
-                }
+	/* Autoshipping some items **/
+	private boolean autoship(NonNullList<ItemStack> list) {
+		boolean empty = true;
+		Iterator<ItemStack> it = list.iterator();
+		while (it.hasNext()) {
+			ItemStack stack = it.next();
+			if (HFApi.shipping.getSellValue(stack) > 0) {
+				ItemStack remainder = ItemHandlerHelper.insertItemStacked(handler, stack.copy(), false);
+				stack.setCount(remainder.getCount());
+				if (!remainder.isEmpty()) {
+					empty = false;
+				}
+			} else {
+				empty = false;
+			}
+		}
+		return empty;
+	}
 
-                return basket.autoship(list);
-            }
-        }
+	public static boolean findBasketAndShip(EntityPlayer player, NonNullList<ItemStack> list) {
+		for (Entity entity : player.getPassengers()) {
+			if (entity instanceof EntityBasket) {
+				EntityBasket basket = (EntityBasket) entity;
+				if (list.size() > 0) {
+					basket.getDataManager().set(ITEM, list.get(list.size() - 1).copy());
+				}
 
-        return false;
-    }
+				return basket.autoship(list);
+			}
+		}
 
-    public static boolean isWearingBasket(EntityPlayer player) {
-        for (Entity entity : player.getPassengers()) {
-            if (entity instanceof EntityBasket) {
-                return true;
-            }
-        }
+		return false;
+	}
 
-        return false;
-    }
+	public static boolean isWearingBasket(EntityPlayer player) {
+		for (Entity entity : player.getPassengers()) {
+			if (entity instanceof EntityBasket) {
+				return true;
+			}
+		}
+
+		return false;
+	}
 }

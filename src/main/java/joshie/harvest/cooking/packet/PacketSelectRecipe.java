@@ -12,25 +12,26 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 
 @Packet(Side.SERVER)
 public class PacketSelectRecipe extends PenguinPacket {
-    private Recipe recipe;
+	private Recipe recipe;
 
-    public PacketSelectRecipe() {}
-    public PacketSelectRecipe(Recipe recipe) {
-        this.recipe = recipe;
-    }
+	public PacketSelectRecipe() {}
 
-    @Override
-    public void toBytes(ByteBuf to) {
-        ByteBufUtils.writeUTF8String(to, recipe.getResource().toString());
-    }
+	public PacketSelectRecipe(Recipe recipe) {
+		this.recipe = recipe;
+	}
 
-    @Override
-    public void fromBytes(ByteBuf from) {
-        recipe = Recipe.REGISTRY.get(new ResourceLocation(ByteBufUtils.readUTF8String(from)));
-    }
+	@Override
+	public void toBytes(ByteBuf to) {
+		ByteBufUtils.writeUTF8String(to, recipe.getResource().toString());
+	}
 
-    @Override
-    public void handlePacket(EntityPlayer player) {
-        CookingHelper.tryPlaceIngredients(player, recipe);
-    }
+	@Override
+	public void fromBytes(ByteBuf from) {
+		recipe = Recipe.REGISTRY.get(new ResourceLocation(ByteBufUtils.readUTF8String(from)));
+	}
+
+	@Override
+	public void handlePacket(EntityPlayer player) {
+		CookingHelper.tryPlaceIngredients(player, recipe);
+	}
 }

@@ -7,10 +7,10 @@ import net.minecraft.entity.player.EntityPlayer;
 
 @Packet(Side.SERVER)
 public class PacketClose extends PenguinPacket {
-    public PacketClose() {}
+	public PacketClose() {}
 
-    @Override
-    public void handlePacket(EntityPlayer player) {
-        player.closeScreen();
-    }
+	@Override
+	public void handlePacket(EntityPlayer player) {
+		player.closeScreen();
+	}
 }

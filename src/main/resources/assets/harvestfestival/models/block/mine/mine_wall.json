@@ -1,6 +1,6 @@
 {
-  "parent": "block/cube_all",
-  "textures": {
-    "all": "harvestfestival:blocks/mine/mine_wall"
-  }
+	"parent": "block/cube_all",
+	"textures": {
+		"all": "harvestfestival:blocks/mine/mine_wall"
+	}
 }

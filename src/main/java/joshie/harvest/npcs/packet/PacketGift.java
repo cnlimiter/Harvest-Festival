@@ -1,6 +1,7 @@
 package joshie.harvest.npcs.packet;
 
 import io.netty.buffer.ByteBuf;
+import javax.annotation.Nonnull;
 import joshie.harvest.HarvestFestival;
 import joshie.harvest.core.handlers.GuiHandler;
 import joshie.harvest.core.helpers.SpawnItemHelper;
@@ -14,48 +15,53 @@ import joshie.harvest.npcs.entity.EntityNPC;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumHand;
 
-import javax.annotation.Nonnull;
-
 @Packet(Side.SERVER)
 public class PacketGift extends PenguinPacket {
-    private int npcID;
+	private int npcID;
 
-    public PacketGift() {}
-    public PacketGift(EntityNPC npc) {
-        this.npcID = npc.getEntityId();
-    }
+	public PacketGift() {}
 
-    @Override
-    public void toBytes(ByteBuf to) {
-        to.writeInt(npcID);
-    }
+	public PacketGift(EntityNPC npc) {
+		this.npcID = npc.getEntityId();
+	}
 
-    @Override
-    public void fromBytes(ByteBuf from) {
-        npcID = from.readInt();
-    }
+	@Override
+	public void toBytes(ByteBuf to) {
+		to.writeInt(npcID);
+	}
 
-    @Override
-    @SuppressWarnings("unchecked")
-    public void handlePacket(EntityPlayer player) {
-        EntityNPC npc = (EntityNPC) player.world.getEntityByID(npcID);
-        if (npc != null) {
-            handleGifting(player, npc);
-        }
-    }
+	@Override
+	public void fromBytes(ByteBuf from) {
+		npcID = from.readInt();
+	}
 
-    public static void handleGifting(@Nonnull EntityPlayer player, @Nonnull EntityNPC npc) {
-        if (npc.isEntityAlive()) {
-            if (npc.getNPC() == HFNPCs.GODDESS) {
-                SpawnItemHelper.addToPlayerInventory(player, HFKnowledge.BOOK.getStackFromEnum(Book.STATISTICS));
+	@Override
+	@SuppressWarnings("unchecked")
+	public void handlePacket(EntityPlayer player) {
+		EntityNPC npc = (EntityNPC) player.world.getEntityByID(npcID);
+		if (npc != null) {
+			handleGifting(player, npc);
+		}
+	}
 
-            } else if (!player.world.isRemote) {
-                if (!player.getHeldItemMainhand().isEmpty()) {
-                    player.openGui(HarvestFestival.instance, GuiHandler.GIFT, player.world, npc.getEntityId(), -1, EnumHand.MAIN_HAND.ordinal());
-                }
-            }
+	public static void handleGifting(@Nonnull EntityPlayer player, @Nonnull EntityNPC npc) {
+		if (npc.isEntityAlive()) {
+			if (npc.getNPC() == HFNPCs.GODDESS) {
+				SpawnItemHelper.addToPlayerInventory(player, HFKnowledge.BOOK.getStackFromEnum(Book.STATISTICS));
 
-            npc.setTalking(player);
-        }
-    }
+			} else if (!player.world.isRemote) {
+				if (!player.getHeldItemMainhand().isEmpty()) {
+					player.openGui(
+							HarvestFestival.instance,
+							GuiHandler.GIFT,
+							player.world,
+							npc.getEntityId(),
+							-1,
+							EnumHand.MAIN_HAND.ordinal());
+				}
+			}
+
+			npc.setTalking(player);
+		}
+	}
 }

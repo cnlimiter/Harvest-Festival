@@ -8,12 +8,12 @@ import net.minecraft.entity.player.EntityPlayer;
 
 @HFQuest("meeting.katlin")
 public class QuestMeetKatlin extends QuestMeeting {
-    public QuestMeetKatlin() {
-        super(HFBuildings.CAFE, HFNPCs.CAFE_GRANNY);
-    }
+	public QuestMeetKatlin() {
+		super(HFBuildings.CAFE, HFNPCs.CAFE_GRANNY);
+	}
 
-    @Override
-    public void onQuestCompleted(EntityPlayer player) {
-        rewardGold(player, 300);
-    }
+	@Override
+	public void onQuestCompleted(EntityPlayer player) {
+		rewardGold(player, 300);
+	}
 }

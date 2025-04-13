@@ -1,5 +1,7 @@
 {
-  "variants": {
-    "normal": { "model": "harvestfestival:air" }
-  }
+	"variants": {
+		"normal": {
+			"model": "harvestfestival:air"
+		}
+	}
 }

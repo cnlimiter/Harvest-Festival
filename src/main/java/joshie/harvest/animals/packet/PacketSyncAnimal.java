@@ -16,43 +16,46 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 
 @Packet(Side.CLIENT)
 public class PacketSyncAnimal extends PenguinPacket {
-    private int id;
-    private NBTTagCompound tag;
+	private int id;
+	private NBTTagCompound tag;
 
-    public PacketSyncAnimal() {}
-    public PacketSyncAnimal(int id, AnimalStats stats) {
-        this.id = id;
-        this.tag = (NBTTagCompound) stats.serializeNBT();
-    }
+	public PacketSyncAnimal() {}
 
-    @Override
-    public void toBytes(ByteBuf buf) {
-        buf.writeInt(id);
-        buf.writeBoolean(tag != null);
-        if (tag != null) ByteBufUtils.writeTag(buf, tag);
-    }
+	public PacketSyncAnimal(int id, AnimalStats stats) {
+		this.id = id;
+		this.tag = (NBTTagCompound) stats.serializeNBT();
+	}
 
-    @Override
-    public void fromBytes(ByteBuf buf) {
-        id = buf.readInt();
-        if (buf.readBoolean()) {
-            tag = ByteBufUtils.readTag(buf);
-        }
-    }
+	@Override
+	public void toBytes(ByteBuf buf) {
+		buf.writeInt(id);
+		buf.writeBoolean(tag != null);
+		if (tag != null) {
+			ByteBufUtils.writeTag(buf, tag);
+		}
+	}
 
-    @Override
-    @SuppressWarnings("unchecked, ConstantConditions")
-    public void handlePacket(EntityPlayer player) {
-        EntityAnimal animal = getEntityAsAnimal();
-        if (animal != null) {
-            AnimalStats stats = EntityHelper.getStats(animal);
-            if (stats != null) {
-                stats.setEntity(animal).deserializeNBT(tag);
-            }
-        }
-    }
+	@Override
+	public void fromBytes(ByteBuf buf) {
+		id = buf.readInt();
+		if (buf.readBoolean()) {
+			tag = ByteBufUtils.readTag(buf);
+		}
+	}
 
-    private EntityAnimal getEntityAsAnimal() {
-        return (EntityAnimal) Objects.requireNonNull(MCClientHelper.getWorld()).getEntityByID(id);
-    }
+	@Override
+	@SuppressWarnings("unchecked, ConstantConditions")
+	public void handlePacket(EntityPlayer player) {
+		EntityAnimal animal = getEntityAsAnimal();
+		if (animal != null) {
+			AnimalStats stats = EntityHelper.getStats(animal);
+			if (stats != null) {
+				stats.setEntity(animal).deserializeNBT(tag);
+			}
+		}
+	}
+
+	private EntityAnimal getEntityAsAnimal() {
+		return (EntityAnimal) Objects.requireNonNull(MCClientHelper.getWorld()).getEntityByID(id);
+	}
 }

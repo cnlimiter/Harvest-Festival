@@ -1,5 +1,6 @@
 package joshie.harvest.player.command;
 
+import javax.annotation.Nonnull;
 import joshie.harvest.api.npc.NPC;
 import joshie.harvest.core.HFTrackers;
 import joshie.harvest.core.commands.CommandManager.CommandLevel;
@@ -14,51 +15,62 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 
-import javax.annotation.Nonnull;
-
 @HFCommand
 @SuppressWarnings("unused")
 public class HFCommandRelationship extends CommandBase {
-    @Override
-    @Nonnull
-    public String getName() {
-        return "relationship";
-    }
+	@Override
+	@Nonnull
+	public String getName() {
+		return "relationship";
+	}
 
-    @Override
-    @Nonnull
-    public String getUsage(@Nonnull ICommandSender sender) {
-        return "/hf relationship [player] <npc|all> <value>";
-    }
+	@Override
+	@Nonnull
+	public String getUsage(@Nonnull ICommandSender sender) {
+		return "/hf relationship [player] <npc|all> <value>";
+	}
 
-    @Override
-    public int getRequiredPermissionLevel() {
-        return CommandLevel.OP_AFFECT_GAMEPLAY.ordinal();
-    }
+	@Override
+	public int getRequiredPermissionLevel() {
+		return CommandLevel.OP_AFFECT_GAMEPLAY.ordinal();
+	}
 
-    @Override
-    public void execute(@Nonnull MinecraftServer server, @Nonnull ICommandSender sender, @Nonnull String[] parameters) throws CommandException {
-        if (parameters.length == 2 || parameters.length == 3) {
-            EntityPlayerMP player = parameters.length == 2 ? CommandBase.getCommandSenderAsPlayer(sender) : CommandBase.getPlayer(server, sender, parameters[0]);
-            RelationshipDataServer relationships = HFTrackers.<PlayerTrackerServer>getPlayerTrackerFromPlayer(player).getRelationships();
-            String npc = parameters[parameters.length - 2];
-            int value = Integer.parseInt(parameters[parameters.length - 1]);
-            switch (npc) {
-                case "all":
-                    NPC.REGISTRY.values().stream().forEach(npcz -> relationships.affectRelationship(npcz, value));
-                    break;
-                case "clear":
-                    NPC.REGISTRY.values().stream().forEachOrdered(npcz -> relationships.affectRelationship(npcz, -relationships.getRelationship(npcz)));
-                    break;
-                default:
-                    if (!npc.contains(":")) npc = "harvestfestival:" + npc;
-                    NPC theNPC = NPC.REGISTRY.get(new ResourceLocation(npc));
-                    if (theNPC == null) return;
-                    else {
-                        relationships.affectRelationship(theNPC, value);
-                        return;
-                    }
-            }
-        } else throw new WrongUsageException(getUsage(sender));
-    }
+	@Override
+	public void execute(
+			@Nonnull MinecraftServer server,
+			@Nonnull ICommandSender sender,
+			@Nonnull String[] parameters) throws CommandException {
+		if (parameters.length == 2 || parameters.length == 3) {
+			EntityPlayerMP player = parameters.length == 2 ? CommandBase.getCommandSenderAsPlayer(sender) : CommandBase.getPlayer(
+					server,
+					sender,
+					parameters[0]);
+			RelationshipDataServer relationships = HFTrackers.<PlayerTrackerServer>getPlayerTrackerFromPlayer(player).getRelationships();
+			String npc = parameters[parameters.length - 2];
+			int value = Integer.parseInt(parameters[parameters.length - 1]);
+			switch (npc) {
+				case "all":
+					NPC.REGISTRY.values().stream().forEach(npcz -> relationships.affectRelationship(npcz, value));
+					break;
+				case "clear":
+					NPC.REGISTRY.values().stream().forEachOrdered(npcz -> relationships.affectRelationship(
+							npcz,
+							-relationships.getRelationship(npcz)));
+					break;
+				default:
+					if (!npc.contains(":")) {
+						npc = "harvestfestival:" + npc;
+					}
+					NPC theNPC = NPC.REGISTRY.get(new ResourceLocation(npc));
+					if (theNPC == null) {
+						return;
+					} else {
+						relationships.affectRelationship(theNPC, value);
+						return;
+					}
+			}
+		} else {
+			throw new WrongUsageException(getUsage(sender));
+		}
+	}
 }

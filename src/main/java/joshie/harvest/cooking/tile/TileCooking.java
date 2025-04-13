@@ -1,5 +1,8 @@
 package joshie.harvest.cooking.tile;
 
+import static joshie.harvest.cooking.CookingHelper.PlaceIngredientResult.SUCCESS;
+
+import javax.annotation.Nonnull;
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.cooking.Utensil;
 import joshie.harvest.cooking.CookingHelper.PlaceIngredientResult;
@@ -21,243 +24,253 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
 
-import javax.annotation.Nonnull;
-
-import static joshie.harvest.cooking.CookingHelper.PlaceIngredientResult.SUCCESS;
-
 public abstract class TileCooking extends TileFaceable {
-    public static final String IN_UTENSIL = "InUtensil";
-    public abstract static class TileCookingTicking extends TileCooking implements ITickable {
-        @Override
-        public void update() {
-            super.update();
-        }
-    }
+	public static final String IN_UTENSIL = "InUtensil";
 
-    private static final int COOK_TIMER = 100;
-    private boolean cooking;
-    private short cookTimer = 0;
-    private NonNullList<ItemStack> ingredients = NonNullList.create();
-    protected NonNullList<ItemStack> result = NonNullList.create();
-    private int last;
+	public abstract static class TileCookingTicking extends TileCooking implements ITickable {
+		@Override
+		public void update() {
+			super.update();
+		}
+	}
 
-    public final float[] rotations = new float[20];
-    public final float[] offset1 = new float[20];
-    public final float[] offset2 = new float[20];
-    public final float[] heightOffset = new float[20];
+	private static final int COOK_TIMER = 100;
+	private boolean cooking;
+	private short cookTimer = 0;
+	private NonNullList<ItemStack> ingredients = NonNullList.create();
+	protected NonNullList<ItemStack> result = NonNullList.create();
+	private int last;
 
-    public TileCooking() {}
+	public final float[] rotations = new float[20];
+	public final float[] offset1 = new float[20];
+	public final float[] offset2 = new float[20];
+	public final float[] heightOffset = new float[20];
 
-    public abstract Utensil getUtensil();
+	public TileCooking() {}
 
-    public boolean isCooking() {
-        return cooking;
-    }
+	public abstract Utensil getUtensil();
 
-    int getCookTimer() {
-        return cookTimer;
-    }
+	public boolean isCooking() {
+		return cooking;
+	}
 
-    public PlaceIngredientResult hasPrerequisites() {
-        return SUCCESS;
-    }
+	int getCookTimer() {
+		return cookTimer;
+	}
 
-    public boolean isFinishedCooking() {
-        return result.size() > 0;
-    }
+	public PlaceIngredientResult hasPrerequisites() {
+		return SUCCESS;
+	}
 
-    public NonNullList<ItemStack> getResult() {
-        return result;
-    }
+	public boolean isFinishedCooking() {
+		return result.size() > 0;
+	}
 
-    public NonNullList<ItemStack> getIngredients() {
-        return ingredients;
-    }
+	public NonNullList<ItemStack> getResult() {
+		return result;
+	}
 
-    //reset everything ready for the next cooking batch
-    public void giveToPlayer(EntityPlayer player) {
-        NonNullList<ItemStack> theItems = getResult();
-        EntityBasket.findBasketAndShip(player, theItems);
-        for (ItemStack theItem: theItems) {
-            if (theItem.hasTagCompound() && player instanceof EntityPlayerMP) {
-                EventTrigger.INSTANCE.trigger((EntityPlayerMP) player, "cooking");
-            }
+	public NonNullList<ItemStack> getIngredients() {
+		return ingredients;
+	}
 
-            HFTrackers.getPlayerTrackerFromPlayer(player).getTracking().addAsObtained(theItem);
-            SpawnItemHelper.addToPlayerInventory(player, theItem);
-        }
+	//reset everything ready for the next cooking batch
+	public void giveToPlayer(EntityPlayer player) {
+		NonNullList<ItemStack> theItems = getResult();
+		EntityBasket.findBasketAndShip(player, theItems);
+		for (ItemStack theItem : theItems) {
+			if (theItem.hasTagCompound() && player instanceof EntityPlayerMP) {
+				EventTrigger.INSTANCE.trigger((EntityPlayerMP) player, "cooking");
+			}
 
-        result.clear(); //Clear out the result
-    }
+			HFTrackers.getPlayerTrackerFromPlayer(player).getTracking().addAsObtained(theItem);
+			SpawnItemHelper.addToPlayerInventory(player, theItem);
+		}
 
-    @SuppressWarnings("ConstantConditions")
-    public void takeBackLastStack(EntityPlayer player) {
-        if (ingredients.size() > 0) {
-            ItemStack stack = ingredients.get(ingredients.size() - 1);
-            if (stack.hasTagCompound()) stack.getTagCompound().removeTag(IN_UTENSIL);
-            if (stack.hasTagCompound() && stack.getTagCompound().hasNoTags()) {
-                stack.setTagCompound(null);
-            }
+		result.clear(); //Clear out the result
+	}
 
-            SpawnItemHelper.addToPlayerInventory(player, stack);
-            ingredients.remove(ingredients.size() - 1); //Remove the last stack
-            if (world.isRemote) return;
-            this.last = this.ingredients.size();
-            this.cooking = true;
-            this.cookTimer = 0;
-            this.markDirty();
-        }
-    }
+	@SuppressWarnings("ConstantConditions")
+	public void takeBackLastStack(EntityPlayer player) {
+		if (ingredients.size() > 0) {
+			ItemStack stack = ingredients.get(ingredients.size() - 1);
+			if (stack.hasTagCompound()) {
+				stack.getTagCompound().removeTag(IN_UTENSIL);
+			}
+			if (stack.hasTagCompound() && stack.getTagCompound().hasNoTags()) {
+				stack.setTagCompound(null);
+			}
 
-    public void animate() {}
+			SpawnItemHelper.addToPlayerInventory(player, stack);
+			ingredients.remove(ingredients.size() - 1); //Remove the last stack
+			if (world.isRemote) {
+				return;
+			}
+			this.last = this.ingredients.size();
+			this.cooking = true;
+			this.cookTimer = 0;
+			this.markDirty();
+		}
+	}
 
-    public short getCookingTime() {
-        return COOK_TIMER;
-    }
+	public void animate() {}
 
-    public void update() {
-        if (isCooking()) animate();
-        //If we are server side perform the actions
-        if (!world.isRemote) {
-            if (cooking) {
-                cookTimer++;
-                if (ingredients.size() == 0) {
-                    cooking = false;
-                    markDirty();
-                } else if (cookTimer >= getCookingTime()) {
-                    result.addAll(HFApi.cooking.getCookingResult(getUtensil(), ingredients));
-                    cooking = false;
-                    ingredients = NonNullList.create();
-                    cookTimer = 0;
-                    markDirty();
-                }
-                
-                if (hasPrerequisites() != SUCCESS) {
-                    cooking = false;
-                    this.markDirty();
-                }
-            }
-        }
-    }
+	public short getCookingTime() {
+		return COOK_TIMER;
+	}
 
-    //Returns true if this was a valid ingredient to add
-    @SuppressWarnings("ConstantConditions")
-    public boolean addIngredient(@Nonnull ItemStack stack) {
-        if (ingredients.size() >= 20) return false;
-        if (hasPrerequisites() != SUCCESS) return false;
-        if (!HFApi.cooking.isIngredient(stack)) return false;
-        else {
-            if (world.isRemote) return true;
-            ItemStack clone = stack.copy();
-            clone.setCount(1);
-            if (!clone.hasTagCompound()) {
-                clone.setTagCompound(new NBTTagCompound());
-            }
+	public void update() {
+		if (isCooking()) {
+			animate();
+		}
+		//If we are server side perform the actions
+		if (!world.isRemote) {
+			if (cooking) {
+				cookTimer++;
+				if (ingredients.size() == 0) {
+					cooking = false;
+					markDirty();
+				} else if (cookTimer >= getCookingTime()) {
+					result.addAll(HFApi.cooking.getCookingResult(getUtensil(), ingredients));
+					cooking = false;
+					ingredients = NonNullList.create();
+					cookTimer = 0;
+					markDirty();
+				}
 
-            clone.getTagCompound().setBoolean(IN_UTENSIL, true);
+				if (hasPrerequisites() != SUCCESS) {
+					cooking = false;
+					this.markDirty();
+				}
+			}
+		}
+	}
 
-            this.last = this.ingredients.size();
-            this.ingredients.add(clone);
-            this.cooking = true;
-            this.cookTimer = 0;
-            this.markDirty();
-            return true;
-        }
-    }
+	//Returns true if this was a valid ingredient to add
+	@SuppressWarnings("ConstantConditions")
+	public boolean addIngredient(@Nonnull ItemStack stack) {
+		if (ingredients.size() >= 20) {
+			return false;
+		}
+		if (hasPrerequisites() != SUCCESS) {
+			return false;
+		}
+		if (!HFApi.cooking.isIngredient(stack)) {
+			return false;
+		} else {
+			if (world.isRemote) {
+				return true;
+			}
+			ItemStack clone = stack.copy();
+			clone.setCount(1);
+			if (!clone.hasTagCompound()) {
+				clone.setTagCompound(new NBTTagCompound());
+			}
 
-    //Called Clientside to update the client
-    @Override
-    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {
-        super.onDataPacket(net, packet);
+			clone.getTagCompound().setBoolean(IN_UTENSIL, true);
 
-        //Update the renderer
-        doRenderUpdate();
-    }
+			this.last = this.ingredients.size();
+			this.ingredients.add(clone);
+			this.cooking = true;
+			this.cookTimer = 0;
+			this.markDirty();
+			return true;
+		}
+	}
 
-    @Override
-    public void handleUpdateTag(@Nonnull NBTTagCompound tag) {
-        super.handleUpdateTag(tag);
+	//Called Clientside to update the client
+	@Override
+	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {
+		super.onDataPacket(net, packet);
 
-        //Updated the renderer
-        doRenderUpdate();
-    }
+		//Update the renderer
+		doRenderUpdate();
+	}
 
-    protected void doRenderUpdate() {
-        if (cooking) {
-            rotations[last] = world.rand.nextFloat() * 360F;
-            offset1[last] = 0.5F - world.rand.nextFloat();
-            offset2[last] = world.rand.nextFloat() / 1.75F;
-            heightOffset[last] = 0.5F + (ingredients.size() * 0.001F);
-        }
+	@Override
+	public void handleUpdateTag(@Nonnull NBTTagCompound tag) {
+		super.handleUpdateTag(tag);
 
-        world.markBlockRangeForRenderUpdate(getPos(), getPos());
-    }
+		//Updated the renderer
+		doRenderUpdate();
+	}
 
-    @Override
-    public void markDirty() {
-        if (!world.isRemote) {
-            MCServerHelper.markForUpdate(world, getPos());
-            MCServerHelper.markForUpdate(world, getPos().down());
-        }
+	protected void doRenderUpdate() {
+		if (cooking) {
+			rotations[last] = world.rand.nextFloat() * 360F;
+			offset1[last] = 0.5F - world.rand.nextFloat();
+			offset2[last] = world.rand.nextFloat() / 1.75F;
+			heightOffset[last] = 0.5F + (ingredients.size() * 0.001F);
+		}
 
-        super.markDirty();
-    }
+		world.markBlockRangeForRenderUpdate(getPos(), getPos());
+	}
 
-    @Override
-    public void readFromNBT(NBTTagCompound nbt) {
-        super.readFromNBT(nbt);
-        cooking = nbt.getBoolean("IsCooking");
-        cookTimer = nbt.getShort("CookingTimer");
-        last = nbt.getByte("Last");
-        ingredients = NonNullList.create();
-        if (nbt.hasKey("IngredientsInside")) {
-            NBTTagList is = nbt.getTagList("IngredientsInside", 10);
-            for (int i = 0; i < is.tagCount(); i++) {
-                ingredients.add(NBTHelper.readItemStack(is.getCompoundTagAt(i)));
-            }
-        }
+	@Override
+	public void markDirty() {
+		if (!world.isRemote) {
+			MCServerHelper.markForUpdate(world, getPos());
+			MCServerHelper.markForUpdate(world, getPos().down());
+		}
 
-        //Resulting item
-        result = NonNullList.create();
-        if (nbt.hasKey("Result")) {
-            NBTTagList is = nbt.getTagList("Result", 10);
-            for (int i = 0; i < is.tagCount(); i++) {
-                result.add(NBTHelper.readItemStack(is.getCompoundTagAt(i)));
-            }
-        }
-    }
+		super.markDirty();
+	}
 
-    @Override
-    @Nonnull
-    public NBTTagCompound writeToNBT(@Nonnull NBTTagCompound nbt) {
-        nbt.setBoolean("IsCooking", cooking);
-        nbt.setShort("CookingTimer", cookTimer);
-        nbt.setByte("Last", (byte) last);
-        //Write out the saved Ingredients
-        if (ingredients.size() > 0) {
-            NBTTagList is = new NBTTagList();
-            for (ItemStack ingredient : ingredients) {
-                is.appendTag(NBTHelper.writeItemStack(ingredient, new NBTTagCompound()));
-            }
+	@Override
+	public void readFromNBT(NBTTagCompound nbt) {
+		super.readFromNBT(nbt);
+		cooking = nbt.getBoolean("IsCooking");
+		cookTimer = nbt.getShort("CookingTimer");
+		last = nbt.getByte("Last");
+		ingredients = NonNullList.create();
+		if (nbt.hasKey("IngredientsInside")) {
+			NBTTagList is = nbt.getTagList("IngredientsInside", 10);
+			for (int i = 0; i < is.tagCount(); i++) {
+				ingredients.add(NBTHelper.readItemStack(is.getCompoundTagAt(i)));
+			}
+		}
 
-            nbt.setTag("IngredientsInside", is);
-        }
+		//Resulting item
+		result = NonNullList.create();
+		if (nbt.hasKey("Result")) {
+			NBTTagList is = nbt.getTagList("Result", 10);
+			for (int i = 0; i < is.tagCount(); i++) {
+				result.add(NBTHelper.readItemStack(is.getCompoundTagAt(i)));
+			}
+		}
+	}
 
-        //Write out the result items
-        if (result.size() > 0) {
-            NBTTagList is = new NBTTagList();
-            for (ItemStack ingredient : result) {
-                is.appendTag(NBTHelper.writeItemStack(ingredient, new NBTTagCompound()));
-            }
+	@Override
+	@Nonnull
+	public NBTTagCompound writeToNBT(@Nonnull NBTTagCompound nbt) {
+		nbt.setBoolean("IsCooking", cooking);
+		nbt.setShort("CookingTimer", cookTimer);
+		nbt.setByte("Last", (byte) last);
+		//Write out the saved Ingredients
+		if (ingredients.size() > 0) {
+			NBTTagList is = new NBTTagList();
+			for (ItemStack ingredient : ingredients) {
+				is.appendTag(NBTHelper.writeItemStack(ingredient, new NBTTagCompound()));
+			}
 
-            nbt.setTag("Result", is);
-        }
+			nbt.setTag("IngredientsInside", is);
+		}
 
-        return super.writeToNBT(nbt);
-    }
+		//Write out the result items
+		if (result.size() > 0) {
+			NBTTagList is = new NBTTagList();
+			for (ItemStack ingredient : result) {
+				is.appendTag(NBTHelper.writeItemStack(ingredient, new NBTTagCompound()));
+			}
 
-    boolean isAbove(Utensil utensil) {
-        TileEntity tile = world.getTileEntity(pos.down());
-        return tile instanceof TileCooking && ((TileCooking)tile).getUtensil() == utensil;
-    }
+			nbt.setTag("Result", is);
+		}
+
+		return super.writeToNBT(nbt);
+	}
+
+	boolean isAbove(Utensil utensil) {
+		TileEntity tile = world.getTileEntity(pos.down());
+		return tile instanceof TileCooking && ((TileCooking) tile).getUtensil() == utensil;
+	}
 }

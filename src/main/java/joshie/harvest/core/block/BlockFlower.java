@@ -8,7 +8,6 @@ import java.util.Locale;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
 import joshie.harvest.core.HFTab;
 import joshie.harvest.core.base.block.BlockHFEnum;
 import joshie.harvest.core.block.BlockFlower.FlowerType;
@@ -41,177 +40,162 @@ import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockFlower extends BlockHFEnum<BlockFlower, FlowerType> implements IPlantable
-{
-    private static final AxisAlignedBB FLOWER_AABB = new AxisAlignedBB(0.30000001192092896D, 0.0D, 0.30000001192092896D, 0.699999988079071D, 0.6000000238418579D, 0.699999988079071D);
+public class BlockFlower extends BlockHFEnum<BlockFlower, FlowerType> implements IPlantable {
+	private static final AxisAlignedBB FLOWER_AABB = new AxisAlignedBB(
+			0.30000001192092896D,
+			0.0D,
+			0.30000001192092896D,
+			0.699999988079071D,
+			0.6000000238418579D,
+			0.699999988079071D);
 
-    public BlockFlower()
-    {
-        super(Material.PLANTS, FlowerType.class, HFTab.GATHERING);
-        setSoundType(SoundType.PLANT);
-    }
+	public BlockFlower() {
+		super(Material.PLANTS, FlowerType.class, HFTab.GATHERING);
+		setSoundType(SoundType.PLANT);
+	}
 
-    public enum FlowerType implements IStringSerializable, ISellable
-    {
-        GODDESS(0L), WEED(1L), MOONDROP(60L), TOY(130L), PINKCAT(70L), BLUE_MAGICGRASS(80L), RED_MAGICGRASS(200L);
+	public enum FlowerType implements IStringSerializable, ISellable {
+		GODDESS(0L), WEED(1L), MOONDROP(60L), TOY(130L), PINKCAT(70L), BLUE_MAGICGRASS(80L), RED_MAGICGRASS(200L);
 
-        private final long sell;
+		private final long sell;
 
-        FlowerType(long sell)
-        {
-            this.sell = sell;
-        }
+		FlowerType(long sell) {
+			this.sell = sell;
+		}
 
-        @Override
-        public long getSellValue()
-        {
-            return sell;
-        }
+		@Override
+		public long getSellValue() {
+			return sell;
+		}
 
-        public boolean isColored()
-        {
-            return this == WEED;
-        }
+		public boolean isColored() {
+			return this == WEED;
+		}
 
-        @Override
-        public String getName()
-        {
-            return toString().toLowerCase(Locale.ENGLISH);
-        }
-    }
+		@Override
+		public String getName() {
+			return toString().toLowerCase(Locale.ENGLISH);
+		}
+	}
 
-    @Override
-    public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
-    {
-        super.getDrops(drops, world, pos, state, fortune);
-        EntityPlayer player = harvesters.get();
-        if (player != null)
-        {
-            EntityBasket.findBasketAndShip(player, drops);
-        }
-    }
+	@Override
+	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
+		super.getDrops(drops, world, pos, state, fortune);
+		EntityPlayer player = harvesters.get();
+		if (player != null) {
+			EntityBasket.findBasketAndShip(player, drops);
+		}
+	}
 
-    @Override
-    public boolean canPlaceBlockAt(World world, @Nonnull BlockPos pos)
-    {
-        return super.canPlaceBlockAt(world, pos) && canBlockStay(world, pos, world.getBlockState(pos));
-    }
+	@Override
+	public boolean canPlaceBlockAt(World world, @Nonnull BlockPos pos) {
+		return super.canPlaceBlockAt(world, pos) && canBlockStay(world, pos, world.getBlockState(pos));
+	}
 
-    private boolean canSustainBush(IBlockState state)
-    {
-        return state.getMaterial() == Material.GROUND || state.getMaterial() == Material.GRASS;
-    }
+	private boolean canSustainBush(IBlockState state) {
+		return state.getMaterial() == Material.GROUND || state.getMaterial() == Material.GRASS;
+	}
 
-    @SuppressWarnings("deprecation")
-    @Override
-    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos)
-    {
-        super.neighborChanged(state, world, pos, blockIn, fromPos);
-        checkAndDropBlock(world, pos, state);
-    }
+	@SuppressWarnings("deprecation")
+	@Override
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos) {
+		super.neighborChanged(state, world, pos, blockIn, fromPos);
+		checkAndDropBlock(world, pos, state);
+	}
 
-    private void checkAndDropBlock(World world, BlockPos pos, IBlockState state)
-    {
-        if (!canBlockStay(world, pos, state))
-        {
-            dropBlockAsItem(world, pos, state, 0);
-            world.setBlockToAir(pos);
-        }
-    }
+	private void checkAndDropBlock(World world, BlockPos pos, IBlockState state) {
+		if (!canBlockStay(world, pos, state)) {
+			dropBlockAsItem(world, pos, state, 0);
+			world.setBlockToAir(pos);
+		}
+	}
 
-    private boolean canBlockStay(World world, BlockPos pos, IBlockState state)
-    {
-        if (state.getBlock() == this)
-        {
-            IBlockState soil = world.getBlockState(pos.down());
-            return soil.getBlock().canSustainPlant(soil, world, pos.down(), net.minecraft.util.EnumFacing.UP, this);
-        }
+	private boolean canBlockStay(World world, BlockPos pos, IBlockState state) {
+		if (state.getBlock() == this) {
+			IBlockState soil = world.getBlockState(pos.down());
+			return soil.getBlock().canSustainPlant(soil, world, pos.down(), net.minecraft.util.EnumFacing.UP, this);
+		}
 
-        return canSustainBush(world.getBlockState(pos.down()));
-    }
+		return canSustainBush(world.getBlockState(pos.down()));
+	}
 
-    @SuppressWarnings("deprecation")
-    @Override
-    @Nonnull
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
-    {
-        return FLOWER_AABB;
-    }
+	@SuppressWarnings("deprecation")
+	@Override
+	@Nonnull
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+		return FLOWER_AABB;
+	}
 
-    @SuppressWarnings("deprecation")
-    @Override
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, @Nonnull IBlockAccess world, @Nonnull BlockPos pos)
-    {
-        return NULL_AABB;
-    }
+	@SuppressWarnings("deprecation")
+	@Override
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
+		return NULL_AABB;
+	}
 
-    @Override
-    public EnumPlantType getPlantType(IBlockAccess world, BlockPos pos)
-    {
-        return Plains;
-    }
+	@Override
+	public EnumPlantType getPlantType(IBlockAccess world, BlockPos pos) {
+		return Plains;
+	}
 
-    @Override
-    public IBlockState getPlant(IBlockAccess world, BlockPos pos)
-    {
-        return getDefaultState();
-    }
+	@Override
+	public IBlockState getPlant(IBlockAccess world, BlockPos pos) {
+		return getDefaultState();
+	}
 
-    @Override
-    public int getEntityLifeSpan(@Nonnull ItemStack stack, World world)
-    {
-        return stack.getItemDamage() == FlowerType.GODDESS.ordinal() ? 50 : 6000;
-    }
+	@Override
+	public int getEntityLifeSpan(@Nonnull ItemStack stack, World world) {
+		return stack.getItemDamage() == FlowerType.GODDESS.ordinal() ? 50 : 6000;
+	}
 
-    @Override
-    public String getItemStackDisplayName(@Nonnull ItemStack stack)
-    {
-        return getEnumFromMeta(stack.getItemDamage()) == FlowerType.GODDESS ? AQUA + super.getItemStackDisplayName(stack) : super.getItemStackDisplayName(stack);
-    }
+	@Override
+	public String getItemStackDisplayName(@Nonnull ItemStack stack) {
+		return getEnumFromMeta(stack.getItemDamage()) == FlowerType.GODDESS ?
+				AQUA + super.getItemStackDisplayName(stack) :
+				super.getItemStackDisplayName(stack);
+	}
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
-    {
-        if (getEnumFromMeta(stack.getItemDamage()) == FlowerType.GODDESS)
-        {
-            tooltip.add(TextHelper.translate("tooltip.flower"));
-        }
-    }
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+		if (getEnumFromMeta(stack.getItemDamage()) == FlowerType.GODDESS) {
+			tooltip.add(TextHelper.translate("tooltip.flower"));
+		}
+	}
 
-    @Override
-    public int getSortValue(@Nonnull ItemStack stack)
-    {
-        if (getEnumFromStack(stack) == FlowerType.GODDESS)
-            return CreativeSort.TOOLS - 200;
-        return CreativeSort.TOOLS - 100;
-    }
+	@Override
+	public int getSortValue(@Nonnull ItemStack stack) {
+		if (getEnumFromStack(stack) == FlowerType.GODDESS) {
+			return CreativeSort.TOOLS - 200;
+		}
+		return CreativeSort.TOOLS - 100;
+	}
 
-    @SideOnly(Side.CLIENT)
-    @Override
-    public void registerModels(Item item, String name)
-    {
-        for (int i = 0; i < values.length; i++)
-        {
-            ModelLoader.setCustomModelResourceLocation(item, i, new ModelResourceLocation(new ResourceLocation(HFModInfo.MODID, property.getName() + "_" + getEnumFromMeta(i).getName()), "inventory"));
-        }
-    }
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void registerModels(Item item, String name) {
+		for (int i = 0; i < values.length; i++) {
+			ModelLoader.setCustomModelResourceLocation(
+					item,
+					i,
+					new ModelResourceLocation(
+							new ResourceLocation(
+									HFModInfo.MODID,
+									property.getName() + "_" + getEnumFromMeta(i).getName()), "inventory"));
+		}
+	}
 
-    @Override
-    public boolean isFullBlock(IBlockState state)
-    {
-        return false;
-    }
+	@Override
+	public boolean isFullBlock(IBlockState state) {
+		return false;
+	}
 
-    @Override
-    public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos)
-    {
-        return false;
-    }
+	@Override
+	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return false;
+	}
 
-    @Override
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
-    {
-        return BlockFaceShape.UNDEFINED;
-    }
+	@Override
+	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+		return BlockFaceShape.UNDEFINED;
+	}
 }

@@ -7,7 +7,7 @@ import joshie.harvest.quests.base.QuestMeeting;
 
 @HFQuest("meeting.fenn")
 public class QuestMeetFenn extends QuestMeeting {
-    public QuestMeetFenn() {
-        super(HFBuildings.CLOCKMAKER, HFNPCs.CLOCKMAKER_CHILD);
-    }
+	public QuestMeetFenn() {
+		super(HFBuildings.CLOCKMAKER, HFNPCs.CLOCKMAKER_CHILD);
+	}
 }

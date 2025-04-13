@@ -9,25 +9,26 @@ import net.minecraft.entity.player.EntityPlayer;
 //@Packet(Packet.Side.CLIENT)
 @SuppressWarnings("unused")
 public class PacketSyncMineFloor extends PenguinPacket {
-    private int floor;
+	private int floor;
 
-    public PacketSyncMineFloor() { }
-    public PacketSyncMineFloor(int floor) {
-        this.floor = floor;
-    }
+	public PacketSyncMineFloor() {}
 
-    @Override
-    public void toBytes(ByteBuf buf) {
-        buf.writeInt(floor);
-    }
+	public PacketSyncMineFloor(int floor) {
+		this.floor = floor;
+	}
 
-    @Override
-    public void fromBytes(ByteBuf buf) {
-        floor = buf.readInt();
-    }
+	@Override
+	public void toBytes(ByteBuf buf) {
+		buf.writeInt(floor);
+	}
 
-    @Override
-    public void handlePacket(EntityPlayer player) {
-        HFTrackers.getClientPlayerTracker().getTracking().setMineFloorReached(floor);
-    }
+	@Override
+	public void fromBytes(ByteBuf buf) {
+		floor = buf.readInt();
+	}
+
+	@Override
+	public void handlePacket(EntityPlayer player) {
+		HFTrackers.getClientPlayerTracker().getTracking().setMineFloorReached(floor);
+	}
 }

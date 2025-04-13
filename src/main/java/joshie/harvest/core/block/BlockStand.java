@@ -1,5 +1,8 @@
 package joshie.harvest.core.block;
 
+import java.util.Locale;
+
+import javax.annotation.Nonnull;
 import joshie.harvest.core.HFTab;
 import joshie.harvest.core.base.block.BlockHFEnumRotatableTile;
 import joshie.harvest.core.base.tile.TileStand;
@@ -22,96 +25,102 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import javax.annotation.Nonnull;
-import java.util.Locale;
-
 public class BlockStand extends BlockHFEnumRotatableTile<BlockStand, Stand> {
-    public static final AxisAlignedBB PLATE_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.1D, 1.0D);
-    public static final AxisAlignedBB POT_AABB = new AxisAlignedBB(0.05D, 0.1D, 0.05D, 0.95D, 0.625D, 0.95D);
+	public static final AxisAlignedBB PLATE_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.1D, 1.0D);
+	public static final AxisAlignedBB POT_AABB = new AxisAlignedBB(0.05D, 0.1D, 0.05D, 0.95D, 0.625D, 0.95D);
 
-    @SuppressWarnings("WeakerAccess")
-    public enum Stand implements IStringSerializable {
-        POT, PLATE;
+	@SuppressWarnings("WeakerAccess")
+	public enum Stand implements IStringSerializable {
+		POT, PLATE;
 
-        @Override
-        public String getName() {
-            return toString().toLowerCase(Locale.ENGLISH);
-        }
-    }
+		@Override
+		public String getName() {
+			return toString().toLowerCase(Locale.ENGLISH);
+		}
+	}
 
-    public BlockStand() {
-        super(Material.PISTON, Stand.class, HFTab.TOWN);
-        setHardness(2.5F);
-        setSoundType(SoundType.WOOD);
-    }
+	public BlockStand() {
+		super(Material.PISTON, Stand.class, HFTab.TOWN);
+		setHardness(2.5F);
+		setSoundType(SoundType.WOOD);
+	}
 
-    @Override
-    protected boolean shouldDisplayInCreative(Stand stand) {
-        return stand != BlockStand.Stand.POT;
-    }
+	@Override
+	protected boolean shouldDisplayInCreative(Stand stand) {
+		return stand != BlockStand.Stand.POT;
+	}
 
-    @SuppressWarnings("deprecation")
-    @Override
-    @Nonnull
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
-        switch (getEnumFromState(state)) {
-            case PLATE:
-                return PLATE_AABB;
-            case POT:
-                return POT_AABB;
-            default:
-                return FULL_BLOCK_AABB;
-        }
-    }
+	@SuppressWarnings("deprecation")
+	@Override
+	@Nonnull
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
+		switch (getEnumFromState(state)) {
+			case PLATE:
+				return PLATE_AABB;
+			case POT:
+				return POT_AABB;
+			default:
+				return FULL_BLOCK_AABB;
+		}
+	}
 
-    @Override
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public float getBlockHardness(IBlockState state, World world, BlockPos pos) {
-        switch (getEnumFromState(state)) {
-            case PLATE:
-                return 0.2F;
-            default:
-                return super.getBlockHardness(state, world, pos);
-        }
-    }
+	@Override
+	@SuppressWarnings("deprecation")
+	@Deprecated
+	public float getBlockHardness(IBlockState state, World world, BlockPos pos) {
+		switch (getEnumFromState(state)) {
+			case PLATE:
+				return 0.2F;
+			default:
+				return super.getBlockHardness(state, world, pos);
+		}
+	}
 
-    @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-        TileEntity tile = world.getTileEntity(pos);
-        if (tile instanceof TileStand) {
-            TileStand stand = ((TileStand)tile);
-            ItemStack held = player.getHeldItem(hand);
-            if (stand.isEmpty() && !held.isEmpty() && stand.isItemValid(held) && stand.setContents(player, held)) {
-                return true;
-            } else if (!stand.isEmpty() && stand.canEmpty()) {
-                ItemStack contents = stand.removeContents();
-                if (!contents.isEmpty()) {
-                    SpawnItemHelper.addToPlayerInventory(player, contents);
-                    return true;
-                }
-            }
-        }
+	@Override
+	public boolean onBlockActivated(
+			World world,
+			BlockPos pos,
+			IBlockState state,
+			EntityPlayer player,
+			EnumHand hand,
+			EnumFacing side,
+			float hitX,
+			float hitY,
+			float hitZ) {
+		TileEntity tile = world.getTileEntity(pos);
+		if (tile instanceof TileStand) {
+			TileStand stand = ((TileStand) tile);
+			ItemStack held = player.getHeldItem(hand);
+			if (stand.isEmpty() && !held.isEmpty() && stand.isItemValid(held) && stand.setContents(player, held)) {
+				return true;
+			} else if (!stand.isEmpty() && stand.canEmpty()) {
+				ItemStack contents = stand.removeContents();
+				if (!contents.isEmpty()) {
+					SpawnItemHelper.addToPlayerInventory(player, contents);
+					return true;
+				}
+			}
+		}
 
-        return false;
-    }
+		return false;
+	}
 
-    @Override
-    @Nonnull
-    public TileEntity createTileEntity(@Nonnull World world, @Nonnull IBlockState state) {
-        return getEnumFromState(state) == Stand.PLATE ? new TilePlate() : new TileFestivalPot();
-    }
+	@Override
+	@Nonnull
+	public TileEntity createTileEntity(@Nonnull World world, @Nonnull IBlockState state) {
+		return getEnumFromState(state) == Stand.PLATE ? new TilePlate() : new TileFestivalPot();
+	}
 
-    @Override
-    public void breakBlock(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state) {
-        TileEntity tile = world.getTileEntity(pos);
-        if (tile instanceof TileStand) {
-            TileStand stand = ((TileStand)tile);
-            if (!stand.getContents().isEmpty() && stand.canEmpty()) {
-                InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), stand.getContents());
-            }
-        }
+	@Override
+	public void breakBlock(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state) {
+		TileEntity tile = world.getTileEntity(pos);
+		if (tile instanceof TileStand) {
+			TileStand stand = ((TileStand) tile);
+			if (!stand.getContents().isEmpty() && stand.canEmpty()) {
+				InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), stand.getContents());
+			}
+		}
 
-        super.breakBlock(world, pos, state);
-    }
+		super.breakBlock(world, pos, state);
+	}
 }

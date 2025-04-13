@@ -1,5 +1,10 @@
 package joshie.harvest.quests.town.festivals.contest.animal;
 
+import java.util.List;
+import java.util.UUID;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.animals.AnimalStats;
 import joshie.harvest.api.animals.AnimalTest;
@@ -20,129 +25,142 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.List;
-import java.util.UUID;
-
 @SuppressWarnings("WeakerAccess")
 public class AnimalContestEntry extends ContestEntry<QuestAnimalContest> {
-    private final UUID entity;
+	private final UUID entity;
 
-    public AnimalContestEntry(UUID player, UUID entity, int stall) {
-        super(player, stall);
-        this.entity = entity;
-    }
+	public AnimalContestEntry(UUID player, UUID entity, int stall) {
+		super(player, stall);
+		this.entity = entity;
+	}
 
-    public AnimalContestEntry(NPC npc, UUID entity, int stall) {
-        super(npc, stall);
-        this.entity = entity;
-    }
+	public AnimalContestEntry(NPC npc, UUID entity, int stall) {
+		super(npc, stall);
+		this.entity = entity;
+	}
 
-    @Nullable
-    private AnimalStats getStats(World world) {
-        EntityAnimal animal  = EntityHelper.getAnimalFromUUID(world, entity);
-        if (animal != null) {
-            return EntityHelper.getStats(animal);
-        } else return null;
-    }
+	@Nullable
+	private AnimalStats getStats(World world) {
+		EntityAnimal animal = EntityHelper.getAnimalFromUUID(world, entity);
+		if (animal != null) {
+			return EntityHelper.getStats(animal);
+		} else {
+			return null;
+		}
+	}
 
-    @Override
-    @SuppressWarnings("ConstantConditions")
-    public int getScore(QuestAnimalContest quest, World world) {
-        EntityAnimal animal  = EntityHelper.getAnimalFromUUID(world, entity);
-        int score = 0;
-        if (animal != null) {
-            AnimalStats stats = EntityHelper.getStats(animal);
-            score += stats.getHappiness(); //Base level
-            //Add bonuses, if the animal has had everything done today
-            if (stats.performTest(AnimalTest.CAN_CLEAN)) {
-                if (stats.performTest(AnimalTest.HAS_EATEN)) score += 1000;
-                if (stats.performTest(AnimalTest.HAD_TREAT)) score += 3000;
-                if (stats.performTest(AnimalTest.IS_CLEAN)) score += 3000;
-                if (stats.performTest(AnimalTest.BEEN_LOVED)) score += 2000;
-            } else {
-                if (stats.performTest(AnimalTest.HAS_EATEN)) score += 1000;
-                if (stats.performTest(AnimalTest.HAD_TREAT)) score += 5000;
-                if (stats.performTest(AnimalTest.BEEN_LOVED)) score += 3000;
-            }
+	@Override
+	@SuppressWarnings("ConstantConditions")
+	public int getScore(QuestAnimalContest quest, World world) {
+		EntityAnimal animal = EntityHelper.getAnimalFromUUID(world, entity);
+		int score = 0;
+		if (animal != null) {
+			AnimalStats stats = EntityHelper.getStats(animal);
+			score += stats.getHappiness(); //Base level
+			//Add bonuses, if the animal has had everything done today
+			if (stats.performTest(AnimalTest.CAN_CLEAN)) {
+				if (stats.performTest(AnimalTest.HAS_EATEN)) {
+					score += 1000;
+				}
+				if (stats.performTest(AnimalTest.HAD_TREAT)) {
+					score += 3000;
+				}
+				if (stats.performTest(AnimalTest.IS_CLEAN)) {
+					score += 3000;
+				}
+				if (stats.performTest(AnimalTest.BEEN_LOVED)) {
+					score += 2000;
+				}
+			} else {
+				if (stats.performTest(AnimalTest.HAS_EATEN)) {
+					score += 1000;
+				}
+				if (stats.performTest(AnimalTest.HAD_TREAT)) {
+					score += 5000;
+				}
+				if (stats.performTest(AnimalTest.BEEN_LOVED)) {
+					score += 3000;
+				}
+			}
 
-            //Reduce the score if the animal is sick
-            if (stats.performTest(AnimalTest.IS_SICK)) {
-                score -= 25000;
-            }
-        }
+			//Reduce the score if the animal is sick
+			if (stats.performTest(AnimalTest.IS_SICK)) {
+				score -= 25000;
+			}
+		}
 
-        return score;
-    }
+		return score;
+	}
 
-    @Override
-    public String getTextFromScore(String unlocalised, int score) {
-        return TextHelper.localize(unlocalised + "." + Math.max(0, Math.min(9, (int)Math.floor(((double)score) / 3000))));
-    }
+	@Override
+	public String getTextFromScore(String unlocalised, int score) {
+		return TextHelper.localize(unlocalised + "." + Math.max(0, Math.min(9, (int) Math.floor(((double) score) / 3000))));
+	}
 
-    @Nullable
-    private EntityAnimal getAnimalEntity(World world) {
-        return EntityHelper.getAnimalFromUUID(world, entity);
-    }
+	@Nullable
+	private EntityAnimal getAnimalEntity(World world) {
+		return EntityHelper.getAnimalFromUUID(world, entity);
+	}
 
-    @Override
-    public boolean isInvalid(World world) {
-        return getAnimalEntity(world) == null;
-    }
+	@Override
+	public boolean isInvalid(World world) {
+		return getAnimalEntity(world) == null;
+	}
 
-    @Nonnull
-    UUID getAnimalUUID() {
-        return entity;
-    }
+	@Nonnull
+	UUID getAnimalUUID() {
+		return entity;
+	}
 
-    @Override
-    public String getName(World world) {
-        EntityAnimal animal = EntityHelper.getAnimalFromUUID(world, entity);
-        return animal == null ? "" : animal.getName();
-    }
+	@Override
+	public String getName(World world) {
+		EntityAnimal animal = EntityHelper.getAnimalFromUUID(world, entity);
+		return animal == null ? "" : animal.getName();
+	}
 
-    @Override
-    public void reward(World world, Place place, NPC[] npcs, ItemStack reward) {
-        AnimalStats stats = getStats(world);
-        EntityPlayer player = getPlayer(world);
-        if (stats != null && player != null) { //Give the rewards for this
-            SpawnItemHelper.addToPlayerInventory(player, reward);
-            stats.affectHappiness(place.happiness); //Make the animal happier, and the npcs that took part v
-            for (NPC npc: npcs) {
-                HFApi.player.getRelationsForPlayer(player).affectRelationship(npc, place.happiness);
-            }
-        } else if (npc != null) {
-            EntityAnimal animal = getAnimalEntity(world);
-            if (animal != null) {
-                List<EntityNPC> npcList = EntityHelper.getEntities(EntityNPC.class, world, new BlockPos(animal), 64D, 64D);
-                for (EntityNPC aNPC: npcList) {
-                    if (aNPC.getNPC() == npc) {
-                        aNPC.setHeldItem(EnumHand.OFF_HAND, reward);
-                        break;
-                    }
-                }
-            }
-        }
-    }
+	@Override
+	public void reward(World world, Place place, NPC[] npcs, ItemStack reward) {
+		AnimalStats stats = getStats(world);
+		EntityPlayer player = getPlayer(world);
+		if (stats != null && player != null) { //Give the rewards for this
+			SpawnItemHelper.addToPlayerInventory(player, reward);
+			stats.affectHappiness(place.happiness); //Make the animal happier, and the npcs that took part v
+			for (NPC npc : npcs) {
+				HFApi.player.getRelationsForPlayer(player).affectRelationship(npc, place.happiness);
+			}
+		} else if (npc != null) {
+			EntityAnimal animal = getAnimalEntity(world);
+			if (animal != null) {
+				List<EntityNPC> npcList = EntityHelper.getEntities(EntityNPC.class, world, new BlockPos(animal), 64D, 64D);
+				for (EntityNPC aNPC : npcList) {
+					if (aNPC.getNPC() == npc) {
+						aNPC.setHeldItem(EnumHand.OFF_HAND, reward);
+						break;
+					}
+				}
+			}
+		}
+	}
 
-    @Nullable
-    public static AnimalContestEntry fromNBT(NBTTagCompound tag) {
-        UUID animal = UUID.fromString(tag.getString("Animal"));
-        Integer stall = tag.getInteger("Stall");
-        if (tag.hasKey("Player")) {
-            UUID player = UUID.fromString(tag.getString("Player"));
-            return new AnimalContestEntry(player, animal, stall);
-        } else if (tag.hasKey("NPC")) {
-            NPC npc = NPC.REGISTRY.get(new ResourceLocation(tag.getString("NPC")));
-            return new AnimalContestEntry(npc, animal, stall);
-        } else return null;
-    }
+	@Nullable
+	public static AnimalContestEntry fromNBT(NBTTagCompound tag) {
+		UUID animal = UUID.fromString(tag.getString("Animal"));
+		Integer stall = tag.getInteger("Stall");
+		if (tag.hasKey("Player")) {
+			UUID player = UUID.fromString(tag.getString("Player"));
+			return new AnimalContestEntry(player, animal, stall);
+		} else if (tag.hasKey("NPC")) {
+			NPC npc = NPC.REGISTRY.get(new ResourceLocation(tag.getString("NPC")));
+			return new AnimalContestEntry(npc, animal, stall);
+		} else {
+			return null;
+		}
+	}
 
-    @Override
-    public NBTTagCompound toNBT() {
-        NBTTagCompound tag = super.toNBT();
-        tag.setString("Animal", entity.toString());
-        return tag;
-    }
+	@Override
+	public NBTTagCompound toNBT() {
+		NBTTagCompound tag = super.toNBT();
+		tag.setString("Animal", entity.toString());
+		return tag;
+	}
 }

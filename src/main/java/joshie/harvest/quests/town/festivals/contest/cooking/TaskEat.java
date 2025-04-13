@@ -14,30 +14,30 @@ import net.minecraft.world.WorldServer;
 
 @HFTask("eat")
 public class TaskEat extends TaskElement {
-    private BlockPos festivalPos;
+	private BlockPos festivalPos;
 
-    public TaskEat(Town town, BlockPos pos) {
-        festivalPos = town.getCoordinatesFromOffset(HFBuildings.FESTIVAL_GROUNDS, pos);
-    }
+	public TaskEat(Town town, BlockPos pos) {
+		festivalPos = town.getCoordinatesFromOffset(HFBuildings.FESTIVAL_GROUNDS, pos);
+	}
 
-    @Override
-    public void execute(NPCEntity npc) {
-        WorldServer worldServer = (WorldServer) npc.getAsEntity().world;
-        TileEntity tile = worldServer.getTileEntity(festivalPos);
-        if (tile instanceof TilePlate) {
-            ((TilePlate)tile).setContents(ItemStack.EMPTY);
-        }
-        satisfied = true;
-    }
+	@Override
+	public void execute(NPCEntity npc) {
+		WorldServer worldServer = (WorldServer) npc.getAsEntity().world;
+		TileEntity tile = worldServer.getTileEntity(festivalPos);
+		if (tile instanceof TilePlate) {
+			((TilePlate) tile).setContents(ItemStack.EMPTY);
+		}
+		satisfied = true;
+	}
 
-    @Override
-    public void readFromNBT(NBTTagCompound tag) {
-        satisfied = tag.getBoolean("Consumed");
-    }
+	@Override
+	public void readFromNBT(NBTTagCompound tag) {
+		satisfied = tag.getBoolean("Consumed");
+	}
 
-    @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
-        tag.setBoolean("Consumed", satisfied);
-        return tag;
-    }
+	@Override
+	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
+		tag.setBoolean("Consumed", satisfied);
+		return tag;
+	}
 }

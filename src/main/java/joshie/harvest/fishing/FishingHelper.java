@@ -2,10 +2,9 @@ package joshie.harvest.fishing;
 
 import java.util.HashMap;
 
-import javax.annotation.Nonnull;
-
 import org.apache.commons.lang3.tuple.Pair;
 
+import javax.annotation.Nonnull;
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.calendar.Season;
 import joshie.harvest.core.HFTrackers;
@@ -29,54 +28,56 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @HFEvents
 public class FishingHelper {
-    static final HashMap<Pair<Season, WaterType>, ResourceLocation> FISHING_LOOT = new HashMap<>();
+	static final HashMap<Pair<Season, WaterType>, ResourceLocation> FISHING_LOOT = new HashMap<>();
 
-    public static boolean isWater(World world, BlockPos... positions) {
-        for (BlockPos pos : positions) {
-            if (world.getBlockState(pos).getBlock() != Blocks.WATER)
-                return false;
-        }
+	public static boolean isWater(World world, BlockPos... positions) {
+		for (BlockPos pos : positions) {
+			if (world.getBlockState(pos).getBlock() != Blocks.WATER) {
+				return false;
+			}
+		}
 
-        return true;
-    }
+		return true;
+	}
 
-    public static void track(@Nonnull ItemStack stack, EntityPlayer angler) {
-        if (CollectionHelper.isInFishCollection(stack)) {
-            HFTrackers.getPlayerTrackerFromPlayer(angler).getTracking().addAsObtained(stack);
-        }
-    }
+	public static void track(@Nonnull ItemStack stack, EntityPlayer angler) {
+		if (CollectionHelper.isInFishCollection(stack)) {
+			HFTrackers.getPlayerTrackerFromPlayer(angler).getTracking().addAsObtained(stack);
+		}
+	}
 
-    @SubscribeEvent(priority = EventPriority.LOW)
-    public void track(ItemFishedEvent event) {
-        EntityPlayer player = event.getEntityPlayer();
-        event.getDrops().forEach(stack -> track(stack, player));
-    }
+	@SubscribeEvent(priority = EventPriority.LOW)
+	public void track(ItemFishedEvent event) {
+		EntityPlayer player = event.getEntityPlayer();
+		event.getDrops().forEach(stack -> track(stack, player));
+	}
 
-    enum WaterType {
-        OCEAN, LAKE, RIVER, POND
-    }
+	enum WaterType {
+		OCEAN, LAKE, RIVER, POND
+	}
 
-    private static Pair<Season, WaterType> getLocation(World world, BlockPos pos) {
-        Season season = HFApi.calendar.getDate(world).getSeason();
-        TownData data = TownHelper.getClosestTownToBlockPos(world, pos, false);
-        BlockPos position = data.getCoordinatesFor(BuildingLocations.FISHING_POND_CENTRE);
-        WaterType type;
-        if (position != null && position.getDistance(pos.getX(), pos.getY(), pos.getZ()) <= 5) {
-            type = WaterType.POND;
-        } else {
-            Biome biome = world.getBiome(pos);
-            if (BiomeDictionary.hasType(biome, Type.OCEAN))
-                type = WaterType.OCEAN;
-            else if (BiomeDictionary.hasType(biome, Type.RIVER))
-                type = WaterType.RIVER;
-            else
-                type = WaterType.LAKE;
-        }
+	private static Pair<Season, WaterType> getLocation(World world, BlockPos pos) {
+		Season season = HFApi.calendar.getDate(world).getSeason();
+		TownData data = TownHelper.getClosestTownToBlockPos(world, pos, false);
+		BlockPos position = data.getCoordinatesFor(BuildingLocations.FISHING_POND_CENTRE);
+		WaterType type;
+		if (position != null && position.getDistance(pos.getX(), pos.getY(), pos.getZ()) <= 5) {
+			type = WaterType.POND;
+		} else {
+			Biome biome = world.getBiome(pos);
+			if (BiomeDictionary.hasType(biome, Type.OCEAN)) {
+				type = WaterType.OCEAN;
+			} else if (BiomeDictionary.hasType(biome, Type.RIVER)) {
+				type = WaterType.RIVER;
+			} else {
+				type = WaterType.LAKE;
+			}
+		}
 
-        return Pair.of(season, type);
-    }
+		return Pair.of(season, type);
+	}
 
-    public static ResourceLocation getFishingTable(World world, BlockPos pos) {
-        return FISHING_LOOT.get(getLocation(world, pos));
-    }
+	public static ResourceLocation getFishingTable(World world, BlockPos pos) {
+		return FISHING_LOOT.get(getLocation(world, pos));
+	}
 }

@@ -10,30 +10,31 @@ import net.minecraft.entity.player.EntityPlayer;
 
 @Packet(Packet.Side.CLIENT)
 public class PacketSyncForecast extends PenguinPacket {
-    private Weather[] forecast;
+	private Weather[] forecast;
 
-    public PacketSyncForecast() {}
-    public PacketSyncForecast(Weather[] forecast) {
-        this.forecast = forecast;
-    }
+	public PacketSyncForecast() {}
 
-    @Override
-    public void toBytes(ByteBuf buf) {
-        for (int i = 0; i < 7; i++) {
-            buf.writeByte(forecast[i].ordinal());
-        }
-    }
+	public PacketSyncForecast(Weather[] forecast) {
+		this.forecast = forecast;
+	}
 
-    @Override
-    public void fromBytes(ByteBuf buf) {
-        forecast = new Weather[7];
-        for (int i = 0; i < 7; i++) {
-            forecast[i] = Weather.VALUES.get(buf.readByte());
-        }
-    }
+	@Override
+	public void toBytes(ByteBuf buf) {
+		for (int i = 0; i < 7; i++) {
+			buf.writeByte(forecast[i].ordinal());
+		}
+	}
 
-    @Override
-    public void handlePacket(EntityPlayer player) {
-        HFTrackers.<CalendarClient>getCalendar(player.world).setForecast(forecast);
-    }
+	@Override
+	public void fromBytes(ByteBuf buf) {
+		forecast = new Weather[7];
+		for (int i = 0; i < 7; i++) {
+			forecast[i] = Weather.VALUES.get(buf.readByte());
+		}
+	}
+
+	@Override
+	public void handlePacket(EntityPlayer player) {
+		HFTrackers.<CalendarClient>getCalendar(player.world).setForecast(forecast);
+	}
 }

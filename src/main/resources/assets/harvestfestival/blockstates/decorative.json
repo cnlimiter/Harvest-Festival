@@ -1,5 +1,7 @@
 {
-  "variants": {
-    "decorativeblock=cooking":  { "model": "harvestfestival:cooking_stand" }
-  }
+	"variants": {
+		"decorativeblock=cooking": {
+			"model": "harvestfestival:cooking_stand"
+		}
+	}
 }

@@ -1,6 +1,6 @@
 {
-  "parent": "block/tinted_cross",
-  "textures": {
-    "cross": "harvestfestival:blocks/weed3"
-  }
+	"parent": "block/tinted_cross",
+	"textures": {
+		"cross": "harvestfestival:blocks/weed3"
+	}
 }

@@ -10,16 +10,17 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.WorldTickEvent;
 
 @HFEvents
 public class OfflineTickHandler {
-    public static boolean register() { return HFCore.NO_TICK_OFFLINE; }
-    public static boolean BLOCKED = false;
+	public static boolean register() {return HFCore.NO_TICK_OFFLINE;}
 
-    @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public void onWorldTickEvent(WorldTickEvent event) {
-        if (event.phase == Phase.END) {
-            BLOCKED = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayers().size() <= 0;
-            if (BLOCKED) {
-                event.world.setWorldTime(event.world.getWorldTime() - 1L);
-            }
-        }
-    }
+	public static boolean BLOCKED = false;
+
+	@SubscribeEvent(priority = EventPriority.HIGHEST)
+	public void onWorldTickEvent(WorldTickEvent event) {
+		if (event.phase == Phase.END) {
+			BLOCKED = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayers().size() <= 0;
+			if (BLOCKED) {
+				event.world.setWorldTime(event.world.getWorldTime() - 1L);
+			}
+		}
+	}
 }

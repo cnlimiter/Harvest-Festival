@@ -8,13 +8,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.text.translation.I18n;
 
 public class GreetingPriestBlessing extends GreetingLocalized {
-    public GreetingPriestBlessing() {
-        super("harvestfestival.quest.trade.bless.reminder");
-    }
+	public GreetingPriestBlessing() {
+		super("harvestfestival.quest.trade.bless.reminder");
+	}
 
-    @SuppressWarnings("deprecation")
-    @Override
-    public String getLocalizedText(EntityPlayer player, EntityAgeable ageable, NPC npc) {
-        return I18n.translateToLocalFormatted(text, HFApi.quests.hasCompleted(Quests.TOMAS_15K, player) ? 1000 : 2500);
-    }
+	@SuppressWarnings("deprecation")
+	@Override
+	public String getLocalizedText(EntityPlayer player, EntityAgeable ageable, NPC npc) {
+		return I18n.translateToLocalFormatted(text, HFApi.quests.hasCompleted(Quests.TOMAS_15K, player) ? 1000 : 2500);
+	}
 }

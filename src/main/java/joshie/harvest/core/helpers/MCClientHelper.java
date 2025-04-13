@@ -14,43 +14,45 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class MCClientHelper {
-    public static Minecraft getMinecraft() {
-        return FMLClientHandler.instance().getClient();
-    }
+	public static Minecraft getMinecraft() {
+		return FMLClientHandler.instance().getClient();
+	}
 
-    public static EntityPlayerSP getPlayer() {
-        return getMinecraft().player;
-    }
+	public static EntityPlayerSP getPlayer() {
+		return getMinecraft().player;
+	}
 
 	@Nullable
-    public static World getWorld() {
-        return getMinecraft().world;
-    }
+	public static World getWorld() {
+		return getMinecraft().world;
+	}
 
-    /** Calls a for a re-render of all surrounding blocks **/
-    public static void refresh() {
-        getMinecraft().renderGlobal.loadRenderers();
-    }
+	/**
+	 * Calls a for a re-render of all surrounding blocks
+	 **/
+	public static void refresh() {
+		getMinecraft().renderGlobal.loadRenderers();
+	}
 
-    public static void initGui() {
-        if (getMinecraft().currentScreen != null) {
-            getMinecraft().currentScreen.initGui();
-        }
-    }
+	public static void initGui() {
+		if (getMinecraft().currentScreen != null) {
+			getMinecraft().currentScreen.initGui();
+		}
+	}
 
-    @Nonnull
-    @SuppressWarnings("ConstantConditions")
-    public static PlayerControllerMP getPlayerController() {
-        return getMinecraft().playerController;
-    }
+	@Nonnull
+	@SuppressWarnings("ConstantConditions")
+	public static PlayerControllerMP getPlayerController() {
+		return getMinecraft().playerController;
+	}
 
-    @Nonnull
-    @SuppressWarnings("ConstantConditions")
-    public static Entity getRenderViewEntity() {
-        return getMinecraft().getRenderViewEntity();
-    }
+	@Nonnull
+	@SuppressWarnings("ConstantConditions")
+	public static Entity getRenderViewEntity() {
+		return getMinecraft().getRenderViewEntity();
+	}
 
-    public static boolean isClient(EntityLivingBase playerIn) {
-        return playerIn == getPlayer();
-    }
+	public static boolean isClient(EntityLivingBase playerIn) {
+		return playerIn == getPlayer();
+	}
 }

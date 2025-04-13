@@ -5,9 +5,9 @@ import joshie.harvest.buildings.HFBuildings;
 import joshie.harvest.core.base.gui.BookPage;
 
 public class PageTown extends PageNotes {
-    public static final BookPage INSTANCE = new PageTown();
+	public static final BookPage INSTANCE = new PageTown();
 
-    PageTown() {
-        super(Category.TOWNSHIP, HFBuildings.CARPENTER.getSpawner());
-    }
+	PageTown() {
+		super(Category.TOWNSHIP, HFBuildings.CARPENTER.getSpawner());
+	}
 }

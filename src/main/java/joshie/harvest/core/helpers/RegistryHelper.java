@@ -1,5 +1,20 @@
 package joshie.harvest.core.helpers;
 
+import static joshie.harvest.core.HFTab.FARMING;
+import static joshie.harvest.core.handlers.DisableHandler.SEEDS_BLACKLIST;
+import static joshie.harvest.core.lib.HFModInfo.CROPSTATES;
+import static joshie.harvest.core.lib.HFModInfo.DROPHANDLERS;
+import static joshie.harvest.core.lib.HFModInfo.GROWTHHANDLERS;
+import static joshie.harvest.core.lib.HFModInfo.MODID;
+import static joshie.harvest.core.lib.HFModInfo.RULES;
+import static joshie.harvest.crops.HFCrops.DISABLE_VANILLA_SEEDS;
+import static joshie.harvest.crops.HFCrops.DISABLE_VANILLA_WHEAT_SEEDS;
+
+import java.util.Locale;
+
+import org.apache.commons.lang3.text.WordUtils;
+
+import javax.annotation.Nonnull;
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.core.ISpecialRules;
 import joshie.harvest.api.crops.Crop;
@@ -30,121 +45,122 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.registries.GameData;
 
-import org.apache.commons.lang3.text.WordUtils;
-
-import javax.annotation.Nonnull;
-import java.util.Locale;
-
-import static joshie.harvest.core.HFTab.FARMING;
-import static joshie.harvest.core.handlers.DisableHandler.SEEDS_BLACKLIST;
-import static joshie.harvest.core.lib.HFModInfo.*;
-import static joshie.harvest.crops.HFCrops.DISABLE_VANILLA_SEEDS;
-import static joshie.harvest.crops.HFCrops.DISABLE_VANILLA_WHEAT_SEEDS;
-
 public class RegistryHelper {
-    public static void registerSounds(String... sounds) {
-        for (String sound : sounds) {
-            ResourceLocation resource = new ResourceLocation(MODID, sound);
-            GameData.register_impl(new SoundEvent(resource).setRegistryName(resource));
-        }
-    }
+	public static void registerSounds(String... sounds) {
+		for (String sound : sounds) {
+			ResourceLocation resource = new ResourceLocation(MODID, sound);
+			GameData.register_impl(new SoundEvent(resource).setRegistryName(resource));
+		}
+	}
 
-    @SafeVarargs
-    public static void registerTiles(Class<? extends TileEntity>... tiles) {
-        for (Class<? extends TileEntity> tile : tiles) {
-            GameRegistry.registerTileEntity(tile, MODID + ":" + tile.getSimpleName().replace("Tile", "").toLowerCase(Locale.ENGLISH));
-        }
-    }
+	@SafeVarargs
+	public static void registerTiles(Class<? extends TileEntity>... tiles) {
+		for (Class<? extends TileEntity> tile : tiles) {
+			GameRegistry.registerTileEntity(
+					tile,
+					new ResourceLocation(MODID, tile.getSimpleName().replace("Tile", "").toLowerCase(Locale.ENGLISH)));
+		}
+	}
 
-    @SideOnly(Side.CLIENT)
-    public static void registerFluidBlockRendering(Block block, String name) {
-        final ModelResourceLocation fluidLocation = new ModelResourceLocation(MODID + ":fluids", name);
-        ModelLoader.setCustomStateMapper(block, new StateMapperBase() {
-            @Override
-            @Nonnull
-            protected ModelResourceLocation getModelResourceLocation(@Nonnull IBlockState state) {
-                return fluidLocation;
-            }
-        });
-    }
+	@SideOnly(Side.CLIENT)
+	public static void registerFluidBlockRendering(Block block, String name) {
+		final ModelResourceLocation fluidLocation = new ModelResourceLocation(MODID + ":fluids", name);
+		ModelLoader.setCustomStateMapper(
+				block, new StateMapperBase() {
+					@Override
+					@Nonnull
+					protected ModelResourceLocation getModelResourceLocation(@Nonnull IBlockState state) {
+						return fluidLocation;
+					}
+				});
+	}
 
-    @SideOnly(Side.CLIENT)
-    public static void registerEntityRenderer(Item item, EntityItemRenderer instance) {
-        item.setTileEntityItemStackRenderer(new FakeEntityRenderer.TEISR(instance));
-        ClientRegistry.bindTileEntitySpecialRenderer(instance.getClass(), FakeEntityRenderer.INSTANCE);
-    }
+	@SideOnly(Side.CLIENT)
+	public static void registerEntityRenderer(Item item, EntityItemRenderer instance) {
+		item.setTileEntityItemStackRenderer(new FakeEntityRenderer.TEISR(instance));
+		ClientRegistry.bindTileEntitySpecialRenderer(instance.getClass(), FakeEntityRenderer.INSTANCE);
+	}
 
-    public static Crop registerCrop(String name) {
-        return addHandlersToCrop(name, new Crop(new ResourceLocation(MODID, name)));
-    }
+	public static Crop registerCrop(String name) {
+		return addHandlersToCrop(name, new Crop(new ResourceLocation(MODID, name)));
+	}
 
-    public static Tree registerTree(String name) {
-        return addHandlersToCrop(name, (Tree) new Tree(new ResourceLocation(MODID, name)).setDropHandler(new DropHandlerTree()));
-    }
+	public static Tree registerTree(String name) {
+		return addHandlersToCrop(name, (Tree) new Tree(new ResourceLocation(MODID, name)).setDropHandler(new DropHandlerTree()));
+	}
 
-    private static <C extends Crop> C addHandlersToCrop(String name, C crop) {
-        //Atempt to add a drop handler
-        try {
-            DropHandler handler = (DropHandler) Class.forName(DROPHANDLERS + WordUtils.capitalizeFully(name.replace("_", " ")).replace(" ", "")).newInstance();
+	private static <C extends Crop> C addHandlersToCrop(String name, C crop) {
+		//Atempt to add a drop handler
+		try {
+			DropHandler handler = (DropHandler) Class.forName(
+					DROPHANDLERS + WordUtils.capitalizeFully(name.replace("_", " ")).replace(" ", "")).newInstance();
 			crop.setDropHandler(handler);
-        } catch (IllegalAccessException | ClassNotFoundException | InstantiationException e) {/**/}
+		} catch (IllegalAccessException | ClassNotFoundException | InstantiationException e) {/**/}
 
-        //Atempt to add a growth handler
-        try {
-            GrowthHandler handler = (GrowthHandler) Class.forName(GROWTHHANDLERS + WordUtils.capitalizeFully(name.replace("_", " ")).replace(" ", "")).newInstance();
+		//Atempt to add a growth handler
+		try {
+			GrowthHandler handler = (GrowthHandler) Class.forName(
+					GROWTHHANDLERS + WordUtils.capitalizeFully(name.replace("_", " ")).replace(" ", "")).newInstance();
 			crop.setGrowthHandler(handler);
-        } catch (IllegalAccessException | ClassNotFoundException | InstantiationException e) {/**/}
+		} catch (IllegalAccessException | ClassNotFoundException | InstantiationException e) {/**/}
 
-        //Atempt to add a state handler
-        try {
-            IStateHandler handler = (IStateHandler) Class.forName(CROPSTATES + WordUtils.capitalizeFully(name.replace("_", " ")).replace(" ", "")).newInstance();
+		//Atempt to add a state handler
+		try {
+			IStateHandler handler = (IStateHandler) Class.forName(
+					CROPSTATES + WordUtils.capitalizeFully(name.replace("_", " ")).replace(" ", "")).newInstance();
 			crop.setStateHandler(handler);
-        } catch (IllegalAccessException | ClassNotFoundException | InstantiationException e) {/**/}
+		} catch (IllegalAccessException | ClassNotFoundException | InstantiationException e) {/**/}
 
-        //Atempt to add a rules handler
-        try {
-            ISpecialRules handler = (ISpecialRules) Class.forName(RULES + WordUtils.capitalizeFully(name.replace("_", " ")).replace(" ", "")).newInstance();
+		//Atempt to add a rules handler
+		try {
+			ISpecialRules handler = (ISpecialRules) Class.forName(
+					RULES + WordUtils.capitalizeFully(name.replace("_", " ")).replace(" ", "")).newInstance();
 			crop.setPurchaseRules(handler);
-        } catch (IllegalAccessException | ClassNotFoundException | InstantiationException e) {/**/}
+		} catch (IllegalAccessException | ClassNotFoundException | InstantiationException e) {/**/}
 
-        return crop;
-    }
+		return crop;
+	}
 
-    private static void addSeeds(Crop crop, @Nonnull ItemStack seeds) {
-        if (DISABLE_VANILLA_WHEAT_SEEDS || DISABLE_VANILLA_SEEDS) {
-            SEEDS_BLACKLIST.register(seeds.getItem()); //Disable the item
-        }
+	private static void addSeeds(Crop crop, @Nonnull ItemStack seeds) {
+		if (DISABLE_VANILLA_WHEAT_SEEDS || DISABLE_VANILLA_SEEDS) {
+			SEEDS_BLACKLIST.register(seeds.getItem()); //Disable the item
+		}
 
-        //Add a bag > seed recipe
-        if (crop.getCropStack(1).getItem() != seeds.getItem()) {
-        	GameData.register_impl(new SeedRecipeHandler(seeds, crop).setRegistryName("harvestfestival", seeds.getItem().getRegistryName().getResourcePath()));
-        }
-    }
+		//Add a bag > seed recipe
+		if (crop.getCropStack(1).getItem() != seeds.getItem()) {
+			GameData.register_impl(new SeedRecipeHandler(seeds, crop).setRegistryName(
+					"harvestfestival",
+					seeds.getItem().getRegistryName().getResourcePath()));
+		}
+	}
 
-    public static void registerVanillaCrop(Block cropBlock, @Nonnull ItemStack item, @Nonnull ItemStack seeds, Crop crop) {
-        addSeeds(crop, seeds);
-        HFApi.crops.registerCropProvider(item, crop);
-        crop.setSkipRender();
-        item.getItem().setCreativeTab(FARMING);
-        if (HFCrops.DISABLE_VANILLA_GROWTH || HFCrops.DISABLE_VANILLA_DROPS) DisableHandler.CROPS.add(cropBlock);
-        if (HFCrops.DISABLE_VANILLA_GROWTH) {
-            cropBlock.setTickRandomly(false);
-        }
-    }
+	public static void registerVanillaCrop(Block cropBlock, @Nonnull ItemStack item, @Nonnull ItemStack seeds, Crop crop) {
+		addSeeds(crop, seeds);
+		HFApi.crops.registerCropProvider(item, crop);
+		crop.setSkipRender();
+		item.getItem().setCreativeTab(FARMING);
+		if (HFCrops.DISABLE_VANILLA_GROWTH || HFCrops.DISABLE_VANILLA_DROPS) {
+			DisableHandler.CROPS.add(cropBlock);
+		}
+		if (HFCrops.DISABLE_VANILLA_GROWTH) {
+			cropBlock.setTickRandomly(false);
+		}
+	}
 
-    private static boolean isInDictionary(String name, @Nonnull ItemStack stack) {
-        for (ItemStack check: OreDictionary.getOres(name, false)) {
-            if (check.getItem() == stack.getItem() && (check.getItemDamage() == OreDictionary.WILDCARD_VALUE || check.getItemDamage() == stack.getItemDamage())) {
-                return true;
-            }
-        }
+	private static boolean isInDictionary(String name, @Nonnull ItemStack stack) {
+		for (ItemStack check : OreDictionary.getOres(name, false)) {
+			if (check.getItem() == stack.getItem() &&
+					(check.getItemDamage() == OreDictionary.WILDCARD_VALUE || check.getItemDamage() == stack.getItemDamage())) {
+				return true;
+			}
+		}
 
-        return false;
-    }
+		return false;
+	}
 
-    public static void registerOreIfNotExists(String name, @Nonnull ItemStack clone) {
-        if (!isInDictionary(name, clone)) {
-            OreDictionary.registerOre(name, clone);
-        }
-    }
+	public static void registerOreIfNotExists(String name, @Nonnull ItemStack clone) {
+		if (!isInDictionary(name, clone)) {
+			OreDictionary.registerOre(name, clone);
+		}
+	}
 }

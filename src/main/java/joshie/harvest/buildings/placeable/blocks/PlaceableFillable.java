@@ -1,6 +1,7 @@
 package joshie.harvest.buildings.placeable.blocks;
 
 import com.google.gson.annotations.Expose;
+
 import joshie.harvest.core.base.tile.TileFillable;
 import joshie.harvest.core.base.tile.TileFillableConnected;
 import net.minecraft.block.state.IBlockState;
@@ -12,29 +13,30 @@ import net.minecraft.world.World;
 
 @SuppressWarnings("WeakerAcess")
 public class PlaceableFillable extends PlaceableBlock {
-    @Expose
-    private int fill;
+	@Expose
+	private int fill;
 
-    public PlaceableFillable() {}
-    public PlaceableFillable(int fill, IBlockState state, int x, int y, int z) {
-        super(state, x, y, z);
-        this.fill = fill;
-    }
+	public PlaceableFillable() {}
 
-    @Override
-    public boolean canPlace(ConstructionStage stage) {
-        return stage == ConstructionStage.DECORATE;
-    }
+	public PlaceableFillable(int fill, IBlockState state, int x, int y, int z) {
+		super(state, x, y, z);
+		this.fill = fill;
+	}
 
-    @Override
-    public void postPlace(World world, BlockPos pos, Rotation rotation) {
-        TileEntity tile = world.getTileEntity(pos);
-        if (tile instanceof TileFillable) {
-            if (tile instanceof TileFillableConnected) {
-                ((TileFillableConnected)tile).onPlaced();
-            }
+	@Override
+	public boolean canPlace(ConstructionStage stage) {
+		return stage == ConstructionStage.DECORATE;
+	}
 
-            ((TileFillable) tile).setFilled(fill);
-        }
-    }
+	@Override
+	public void postPlace(World world, BlockPos pos, Rotation rotation) {
+		TileEntity tile = world.getTileEntity(pos);
+		if (tile instanceof TileFillable) {
+			if (tile instanceof TileFillableConnected) {
+				((TileFillableConnected) tile).onPlaced();
+			}
+
+			((TileFillable) tile).setFilled(fill);
+		}
+	}
 }

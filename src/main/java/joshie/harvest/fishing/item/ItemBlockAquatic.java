@@ -1,5 +1,6 @@
 package joshie.harvest.fishing.item;
 
+import javax.annotation.Nonnull;
 import joshie.harvest.core.base.item.ItemBlockHF;
 import joshie.harvest.fishing.block.BlockAquatic;
 import net.minecraft.block.material.Material;
@@ -10,17 +11,26 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import javax.annotation.Nonnull;
-
 public class ItemBlockAquatic extends ItemBlockHF<BlockAquatic> {
-    public ItemBlockAquatic(BlockAquatic block) {
-        super(block);
-    }
+	public ItemBlockAquatic(BlockAquatic block) {
+		super(block);
+	}
 
-    @Override
-    @Nonnull
-    public EnumActionResult onItemUse(@Nonnull EntityPlayer playerIn, @Nonnull World worldIn, @Nonnull BlockPos pos, @Nonnull EnumHand hand, @Nonnull EnumFacing facing, float hitX, float hitY, float hitZ) {
-        if (worldIn.getBlockState(pos.up(2)).getMaterial() == Material.WATER) return super.onItemUse(playerIn, worldIn, pos, hand, facing, hitX, hitY, hitZ);
-        else return EnumActionResult.PASS;
-    }
+	@Override
+	@Nonnull
+	public EnumActionResult onItemUse(
+			@Nonnull EntityPlayer playerIn,
+			@Nonnull World worldIn,
+			@Nonnull BlockPos pos,
+			@Nonnull EnumHand hand,
+			@Nonnull EnumFacing facing,
+			float hitX,
+			float hitY,
+			float hitZ) {
+		if (worldIn.getBlockState(pos.up(2)).getMaterial() == Material.WATER) {
+			return super.onItemUse(playerIn, worldIn, pos, hand, facing, hitX, hitY, hitZ);
+		} else {
+			return EnumActionResult.PASS;
+		}
+	}
 }

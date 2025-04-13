@@ -1,7 +1,14 @@
 package joshie.harvest.tools.item;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Multimap;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import joshie.harvest.core.base.item.ItemToolChargeable;
 import joshie.harvest.core.helpers.EntityHelper;
 import joshie.harvest.core.helpers.TextHelper;
@@ -33,206 +40,223 @@ import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-
 public class ItemHoe extends ItemToolChargeable<ItemHoe> {
-    public ItemHoe(ToolTier tier) {
-        super(tier, "hoe", new HashSet<>());
-    }
+	public ItemHoe(ToolTier tier) {
+		super(tier, "hoe", new HashSet<>());
+	}
 
-    @Override
-    public int getFront(ToolTier tier) {
-        switch (tier) {
-            case BASIC:
-                return 0;
-            case COPPER:
-                return 1;
-            case SILVER:
-                return 2;
-            case GOLD:
-                return 3;
-            case MYSTRIL:
-                return 5;
-            case CURSED:
-            case BLESSED:
-                return 11;
-            case MYTHIC:
-                return 17;
-            default:
-                return 0;
-        }
-    }
+	@Override
+	public int getFront(ToolTier tier) {
+		switch (tier) {
+			case BASIC:
+				return 0;
+			case COPPER:
+				return 1;
+			case SILVER:
+				return 2;
+			case GOLD:
+				return 3;
+			case MYSTRIL:
+				return 5;
+			case CURSED:
+			case BLESSED:
+				return 11;
+			case MYTHIC:
+				return 17;
+			default:
+				return 0;
+		}
+	}
 
-    @Override
-    public int getSides(ToolTier tier) {
-        switch (tier) {
-            case BASIC:
-            case COPPER:
-            case SILVER:
-            case GOLD:
-            case MYSTRIL:
-                return 0;
-            case CURSED:
-            case BLESSED:
-                return 1;
-            case MYTHIC:
-                return 2;
-            default:
-                return 0;
-        }
-    }
+	@Override
+	public int getSides(ToolTier tier) {
+		switch (tier) {
+			case BASIC:
+			case COPPER:
+			case SILVER:
+			case GOLD:
+			case MYSTRIL:
+				return 0;
+			case CURSED:
+			case BLESSED:
+				return 1;
+			case MYTHIC:
+				return 2;
+			default:
+				return 0;
+		}
+	}
 
-    @Override
-    @Nonnull
-    public Multimap<String, AttributeModifier> getAttributeModifiers(@Nonnull EntityEquipmentSlot slot, @Nonnull ItemStack stack) {
-        Multimap<String, AttributeModifier> multimap = super.getAttributeModifiers(slot, stack);
-        ToolTier tier = getTier(stack);
-        if (slot == EntityEquipmentSlot.MAINHAND) {
-            multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", 0.0D, 0));
-            multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", (double)3F + (tier.getToolLevel() - 6.0F), 0));
-        }
+	@Override
+	@Nonnull
+	public Multimap<String, AttributeModifier> getAttributeModifiers(@Nonnull EntityEquipmentSlot slot, @Nonnull ItemStack stack) {
+		Multimap<String, AttributeModifier> multimap = super.getAttributeModifiers(slot, stack);
+		ToolTier tier = getTier(stack);
+		if (slot == EntityEquipmentSlot.MAINHAND) {
+			multimap.put(
+					SharedMonsterAttributes.ATTACK_DAMAGE.getName(),
+					new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", 0.0D, 0));
+			multimap.put(
+					SharedMonsterAttributes.ATTACK_SPEED.getName(),
+					new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", (double) 3F + (tier.getToolLevel() - 6.0F), 0));
+		}
 
-        return multimap;
-    }
+		return multimap;
+	}
 
-    protected void setBlock(@Nonnull ItemStack stack, EntityPlayer player, World world, BlockPos pos, IBlockState state) {
-        doParticles(stack, player, world, pos);
-        if (!world.isRemote) {
-            world.setBlockState(pos, state, 11);
-        }
-    }
+	protected void setBlock(@Nonnull ItemStack stack, EntityPlayer player, World world, BlockPos pos, IBlockState state) {
+		doParticles(stack, player, world, pos);
+		if (!world.isRemote) {
+			world.setBlockState(pos, state, 11);
+		}
+	}
 
-    private int onHoeUse(@Nonnull ItemStack stack, EntityPlayer player, World worldIn, BlockPos pos) {
-        UseHoeEvent event = new UseHoeEvent(player, stack, worldIn, pos);
-        if (MinecraftForge.EVENT_BUS.post(event)) return -1;
-        if (event.getResult() == Result.ALLOW) {
-            displayParticle(worldIn, pos, EnumParticleTypes.BLOCK_CRACK, Blocks.DIRT.getDefaultState());
-            playSound(worldIn, pos, SoundEvents.ITEM_HOE_TILL, SoundCategory.BLOCKS);
-            ToolHelper.performTask(player, stack, this);
-            return 1;
-        }
+	private int onHoeUse(@Nonnull ItemStack stack, EntityPlayer player, World worldIn, BlockPos pos) {
+		UseHoeEvent event = new UseHoeEvent(player, stack, worldIn, pos);
+		if (MinecraftForge.EVENT_BUS.post(event)) {
+			return -1;
+		}
+		if (event.getResult() == Result.ALLOW) {
+			displayParticle(worldIn, pos, EnumParticleTypes.BLOCK_CRACK, Blocks.DIRT.getDefaultState());
+			playSound(worldIn, pos, SoundEvents.ITEM_HOE_TILL, SoundCategory.BLOCKS);
+			ToolHelper.performTask(player, stack, this);
+			return 1;
+		}
 
-        return 0;
-    }
+		return 0;
+	}
 
-    public EnumActionResult getHoeResult(@Nonnull ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing facing) {
-        if (!playerIn.canPlayerEdit(pos.offset(facing), facing, stack)) {
-            return EnumActionResult.FAIL;
-        } else {
-            int hook = onHoeUse(stack, playerIn, worldIn, pos);
-            if (hook != 0) {
-                if (hook > 0) {
-                    return EnumActionResult.SUCCESS;
-                } else return EnumActionResult.FAIL;
-            }
+	public EnumActionResult getHoeResult(@Nonnull ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing facing) {
+		if (!playerIn.canPlayerEdit(pos.offset(facing), facing, stack)) {
+			return EnumActionResult.FAIL;
+		} else {
+			int hook = onHoeUse(stack, playerIn, worldIn, pos);
+			if (hook != 0) {
+				if (hook > 0) {
+					return EnumActionResult.SUCCESS;
+				} else {
+					return EnumActionResult.FAIL;
+				}
+			}
 
-            IBlockState iblockstate = worldIn.getBlockState(pos);
-            Block block = iblockstate.getBlock();
-            boolean allowed = worldIn.isAirBlock(pos.up()) || worldIn.getBlockState(pos.up()).getBlock() instanceof IPlantable;
-            if (facing != EnumFacing.DOWN && allowed) {
-                if (block == Blocks.GRASS || block == Blocks.GRASS_PATH) {
-                    setBlock(stack, playerIn, worldIn, pos, Blocks.FARMLAND.getDefaultState());
-                    return EnumActionResult.SUCCESS;
-                }
+			IBlockState iblockstate = worldIn.getBlockState(pos);
+			Block block = iblockstate.getBlock();
+			boolean allowed = worldIn.isAirBlock(pos.up()) || worldIn.getBlockState(pos.up()).getBlock() instanceof IPlantable;
+			if (facing != EnumFacing.DOWN && allowed) {
+				if (block == Blocks.GRASS || block == Blocks.GRASS_PATH) {
+					setBlock(stack, playerIn, worldIn, pos, Blocks.FARMLAND.getDefaultState());
+					return EnumActionResult.SUCCESS;
+				}
 
-                if (block == Blocks.DIRT) {
-                    switch (iblockstate.getValue(BlockDirt.VARIANT)) {
-                        case DIRT:
-                            setBlock(stack, playerIn, worldIn, pos, Blocks.FARMLAND.getDefaultState());
-                            return EnumActionResult.SUCCESS;
-                        case COARSE_DIRT:
-                            setBlock(stack, playerIn, worldIn, pos, Blocks.DIRT.getDefaultState().withProperty(BlockDirt.VARIANT, BlockDirt.DirtType.DIRT));
-                            return EnumActionResult.SUCCESS;
-                    }
-                }
-            }
+				if (block == Blocks.DIRT) {
+					switch (iblockstate.getValue(BlockDirt.VARIANT)) {
+						case DIRT:
+							setBlock(stack, playerIn, worldIn, pos, Blocks.FARMLAND.getDefaultState());
+							return EnumActionResult.SUCCESS;
+						case COARSE_DIRT:
+							setBlock(
+									stack,
+									playerIn,
+									worldIn,
+									pos,
+									Blocks.DIRT.getDefaultState().withProperty(BlockDirt.VARIANT, BlockDirt.DirtType.DIRT));
+							return EnumActionResult.SUCCESS;
+					}
+				}
+			}
 
-            return EnumActionResult.PASS;
-        }
-    }
+			return EnumActionResult.PASS;
+		}
+	}
 
-    @SuppressWarnings("ConstantConditions")
-    public ImmutableList<BlockPos> getBlocks(World world, BlockPos pos, EntityPlayer player, @Nonnull ItemStack tool) {
-        ToolTier tier = getTier(tool);
-        if (tier == ToolTier.BASIC || player.isSneaking()) return ImmutableList.of(pos);
+	@SuppressWarnings("ConstantConditions")
+	public ImmutableList<BlockPos> getBlocks(World world, BlockPos pos, EntityPlayer player, @Nonnull ItemStack tool) {
+		ToolTier tier = getTier(tool);
+		if (tier == ToolTier.BASIC || player.isSneaking()) {
+			return ImmutableList.of(pos);
+		}
 
-        RayTraceResult rt = rayTrace(world, player, true);
-        if (rt == null || !pos.equals(rt.getBlockPos())) {
-            rt = rayTrace(world, player, false);
-            if (rt == null || !pos.equals(rt.getBlockPos())) {
-                return ImmutableList.of();
-            }
-        }
+		RayTraceResult rt = rayTrace(world, player, true);
+		if (rt == null || !pos.equals(rt.getBlockPos())) {
+			rt = rayTrace(world, player, false);
+			if (rt == null || !pos.equals(rt.getBlockPos())) {
+				return ImmutableList.of();
+			}
+		}
 
-        tier = getChargeTier(getCharge(tool));
-        EnumFacing front = EntityHelper.getFacingFromEntity(player);
-        ImmutableList.Builder<BlockPos> builder = ImmutableList.builder();
-        for (int x2 = getXMinus(tier, front, pos.getX()); x2 <= getXPlus(tier, front, pos.getX()); x2++) {
-            for (int z2 = getZMinus(tier, front, pos.getZ()); z2 <= getZPlus(tier, front, pos.getZ()); z2++) {
-                BlockPos highlight = new BlockPos(x2, pos.getY(), z2);
-                if (!highlight.equals(pos)) {
-                    builder.add(highlight);
-                }
-            }
-        }
+		tier = getChargeTier(getCharge(tool));
+		EnumFacing front = EntityHelper.getFacingFromEntity(player);
+		ImmutableList.Builder<BlockPos> builder = ImmutableList.builder();
+		for (int x2 = getXMinus(tier, front, pos.getX()); x2 <= getXPlus(tier, front, pos.getX()); x2++) {
+			for (int z2 = getZMinus(tier, front, pos.getZ()); z2 <= getZPlus(tier, front, pos.getZ()); z2++) {
+				BlockPos highlight = new BlockPos(x2, pos.getY(), z2);
+				if (!highlight.equals(pos)) {
+					builder.add(highlight);
+				}
+			}
+		}
 
-        return builder.build();
-    }
+		return builder.build();
+	}
 
-    @Override
-    protected void onFinishedCharging(World world, EntityLivingBase entity, @Nullable RayTraceResult result, @Nonnull ItemStack stack, ToolTier tier) {
-        if (result != null && entity instanceof EntityPlayer) {
-            EntityPlayer player = (EntityPlayer) entity;
-            BlockPos pos = result.getBlockPos();
-            EnumFacing front = EntityHelper.getFacingFromEntity(player);
-            if (player.canPlayerEdit(pos.offset(front), front, stack) && canUse(stack)) {
-                for (int x2 = getXMinus(tier, front, pos.getX()); x2 <= getXPlus(tier, front, pos.getX()); x2++) {
-                    for (int z2 = getZMinus(tier, front, pos.getZ()); z2 <= getZPlus(tier, front, pos.getZ()); z2++) {
-                        if (canUse(stack)) {
-                            BlockPos newPos = new BlockPos(x2, pos.getY(), z2);
-                            getHoeResult(stack, player, world, newPos, EnumFacing.UP);
-                        }
-                    }
-                }
-            }
-        }
-    }
+	@Override
+	protected void onFinishedCharging(
+			World world,
+			EntityLivingBase entity,
+			@Nullable RayTraceResult result,
+			@Nonnull ItemStack stack,
+			ToolTier tier) {
+		if (result != null && entity instanceof EntityPlayer) {
+			EntityPlayer player = (EntityPlayer) entity;
+			BlockPos pos = result.getBlockPos();
+			EnumFacing front = EntityHelper.getFacingFromEntity(player);
+			if (player.canPlayerEdit(pos.offset(front), front, stack) && canUse(stack)) {
+				for (int x2 = getXMinus(tier, front, pos.getX()); x2 <= getXPlus(tier, front, pos.getX()); x2++) {
+					for (int z2 = getZMinus(tier, front, pos.getZ()); z2 <= getZPlus(tier, front, pos.getZ()); z2++) {
+						if (canUse(stack)) {
+							BlockPos newPos = new BlockPos(x2, pos.getY(), z2);
+							getHoeResult(stack, player, world, newPos, EnumFacing.UP);
+						}
+					}
+				}
+			}
+		}
+	}
 
-    private void doParticles(ItemStack stack, EntityPlayer player, World world, BlockPos pos) {
-        displayParticle(world, pos, EnumParticleTypes.BLOCK_CRACK, Blocks.DIRT.getDefaultState());
-        playSound(world, pos, SoundEvents.ITEM_HOE_TILL, SoundCategory.BLOCKS);
-        ToolHelper.performTask(player, stack, this);
-        if (world.getBlockState(pos.up()).getBlock() instanceof IPlantable) {
-            world.setBlockToAir(pos.up());
-        }
-    }
+	private void doParticles(ItemStack stack, EntityPlayer player, World world, BlockPos pos) {
+		displayParticle(world, pos, EnumParticleTypes.BLOCK_CRACK, Blocks.DIRT.getDefaultState());
+		playSound(world, pos, SoundEvents.ITEM_HOE_TILL, SoundCategory.BLOCKS);
+		ToolHelper.performTask(player, stack, this);
+		if (world.getBlockState(pos.up()).getBlock() instanceof IPlantable) {
+			world.setBlockToAir(pos.up());
+		}
+	}
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-        super.addInformation(stack, worldIn, tooltip, flagIn);
-        int charge = getCharge(stack);
-        ToolTier thisTier = getTier(stack);
-        if (thisTier != ToolTier.BASIC) {
-            ToolTier tier = LEVEL_TO_TIER.get(charge);
-            tooltip.add(TextFormatting.GOLD + TextHelper.translate("hoe.tooltip.charge." + tier.name().toLowerCase(Locale.ENGLISH)));
-            tooltip.add("-------");
-            if (charge < thisTier.getToolLevel())
-            	tooltip.add(TextFormatting.AQUA + "" + TextFormatting.ITALIC + TextHelper.translate("hoe.tooltip.charge"));
-            if (charge != 0)
-            	tooltip.add(TextFormatting.RED + "" + TextFormatting.ITALIC + TextHelper.translate("hoe.tooltip.discharge"));
-        }
-    }
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+		super.addInformation(stack, worldIn, tooltip, flagIn);
+		int charge = getCharge(stack);
+		ToolTier thisTier = getTier(stack);
+		if (thisTier != ToolTier.BASIC) {
+			ToolTier tier = LEVEL_TO_TIER.get(charge);
+			tooltip.add(TextFormatting.GOLD + TextHelper.translate("hoe.tooltip.charge." + tier.name().toLowerCase(Locale.ENGLISH)));
+			tooltip.add("-------");
+			if (charge < thisTier.getToolLevel()) {
+				tooltip.add(TextFormatting.AQUA + "" + TextFormatting.ITALIC + TextHelper.translate("hoe.tooltip.charge"));
+			}
+			if (charge != 0) {
+				tooltip.add(TextFormatting.RED + "" + TextFormatting.ITALIC + TextHelper.translate("hoe.tooltip.discharge"));
+			}
+		}
+	}
 
-    @Override
-    protected String getLevelName(@Nonnull ItemStack stack, int charges) {
-        int maximum = getMaxCharge(stack);
-        int charge = getCharge(stack);
-        int newCharge = Math.min(maximum, charge + charges);
-        return charge == newCharge ? null : TextHelper.translate("hoe.tooltip.charge." + LEVEL_TO_TIER.get(newCharge).name().toLowerCase(Locale.ENGLISH));
-    }
+	@Override
+	protected String getLevelName(@Nonnull ItemStack stack, int charges) {
+		int maximum = getMaxCharge(stack);
+		int charge = getCharge(stack);
+		int newCharge = Math.min(maximum, charge + charges);
+		return charge == newCharge ? null : TextHelper.translate(
+				"hoe.tooltip.charge." + LEVEL_TO_TIER.get(newCharge).name().toLowerCase(Locale.ENGLISH));
+	}
 }

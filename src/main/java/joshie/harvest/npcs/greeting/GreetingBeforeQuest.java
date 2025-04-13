@@ -7,17 +7,17 @@ import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.player.EntityPlayer;
 
 public class GreetingBeforeQuest extends GreetingLocalized {
-    private final Quest required;
-    private final Quest cannot;
+	private final Quest required;
+	private final Quest cannot;
 
-    public GreetingBeforeQuest(String text, Quest required, Quest cannot) {
-        super(text);
-        this.required = required;
-        this.cannot = cannot;
-    }
+	public GreetingBeforeQuest(String text, Quest required, Quest cannot) {
+		super(text);
+		this.required = required;
+		this.cannot = cannot;
+	}
 
-    @Override
-    public boolean canDisplay(EntityPlayer player, EntityAgeable ageable, NPC npc) {
-        return HFApi.quests.hasCompleted(required, player) && !HFApi.quests.hasCompleted(cannot, player);
-    }
+	@Override
+	public boolean canDisplay(EntityPlayer player, EntityAgeable ageable, NPC npc) {
+		return HFApi.quests.hasCompleted(required, player) && !HFApi.quests.hasCompleted(cannot, player);
+	}
 }

@@ -6,11 +6,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class StatsClient extends Stats {
-    public void setBirthday(CalendarDate birthday) {
-        this.birthday = birthday;
-    }
+	public void setBirthday(CalendarDate birthday) {
+		this.birthday = birthday;
+	}
 
-    public void setGoldValue(long gold) {
-        this.gold = gold;
-    }
+	public void setGoldValue(long gold) {
+		this.gold = gold;
+	}
 }

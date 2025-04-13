@@ -1,6 +1,12 @@
 package joshie.harvest.animals.entity;
 
+import static joshie.harvest.api.animals.IAnimalHandler.ANIMAL_STATS_CAPABILITY;
+import static joshie.harvest.core.helpers.InventoryHelper.ITEM;
+import static joshie.harvest.core.helpers.InventoryHelper.ITEM_STACK;
+
 import io.netty.buffer.ByteBuf;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import joshie.harvest.animals.HFAnimals;
 import joshie.harvest.animals.entity.ai.EntityAIEatLivestock;
 import joshie.harvest.animals.entity.ai.EntityAIFindShelterOrSun;
@@ -12,7 +18,13 @@ import joshie.harvest.api.animals.AnimalTest;
 import joshie.harvest.api.animals.IAnimalHandler.AnimalType;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.*;
+import net.minecraft.entity.ai.EntityAIFollowParent;
+import net.minecraft.entity.ai.EntityAILookIdle;
+import net.minecraft.entity.ai.EntityAIPanic;
+import net.minecraft.entity.ai.EntityAISwimming;
+import net.minecraft.entity.ai.EntityAITempt;
+import net.minecraft.entity.ai.EntityAIWander;
+import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -27,118 +39,123 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import static joshie.harvest.api.animals.IAnimalHandler.ANIMAL_STATS_CAPABILITY;
-import static joshie.harvest.core.helpers.InventoryHelper.ITEM;
-import static joshie.harvest.core.helpers.InventoryHelper.ITEM_STACK;
-
 public class EntityHarvestCow extends EntityCow implements IEntityAdditionalSpawnData {
-    private final AnimalStats<NBTTagCompound> stats = HFApi.animals.newStats(AnimalType.MILKABLE);
-    private static ItemStack[] stacks;
+	private final AnimalStats<NBTTagCompound> stats = HFApi.animals.newStats(AnimalType.MILKABLE);
+	private static ItemStack[] stacks;
 
-    public EntityHarvestCow(World world) {
-        super(world);
-        setSize(1.4F, 1.4F);
-        setPathPriority(PathNodeType.WATER, 0.0F);
-    }
+	public EntityHarvestCow(World world) {
+		super(world);
+		setSize(1.4F, 1.4F);
+		setPathPriority(PathNodeType.WATER, 0.0F);
+	}
 
-    @Override
-    protected void initEntityAI() {
-        tasks.addTask(0, new EntityAISwimming(this));
-        tasks.addTask(1, new EntityAIPanic(this, 2.0D));
-        tasks.addTask(2, new EntityAITempt(this, 1.25D, Items.WHEAT, false));
-        tasks.addTask(3, new EntityAIFollowParent(this, 1.25D));
-        tasks.addTask(4, new EntityAIEatLivestock(this));
-        tasks.addTask(5, new EntityAIFindShelterOrSun(this));
-        tasks.addTask(6, new EntityAIWander(this, 1.0D));
-        tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
-        tasks.addTask(8, new EntityAILookIdle(this));
-    }
+	@Override
+	protected void initEntityAI() {
+		tasks.addTask(0, new EntityAISwimming(this));
+		tasks.addTask(1, new EntityAIPanic(this, 2.0D));
+		tasks.addTask(2, new EntityAITempt(this, 1.25D, Items.WHEAT, false));
+		tasks.addTask(3, new EntityAIFollowParent(this, 1.25D));
+		tasks.addTask(4, new EntityAIEatLivestock(this));
+		tasks.addTask(5, new EntityAIFindShelterOrSun(this));
+		tasks.addTask(6, new EntityAIWander(this, 1.0D));
+		tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
+		tasks.addTask(8, new EntityAILookIdle(this));
+	}
 
-    @Override
-    protected void applyEntityAttributes() {
-        super.applyEntityAttributes();
-        getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(50.0D);
-    }
+	@Override
+	protected void applyEntityAttributes() {
+		super.applyEntityAttributes();
+		getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(50.0D);
+	}
 
-    private static ItemStack[] getStacks() {
-        if (stacks != null) return stacks;
-        stacks = new ItemStack[] {
-                HFAnimals.TOOLS.getStackFromEnum(Tool.BRUSH),
-                HFAnimals.TOOLS.getStackFromEnum(Tool.MILKER),
-                HFAnimals.TOOLS.getStackFromEnum(Tool.MEDICINE),
-                HFAnimals.TOOLS.getStackFromEnum(Tool.MIRACLE_POTION)
-        };
+	private static ItemStack[] getStacks() {
+		if (stacks != null) {
+			return stacks;
+		}
+		stacks = new ItemStack[]{
+				HFAnimals.TOOLS.getStackFromEnum(Tool.BRUSH),
+				HFAnimals.TOOLS.getStackFromEnum(Tool.MILKER),
+				HFAnimals.TOOLS.getStackFromEnum(Tool.MEDICINE),
+				HFAnimals.TOOLS.getStackFromEnum(Tool.MIRACLE_POTION)
+		};
 
-        return stacks;
-    }
+		return stacks;
+	}
 
-    @Override
-    public boolean processInteract(@Nullable EntityPlayer player, @Nullable EnumHand hand) {
-        if (player == null) return false;
-        ItemStack stack = player.getHeldItem(hand);
-        boolean special = ITEM_STACK.matchesAny(stack, getStacks()) || ITEM.matchesAny(stack, HFAnimals.TREATS);
-        if (stack.isEmpty() || !special) {
-            if (!stats.performTest(AnimalTest.BEEN_LOVED)) {
-                stats.performAction(world, ItemStack.EMPTY, AnimalAction.PETTED); //Love <3
-                SoundEvent s = getAmbientSound();
-                if (s != null) {
-                    playSound(s, 2F, getSoundPitch());
-                }
+	@Override
+	public boolean processInteract(@Nullable EntityPlayer player, @Nullable EnumHand hand) {
+		if (player == null) {
+			return false;
+		}
+		ItemStack stack = player.getHeldItem(hand);
+		boolean special = ITEM_STACK.matchesAny(stack, getStacks()) || ITEM.matchesAny(stack, HFAnimals.TREATS);
+		if (stack.isEmpty() || !special) {
+			if (!stats.performTest(AnimalTest.BEEN_LOVED)) {
+				stats.performAction(world, ItemStack.EMPTY, AnimalAction.PETTED); //Love <3
+				SoundEvent s = getAmbientSound();
+				if (s != null) {
+					playSound(s, 2F, getSoundPitch());
+				}
 
-                return true;
-            } else return false;
-        } else return false;
-    }
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
+	}
 
-    @Override
-    @Nonnull
-    public EntityCow createChild(EntityAgeable ageable) {
-        return new EntityHarvestCow(this.world);
-    }
+	@Override
+	@Nonnull
+	public EntityCow createChild(EntityAgeable ageable) {
+		return new EntityHarvestCow(this.world);
+	}
 
-    @Override
-    @SuppressWarnings("ConstantConditions")
-    public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
-        return capability == ANIMAL_STATS_CAPABILITY || super.hasCapability(capability, facing);
-    }
+	@Override
+	@SuppressWarnings("ConstantConditions")
+	public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
+		return capability == ANIMAL_STATS_CAPABILITY || super.hasCapability(capability, facing);
+	}
 
-    @Override
-    @SuppressWarnings("unchecked, ConstantConditions")
-    @Nonnull
-    public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
-        return capability == ANIMAL_STATS_CAPABILITY ? (T) stats : super.getCapability(capability, facing);
-    }
+	@Override
+	@SuppressWarnings("unchecked, ConstantConditions")
+	@Nonnull
+	public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
+		return capability == ANIMAL_STATS_CAPABILITY ? (T) stats : super.getCapability(capability, facing);
+	}
 
-    @Override
-    public void writeEntityToNBT(NBTTagCompound compound) {
-        super.writeEntityToNBT(compound);
-        compound.setTag("Stats", stats.serializeNBT());
-    }
+	@Override
+	public void writeEntityToNBT(NBTTagCompound compound) {
+		super.writeEntityToNBT(compound);
+		compound.setTag("Stats", stats.serializeNBT());
+	}
 
-    @Override
-    public void readEntityFromNBT(NBTTagCompound compound) {
-        super.readEntityFromNBT(compound);
-        if (compound.hasKey("Stats")) stats.deserializeNBT(compound.getCompoundTag("Stats"));
-        //TODO: Remove in 0.7+
-        else if (compound.hasKey("CurrentLifespan")) stats.deserializeNBT(compound);
-    }
+	@Override
+	public void readEntityFromNBT(NBTTagCompound compound) {
+		super.readEntityFromNBT(compound);
+		if (compound.hasKey("Stats")) {
+			stats.deserializeNBT(compound.getCompoundTag("Stats"));
+		}
+		//TODO: Remove in 0.7+
+		else if (compound.hasKey("CurrentLifespan")) {
+			stats.deserializeNBT(compound);
+		}
+	}
 
-    @Override
-    public void writeSpawnData(ByteBuf buffer) {
-        ByteBufUtils.writeTag(buffer, stats.serializeNBT());
-    }
+	@Override
+	public void writeSpawnData(ByteBuf buffer) {
+		ByteBufUtils.writeTag(buffer, stats.serializeNBT());
+	}
 
-    @Override
-    public void readSpawnData(ByteBuf buffer) {
-        stats.setEntity(this);
-        stats.deserializeNBT(ByteBufUtils.readTag(buffer));
-    }
+	@Override
+	public void readSpawnData(ByteBuf buffer) {
+		stats.setEntity(this);
+		stats.deserializeNBT(ByteBufUtils.readTag(buffer));
+	}
 
-    @Override
-    public float getEyeHeight() {
-        return height * 0.65f;
-    }
+	@Override
+	public float getEyeHeight() {
+		return height * 0.65f;
+	}
 }

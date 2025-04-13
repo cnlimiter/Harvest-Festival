@@ -6,12 +6,12 @@ import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.player.EntityPlayer;
 
 public class GreetingShopWrapper extends GreetingShop {
-    public GreetingShopWrapper(String text) {
-        super(text);
-    }
+	public GreetingShopWrapper(String text) {
+		super(text);
+	}
 
-    @Override
-    public String getLocalizedText(EntityPlayer player, EntityAgeable ageable, NPC npc) {
-        return text;
-    }
+	@Override
+	public String getLocalizedText(EntityPlayer player, EntityAgeable ageable, NPC npc) {
+		return text;
+	}
 }

@@ -6,7 +6,7 @@ import joshie.harvest.npcs.HFNPCs;
 
 @HFQuest("seeds.cabbage")
 public class QuestCabbage extends QuestShipping {
-    public QuestCabbage() {
-        super("cabbage", HFNPCs.GS_OWNER, Season.SPRING, 1000);
-    }
+	public QuestCabbage() {
+		super("cabbage", HFNPCs.GS_OWNER, Season.SPRING, 1000);
+	}
 }

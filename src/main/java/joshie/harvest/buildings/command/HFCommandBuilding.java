@@ -23,54 +23,55 @@ import net.minecraft.world.World;
 @HFCommand
 public class HFCommandBuilding extends CommandBase {
 
-    @Override
-    public String getName() {
-        return "building";
-    }
+	@Override
+	public String getName() {
+		return "building";
+	}
 
-    @Override
-    public String getUsage(ICommandSender sender) {
-        return "/hf building <show|remove>";
-    }
+	@Override
+	public String getUsage(ICommandSender sender) {
+		return "/hf building <show|remove>";
+	}
 
-    @Override
-    public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-        BlockPos pos = sender.getPosition();
-        World world = sender.getEntityWorld();
-        TownDataServer town = TownHelper.getClosestTownToBlockPos(world, pos, false);
-        if (args.length == 1 && args[0].equals("show")) {
-            town.getBuildings().forEach(building -> {
-                sender.sendMessage(new TextComponentString(building.building.getResource().toString()));
-            });
-            return;
-        }
-        if (args.length == 2 && args[0].equals("remove")) {
-            try {
-                ResourceLocation id = new ResourceLocation(args[1]);
-                if (!town.hasBuilding(id)) {
-                    sender.sendMessage(new TextComponentString("Cannot find building: " + id));
-                    return;
-                }
-                town.removeBuilding(town.getBuilding(id));
-                sender.sendMessage(new TextComponentString("Removed building: " + id));
-            } catch (Exception e) {
-                System.err.println(e);
-            }
-        }
-    }
+	@Override
+	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
+		BlockPos pos = sender.getPosition();
+		World world = sender.getEntityWorld();
+		TownDataServer town = TownHelper.getClosestTownToBlockPos(world, pos, false);
+		if (args.length == 1 && args[0].equals("show")) {
+			town.getBuildings().forEach(building -> {
+				sender.sendMessage(new TextComponentString(building.building.getResource().toString()));
+			});
+			return;
+		}
+		if (args.length == 2 && args[0].equals("remove")) {
+			try {
+				ResourceLocation id = new ResourceLocation(args[1]);
+				if (!town.hasBuilding(id)) {
+					sender.sendMessage(new TextComponentString("Cannot find building: " + id));
+					return;
+				}
+				town.removeBuilding(town.getBuilding(id));
+				sender.sendMessage(new TextComponentString("Removed building: " + id));
+			} catch (Exception e) {
+				System.err.println(e);
+			}
+		}
+	}
 
-    @Override
-    public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, BlockPos targetPos) {
-        if (args.length == 1) {
-            return Arrays.asList("show", "remove");
-        }
-        if (args.length == 2 && args[0].equals("remove")) {
-            BlockPos pos = sender.getPosition();
-            World world = sender.getEntityWorld();
-            TownData town = TownHelper.getClosestTownToBlockPos(world, pos, false);
-            return ((Collection<TownBuilding>) town.getBuildings()).stream().map(b -> b.building.getResource().toString()).collect(Collectors.toList());
-        }
-        return Collections.emptyList();
-    }
+	@Override
+	public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, BlockPos targetPos) {
+		if (args.length == 1) {
+			return Arrays.asList("show", "remove");
+		}
+		if (args.length == 2 && args[0].equals("remove")) {
+			BlockPos pos = sender.getPosition();
+			World world = sender.getEntityWorld();
+			TownData town = TownHelper.getClosestTownToBlockPos(world, pos, false);
+			return ((Collection<TownBuilding>) town.getBuildings()).stream().map(b -> b.building.getResource().toString()).collect(
+					Collectors.toList());
+		}
+		return Collections.emptyList();
+	}
 
 }

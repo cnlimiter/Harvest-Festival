@@ -1,5 +1,8 @@
 package joshie.harvest.calendar.command;
 
+import org.apache.commons.lang3.StringUtils;
+
+import javax.annotation.Nonnull;
 import joshie.harvest.api.calendar.Season;
 import joshie.harvest.calendar.CalendarHelper;
 import joshie.harvest.calendar.HFCalendar;
@@ -12,31 +15,28 @@ import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.server.MinecraftServer;
-import org.apache.commons.lang3.StringUtils;
-
-import javax.annotation.Nonnull;
 
 @HFCommand
 @SuppressWarnings("unused")
 public class HFCommandSeason extends CommandBase {
-    @Override
-    @Nonnull
-    public String getName() {
-        return "season";
-    }
+	@Override
+	@Nonnull
+	public String getName() {
+		return "season";
+	}
 
-    @Override
-    @Nonnull
-    public String getUsage(@Nonnull ICommandSender sender) {
-        return "/hf season <spring|summer|autumn|winter>";
-    }
+	@Override
+	@Nonnull
+	public String getUsage(@Nonnull ICommandSender sender) {
+		return "/hf season <spring|summer|autumn|winter>";
+	}
 
-    @Override
-    public int getRequiredPermissionLevel() {
-        return CommandLevel.OP_AFFECT_GAMEPLAY.ordinal();
-    }
+	@Override
+	public int getRequiredPermissionLevel() {
+		return CommandLevel.OP_AFFECT_GAMEPLAY.ordinal();
+	}
 
-    @Override
+	@Override
 	public void execute(
 			@Nonnull MinecraftServer server,
 			@Nonnull ICommandSender sender,

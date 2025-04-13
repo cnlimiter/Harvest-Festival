@@ -1,5 +1,13 @@
 package joshie.harvest.core.util;
 
+import static joshie.harvest.core.lib.HFModInfo.MODID;
+import static joshie.harvest.core.lib.HFModInfo.MODNAME;
+
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
 import joshie.harvest.HarvestFestival;
 import joshie.harvest.core.helpers.ConfigHelper;
 import joshie.harvest.core.util.annotations.HFEvents;
@@ -14,58 +22,57 @@ import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-
-import static joshie.harvest.core.lib.HFModInfo.MODID;
-import static joshie.harvest.core.lib.HFModInfo.MODNAME;
-
 @HFEvents(Side.CLIENT)
 public class HFGuiFactory extends DefaultGuiFactory {
 
-    public HFGuiFactory() {
-        super(MODID, MODNAME);
-    }
+	public HFGuiFactory() {
+		super(MODID, MODNAME);
+	}
 
-    @Override
-    public GuiScreen createConfigGui(GuiScreen parentScreen) {
-        return new GuiConfig(parentScreen, getConfigElements(), MODID, false, true, GuiConfig.getAbridgedConfigPath(ConfigHelper.getConfig().toString()));
-    }
+	@Override
+	public GuiScreen createConfigGui(GuiScreen parentScreen) {
+		return new GuiConfig(
+				parentScreen,
+				getConfigElements(),
+				MODID,
+				false,
+				true,
+				GuiConfig.getAbridgedConfigPath(ConfigHelper.getConfig().toString()));
+	}
 
-    private static List<IConfigElement> getConfigElements() {
-        List<IConfigElement> list = new ArrayList<>();
+	private static List<IConfigElement> getConfigElements() {
+		List<IConfigElement> list = new ArrayList<>();
 
-        List<Class> configsList = new ArrayList<>(HarvestFestival.proxy.getList());
-        configsList.sort(Comparator.comparing(Class::getSimpleName));
-        for (Class c : configsList) {
-            try {
-                Method configure = c.getMethod("configure");
-                if (configure != null) {
-                    String categoryName = c.getSimpleName().replace("HF", "");
-                    List<IConfigElement> configElements = new ConfigElement(ConfigHelper.getConfig().getCategory(categoryName)).getChildElements();
+		List<Class> configsList = new ArrayList<>(HarvestFestival.proxy.getList());
+		configsList.sort(Comparator.comparing(Class::getSimpleName));
+		for (Class c : configsList) {
+			try {
+				Method configure = c.getMethod("configure");
+				if (configure != null) {
+					String categoryName = c.getSimpleName().replace("HF", "");
+					List<IConfigElement> configElements = new ConfigElement(ConfigHelper.getConfig()
+							.getCategory(categoryName)).getChildElements();
 
-                    list.add(new DummyConfigElement.DummyCategoryElement(categoryName, MODID + ".config", configElements));
-                }
+					list.add(new DummyConfigElement.DummyCategoryElement(categoryName, MODID + ".config", configElements));
+				}
 
-            } catch (Exception ignored) {
-            }
-        }
-        return list;
-    }
+			} catch (Exception ignored) {
+			}
+		}
+		return list;
+	}
 
-    @SubscribeEvent
-    public void onConfigurationChangedEvent(ConfigChangedEvent.OnConfigChangedEvent event) {
-        if (event.getModID().equalsIgnoreCase(MODID)) {
-            Configuration config = ConfigHelper.getConfig();
-            if (config.hasChanged()) {
-                config.save();
-            }
+	@SubscribeEvent
+	public void onConfigurationChangedEvent(ConfigChangedEvent.OnConfigChangedEvent event) {
+		if (event.getModID().equalsIgnoreCase(MODID)) {
+			Configuration config = ConfigHelper.getConfig();
+			if (config.hasChanged()) {
+				config.save();
+			}
 
-            //Reload in all the values
-            HarvestFestival.proxy.configure();
-            HFCaches.clearClient();
-        }
-    }
+			//Reload in all the values
+			HarvestFestival.proxy.configure();
+			HFCaches.clearClient();
+		}
+	}
 }

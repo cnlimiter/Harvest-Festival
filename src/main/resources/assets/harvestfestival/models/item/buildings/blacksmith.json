@@ -1,6 +1,6 @@
 {
-  "parent": "item/generated",
-  "textures": {
-    "layer0": "harvestfestival:items/buildings/blacksmith"
-  }
+	"parent": "item/generated",
+	"textures": {
+		"layer0": "harvestfestival:items/buildings/blacksmith"
+	}
 }

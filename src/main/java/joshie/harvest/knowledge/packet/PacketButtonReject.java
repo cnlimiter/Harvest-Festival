@@ -11,27 +11,28 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 
 @Packet(Side.SERVER)
 public class PacketButtonReject extends PenguinPacket {
-    private Letter letter;
+	private Letter letter;
 
-    public PacketButtonReject() {}
-    public PacketButtonReject(Letter letter) {
-        this.letter = letter;
-    }
+	public PacketButtonReject() {}
 
-    @Override
-    public void toBytes(ByteBuf to) {
-        ByteBufUtils.writeUTF8String(to, letter.getResource().toString());
-    }
+	public PacketButtonReject(Letter letter) {
+		this.letter = letter;
+	}
 
-    @Override
-    public void fromBytes(ByteBuf from) {
-        letter = Letter.REGISTRY.get(new ResourceLocation(ByteBufUtils.readUTF8String(from)));
-    }
+	@Override
+	public void toBytes(ByteBuf to) {
+		ByteBufUtils.writeUTF8String(to, letter.getResource().toString());
+	}
 
-    @Override
-    @SuppressWarnings("unchecked")
-    public void handlePacket(EntityPlayer player) {
-        letter.onLetterRejected(player);
-        player.closeScreen();
-    }
+	@Override
+	public void fromBytes(ByteBuf from) {
+		letter = Letter.REGISTRY.get(new ResourceLocation(ByteBufUtils.readUTF8String(from)));
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public void handlePacket(EntityPlayer player) {
+		letter.onLetterRejected(player);
+		player.closeScreen();
+	}
 }

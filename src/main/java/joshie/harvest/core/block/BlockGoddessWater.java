@@ -1,5 +1,9 @@
 package joshie.harvest.core.block;
 
+import static joshie.harvest.core.lib.HFModInfo.MODID;
+
+import java.util.List;
+
 import joshie.harvest.api.npc.RelationStatus;
 import joshie.harvest.core.HFTrackers;
 import joshie.harvest.core.handlers.GoddessHandler;
@@ -25,54 +29,58 @@ import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.GameData;
-import java.util.List;
-
-import static joshie.harvest.core.lib.HFModInfo.MODID;
 
 public class BlockGoddessWater extends BlockFluidClassic {
-    public BlockGoddessWater(Fluid fluid) {
-        super(fluid, Material.WATER);
-    }
+	public BlockGoddessWater(Fluid fluid) {
+		super(fluid, Material.WATER);
+	}
 
-    @Override
-    public FluidStack drain(World world, BlockPos pos, boolean doDrain) {
-        return null;
-    }
+	@Override
+	public FluidStack drain(World world, BlockPos pos, boolean doDrain) {
+		return null;
+	}
 
-    @Override
-    @SuppressWarnings("ConstantConditions")
-    public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
-        if (!world.isRemote && entity instanceof EntityItem) {
-            EntityItem item = ((EntityItem)entity);
-            ItemStack stack = item.getItem();
-            if (!NPCHelper.INSTANCE.getGifts().isBlacklisted(world, FakePlayerHelper.getFakePlayerWithPosition((WorldServer) world, pos), stack)) {
-                if (!GoddessHandler.spawnGoddess(world, entity, false, false)) {
-                    if (item.getThrower() != null) {
-                        EntityPlayer player = world.getPlayerEntityByName(item.getThrower());
-                        RelationshipData data = HFTrackers.getPlayerTrackerFromPlayer(player).getRelationships();
-                        if (!data.isStatusMet(HFNPCs.GODDESS, RelationStatus.GIFTED)) {
-                            HFTrackers.getPlayerTrackerFromPlayer(player).getRelationships().gift(player, HFNPCs.GODDESS, NPCHelper.getGiftValue(HFNPCs.GODDESS, stack).getRelationPoints());
-                            double x = item.posX;
-                            double y = item.posY;
-                            double z = item.posZ;
-                            List<EntityNPCGoddess> npcs = world.getEntitiesWithinAABB(EntityNPCGoddess.class,
-                                    new AxisAlignedBB(x - 0.5F, y - 0.5F, z - 0.5F, x + 0.5F, y + 0.5F, z + 0.5F).expand(32D, 32D, 32D));
-                            if (npcs.size() >= 1) {
-                                PacketHandler.sendToClient(new PacketGoddessGift(npcs.get(0), stack), player);
-                            }
-                        }
-                    }
+	@Override
+	@SuppressWarnings("ConstantConditions")
+	public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
+		if (!world.isRemote && entity instanceof EntityItem) {
+			EntityItem item = ((EntityItem) entity);
+			ItemStack stack = item.getItem();
+			if (!NPCHelper.INSTANCE.getGifts().isBlacklisted(
+					world,
+					FakePlayerHelper.getFakePlayerWithPosition((WorldServer) world, pos),
+					stack)) {
+				if (!GoddessHandler.spawnGoddess(world, entity, false, false)) {
+					if (item.getThrower() != null) {
+						EntityPlayer player = world.getPlayerEntityByName(item.getThrower());
+						RelationshipData data = HFTrackers.getPlayerTrackerFromPlayer(player).getRelationships();
+						if (!data.isStatusMet(HFNPCs.GODDESS, RelationStatus.GIFTED)) {
+							HFTrackers.getPlayerTrackerFromPlayer(player).getRelationships().gift(
+									player,
+									HFNPCs.GODDESS,
+									NPCHelper.getGiftValue(HFNPCs.GODDESS, stack).getRelationPoints());
+							double x = item.posX;
+							double y = item.posY;
+							double z = item.posZ;
+							List<EntityNPCGoddess> npcs = world.getEntitiesWithinAABB(
+									EntityNPCGoddess.class,
+									new AxisAlignedBB(x - 0.5F, y - 0.5F, z - 0.5F, x + 0.5F, y + 0.5F, z + 0.5F).expand(32D, 32D, 32D));
+							if (npcs.size() >= 1) {
+								PacketHandler.sendToClient(new PacketGoddessGift(npcs.get(0), stack), player);
+							}
+						}
+					}
 
-                    entity.setDead();
-                }
-            }
-        }
-    }
+					entity.setDead();
+				}
+			}
+		}
+	}
 
-    public BlockGoddessWater register(String name) {
-        setUnlocalizedName(name.replace("_", "."));
-        setRegistryName(new ResourceLocation(MODID, name));
-        GameData.register_impl(this);
-        return this;
-    }
+	public BlockGoddessWater register(String name) {
+		setUnlocalizedName(name.replace("_", "."));
+		setRegistryName(new ResourceLocation(MODID, name));
+		GameData.register_impl(this);
+		return this;
+	}
 }

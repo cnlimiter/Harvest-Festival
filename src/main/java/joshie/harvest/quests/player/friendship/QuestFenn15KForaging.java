@@ -1,5 +1,7 @@
 package joshie.harvest.quests.player.friendship;
 
+import java.util.Set;
+
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.calendar.Season;
 import joshie.harvest.api.quests.HFQuest;
@@ -13,26 +15,24 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
 
-import java.util.Set;
-
 @HFQuest("friendship.fenn.plants")
 public class QuestFenn15KForaging extends QuestFriendship {
-    public QuestFenn15KForaging() {
-        super(HFNPCs.CLOCKMAKER_CHILD, 15000);
-    }
+	public QuestFenn15KForaging() {
+		super(HFNPCs.CLOCKMAKER_CHILD, 15000);
+	}
 
-    @Override
-    public boolean canStartQuest(Set<Quest> active, Set<Quest> finished) {
-        return finished.contains(Quests.FENN_10K);
-    }
+	@Override
+	public boolean canStartQuest(Set<Quest> active, Set<Quest> finished) {
+		return finished.contains(Quests.FENN_10K);
+	}
 
-    @Override
-    @SuppressWarnings("deprecation")
-    public void onQuestCompleted(EntityPlayer player) {
-        Season season = HFApi.calendar.getDate(player.world).getSeason();
-        for (int i = 0; i < 7; i++) {
-            IBlockState state = GatheringRegistry.INSTANCE.getRandomStateForSeason(season);
-            SpawnItemHelper.spawnByEntity(player, state.getBlock().getItem(player.world, new BlockPos(player), state));
-        }
-    }
+	@Override
+	@SuppressWarnings("deprecation")
+	public void onQuestCompleted(EntityPlayer player) {
+		Season season = HFApi.calendar.getDate(player.world).getSeason();
+		for (int i = 0; i < 7; i++) {
+			IBlockState state = GatheringRegistry.INSTANCE.getRandomStateForSeason(season);
+			SpawnItemHelper.spawnByEntity(player, state.getBlock().getItem(player.world, new BlockPos(player), state));
+		}
+	}
 }

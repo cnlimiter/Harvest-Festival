@@ -6,7 +6,7 @@ import joshie.harvest.quests.base.QuestRecipe;
 
 @HFQuest("recipe.chocolate.hot")
 public class QuestLiara5KHotChocolate extends QuestRecipe {
-    public QuestLiara5KHotChocolate() {
-        super("chocolate_hot", HFNPCs.CAFE_OWNER, 5000);
-    }
+	public QuestLiara5KHotChocolate() {
+		super("chocolate_hot", HFNPCs.CAFE_OWNER, 5000);
+	}
 }

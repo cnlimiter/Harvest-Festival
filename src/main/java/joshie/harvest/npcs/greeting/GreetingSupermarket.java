@@ -1,5 +1,7 @@
 package joshie.harvest.npcs.greeting;
 
+import static joshie.harvest.core.lib.HFModInfo.ICONS;
+
 import joshie.harvest.api.npc.IInfoButton;
 import joshie.harvest.api.npc.NPC;
 import joshie.harvest.core.helpers.TextHelper;
@@ -12,32 +14,32 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import static joshie.harvest.core.lib.HFModInfo.ICONS;
-
 public class GreetingSupermarket implements IInfoButton {
-    private final String text;
-    private final String text2;
+	private final String text;
+	private final String text2;
 
-    public GreetingSupermarket(NPC npc) {
-        ResourceLocation resourceLocation = npc.getResource();
-        this.text = resourceLocation.getResourceDomain() + ".npc." + resourceLocation.getResourcePath() + ".shop";
-        this.text2 = resourceLocation.getResourceDomain() + ".npc." + resourceLocation.getResourcePath() + ".shop.wednesday";
-    }
+	public GreetingSupermarket(NPC npc) {
+		ResourceLocation resourceLocation = npc.getResource();
+		this.text = resourceLocation.getResourceDomain() + ".npc." + resourceLocation.getResourcePath() + ".shop";
+		this.text2 = resourceLocation.getResourceDomain() + ".npc." + resourceLocation.getResourcePath() + ".shop.wednesday";
+	}
 
-    @Override
-    public String getLocalizedText(EntityPlayer player, EntityAgeable ageable, NPC npc) {
-        return TownHelper.getClosestTownToEntity(ageable, false).getQuests().getFinished().contains(Quests.OPEN_WEDNESDAYS) ? TextHelper.localize(text2) : TextHelper.localize(text);
-    }
+	@Override
+	public String getLocalizedText(EntityPlayer player, EntityAgeable ageable, NPC npc) {
+		return TownHelper.getClosestTownToEntity(ageable, false).getQuests().getFinished().contains(Quests.OPEN_WEDNESDAYS) ?
+				TextHelper.localize(text2) :
+				TextHelper.localize(text);
+	}
 
-    @Override
-    public void drawIcon(GuiScreen gui, int x, int y) {
-        gui.mc.renderEngine.bindTexture(ICONS);
-        gui.drawTexturedModalRect(x, y, 16, 0, 16, 16);
-    }
+	@Override
+	public void drawIcon(GuiScreen gui, int x, int y) {
+		gui.mc.renderEngine.bindTexture(ICONS);
+		gui.drawTexturedModalRect(x, y, 16, 0, 16, 16);
+	}
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public String getTooltip() {
-        return "harvestfestival.npc.tooltip.clock";
-    }
+	@Override
+	@SideOnly(Side.CLIENT)
+	public String getTooltip() {
+		return "harvestfestival.npc.tooltip.clock";
+	}
 }

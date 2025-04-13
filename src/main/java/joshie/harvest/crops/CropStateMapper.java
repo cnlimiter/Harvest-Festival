@@ -13,33 +13,35 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 
 public class CropStateMapper extends StateMapperBase {
-    @Override
-    @Nonnull
-    public Map<IBlockState, ModelResourceLocation> putStateModelLocations(Block blockIn) {
+	@Override
+	@Nonnull
+	public Map<IBlockState, ModelResourceLocation> putStateModelLocations(Block blockIn) {
 		if (!mapStateModelLocations.isEmpty()) {
 			return mapStateModelLocations;
 		}
-        Crop.REGISTRY.values().stream().filter(crop -> !crop.skipLoadingRender()).forEach(crop -> {
-        	for (Object object : crop.getStateHandler().getValidStates()) {
-                IBlockState state = (IBlockState) object;
-                mapStateModelLocations.put(state, getCropResourceLocation(crop, state));
-            }
-        });
+		Crop.REGISTRY.values().stream().filter(crop -> !crop.skipLoadingRender()).forEach(crop -> {
+			for (Object object : crop.getStateHandler().getValidStates()) {
+				IBlockState state = (IBlockState) object;
+				mapStateModelLocations.put(state, getCropResourceLocation(crop, state));
+			}
+		});
 
-        return mapStateModelLocations;
-    }
+		return mapStateModelLocations;
+	}
 
-    @Override
-    @Nonnull
-    protected ModelResourceLocation getModelResourceLocation(@Nonnull IBlockState state) {
-        Map <IProperty<?>, Comparable<? >> map = Maps.newLinkedHashMap(state.getProperties());
-        map.remove(HFCrops.CROPS.property); //Remove the base property for rendering purposes
-        return new ModelResourceLocation(Block.REGISTRY.getNameForObject(state.getBlock()), getPropertyString(map));
-    }
+	@Override
+	@Nonnull
+	protected ModelResourceLocation getModelResourceLocation(@Nonnull IBlockState state) {
+		Map<IProperty<?>, Comparable<?>> map = Maps.newLinkedHashMap(state.getProperties());
+		map.remove(HFCrops.CROPS.property); //Remove the base property for rendering purposes
+		return new ModelResourceLocation(Block.REGISTRY.getNameForObject(state.getBlock()), getPropertyString(map));
+	}
 
-    private ModelResourceLocation getCropResourceLocation(Crop crop, IBlockState state) {
-        Map <IProperty<?>, Comparable<? >> map = Maps.newLinkedHashMap(state.getProperties());
-        map.remove(HFCrops.CROPS.property); //Remove the base property for rendering purposes
-        return new ModelResourceLocation(crop.getResource().getResourceDomain() + ":crops_" + crop.getResource().getResourcePath(), this.getPropertyString(map));
-    }
+	private ModelResourceLocation getCropResourceLocation(Crop crop, IBlockState state) {
+		Map<IProperty<?>, Comparable<?>> map = Maps.newLinkedHashMap(state.getProperties());
+		map.remove(HFCrops.CROPS.property); //Remove the base property for rendering purposes
+		return new ModelResourceLocation(
+				crop.getResource().getResourceDomain() + ":crops_" + crop.getResource().getResourcePath(),
+				this.getPropertyString(map));
+	}
 }

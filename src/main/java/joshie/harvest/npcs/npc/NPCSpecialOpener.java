@@ -1,5 +1,6 @@
 package joshie.harvest.npcs.npc;
 
+import javax.annotation.Nullable;
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.calendar.CalendarDate;
 import joshie.harvest.api.npc.INPCHelper.Age;
@@ -11,20 +12,18 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import javax.annotation.Nullable;
-
 public class NPCSpecialOpener extends NPCSpecialSeller {
-    public NPCSpecialOpener(ResourceLocation resource, Gender gender, Age age, CalendarDate birthday, int insideColor, int outsideColor) {
-        super(resource, gender, age, birthday, insideColor, outsideColor);
-    }
+	public NPCSpecialOpener(ResourceLocation resource, Gender gender, Age age, CalendarDate birthday, int insideColor, int outsideColor) {
+		super(resource, gender, age, birthday, insideColor, outsideColor);
+	}
 
-    @Override //If the current town hasn't enabled selling of sprinklers, then enable it
-    public Shop getShop(World world, BlockPos pos, @Nullable EntityPlayer player) {
-        if (player != null && quest != null && HFApi.player.getRelationsForPlayer(player).getRelationship(npc) >= 15000) {
-            HFApi.quests.completeQuestConditionally(Quests.OPEN_WEDNESDAYS, player);
-            HFApi.quests.completeQuestConditionally(quest, player);
-        }
+	@Override //If the current town hasn't enabled selling of sprinklers, then enable it
+	public Shop getShop(World world, BlockPos pos, @Nullable EntityPlayer player) {
+		if (player != null && quest != null && HFApi.player.getRelationsForPlayer(player).getRelationship(npc) >= 15000) {
+			HFApi.quests.completeQuestConditionally(Quests.OPEN_WEDNESDAYS, player);
+			HFApi.quests.completeQuestConditionally(quest, player);
+		}
 
-        return shop;
-    }
+		return shop;
+	}
 }

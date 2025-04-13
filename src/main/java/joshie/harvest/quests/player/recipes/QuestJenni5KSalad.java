@@ -6,7 +6,7 @@ import joshie.harvest.quests.base.QuestRecipe;
 
 @HFQuest("recipe.salad")
 public class QuestJenni5KSalad extends QuestRecipe {
-    public QuestJenni5KSalad() {
-        super("salad", HFNPCs.GS_OWNER, 5000);
-    }
+	public QuestJenni5KSalad() {
+		super("salad", HFNPCs.GS_OWNER, 5000);
+	}
 }

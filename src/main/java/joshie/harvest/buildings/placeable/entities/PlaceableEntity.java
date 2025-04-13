@@ -7,23 +7,24 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public abstract class PlaceableEntity extends Placeable {
-    public PlaceableEntity() {}
-    public PlaceableEntity(int x, int y, int z) {
-        this.pos = new BlockPos(x, y, z);
-    }
+	public PlaceableEntity() {}
 
-    @Override
-    public boolean canPlace(ConstructionStage stage) {
-        return stage == ConstructionStage.PAINT;
-    }
+	public PlaceableEntity(int x, int y, int z) {
+		this.pos = new BlockPos(x, y, z);
+	}
 
-    public abstract Entity getEntity(World world, BlockPos pos, Rotation rotation);
+	@Override
+	public boolean canPlace(ConstructionStage stage) {
+		return stage == ConstructionStage.PAINT;
+	}
 
-    @Override
-    public boolean place (World world, BlockPos pos, Rotation rotation, boolean playSound) {
-        Entity entity = getEntity(world, pos, rotation);
-        return entity != null && world.spawnEntity(entity);
-    }
+	public abstract Entity getEntity(World world, BlockPos pos, Rotation rotation);
 
-    public abstract PlaceableEntity getCopyFromEntity(Entity entity, int x, int y, int z);
+	@Override
+	public boolean place(World world, BlockPos pos, Rotation rotation, boolean playSound) {
+		Entity entity = getEntity(world, pos, rotation);
+		return entity != null && world.spawnEntity(entity);
+	}
+
+	public abstract PlaceableEntity getCopyFromEntity(Entity entity, int x, int y, int z);
 }

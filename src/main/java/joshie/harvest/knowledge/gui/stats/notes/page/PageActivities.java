@@ -6,9 +6,9 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
 public class PageActivities extends PageNotes {
-    public static final BookPage INSTANCE = new PageActivities();
+	public static final BookPage INSTANCE = new PageActivities();
 
-    PageActivities() {
-        super(Category.ACTIVITIES, new ItemStack(Items.FISHING_ROD));
-    }
+	PageActivities() {
+		super(Category.ACTIVITIES, new ItemStack(Items.FISHING_ROD));
+	}
 }

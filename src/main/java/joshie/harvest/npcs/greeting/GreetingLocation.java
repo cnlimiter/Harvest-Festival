@@ -1,5 +1,8 @@
 package joshie.harvest.npcs.greeting;
 
+import static joshie.harvest.core.lib.HFModInfo.MODID;
+
+import javax.annotation.Nonnull;
 import joshie.harvest.api.buildings.BuildingLocation;
 import joshie.harvest.api.npc.NPC;
 import joshie.harvest.api.npc.greeting.IConditionalGreeting;
@@ -9,27 +12,24 @@ import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
 
-import javax.annotation.Nonnull;
-
-import static joshie.harvest.core.lib.HFModInfo.MODID;
-
 public class GreetingLocation implements IConditionalGreeting {
-    private final BuildingLocation location;
-    private final String text;
+	private final BuildingLocation location;
+	private final String text;
 
-    public GreetingLocation(@Nonnull BuildingLocation location) {
-        this.text = MODID + ".npc.location." + location.getBuilding().getResource().getResourceDomain() + "." + location.getBuilding().getResource().getResourcePath() + ".greeting";
-        this.location = location;
-    }
+	public GreetingLocation(@Nonnull BuildingLocation location) {
+		this.text = MODID + ".npc.location." + location.getBuilding().getResource().getResourceDomain() + "." +
+				location.getBuilding().getResource().getResourcePath() + ".greeting";
+		this.location = location;
+	}
 
-    @Override
-    public boolean canDisplay(EntityPlayer player, EntityAgeable ageable, NPC npc) {
-        BlockPos target = TownHelper.getClosestTownToEntity(player, false).getCoordinatesFor(location);
-        return target != null && player.getDistanceSq(target) < 32D;
-    }
+	@Override
+	public boolean canDisplay(EntityPlayer player, EntityAgeable ageable, NPC npc) {
+		BlockPos target = TownHelper.getClosestTownToEntity(player, false).getCoordinatesFor(location);
+		return target != null && player.getDistanceSq(target) < 32D;
+	}
 
-    @Override
-    public String getLocalizedText(EntityPlayer player, EntityAgeable ageable, NPC npc) {
-        return TextHelper.getRandomSpeech(npc, text, 10);
-    }
+	@Override
+	public String getLocalizedText(EntityPlayer player, EntityAgeable ageable, NPC npc) {
+		return TextHelper.getRandomSpeech(npc, text, 10);
+	}
 }

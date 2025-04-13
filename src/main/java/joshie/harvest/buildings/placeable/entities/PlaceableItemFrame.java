@@ -1,6 +1,8 @@
 package joshie.harvest.buildings.placeable.entities;
 
 import com.google.gson.annotations.Expose;
+
+import javax.annotation.Nonnull;
 import joshie.harvest.buildings.LootHelper;
 import joshie.harvest.core.helpers.EntityHelper;
 import net.minecraft.block.state.IBlockState;
@@ -14,59 +16,62 @@ import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import javax.annotation.Nonnull;
-
 public class PlaceableItemFrame extends PlaceableHanging {
-    @Expose
-    private ResourceLocation chestType;
-    @Expose
-    @Nonnull
-    private ItemStack stack = ItemStack.EMPTY;
-    @Expose
-    private int rotation;
+	@Expose
+	private ResourceLocation chestType;
+	@Expose
+	@Nonnull
+	private ItemStack stack = ItemStack.EMPTY;
+	@Expose
+	private int rotation;
 
-    public PlaceableItemFrame() {}
-    public PlaceableItemFrame(ResourceLocation chestType, ItemStack stack, int rotation, EnumFacing facing, int x, int y, int z) {
-        super(facing, x, y, z);
-        this.chestType = chestType;
-        this.stack = stack;
-        this.rotation = rotation;
-    }
+	public PlaceableItemFrame() {}
 
-    @Override
-    public void remove(World world, BlockPos pos, Rotation rotation, ConstructionStage stage, IBlockState replacement) {
-        if (canPlace(stage)) {
-            BlockPos transformed = getTransformedPosition(pos, rotation);
-            EntityHelper.getEntities(EntityItemFrame.class, world, transformed, 0.5D, 0.5D).stream().forEach(Entity::setDead);
-        }
-    }
+	public PlaceableItemFrame(ResourceLocation chestType, ItemStack stack, int rotation, EnumFacing facing, int x, int y, int z) {
+		super(facing, x, y, z);
+		this.chestType = chestType;
+		this.stack = stack;
+		this.rotation = rotation;
+	}
 
-    @Override
-    public EntityHanging getEntityHanging(World world, BlockPos pos, EnumFacing facing) {
-        EntityItemFrame frame = new EntityItemFrame(world, new BlockPos(pos.getX(), pos.getY(), pos.getZ()), facing);
-        ItemStack loot = ItemStack.EMPTY;
+	@Override
+	public void remove(World world, BlockPos pos, Rotation rotation, ConstructionStage stage, IBlockState replacement) {
+		if (canPlace(stage)) {
+			BlockPos transformed = getTransformedPosition(pos, rotation);
+			EntityHelper.getEntities(EntityItemFrame.class, world, transformed, 0.5D, 0.5D).stream().forEach(Entity::setDead);
+		}
+	}
 
-        if (!stack.isEmpty()) loot = stack.copy();
-        if (chestType != null) {
-            loot = LootHelper.getStack(world, null, chestType);
-        }
+	@Override
+	public EntityHanging getEntityHanging(World world, BlockPos pos, EnumFacing facing) {
+		EntityItemFrame frame = new EntityItemFrame(world, new BlockPos(pos.getX(), pos.getY(), pos.getZ()), facing);
+		ItemStack loot = ItemStack.EMPTY;
 
-        if (!loot.isEmpty()) frame.setDisplayedItem(loot);
-        frame.setItemRotation(rotation);
-        return frame;
-    }
+		if (!stack.isEmpty()) {
+			loot = stack.copy();
+		}
+		if (chestType != null) {
+			loot = LootHelper.getStack(world, null, chestType);
+		}
 
-    @Override
-    public PlaceableItemFrame getCopyFromEntity(Entity e, int x, int y, int z) {
-        EntityItemFrame frame = (EntityItemFrame) e;
+		if (!loot.isEmpty()) {
+			frame.setDisplayedItem(loot);
+		}
+		frame.setItemRotation(rotation);
+		return frame;
+	}
 
-        ResourceLocation chestType = null;
-        ItemStack stack = frame.getDisplayedItem();
-        if (!stack.isEmpty() && stack.hasDisplayName()) {
-            chestType = new ResourceLocation("harvestfestival", "frames/" + stack.getDisplayName());
-            stack = new ItemStack(stack.getItem(), 1, stack.getItemDamage());
-        }
+	@Override
+	public PlaceableItemFrame getCopyFromEntity(Entity e, int x, int y, int z) {
+		EntityItemFrame frame = (EntityItemFrame) e;
 
-        return new PlaceableItemFrame(chestType, stack, frame.getRotation(), frame.facingDirection, x, y, z);
-    }
+		ResourceLocation chestType = null;
+		ItemStack stack = frame.getDisplayedItem();
+		if (!stack.isEmpty() && stack.hasDisplayName()) {
+			chestType = new ResourceLocation("harvestfestival", "frames/" + stack.getDisplayName());
+			stack = new ItemStack(stack.getItem(), 1, stack.getItemDamage());
+		}
+
+		return new PlaceableItemFrame(chestType, stack, frame.getRotation(), frame.facingDirection, x, y, z);
+	}
 }

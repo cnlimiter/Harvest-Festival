@@ -1,5 +1,9 @@
 package joshie.harvest.buildings.block;
 
+import static joshie.harvest.core.helpers.InventoryHelper.ITEM_STACK;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import joshie.harvest.buildings.HFBuildings;
 import joshie.harvest.buildings.item.ItemCheat.Cheat;
 import joshie.harvest.core.HFCore;
@@ -26,89 +30,86 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import static joshie.harvest.core.helpers.InventoryHelper.ITEM_STACK;
-
 public class BlockInternalAir extends BlockHFBase<BlockInternalAir> {
-    public BlockInternalAir() {
-        super(Material.GLASS, HFTab.TOWN);
-    }
+	public BlockInternalAir() {
+		super(Material.GLASS, HFTab.TOWN);
+	}
 
-    @Override
-    public String getItemStackDisplayName(@Nonnull ItemStack stack) {
-        return TextHelper.localizeFully(getUnlocalizedName());
-    }
+	@Override
+	public String getItemStackDisplayName(@Nonnull ItemStack stack) {
+		return TextHelper.localizeFully(getUnlocalizedName());
+	}
 
-    @Nullable
-    @Override
-    @SuppressWarnings("deprecation")
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, @Nonnull IBlockAccess worldIn, @Nonnull BlockPos pos) {
-        return NULL_AABB;
-    }
+	@Nullable
+	@Override
+	@SuppressWarnings("deprecation")
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, @Nonnull IBlockAccess worldIn, @Nonnull BlockPos pos) {
+		return NULL_AABB;
+	}
 
-    @Override
-    @SuppressWarnings("deprecation")
-    public boolean isOpaqueCube(IBlockState state) {
-        return false;
-    }
+	@Override
+	@SuppressWarnings("deprecation")
+	public boolean isOpaqueCube(IBlockState state) {
+		return false;
+	}
 
-    @Override
-    @SuppressWarnings("deprecation")
-    public boolean causesSuffocation(IBlockState state) {
-        return false;
-    }
+	@Override
+	@SuppressWarnings("deprecation")
+	public boolean causesSuffocation(IBlockState state) {
+		return false;
+	}
 
-    @Override
-    public boolean isReplaceable(IBlockAccess worldIn, @Nonnull BlockPos pos) {
-        return true;
-    }
+	@Override
+	public boolean isReplaceable(IBlockAccess worldIn, @Nonnull BlockPos pos) {
+		return true;
+	}
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    @Nonnull
-    public BlockRenderLayer getBlockLayer() {
-        return BlockRenderLayer.CUTOUT_MIPPED;
-    }
+	@Override
+	@SideOnly(Side.CLIENT)
+	@Nonnull
+	public BlockRenderLayer getBlockLayer() {
+		return BlockRenderLayer.CUTOUT_MIPPED;
+	}
 
-    @Override
-    public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list) {
-        if (HFCore.DEBUG_MODE) {
-            super.getSubBlocks(tab, list);
-        }
-    }
+	@Override
+	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list) {
+		if (HFCore.DEBUG_MODE) {
+			super.getSubBlocks(tab, list);
+		}
+	}
 
-    @Override
-    public int getSortValue(@Nonnull ItemStack stack) {
-        return CreativeSort.LAST - 1;
-    }
+	@Override
+	public int getSortValue(@Nonnull ItemStack stack) {
+		return CreativeSort.LAST - 1;
+	}
 
-    public static void onPlaced(World world, BlockPos pos, EntityPlayer player) {
-        MinecraftForge.EVENT_BUS.register(new RemoveIfHolding(world, pos, player));
-    }
+	public static void onPlaced(World world, BlockPos pos, EntityPlayer player) {
+		MinecraftForge.EVENT_BUS.register(new RemoveIfHolding(world, pos, player));
+	}
 
-    private static class RemoveIfHolding {
-        private final World world;
-        private final BlockPos pos;
-        private final EntityPlayer player;
+	private static class RemoveIfHolding {
+		private final World world;
+		private final BlockPos pos;
+		private final EntityPlayer player;
 
-        RemoveIfHolding (World world, BlockPos pos, EntityPlayer player) {
-            this.world = world;
-            this.pos = pos;
-            this.player = player;
-        }
+		RemoveIfHolding(World world, BlockPos pos, EntityPlayer player) {
+			this.world = world;
+			this.pos = pos;
+			this.player = player;
+		}
 
-        @SubscribeEvent
-        public void onPlayerTick(PlayerTickEvent event) {
-            if (event.player == player && event.phase == Phase.END) {
-                if (InventoryHelper.getHandItemIsIn(event.player, ITEM_STACK, HFBuildings.CHEAT.getStackFromEnum(Cheat.AIR_REMOVER)) != null) {
-                    world.setBlockToAir(pos);
-                    try {
-                        MinecraftForge.EVENT_BUS.unregister(this);
-                    } catch (Exception ignored) {}
-                }
-            }
-        }
-    }
+		@SubscribeEvent
+		public void onPlayerTick(PlayerTickEvent event) {
+			if (event.player == player && event.phase == Phase.END) {
+				if (InventoryHelper.getHandItemIsIn(event.player, ITEM_STACK, HFBuildings.CHEAT.getStackFromEnum(Cheat.AIR_REMOVER)) !=
+						null) {
+					world.setBlockToAir(pos);
+					try {
+						MinecraftForge.EVENT_BUS.unregister(this);
+					} catch (Exception ignored) {
+					}
+				}
+			}
+		}
+	}
 }

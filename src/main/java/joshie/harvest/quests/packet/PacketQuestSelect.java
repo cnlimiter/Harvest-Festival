@@ -17,57 +17,62 @@ import net.minecraftforge.fml.common.eventhandler.Event.Result;
 
 @Packet(Side.SERVER)
 public class PacketQuestSelect extends PacketSharedSync {
-    private int quest;
-    private int npcID;
-    private int selected;
+	private int quest;
+	private int npcID;
+	private int selected;
 
-    @SuppressWarnings("unused")
-    public PacketQuestSelect() {}
-    public PacketQuestSelect(Quest quest, EntityNPC npc, int selected) {
-        this.quest = Quest.REGISTRY.getID(quest);
-        this.npcID = npc.getEntityId();
-        this.selected = selected;
-    }
+	@SuppressWarnings("unused")
+	public PacketQuestSelect() {}
 
-    @Override
-    public void toBytes(ByteBuf to) {
-        super.toBytes(to);
-        to.writeInt(quest);
-        to.writeInt(npcID);
-        to.writeByte(selected);
-    }
+	public PacketQuestSelect(Quest quest, EntityNPC npc, int selected) {
+		this.quest = Quest.REGISTRY.getID(quest);
+		this.npcID = npc.getEntityId();
+		this.selected = selected;
+	}
 
-    @Override
-    public void fromBytes(ByteBuf from) {
-        super.fromBytes(from);
-        quest = from.readInt();
-        npcID = from.readInt();
-        selected = from.readByte();
-    }
+	@Override
+	public void toBytes(ByteBuf to) {
+		super.toBytes(to);
+		to.writeInt(quest);
+		to.writeInt(npcID);
+		to.writeByte(selected);
+	}
 
-    @Override
-    @SuppressWarnings("unchecked")
-    public void handlePacket(EntityPlayer player) {
-        EntityNPC npc = (EntityNPC) player.world.getEntityByID(npcID);
-        if (npc != null) {
-            BlockPos pos = new BlockPos(npc);
-            if (quest == -1 && npc.getNPC().getShop(player.world, pos, player) != null) {
-                Selection selection = NPCHelper.getShopSelection(player.world, pos, npc.getNPC(), player);
-                Result result = selection.onSelected(player, npc, null, selected);
-                if (result == Result.ALLOW) {
-                    player.openGui(HarvestFestival.instance, GuiHandler.NPC, player.world, npc.getEntityId(), -1, -1);
-                } else if (result == Result.DENY) player.closeScreen();
-            } else {
-                Quest theQuest = QuestHelper.getSelectiomFromID(player, quest);
-                Selection selection = theQuest != null ? theQuest.getSelection(player, npc) : null;
-                if (selection != null) {
-                    Result result = selection.onSelected(player, npc, theQuest, selected);
-                    HFApi.quests.syncData(theQuest, player); //Sync to the client
-                    if (result == Result.ALLOW) {
-                        player.openGui(HarvestFestival.instance, GuiHandler.NPC, player.world, npc.getEntityId(), -1, -1);
-                    } else if (result == Result.DENY) player.closeScreen();
-                }
-            }
-        }
-    }
+	@Override
+	public void fromBytes(ByteBuf from) {
+		super.fromBytes(from);
+		quest = from.readInt();
+		npcID = from.readInt();
+		selected = from.readByte();
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public void handlePacket(EntityPlayer player) {
+		EntityNPC npc = (EntityNPC) player.world.getEntityByID(npcID);
+		if (npc != null) {
+			BlockPos pos = new BlockPos(npc);
+			if (quest == -1 && npc.getNPC().getShop(player.world, pos, player) != null) {
+				Selection selection = NPCHelper.getShopSelection(player.world, pos, npc.getNPC(), player);
+				Result result = selection.onSelected(player, npc, null, selected);
+				if (result == Result.ALLOW) {
+					player.openGui(HarvestFestival.instance, GuiHandler.NPC, player.world, npc.getEntityId(), -1, -1);
+				} else if (result == Result.DENY) {
+					player.closeScreen();
+				}
+			} else {
+				Quest theQuest = QuestHelper.getSelectiomFromID(player, quest);
+				Selection selection = theQuest != null ? theQuest.getSelection(player, npc) : null;
+				if (selection != null) {
+					Result result = selection.onSelected(player, npc, theQuest, selected);
+					HFApi.quests.syncData(theQuest, player); //Sync to the client
+					if (result == Result.ALLOW) {
+						player.openGui(HarvestFestival.instance, GuiHandler.NPC, player.world, npc.getEntityId(), -1, -1);
+					} else if (result == Result.DENY) {
+						player.closeScreen();
+					}
+				}
+			}
+		}
+	}
 }

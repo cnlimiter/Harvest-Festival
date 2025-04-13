@@ -7,7 +7,7 @@ import joshie.harvest.quests.base.QuestMeeting;
 
 @HFQuest("meeting.cloe")
 public class QuestMeetCloe extends QuestMeeting {
-    public QuestMeetCloe() {
-        super(HFBuildings.TOWNHALL, HFNPCs.DAUGHTER_ADULT);
-    }
+	public QuestMeetCloe() {
+		super(HFBuildings.TOWNHALL, HFNPCs.DAUGHTER_ADULT);
+	}
 }

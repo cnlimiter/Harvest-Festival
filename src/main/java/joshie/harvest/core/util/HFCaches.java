@@ -5,8 +5,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class HFCaches {
-    @SideOnly(Side.CLIENT)
-    public static void clearClient() {
-        PreviewEvent.CACHE.invalidateAll();
-    }
+	@SideOnly(Side.CLIENT)
+	public static void clearClient() {
+		PreviewEvent.CACHE.invalidateAll();
+	}
 }

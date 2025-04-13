@@ -1,12 +1,20 @@
 package joshie.harvest.core.render;
 
+import java.util.Random;
+
+import javax.annotation.Nonnull;
 import joshie.harvest.core.HFCore;
 import joshie.harvest.core.block.BlockStorage.Storage;
 import joshie.harvest.core.entity.EntityBasket;
 import joshie.harvest.core.lib.HFModInfo;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.BlockRendererDispatcher;
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.RenderItem;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.entity.Render;
@@ -23,160 +31,163 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
-import java.util.Random;
-
 @SideOnly(Side.CLIENT)
 public class RenderBasket extends Render<EntityBasket> {
-    protected final ResourceLocation texture;
-    private final IBlockState state = HFCore.STORAGE.getStateFromEnum(Storage.BASKET);
-    private final RenderItem itemRenderer;
-    private final Random random = new Random();
+	protected final ResourceLocation texture;
+	private final IBlockState state = HFCore.STORAGE.getStateFromEnum(Storage.BASKET);
+	private final RenderItem itemRenderer;
+	private final Random random = new Random();
 
-    public RenderBasket(RenderManager manager) {
-        super(manager);
-        shadowSize = 1F;
-        texture = new ResourceLocation(HFModInfo.MODID, "textures/models/basket.png");
-        itemRenderer = Minecraft.getMinecraft().getRenderItem();
-    }
+	public RenderBasket(RenderManager manager) {
+		super(manager);
+		shadowSize = 1F;
+		texture = new ResourceLocation(HFModInfo.MODID, "textures/models/basket.png");
+		itemRenderer = Minecraft.getMinecraft().getRenderItem();
+	}
 
-    @Override
-    @Nonnull
-    protected ResourceLocation getEntityTexture(@Nonnull EntityBasket entity) {
-        return TextureMap.LOCATION_BLOCKS_TEXTURE;
-    }
+	@Override
+	@Nonnull
+	protected ResourceLocation getEntityTexture(@Nonnull EntityBasket entity) {
+		return TextureMap.LOCATION_BLOCKS_TEXTURE;
+	}
 
-    @Override
-    public void doRender(@Nonnull EntityBasket entity, double x, double y, double z, float entityYaw, float partialTicks) {
-        if (state.getRenderType() == EnumBlockRenderType.MODEL) {
-            World world = entity.getEntityWorld();
-            if (state != world.getBlockState(new BlockPos(entity)) && state.getRenderType() != EnumBlockRenderType.INVISIBLE) {
-                bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
-                GlStateManager.pushMatrix();
-                GlStateManager.disableLighting();
-                Tessellator tessellator = Tessellator.getInstance();
-                BufferBuilder vertexbuffer = tessellator.getBuffer();
+	@Override
+	public void doRender(@Nonnull EntityBasket entity, double x, double y, double z, float entityYaw, float partialTicks) {
+		if (state.getRenderType() == EnumBlockRenderType.MODEL) {
+			World world = entity.getEntityWorld();
+			if (state != world.getBlockState(new BlockPos(entity)) && state.getRenderType() != EnumBlockRenderType.INVISIBLE) {
+				bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+				GlStateManager.pushMatrix();
+				GlStateManager.disableLighting();
+				Tessellator tessellator = Tessellator.getInstance();
+				BufferBuilder vertexbuffer = tessellator.getBuffer();
 
-                if (renderOutlines) {
-                    GlStateManager.enableColorMaterial();
-                    GlStateManager.enableOutlineMode(this.getTeamColor(entity));
-                }
+				if (renderOutlines) {
+					GlStateManager.enableColorMaterial();
+					GlStateManager.enableOutlineMode(this.getTeamColor(entity));
+				}
 
-                vertexbuffer.begin(7, DefaultVertexFormats.BLOCK);
-                BlockPos blockpos = new BlockPos(entity.posX, entity.getEntityBoundingBox().maxY, entity.posZ);
-                GlStateManager.translate((float)(x - blockpos.getX() - 0.5D), (float)(y - blockpos.getY() + 0.5F), (float)(z - blockpos.getZ() - 0.5D));
-                BlockRendererDispatcher blockrendererdispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
-                blockrendererdispatcher.getBlockModelRenderer().renderModel(world, blockrendererdispatcher.getModelForState(state), state, blockpos, vertexbuffer, false, MathHelper.getPositionRandom(entity.getPosition()));
-                tessellator.draw();
+				vertexbuffer.begin(7, DefaultVertexFormats.BLOCK);
+				BlockPos blockpos = new BlockPos(entity.posX, entity.getEntityBoundingBox().maxY, entity.posZ);
+				GlStateManager.translate(
+						(float) (x - blockpos.getX() - 0.5D),
+						(float) (y - blockpos.getY() + 0.5F),
+						(float) (z - blockpos.getZ() - 0.5D));
+				BlockRendererDispatcher blockrendererdispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
+				blockrendererdispatcher.getBlockModelRenderer().renderModel(
+						world,
+						blockrendererdispatcher.getModelForState(state),
+						state,
+						blockpos,
+						vertexbuffer,
+						false,
+						MathHelper.getPositionRandom(entity.getPosition()));
+				tessellator.draw();
 
-                if (renderOutlines)  {
-                    GlStateManager.disableOutlineMode();
-                    GlStateManager.disableColorMaterial();
-                }
+				if (renderOutlines) {
+					GlStateManager.disableOutlineMode();
+					GlStateManager.disableColorMaterial();
+				}
 
-                GlStateManager.enableLighting();
-                GlStateManager.popMatrix();
-            }
-        }
+				GlStateManager.enableLighting();
+				GlStateManager.popMatrix();
+			}
+		}
 
-        if (!entity.getEntityItem().isEmpty()) {
-            renderItem(entity, x, y, z);
-        }
-    }
+		if (!entity.getEntityItem().isEmpty()) {
+			renderItem(entity, x, y, z);
+		}
+	}
 
-    private void renderItem(EntityBasket entity, double x, double y, double z) {
-        ItemStack itemstack = entity.getEntityItem();
-        int i;
+	private void renderItem(EntityBasket entity, double x, double y, double z) {
+		ItemStack itemstack = entity.getEntityItem();
+		int i;
 
-        if (!itemstack.isEmpty())
-        {
-            i = Item.getIdFromItem(itemstack.getItem()) + itemstack.getMetadata();
-        }
-        else
-        {
-            i = 187;
-        }
+		if (!itemstack.isEmpty()) {
+			i = Item.getIdFromItem(itemstack.getItem()) + itemstack.getMetadata();
+		} else {
+			i = 187;
+		}
 
-        this.random.setSeed(i);
-        boolean flag = false;
+		this.random.setSeed(i);
+		boolean flag = false;
 
-        if (this.bindEntityTexture(entity))
-        {
-            this.renderManager.renderEngine.getTexture(this.getEntityTexture(entity)).setBlurMipmap(false, false);
-            flag = true;
-        }
+		if (this.bindEntityTexture(entity)) {
+			this.renderManager.renderEngine.getTexture(this.getEntityTexture(entity)).setBlurMipmap(false, false);
+			flag = true;
+		}
 
-        GlStateManager.enableRescaleNormal();
-        GlStateManager.alphaFunc(516, 0.1F);
-        GlStateManager.enableBlend();
-        RenderHelper.enableStandardItemLighting();
-        GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-        GlStateManager.pushMatrix();
-        GlStateManager.translate(0F, Minecraft.getMinecraft().player.getMountedYOffset() + 0.75F, 0F);
-        IBakedModel ibakedmodel = this.itemRenderer.getItemModelWithOverrides(itemstack, entity.world, null);
-        int j = Math.min(3, itemstack.getCount());
-        boolean flag1 = ibakedmodel.isGui3d();
+		GlStateManager.enableRescaleNormal();
+		GlStateManager.alphaFunc(516, 0.1F);
+		GlStateManager.enableBlend();
+		RenderHelper.enableStandardItemLighting();
+		GlStateManager.tryBlendFuncSeparate(
+				GlStateManager.SourceFactor.SRC_ALPHA,
+				GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA,
+				GlStateManager.SourceFactor.ONE,
+				GlStateManager.DestFactor.ZERO);
+		GlStateManager.pushMatrix();
+		GlStateManager.translate(0F, Minecraft.getMinecraft().player.getMountedYOffset() + 0.75F, 0F);
+		IBakedModel ibakedmodel = this.itemRenderer.getItemModelWithOverrides(itemstack, entity.world, null);
+		int j = Math.min(3, itemstack.getCount());
+		boolean flag1 = ibakedmodel.isGui3d();
 
-        if (!flag1)
-        {
-            float f5 = -0.09375F * (j - 1) * 0.5F;
-            GlStateManager.translate(0, 0, f5);
-        }
+		if (!flag1) {
+			float f5 = -0.09375F * (j - 1) * 0.5F;
+			GlStateManager.translate(0, 0, f5);
+		}
 
-        if (this.renderOutlines)
-        {
-            GlStateManager.enableColorMaterial();
-            GlStateManager.enableOutlineMode(this.getTeamColor(entity));
-        }
+		if (this.renderOutlines) {
+			GlStateManager.enableColorMaterial();
+			GlStateManager.enableOutlineMode(this.getTeamColor(entity));
+		}
 
-        for (int k = 0; k < j; ++k)
-        {
-            if (flag1)
-            {
-                GlStateManager.pushMatrix();
+		for (int k = 0; k < j; ++k) {
+			if (flag1) {
+				GlStateManager.pushMatrix();
 
-                if (k > 0)
-                {
-                    float f6 = (this.random.nextFloat() * 2.0F - 1.0F) * 0.15F;
-                    GlStateManager.translate(0, 0, f6);
-                }
+				if (k > 0) {
+					float f6 = (this.random.nextFloat() * 2.0F - 1.0F) * 0.15F;
+					GlStateManager.translate(0, 0, f6);
+				}
 
-                ibakedmodel = net.minecraftforge.client.ForgeHooksClient.handleCameraTransforms(ibakedmodel, ItemCameraTransforms.TransformType.GROUND, false);
-                this.itemRenderer.renderItem(itemstack, ibakedmodel);
-                GlStateManager.popMatrix();
-            }
-            else
-            {
-                GlStateManager.pushMatrix();
+				ibakedmodel = net.minecraftforge.client.ForgeHooksClient.handleCameraTransforms(
+						ibakedmodel,
+						ItemCameraTransforms.TransformType.GROUND,
+						false);
+				this.itemRenderer.renderItem(itemstack, ibakedmodel);
+				GlStateManager.popMatrix();
+			} else {
+				GlStateManager.pushMatrix();
 
-                if (k > 0)
-                {
-                    float f8 = (this.random.nextFloat() * 2.0F - 1.0F) * 0.15F * 0.5F;
-                    float f10 = (this.random.nextFloat() * 2.0F - 1.0F) * 0.15F * 0.5F;
-                    GlStateManager.translate(f8, f10, 0.0F);
-                }
+				if (k > 0) {
+					float f8 = (this.random.nextFloat() * 2.0F - 1.0F) * 0.15F * 0.5F;
+					float f10 = (this.random.nextFloat() * 2.0F - 1.0F) * 0.15F * 0.5F;
+					GlStateManager.translate(f8, f10, 0.0F);
+				}
 
-                ibakedmodel = net.minecraftforge.client.ForgeHooksClient.handleCameraTransforms(ibakedmodel, ItemCameraTransforms.TransformType.GROUND, false);
-                this.itemRenderer.renderItem(itemstack, ibakedmodel);
-                GlStateManager.popMatrix();
-                GlStateManager.translate(0.0F, 0.0F, 0.09375F);
-            }
-        }
+				ibakedmodel = net.minecraftforge.client.ForgeHooksClient.handleCameraTransforms(
+						ibakedmodel,
+						ItemCameraTransforms.TransformType.GROUND,
+						false);
+				this.itemRenderer.renderItem(itemstack, ibakedmodel);
+				GlStateManager.popMatrix();
+				GlStateManager.translate(0.0F, 0.0F, 0.09375F);
+			}
+		}
 
-        if (this.renderOutlines)
-        {
-            GlStateManager.disableOutlineMode();
-            GlStateManager.disableColorMaterial();
-        }
+		if (this.renderOutlines) {
+			GlStateManager.disableOutlineMode();
+			GlStateManager.disableColorMaterial();
+		}
 
-        GlStateManager.popMatrix();
-        GlStateManager.disableRescaleNormal();
-        GlStateManager.disableBlend();
-        this.bindEntityTexture(entity);
+		GlStateManager.popMatrix();
+		GlStateManager.disableRescaleNormal();
+		GlStateManager.disableBlend();
+		this.bindEntityTexture(entity);
 
-        if (flag)
-        {
-            this.renderManager.renderEngine.getTexture(this.getEntityTexture(entity)).restoreLastBlurMipmap();
-        }
-    }
+		if (flag) {
+			this.renderManager.renderEngine.getTexture(this.getEntityTexture(entity)).restoreLastBlurMipmap();
+		}
+	}
 }

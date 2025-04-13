@@ -10,35 +10,35 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class CalendarClient extends Calendar {
-    protected final CalendarDate date = new CalendarDate(1, Season.SPRING, 1);
+	protected final CalendarDate date = new CalendarDate(1, Season.SPRING, 1);
 
-    @Override
-    public CalendarDate getDate() {
-        return date;
-    }
+	@Override
+	public CalendarDate getDate() {
+		return date;
+	}
 
-    @Override
-    public void onSeasonChanged() {
-        super.onSeasonChanged();
-        CalendarRender.grassToBlend.clear();
-        CalendarRender.leavesToBlend.clear();
-        HFWorldProvider.reset();
-    }
+	@Override
+	public void onSeasonChanged() {
+		super.onSeasonChanged();
+		CalendarRender.grassToBlend.clear();
+		CalendarRender.leavesToBlend.clear();
+		HFWorldProvider.reset();
+	}
 
-    /* ############# Weather ################*/
-    public Weather getTomorrowsWeather() {
-        return forecast[1];
-    }
+	/* ############# Weather ################*/
+	public Weather getTomorrowsWeather() {
+		return forecast[1];
+	}
 
-    public void setForecast(Weather[] forecast) {
-        this.forecast = forecast;
-        updateWeatherStrength();
-    }
+	public void setForecast(Weather[] forecast) {
+		this.forecast = forecast;
+		updateWeatherStrength();
+	}
 
-    public void setStrength(int rain, int storm) {
-        this.rainStrength = rain;
-        this.stormStrength = storm;
-    }
+	public void setStrength(int rain, int storm) {
+		this.rainStrength = rain;
+		this.stormStrength = storm;
+	}
 
 	public void setRecentNonSunnyWeather(Weather weather) {
 		this.recentNonSunnyWeather = weather;

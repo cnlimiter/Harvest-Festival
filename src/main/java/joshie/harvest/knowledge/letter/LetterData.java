@@ -1,10 +1,11 @@
 package joshie.harvest.knowledge.letter;
 
-import joshie.harvest.api.core.Letter;
-
 import java.util.Set;
 
+import joshie.harvest.api.core.Letter;
+
 public abstract class LetterData {
-    public abstract Set<Letter> getLetters();
-    public abstract boolean hasUnreadLetters();
+	public abstract Set<Letter> getLetters();
+
+	public abstract boolean hasUnreadLetters();
 }

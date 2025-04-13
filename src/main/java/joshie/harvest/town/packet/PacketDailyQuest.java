@@ -1,5 +1,7 @@
 package joshie.harvest.town.packet;
 
+import java.util.UUID;
+
 import io.netty.buffer.ByteBuf;
 import joshie.harvest.api.quests.Quest;
 import joshie.harvest.core.HFTrackers;
@@ -14,44 +16,43 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 
-import java.util.UUID;
-
 @Packet(Side.CLIENT)
 public class PacketDailyQuest extends PenguinPacket {
-    private UUID uuid;
-    private Quest quest;
+	private UUID uuid;
+	private Quest quest;
 
-    @SuppressWarnings("unused")
-    public PacketDailyQuest() {}
-    public PacketDailyQuest(UUID uuid, Quest quest) {
-        this.uuid = uuid;
-        this.quest = quest;
-    }
+	@SuppressWarnings("unused")
+	public PacketDailyQuest() {}
 
-    @Override
-    public void toBytes(ByteBuf buf) {
-        ByteBufUtils.writeUTF8String(buf, uuid.toString());
-        buf.writeBoolean(quest != null);
-        if (quest != null) {
-            ByteBufUtils.writeUTF8String(buf, String.valueOf(quest.getRegistryName()));
-            ByteBufUtils.writeTag(buf, quest.writeToNBT(new NBTTagCompound()));
-        }
-    }
+	public PacketDailyQuest(UUID uuid, Quest quest) {
+		this.uuid = uuid;
+		this.quest = quest;
+	}
 
-    @Override
-    public void fromBytes(ByteBuf buf) {
-        uuid = UUID.fromString(ByteBufUtils.readUTF8String(buf));
-        if (buf.readBoolean()) {
-            quest = Quest.REGISTRY.getValue(new ResourceLocation(ByteBufUtils.readUTF8String(buf)));
-            quest.readFromNBT(ByteBufUtils.readTag(buf));
-        }
-    }
+	@Override
+	public void toBytes(ByteBuf buf) {
+		ByteBufUtils.writeUTF8String(buf, uuid.toString());
+		buf.writeBoolean(quest != null);
+		if (quest != null) {
+			ByteBufUtils.writeUTF8String(buf, String.valueOf(quest.getRegistryName()));
+			ByteBufUtils.writeTag(buf, quest.writeToNBT(new NBTTagCompound()));
+		}
+	}
 
-    @Override
-    public void handlePacket(EntityPlayer player) {
-        TownData data = TownHelper.getTownByID(player.world, uuid);
-        if (data != null) {
-            HFTrackers.<TownTrackerClient>getTowns(player.world).getTownByID(uuid).setDailyQuest(quest);
-        }
-    }
+	@Override
+	public void fromBytes(ByteBuf buf) {
+		uuid = UUID.fromString(ByteBufUtils.readUTF8String(buf));
+		if (buf.readBoolean()) {
+			quest = Quest.REGISTRY.getValue(new ResourceLocation(ByteBufUtils.readUTF8String(buf)));
+			quest.readFromNBT(ByteBufUtils.readTag(buf));
+		}
+	}
+
+	@Override
+	public void handlePacket(EntityPlayer player) {
+		TownData data = TownHelper.getTownByID(player.world, uuid);
+		if (data != null) {
+			HFTrackers.<TownTrackerClient>getTowns(player.world).getTownByID(uuid).setDailyQuest(quest);
+		}
+	}
 }

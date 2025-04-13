@@ -1,5 +1,15 @@
 package joshie.harvest.npcs.item;
 
+import static joshie.harvest.core.lib.LootStrings.MINING_GEMS;
+import static joshie.harvest.npcs.item.ItemNPCTool.NPCTool.NPC_KILLER;
+import static net.minecraft.util.text.TextFormatting.AQUA;
+import static net.minecraft.util.text.TextFormatting.GOLD;
+
+import java.util.List;
+import java.util.Locale;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import joshie.harvest.core.HFTab;
 import joshie.harvest.core.base.item.ItemHFEnum;
 import joshie.harvest.core.helpers.SpawnItemHelper;
@@ -19,90 +29,86 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import java.util.List;
-import java.util.Locale;
-
-import static joshie.harvest.core.lib.LootStrings.MINING_GEMS;
-import static joshie.harvest.npcs.item.ItemNPCTool.NPCTool.NPC_KILLER;
-import static net.minecraft.util.text.TextFormatting.AQUA;
-import static net.minecraft.util.text.TextFormatting.GOLD;
-
 public class ItemNPCTool extends ItemHFEnum<ItemNPCTool, NPCTool> {
-    public static final String SPECIAL = "Gift";
-    public enum NPCTool implements IStringSerializable {
-        BLUE_FEATHER, NPC_KILLER, GIFT, SPEECH, MAIL;
+	public static final String SPECIAL = "Gift";
 
-        public boolean isReal() {
-            return this == NPC_KILLER;
-        }
+	public enum NPCTool implements IStringSerializable {
+		BLUE_FEATHER, NPC_KILLER, GIFT, SPEECH, MAIL;
 
-        @Override
-        public String getName() {
-            return name().toLowerCase(Locale.ENGLISH);
-        }
-    }
+		public boolean isReal() {
+			return this == NPC_KILLER;
+		}
 
-    public ItemNPCTool() {
-        super(HFTab.TOWN, NPCTool.class);
-    }
+		@Override
+		public String getName() {
+			return name().toLowerCase(Locale.ENGLISH);
+		}
+	}
 
-    @Override
-    public boolean onLeftClickEntity(@Nonnull ItemStack stack, EntityPlayer player, Entity entity) {
-        if (getEnumFromStack(stack) == NPC_KILLER) {
-            entity.setDead();
-            return true;
-        }
+	public ItemNPCTool() {
+		super(HFTab.TOWN, NPCTool.class);
+	}
 
-        return false;
-    }
+	@Override
+	public boolean onLeftClickEntity(@Nonnull ItemStack stack, EntityPlayer player, Entity entity) {
+		if (getEnumFromStack(stack) == NPC_KILLER) {
+			entity.setDead();
+			return true;
+		}
 
-    @Override
-    public boolean shouldDisplayInCreative(NPCTool cheat) {
-        return cheat.isReal();
-    }
+		return false;
+	}
 
-    @Override
-    public int getSortValue(@Nonnull ItemStack stack) {
-        return 1;
-    }
+	@Override
+	public boolean shouldDisplayInCreative(NPCTool cheat) {
+		return cheat.isReal();
+	}
 
-    @Override
-    @SuppressWarnings("ConstantConditions")
-    @Nonnull
-    public String getItemStackDisplayName(@Nonnull ItemStack stack) {
-        if (stack.hasTagCompound() && stack.getTagCompound().hasKey(SPECIAL)) return GOLD + TextHelper.translate("npctool.gift.special");
-        else if (getEnumFromStack(stack).isReal()) return AQUA + super.getItemStackDisplayName(stack);
-        else return super.getItemStackDisplayName(stack);
-    }
+	@Override
+	public int getSortValue(@Nonnull ItemStack stack) {
+		return 1;
+	}
 
-    @SideOnly(Side.CLIENT)
-    @Override
-    @SuppressWarnings("ConstantConditions")
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-        if (stack.hasTagCompound() && stack.getTagCompound().hasKey(SPECIAL)) {
-            tooltip.add(TextHelper.translate("npctool.gift.special.tooltip"));
-        }
-    }
+	@Override
+	@SuppressWarnings("ConstantConditions")
+	@Nonnull
+	public String getItemStackDisplayName(@Nonnull ItemStack stack) {
+		if (stack.hasTagCompound() && stack.getTagCompound().hasKey(SPECIAL)) {
+			return GOLD + TextHelper.translate("npctool.gift.special");
+		} else if (getEnumFromStack(stack).isReal()) {
+			return AQUA + super.getItemStackDisplayName(stack);
+		} else {
+			return super.getItemStackDisplayName(stack);
+		}
+	}
 
-    @Override
-    @Nonnull
-    @SuppressWarnings("ConstantConditions")
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, @Nonnull EnumHand hand) {
-        ItemStack held = player.getHeldItem(hand);
-        if (held.hasTagCompound() && held.getTagCompound().hasKey(SPECIAL)) {
-            if (!world.isRemote) {
-                NonNullList<ItemStack> drops = NonNullList.create();
-                MiningHelper.getLoot(drops, MINING_GEMS, world, player, 3F);
-                for (ItemStack stack : drops) {
-                    SpawnItemHelper.spawnByEntity(player, stack);
-                }
-            }
+	@SideOnly(Side.CLIENT)
+	@Override
+	@SuppressWarnings("ConstantConditions")
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+		if (stack.hasTagCompound() && stack.getTagCompound().hasKey(SPECIAL)) {
+			tooltip.add(TextHelper.translate("npctool.gift.special.tooltip"));
+		}
+	}
 
-            held.shrink(1);
-            return new ActionResult<>(EnumActionResult.SUCCESS, held);
-        } else return super.onItemRightClick(world, player, hand);
-    }
+	@Override
+	@Nonnull
+	@SuppressWarnings("ConstantConditions")
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, @Nonnull EnumHand hand) {
+		ItemStack held = player.getHeldItem(hand);
+		if (held.hasTagCompound() && held.getTagCompound().hasKey(SPECIAL)) {
+			if (!world.isRemote) {
+				NonNullList<ItemStack> drops = NonNullList.create();
+				MiningHelper.getLoot(drops, MINING_GEMS, world, player, 3F);
+				for (ItemStack stack : drops) {
+					SpawnItemHelper.spawnByEntity(player, stack);
+				}
+			}
+
+			held.shrink(1);
+			return new ActionResult<>(EnumActionResult.SUCCESS, held);
+		} else {
+			return super.onItemRightClick(world, player, hand);
+		}
+	}
 }

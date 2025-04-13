@@ -11,31 +11,32 @@ import net.minecraft.entity.player.EntityPlayer;
 
 @Packet(Side.SERVER)
 public class PacketInfo extends PenguinPacket {
-    private int npcID;
+	private int npcID;
 
-    public PacketInfo() {}
-    public PacketInfo(EntityNPC npc) {
-        this.npcID = npc.getEntityId();
-    }
+	public PacketInfo() {}
 
-    @Override
-    public void toBytes(ByteBuf to) {
-        to.writeInt(npcID);
-    }
+	public PacketInfo(EntityNPC npc) {
+		this.npcID = npc.getEntityId();
+	}
 
-    @Override
-    public void fromBytes(ByteBuf from) {
-        npcID = from.readInt();
-    }
+	@Override
+	public void toBytes(ByteBuf to) {
+		to.writeInt(npcID);
+	}
 
-    @Override
-    @SuppressWarnings("unchecked")
-    public void handlePacket(EntityPlayer player) {
-        EntityNPC npc = (EntityNPC) player.world.getEntityByID(npcID);
-        if (npc != null) {
-            if(npc.getNPC().onClickedInfoButton(player)) {
-                player.openGui(HarvestFestival.instance, GuiHandler.NPC_INFO, player.world, npcID, -1, -1);
-            }
-        }
-    }
+	@Override
+	public void fromBytes(ByteBuf from) {
+		npcID = from.readInt();
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public void handlePacket(EntityPlayer player) {
+		EntityNPC npc = (EntityNPC) player.world.getEntityByID(npcID);
+		if (npc != null) {
+			if (npc.getNPC().onClickedInfoButton(player)) {
+				player.openGui(HarvestFestival.instance, GuiHandler.NPC_INFO, player.world, npcID, -1, -1);
+			}
+		}
+	}
 }

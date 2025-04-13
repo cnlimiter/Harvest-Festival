@@ -1,5 +1,10 @@
 package joshie.harvest.crops.block;
 
+import static joshie.harvest.crops.HFCrops.SPRINKLER_DRAIN_RATE;
+
+import java.util.Locale;
+
+import javax.annotation.Nonnull;
 import joshie.harvest.core.base.block.BlockHFEnum;
 import joshie.harvest.core.lib.CreativeSort;
 import joshie.harvest.crops.block.BlockSprinkler.Sprinkler;
@@ -21,103 +26,108 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidActionResult;
 import net.minecraftforge.fluids.FluidUtil;
-
-import javax.annotation.Nonnull;
 import net.minecraftforge.items.ItemHandlerHelper;
 
-import java.util.Locale;
-
-import static joshie.harvest.crops.HFCrops.SPRINKLER_DRAIN_RATE;
-
 public class BlockSprinkler extends BlockHFEnum<BlockSprinkler, Sprinkler> {
-    private static final AxisAlignedBB IRON_AABB = new AxisAlignedBB(0.2D, 0D, 0.2D, 0.8D, 0.7D, 0.8D);
-    private static final AxisAlignedBB OLD_AABB = new AxisAlignedBB(0.2D, 0D, 0.2D, 0.8D, 0.5D, 0.8D);
+	private static final AxisAlignedBB IRON_AABB = new AxisAlignedBB(0.2D, 0D, 0.2D, 0.8D, 0.7D, 0.8D);
+	private static final AxisAlignedBB OLD_AABB = new AxisAlignedBB(0.2D, 0D, 0.2D, 0.8D, 0.5D, 0.8D);
 
-    public BlockSprinkler() {
-        super(Material.WOOD, Sprinkler.class);
-        setSoundType(SoundType.GROUND);
-    }
+	public BlockSprinkler() {
+		super(Material.WOOD, Sprinkler.class);
+		setSoundType(SoundType.GROUND);
+	}
 
-    public enum Sprinkler implements IStringSerializable {
-        IRON, OLD;
+	public enum Sprinkler implements IStringSerializable {
+		IRON, OLD;
 
-        @Override
-        public String getName() {
-            return toString().toLowerCase(Locale.ENGLISH);
-        }
-    }
+		@Override
+		public String getName() {
+			return toString().toLowerCase(Locale.ENGLISH);
+		}
+	}
 
-    @SuppressWarnings("deprecation")
-    @Override
-    @Nonnull
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-        if (getEnumFromState(state) == Sprinkler.IRON) return IRON_AABB;
-        else return OLD_AABB;
-    }
+	@SuppressWarnings("deprecation")
+	@Override
+	@Nonnull
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+		if (getEnumFromState(state) == Sprinkler.IRON) {
+			return IRON_AABB;
+		} else {
+			return OLD_AABB;
+		}
+	}
 
-    @SuppressWarnings("deprecation")
-    @Override
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
-        return NULL_AABB;
-    }
+	@SuppressWarnings("deprecation")
+	@Override
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
+		return NULL_AABB;
+	}
 
-    @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-        if (SPRINKLER_DRAIN_RATE <= 0) return false;
-        ItemStack heldItem = player.getHeldItem(hand);
-        if (!heldItem.isEmpty()) {
-            TileEntity tile = worldIn.getTileEntity(pos);
-            if (tile instanceof TileSprinkler) {
-                TileSprinkler sprinkler = ((TileSprinkler) tile);
+	@Override
+	public boolean onBlockActivated(
+			World worldIn,
+			BlockPos pos,
+			IBlockState state,
+			EntityPlayer player,
+			EnumHand hand,
+			EnumFacing side,
+			float hitX,
+			float hitY,
+			float hitZ) {
+		if (SPRINKLER_DRAIN_RATE <= 0) {
+			return false;
+		}
+		ItemStack heldItem = player.getHeldItem(hand);
+		if (!heldItem.isEmpty()) {
+			TileEntity tile = worldIn.getTileEntity(pos);
+			if (tile instanceof TileSprinkler) {
+				TileSprinkler sprinkler = ((TileSprinkler) tile);
 				boolean doDrain = !player.isCreative();
 				if (!doDrain) {
 					heldItem = ItemHandlerHelper.copyStackWithSize(heldItem, 1);
 				}
-                FluidActionResult result = FluidUtil.tryEmptyContainer(heldItem, sprinkler.getTank(), 1000, player, true);
+				FluidActionResult result = FluidUtil.tryEmptyContainer(heldItem, sprinkler.getTank(), 1000, player, true);
 
-                if (result.isSuccess()) {
+				if (result.isSuccess()) {
 					if (doDrain) {
 						player.setHeldItem(hand, result.getResult());
 					}
-                    sprinkler.saveAndRefresh();
-                    return true;
-                }
-            }
-        }
+					sprinkler.saveAndRefresh();
+					return true;
+				}
+			}
+		}
 
-        return false;
-    }
+		return false;
+	}
 
-    @Override
-    public boolean hasTileEntity(IBlockState state) {
-        return true;
-    }
+	@Override
+	public boolean hasTileEntity(IBlockState state) {
+		return true;
+	}
 
-    @Override
-    public TileEntity createTileEntity(@Nonnull World world, @Nonnull IBlockState state) {
-        return getEnumFromState(state) == Sprinkler.IRON ? new TileSprinkler() : new TileSprinklerOld();
-    }
+	@Override
+	public TileEntity createTileEntity(@Nonnull World world, @Nonnull IBlockState state) {
+		return getEnumFromState(state) == Sprinkler.IRON ? new TileSprinkler() : new TileSprinklerOld();
+	}
 
-    @Override
-    public int getSortValue(@Nonnull ItemStack stack) {
-        return CreativeSort.TROUGH;
-    }
+	@Override
+	public int getSortValue(@Nonnull ItemStack stack) {
+		return CreativeSort.TROUGH;
+	}
 
-    @Override
-    public boolean isFullBlock(IBlockState state)
-    {
-        return false;
-    }
+	@Override
+	public boolean isFullBlock(IBlockState state) {
+		return false;
+	}
 
-    @Override
-    public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos)
-    {
-        return false;
-    }
+	@Override
+	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return false;
+	}
 
-    @Override
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
-    {
-        return BlockFaceShape.UNDEFINED;
-    }
+	@Override
+	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+		return BlockFaceShape.UNDEFINED;
+	}
 }

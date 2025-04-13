@@ -7,10 +7,10 @@ import joshie.harvest.knowledge.item.ItemBook;
 
 @HFLoader
 public class HFKnowledge {
-    public static final BlockCalendar CALENDAR = new BlockCalendar().register("calendar");
-    public static final ItemBook BOOK = new ItemBook().register("book");
+	public static final BlockCalendar CALENDAR = new BlockCalendar().register("calendar");
+	public static final ItemBook BOOK = new ItemBook().register("book");
 
-    public static void preInit() {
-        HFApi.npc.getGifts().addToBlacklist(BOOK);
-    }
+	public static void preInit() {
+		HFApi.npc.getGifts().addToBlacklist(BOOK);
+	}
 }

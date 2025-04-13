@@ -1,5 +1,6 @@
 package joshie.harvest.shops;
 
+import javax.annotation.Nonnull;
 import joshie.harvest.api.shops.IPurchasable;
 import joshie.harvest.api.shops.IShopHelper;
 import joshie.harvest.api.shops.OpeningHandler;
@@ -7,25 +8,23 @@ import joshie.harvest.core.util.annotations.HFApiImplementation;
 import joshie.harvest.shops.purchasable.Purchasable;
 import net.minecraft.item.ItemStack;
 
-import javax.annotation.Nonnull;
-
 @HFApiImplementation
 @SuppressWarnings("unused")
 public class ShopHelper implements IShopHelper {
-    public static final ShopHelper INSTANCE = new ShopHelper();
+	public static final ShopHelper INSTANCE = new ShopHelper();
 
-    @Override
-    public OpeningHandler createDefaultOpeningHandler() {
-        return new ShopHours();
-    }
+	@Override
+	public OpeningHandler createDefaultOpeningHandler() {
+		return new ShopHours();
+	}
 
-    @Override
-    public IPurchasable createDefaultPurchasable(long cost, @Nonnull ItemStack stack) {
-        return new Purchasable(cost, stack);
-    }
+	@Override
+	public IPurchasable createDefaultPurchasable(long cost, @Nonnull ItemStack stack) {
+		return new Purchasable(cost, stack);
+	}
 
-    @Override
-    public IPurchasable createDefaultPurchasableWithLimitedStock(long cost, @Nonnull ItemStack stack, int stock) {
-        return new Purchasable(cost, stack).setStock(stock);
-    }
+	@Override
+	public IPurchasable createDefaultPurchasableWithLimitedStock(long cost, @Nonnull ItemStack stack, int stock) {
+		return new Purchasable(cost, stack).setStock(stock);
+	}
 }

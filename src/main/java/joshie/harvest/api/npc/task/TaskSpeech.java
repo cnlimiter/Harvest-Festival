@@ -12,38 +12,38 @@ import net.minecraft.world.WorldServer;
 
 @HFTask("speech")
 public class TaskSpeech extends TaskElement {
-    private Script script;
+	private Script script;
 
-    private TaskSpeech(Script script) {
-        this.script = script;
-    }
+	private TaskSpeech(Script script) {
+		this.script = script;
+	}
 
-    public static TaskSpeech of(Script script) {
-        return new TaskSpeech(script);
-    }
+	public static TaskSpeech of(Script script) {
+		return new TaskSpeech(script);
+	}
 
-    @Override
-    public void execute(NPCEntity npc) {
-        BlockPos pos = new BlockPos(npc.getAsEntity());
-        WorldServer server = (WorldServer) npc.getAsEntity().world;
-        for (EntityPlayer player : server.playerEntities) {
-            EntityPlayerMP mp = ((EntityPlayerMP) player);
-            if (mp.getDistanceSq(pos) < 64 * 64) {
-                HFApi.npc.forceScriptOpen(player, npc.getAsEntity(), script);
-            }
-        }
+	@Override
+	public void execute(NPCEntity npc) {
+		BlockPos pos = new BlockPos(npc.getAsEntity());
+		WorldServer server = (WorldServer) npc.getAsEntity().world;
+		for (EntityPlayer player : server.playerEntities) {
+			EntityPlayerMP mp = ((EntityPlayerMP) player);
+			if (mp.getDistanceSq(pos) < 64 * 64) {
+				HFApi.npc.forceScriptOpen(player, npc.getAsEntity(), script);
+			}
+		}
 
-        super.execute(npc);
-    }
+		super.execute(npc);
+	}
 
-    @Override
-    public void readFromNBT(NBTTagCompound tag) {
-        script = Script.REGISTRY.getValue(new ResourceLocation(tag.getString("Script")));
-    }
+	@Override
+	public void readFromNBT(NBTTagCompound tag) {
+		script = Script.REGISTRY.getValue(new ResourceLocation(tag.getString("Script")));
+	}
 
-    @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
-        tag.setString("Script", String.valueOf(script.getRegistryName()));
-        return tag;
-    }
+	@Override
+	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
+		tag.setString("Script", String.valueOf(script.getRegistryName()));
+		return tag;
+	}
 }

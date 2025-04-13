@@ -1,5 +1,9 @@
 package joshie.harvest.quests.player.friendship;
 
+import static joshie.harvest.core.registry.ShippingRegistry.SELL_VALUE;
+
+import java.util.Set;
+
 import joshie.harvest.api.quests.HFQuest;
 import joshie.harvest.api.quests.Quest;
 import joshie.harvest.cooking.HFCooking;
@@ -12,37 +16,33 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 
-import java.util.Set;
-
-import static joshie.harvest.core.registry.ShippingRegistry.SELL_VALUE;
-
 @HFQuest("friendship.abii.cookies")
 public class QuestAbii5KFreeCookies extends QuestFriendship {
-    public QuestAbii5KFreeCookies() {
-        super(HFNPCs.DAUGHTER_CHILD, 5000);
-    }
+	public QuestAbii5KFreeCookies() {
+		super(HFNPCs.DAUGHTER_CHILD, 5000);
+	}
 
-    @Override
-    public boolean canStartQuest(Set<Quest> active, Set<Quest> finished) {
-        return finished.contains(Quests.ABI_MEET);
-    }
+	@Override
+	public boolean canStartQuest(Set<Quest> active, Set<Quest> finished) {
+		return finished.contains(Quests.ABI_MEET);
+	}
 
-    @Override
-    @SuppressWarnings("ConstantConditions")
-    protected NonNullList<ItemStack> getRewardStacks(EntityPlayer player) {
-        NonNullList<ItemStack> stacks = NonNullList.create();
-        //Normal Cookies
-        ItemStack stack = HFCooking.MEAL.getCreativeStack(Meal.COOKIES);
-        stack.getTagCompound().setLong(SELL_VALUE, 0L);
-        stacks.add(stack);
+	@Override
+	@SuppressWarnings("ConstantConditions")
+	protected NonNullList<ItemStack> getRewardStacks(EntityPlayer player) {
+		NonNullList<ItemStack> stacks = NonNullList.create();
+		//Normal Cookies
+		ItemStack stack = HFCooking.MEAL.getCreativeStack(Meal.COOKIES);
+		stack.getTagCompound().setLong(SELL_VALUE, 0L);
+		stacks.add(stack);
 
-        //Chocolate Cookies
-        stack = HFCooking.MEAL.getCreativeStack(Meal.COOKIES_CHOCOLATE);
-        stack.getTagCompound().setLong(SELL_VALUE, 0L);
-        stacks.add(stack);
+		//Chocolate Cookies
+		stack = HFCooking.MEAL.getCreativeStack(Meal.COOKIES_CHOCOLATE);
+		stack.getTagCompound().setLong(SELL_VALUE, 0L);
+		stacks.add(stack);
 
-        //Vanilla Cookies
-        stacks.add(new ItemStack(Items.COOKIE));
-        return stacks;
-    }
+		//Vanilla Cookies
+		stacks.add(new ItemStack(Items.COOKIE));
+		return stacks;
+	}
 }

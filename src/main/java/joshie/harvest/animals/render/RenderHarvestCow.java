@@ -7,7 +7,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class RenderHarvestCow extends RenderHarvestAnimal<EntityHarvestCow> {
-    public RenderHarvestCow(RenderManager manager) {
-        super(manager, new ModelHarvestCow(), "cow");
-    }
+	public RenderHarvestCow(RenderManager manager) {
+		super(manager, new ModelHarvestCow(), "cow");
+	}
 }

@@ -1,5 +1,8 @@
 package joshie.harvest.shops.requirement;
 
+import static joshie.harvest.core.helpers.InventoryHelper.ITEM_STACK;
+
+import javax.annotation.Nonnull;
 import joshie.harvest.animals.HFAnimals;
 import joshie.harvest.animals.item.ItemAnimalProduct.Sizeable;
 import joshie.harvest.api.core.Size;
@@ -10,56 +13,61 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-import javax.annotation.Nonnull;
-
-import static joshie.harvest.core.helpers.InventoryHelper.ITEM_STACK;
-
 public class RequirementSizeable implements IRequirement {
-    private final ItemStack large;
-    private final ItemStack medium;
-    private final ItemStack small;
+	private final ItemStack large;
+	private final ItemStack medium;
+	private final ItemStack small;
 
-    public RequirementSizeable(Sizeable sizeable) {
-        this.large = HFAnimals.ANIMAL_PRODUCT.getStack(sizeable, Size.LARGE);
-        this.medium = HFAnimals.ANIMAL_PRODUCT.getStack(sizeable, Size.MEDIUM);
-        this.small = HFAnimals.ANIMAL_PRODUCT.getStack(sizeable, Size.SMALL);
-    }
+	public RequirementSizeable(Sizeable sizeable) {
+		this.large = HFAnimals.ANIMAL_PRODUCT.getStack(sizeable, Size.LARGE);
+		this.medium = HFAnimals.ANIMAL_PRODUCT.getStack(sizeable, Size.MEDIUM);
+		this.small = HFAnimals.ANIMAL_PRODUCT.getStack(sizeable, Size.SMALL);
+	}
 
-    @Override
-    public boolean isFulfilled(World world, EntityPlayer player, int amount) {
-        return amount == 1 && (InventoryHelper.hasInInventory(player, ITEM_STACK, small, amount) || InventoryHelper.hasInInventory(player, ITEM_STACK, medium, amount) || InventoryHelper.hasInInventory(player, ITEM_STACK, large, amount));
+	@Override
+	public boolean isFulfilled(World world, EntityPlayer player, int amount) {
+		return amount == 1 && (
+				InventoryHelper.hasInInventory(player, ITEM_STACK, small, amount) || InventoryHelper.hasInInventory(
+						player,
+						ITEM_STACK,
+						medium,
+						amount) || InventoryHelper.hasInInventory(player, ITEM_STACK, large, amount));
 
-    }
+	}
 
-    @Override
-    public void onPurchased(EntityPlayer player) {}
+	@Override
+	public void onPurchased(EntityPlayer player) {}
 
-    @Override
-    public int getCost() {
-        return 1;
-    }
+	@Override
+	public int getCost() {
+		return 1;
+	}
 
-    @Override
-    @Nonnull
-    public ItemStack getIcon() {
-        int num = PurchasableTrade.ticker % 1800;
-        if (num < 600) return small;
-        else if (num < 1200) return medium;
-        else return large;
-    }
+	@Override
+	@Nonnull
+	public ItemStack getIcon() {
+		int num = PurchasableTrade.ticker % 1800;
+		if (num < 600) {
+			return small;
+		} else if (num < 1200) {
+			return medium;
+		} else {
+			return large;
+		}
+	}
 
-    public int getPurchased(EntityPlayer player) {
-        if (InventoryHelper.hasInInventory(player, ITEM_STACK, small)) {
-            InventoryHelper.takeItemsInInventory(player, ITEM_STACK, small);
-            return 1;
-        } else if (InventoryHelper.hasInInventory(player, ITEM_STACK, medium)) {
-            InventoryHelper.takeItemsInInventory(player, ITEM_STACK, medium);
-            return 2;
-        } else if (InventoryHelper.hasInInventory(player, ITEM_STACK, large)) {
-            InventoryHelper.takeItemsInInventory(player, ITEM_STACK, large);
-            return 3;
-        }
+	public int getPurchased(EntityPlayer player) {
+		if (InventoryHelper.hasInInventory(player, ITEM_STACK, small)) {
+			InventoryHelper.takeItemsInInventory(player, ITEM_STACK, small);
+			return 1;
+		} else if (InventoryHelper.hasInInventory(player, ITEM_STACK, medium)) {
+			InventoryHelper.takeItemsInInventory(player, ITEM_STACK, medium);
+			return 2;
+		} else if (InventoryHelper.hasInInventory(player, ITEM_STACK, large)) {
+			InventoryHelper.takeItemsInInventory(player, ITEM_STACK, large);
+			return 3;
+		}
 
-        return 0;
-    }
+		return 0;
+	}
 }

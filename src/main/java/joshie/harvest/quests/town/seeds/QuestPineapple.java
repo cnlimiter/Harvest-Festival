@@ -6,7 +6,7 @@ import joshie.harvest.npcs.HFNPCs;
 
 @HFQuest("seeds.pineapple")
 public class QuestPineapple extends QuestShipping {
-    public QuestPineapple() {
-        super("pineapple", HFNPCs.GS_OWNER, Season.SUMMER, 1000);
-    }
+	public QuestPineapple() {
+		super("pineapple", HFNPCs.GS_OWNER, Season.SUMMER, 1000);
+	}
 }

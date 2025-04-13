@@ -1,5 +1,6 @@
 package joshie.harvest.cooking.gui;
 
+import javax.annotation.Nonnull;
 import joshie.harvest.cooking.tile.FridgeData;
 import joshie.harvest.cooking.tile.TileFridge;
 import joshie.harvest.core.base.gui.ContainerExpanded;
@@ -9,87 +10,95 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-import javax.annotation.Nonnull;
-
 public class ContainerFridge extends ContainerExpanded {
-    private final TileFridge fridge;
+	private final TileFridge fridge;
 
-    public ContainerFridge(EntityPlayer player, InventoryPlayer inventory, TileFridge fridge) {
-        this.fridge = fridge;
-        fridge.getContents().openInventory(player);
-        for (int i = 0; i < 6; i++) {
-            for (int j = 0; j < 9; j++) {
-                addSlotToContainer(new SlotFridge(fridge.getContents(), j + i * 9, 8 + j * 18, (i * 18) + 18));
-            }
-        }
+	public ContainerFridge(EntityPlayer player, InventoryPlayer inventory, TileFridge fridge) {
+		this.fridge = fridge;
+		fridge.getContents().openInventory(player);
+		for (int i = 0; i < 6; i++) {
+			for (int j = 0; j < 9; j++) {
+				addSlotToContainer(new SlotFridge(fridge.getContents(), j + i * 9, 8 + j * 18, (i * 18) + 18));
+			}
+		}
 
-        bindPlayerInventory(inventory, 56);
-    }
+		bindPlayerInventory(inventory, 56);
+	}
 
-    @Override
-    public int getMaximumStorage(int size) {
-        return size * 8;
-    }
+	@Override
+	public int getMaximumStorage(int size) {
+		return size * 8;
+	}
 
-    @Override
-    public boolean canInteractWith(@Nonnull EntityPlayer player) {
-        return fridge.getContents().isUsableByPlayer(player);
-    }
+	@Override
+	public boolean canInteractWith(@Nonnull EntityPlayer player) {
+		return fridge.getContents().isUsableByPlayer(player);
+	}
 
-    @Override
-    public void onContainerClosed(EntityPlayer playerIn) {
-        super.onContainerClosed(playerIn);
-        fridge.getContents().closeInventory(playerIn);
-    }
+	@Override
+	public void onContainerClosed(EntityPlayer playerIn) {
+		super.onContainerClosed(playerIn);
+		fridge.getContents().closeInventory(playerIn);
+	}
 
-    @Override
-    @Nonnull
-    public ItemStack transferStackInSlot(EntityPlayer player, int slotID) {
-        int size = fridge.getContents().getSizeInventory();
-        int low = size + 27;
-        int high = low + 9;
-        ItemStack newStack = ItemStack.EMPTY;
-        final Slot slot = inventorySlots.get(slotID);
+	@Override
+	@Nonnull
+	public ItemStack transferStackInSlot(EntityPlayer player, int slotID) {
+		int size = fridge.getContents().getSizeInventory();
+		int low = size + 27;
+		int high = low + 9;
+		ItemStack newStack = ItemStack.EMPTY;
+		final Slot slot = inventorySlots.get(slotID);
 
-        if (slot != null && slot.getHasStack()) {
-            ItemStack stack = slot.getStack();
-            newStack = stack.copy();
+		if (slot != null && slot.getHasStack()) {
+			ItemStack stack = slot.getStack();
+			newStack = stack.copy();
 
-            if (slotID < size) {
-                if (!mergeItemStack(stack, size, high, true)) return ItemStack.EMPTY;
-            } else if (TileFridge.isValid(stack)) {
-                if (!mergeItemStack(stack, 0, fridge.getContents().getSizeInventory(), false)) return ItemStack.EMPTY;
-            } else if (slotID >= size && slotID < low) {
-                if (!mergeItemStack(stack, low, high, false)) return ItemStack.EMPTY;
-            } else if (slotID >= low && slotID < high && !mergeItemStack(stack, size, low, false)) return ItemStack.EMPTY;
+			if (slotID < size) {
+				if (!mergeItemStack(stack, size, high, true)) {
+					return ItemStack.EMPTY;
+				}
+			} else if (TileFridge.isValid(stack)) {
+				if (!mergeItemStack(stack, 0, fridge.getContents().getSizeInventory(), false)) {
+					return ItemStack.EMPTY;
+				}
+			} else if (slotID >= size && slotID < low) {
+				if (!mergeItemStack(stack, low, high, false)) {
+					return ItemStack.EMPTY;
+				}
+			} else if (slotID >= low && slotID < high && !mergeItemStack(stack, size, low, false)) {
+				return ItemStack.EMPTY;
+			}
 
-            if (stack.getCount() == 0) {
-                slot.putStack(ItemStack.EMPTY);
-            } else {
-                slot.onSlotChanged();
-            }
+			if (stack.getCount() == 0) {
+				slot.putStack(ItemStack.EMPTY);
+			} else {
+				slot.onSlotChanged();
+			}
 
-            if (stack.getCount() == newStack.getCount()) return ItemStack.EMPTY;
+			if (stack.getCount() == newStack.getCount()) {
+				return ItemStack.EMPTY;
+			}
 
-            slot.onTake(player, stack);
-        }
+			slot.onTake(player, stack);
+		}
 
-        return newStack;
-    }
+		return newStack;
+	}
 
-    @Override
-    public void onCraftMatrixChanged(IInventory par1IInventory) {
-        detectAndSendChanges();
-    }
+	@Override
+	public void onCraftMatrixChanged(IInventory par1IInventory) {
+		detectAndSendChanges();
+	}
 
-    private class SlotFridge extends SlotHF {
-        public SlotFridge(FridgeData invent, int slot, int x, int y) {
-            super(invent, slot, x, y);
-        }
+	private class SlotFridge extends SlotHF {
+		public SlotFridge(FridgeData invent, int slot, int x, int y) {
+			super(invent, slot, x, y);
+		}
 
-        @Override
-        public boolean isItemValid(@Nonnull ItemStack stack) {
-            return TileFridge.isValid(stack);
-        }
-    }
+		@Override
+		public boolean isItemValid(@Nonnull ItemStack stack) {
+			return TileFridge.isValid(stack);
+		}
+	}
 }

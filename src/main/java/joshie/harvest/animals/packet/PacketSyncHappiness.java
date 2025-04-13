@@ -15,56 +15,56 @@ import net.minecraft.util.EnumParticleTypes;
 
 @Packet(Side.CLIENT)
 public class PacketSyncHappiness extends PenguinPacket {
-    private int id;
-    private int happiness;
+	private int id;
+	private int happiness;
 
-    public PacketSyncHappiness() {}
+	public PacketSyncHappiness() {}
 
-    public PacketSyncHappiness(int id, int happiness) {
-        this.id = id;
-        this.happiness = happiness;
-    }
+	public PacketSyncHappiness(int id, int happiness) {
+		this.id = id;
+		this.happiness = happiness;
+	}
 
-    @Override
-    public void toBytes(ByteBuf buf) {
-        buf.writeInt(id);
-        buf.writeInt(happiness);
-    }
+	@Override
+	public void toBytes(ByteBuf buf) {
+		buf.writeInt(id);
+		buf.writeInt(happiness);
+	}
 
-    @Override
-    public void fromBytes(ByteBuf buf) {
-        id = buf.readInt();
-        happiness = buf.readInt();
-    }
+	@Override
+	public void fromBytes(ByteBuf buf) {
+		id = buf.readInt();
+		happiness = buf.readInt();
+	}
 
-    @Override
-    @SuppressWarnings("unchecked, ConstantConditions")
-    public void handlePacket(EntityPlayer player) {
-        EntityAnimal animal = getEntityAsAnimal();
-        if (animal != null) {
-            AnimalStats stats = EntityHelper.getStats(animal);
-            if (stats != null) {
-                stats.affectHappiness(happiness);
-                if (happiness > 0) {
-                    for (int j = 0; j < 3D; j++) {
-                        double x = (animal.posX - 0.5D) + animal.world.rand.nextFloat();
-                        double y = (animal.posY - 0.5D) + animal.world.rand.nextFloat();
-                        double z = (animal.posZ - 0.5D) + animal.world.rand.nextFloat();
-                        animal.world.spawnParticle(EnumParticleTypes.HEART, x, 1D + y - 0.125D, z, 0, 0, 0);
-                    }
-                } else if (happiness < 0) {
-                    for (int j = 0; j < 16D; j++) {
-                        double x = (animal.posX - 0.5D) + animal.world.rand.nextFloat();
-                        double y = (animal.posY - 0.5D) + animal.world.rand.nextFloat();
-                        double z = (animal.posZ - 0.5D) + animal.world.rand.nextFloat();
-                        animal.world.spawnParticle(EnumParticleTypes.DAMAGE_INDICATOR, x, 1 + y, z, 0, 0, 0);
-                    }
-                }
-            }
-        }
-    }
+	@Override
+	@SuppressWarnings("unchecked, ConstantConditions")
+	public void handlePacket(EntityPlayer player) {
+		EntityAnimal animal = getEntityAsAnimal();
+		if (animal != null) {
+			AnimalStats stats = EntityHelper.getStats(animal);
+			if (stats != null) {
+				stats.affectHappiness(happiness);
+				if (happiness > 0) {
+					for (int j = 0; j < 3D; j++) {
+						double x = (animal.posX - 0.5D) + animal.world.rand.nextFloat();
+						double y = (animal.posY - 0.5D) + animal.world.rand.nextFloat();
+						double z = (animal.posZ - 0.5D) + animal.world.rand.nextFloat();
+						animal.world.spawnParticle(EnumParticleTypes.HEART, x, 1D + y - 0.125D, z, 0, 0, 0);
+					}
+				} else if (happiness < 0) {
+					for (int j = 0; j < 16D; j++) {
+						double x = (animal.posX - 0.5D) + animal.world.rand.nextFloat();
+						double y = (animal.posY - 0.5D) + animal.world.rand.nextFloat();
+						double z = (animal.posZ - 0.5D) + animal.world.rand.nextFloat();
+						animal.world.spawnParticle(EnumParticleTypes.DAMAGE_INDICATOR, x, 1 + y, z, 0, 0, 0);
+					}
+				}
+			}
+		}
+	}
 
-    private EntityAnimal getEntityAsAnimal() {
-        return (EntityAnimal) Objects.requireNonNull(MCClientHelper.getWorld()).getEntityByID(id);
-    }
+	private EntityAnimal getEntityAsAnimal() {
+		return (EntityAnimal) Objects.requireNonNull(MCClientHelper.getWorld()).getEntityByID(id);
+	}
 }

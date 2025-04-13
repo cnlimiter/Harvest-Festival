@@ -1,5 +1,10 @@
 package joshie.harvest.crops.render;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import joshie.harvest.api.crops.Crop;
 import joshie.harvest.core.base.render.BakedHF;
 import joshie.harvest.core.util.annotations.HFEvents;
@@ -13,39 +18,34 @@ import net.minecraft.util.registry.IRegistry;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
-
 @SuppressWarnings("unused")
 public class BakedCrops extends BakedHF {
-    public BakedCrops(IBakedModel parent) {
-        super(parent);
-    }
+	public BakedCrops(IBakedModel parent) {
+		super(parent);
+	}
 
-    @Override
-    @Nonnull
-    public List<BakedQuad> getQuads(final @Nullable IBlockState state, final @Nullable EnumFacing side, final long rand) {
-        List<BakedQuad> quads = new ArrayList<>();
-        BakedCrops.super.getQuads(state, side, rand).stream().map(BakedTintedQuad :: new).forEachOrdered(quads::add);
-        return quads;
-    }
+	@Override
+	@Nonnull
+	public List<BakedQuad> getQuads(final @Nullable IBlockState state, final @Nullable EnumFacing side, final long rand) {
+		List<BakedQuad> quads = new ArrayList<>();
+		BakedCrops.super.getQuads(state, side, rand).stream().map(BakedTintedQuad::new).forEachOrdered(quads::add);
+		return quads;
+	}
 
-    @HFEvents
-    @SuppressWarnings("unused")
-    public static class TintedMapper extends DefaultStateMapper {
-        @SubscribeEvent
-        public void onBaking(ModelBakeEvent event) {
-            IRegistry<ModelResourceLocation, IBakedModel> registry = event.getModelRegistry();
-            Crop.REGISTRY.values().stream().filter(crop -> crop != Crop.NULL_CROP).filter(Crop::skipLoadingRender).forEachOrdered(crop -> {
-                for (Object object : crop.getStateHandler().getValidStates()) {
-                    IBlockState state = (IBlockState) object;
-                    IBakedModel original = registry.getObject(getModelResourceLocation(state));
-                    registry.putObject(getModelResourceLocation(state), new BakedCrops(original));
-                }
-            });
-        }
-    }
+	@HFEvents
+	@SuppressWarnings("unused")
+	public static class TintedMapper extends DefaultStateMapper {
+		@SubscribeEvent
+		public void onBaking(ModelBakeEvent event) {
+			IRegistry<ModelResourceLocation, IBakedModel> registry = event.getModelRegistry();
+			Crop.REGISTRY.values().stream().filter(crop -> crop != Crop.NULL_CROP).filter(Crop::skipLoadingRender).forEachOrdered(crop -> {
+				for (Object object : crop.getStateHandler().getValidStates()) {
+					IBlockState state = (IBlockState) object;
+					IBakedModel original = registry.getObject(getModelResourceLocation(state));
+					registry.putObject(getModelResourceLocation(state), new BakedCrops(original));
+				}
+			});
+		}
+	}
 }
 

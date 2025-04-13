@@ -9,13 +9,14 @@ import net.minecraft.entity.player.EntityPlayer;
 
 @Packet(Packet.Side.CLIENT)
 public class PacketSyncStatusReset extends PacketNBT {
-    public PacketSyncStatusReset() {}
-    public PacketSyncStatusReset(CalendarDate yesterday) {
-        super(yesterday.toNBT());
-    }
+	public PacketSyncStatusReset() {}
 
-    @Override
-    public void handlePacket(EntityPlayer player) {
-        HFTrackers.getClientPlayerTracker().getRelationships().newDay(CalendarDate.fromNBT(tag), HFApi.calendar.getDate(player.world));
-    }
+	public PacketSyncStatusReset(CalendarDate yesterday) {
+		super(yesterday.toNBT());
+	}
+
+	@Override
+	public void handlePacket(EntityPlayer player) {
+		HFTrackers.getClientPlayerTracker().getRelationships().newDay(CalendarDate.fromNBT(tag), HFApi.calendar.getDate(player.world));
+	}
 }

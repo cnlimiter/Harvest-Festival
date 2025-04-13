@@ -1,14 +1,20 @@
 [
-{
-  "modid": "harvestfestival",
-  "name": "Harvest Festival Legacy",
-  "description": "All Rights Reserved.",
-  "version": "${version}",
-  "mcversion": "${mcversion}",
-  "authorList": ["Snownee", "joshie", "Yulife"],
-  "credits": "Girafi for his awesomeness. See CREDITS.md in jar for extra",
-  "logoFile": "assets/harvestfestival/logo.png",
-  "screenshots": [],
-  "requiredMods": ["mixinbooter"]
-}
+	{
+		"modid": "harvestfestival",
+		"name": "Harvest Festival Legacy",
+		"description": "All Rights Reserved.",
+		"version": "${version}",
+		"mcversion": "${mcversion}",
+		"authorList": [
+			"Snownee",
+			"joshie",
+			"Yulife"
+		],
+		"credits": "Girafi for his awesomeness. See CREDITS.md in jar for extra",
+		"logoFile": "assets/harvestfestival/logo.png",
+		"screenshots": [],
+		"requiredMods": [
+			"mixinbooter"
+		]
+	}
 ]

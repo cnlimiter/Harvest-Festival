@@ -1,32 +1,31 @@
 package joshie.harvest.api.calendar;
 
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.translation.I18n;
-
-import javax.annotation.Nonnull;
-
 import java.util.List;
 import java.util.Locale;
 
 import com.google.common.collect.ImmutableList;
 
+import javax.annotation.Nonnull;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.translation.I18n;
+
 public enum Season {
-    SPRING(TextFormatting.GREEN),
-    SUMMER(TextFormatting.YELLOW),
-    AUTUMN(TextFormatting.GOLD),
-    WINTER(TextFormatting.WHITE);
+	SPRING(TextFormatting.GREEN),
+	SUMMER(TextFormatting.YELLOW),
+	AUTUMN(TextFormatting.GOLD),
+	WINTER(TextFormatting.WHITE);
 
 	public static final List<Season> VALUES = ImmutableList.copyOf(values());
 
-    private final TextFormatting textColor;
+	private final TextFormatting textColor;
 
-    Season(TextFormatting textColor) {
-        this.textColor = textColor;
-    }
+	Season(TextFormatting textColor) {
+		this.textColor = textColor;
+	}
 
-    @Nonnull
-    @SuppressWarnings("deprecation")
-    public String getDisplayName() {
-        return textColor + I18n.translateToLocal("harvestfestival.season." + name().toLowerCase(Locale.ENGLISH));
-    }
+	@Nonnull
+	@SuppressWarnings("deprecation")
+	public String getDisplayName() {
+		return textColor + I18n.translateToLocal("harvestfestival.season." + name().toLowerCase(Locale.ENGLISH));
+	}
 }

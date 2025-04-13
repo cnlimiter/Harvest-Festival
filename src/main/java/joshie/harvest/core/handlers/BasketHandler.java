@@ -40,88 +40,104 @@ import net.minecraftforge.items.IItemHandler;
 
 @HFEvents
 public class BasketHandler {
-    public static boolean forbidsDrop(Block block) {
-        return block instanceof BlockDoor || block instanceof BlockFenceGate || block instanceof BlockTrapDoor || block instanceof BlockLever || block instanceof BlockButton || block instanceof BlockHFCrops || block instanceof BlockStorage;
-    }
+	public static boolean forbidsDrop(Block block) {
+		return block instanceof BlockDoor || block instanceof BlockFenceGate || block instanceof BlockTrapDoor ||
+				block instanceof BlockLever || block instanceof BlockButton || block instanceof BlockHFCrops ||
+				block instanceof BlockStorage;
+	}
 
-    @SubscribeEvent //TODO: Check that picking up partial items
-    public void onItemPickup(EntityItemPickupEvent event) {
-        ItemStack stack = event.getItem().getItem();
-        if (HFApi.shipping.getSellValue(stack) > 0) {
-            NonNullList<ItemStack> list = NonNullList.withSize(1, stack);
-            if (EntityBasket.findBasketAndShip(event.getEntityPlayer(), list)) {
-                event.getItem().setDead();
-                event.setCanceled(true);
-            }
-        }
-    }
+	@SubscribeEvent //TODO: Check that picking up partial items
+	public void onItemPickup(EntityItemPickupEvent event) {
+		ItemStack stack = event.getItem().getItem();
+		if (HFApi.shipping.getSellValue(stack) > 0) {
+			NonNullList<ItemStack> list = NonNullList.withSize(1, stack);
+			if (EntityBasket.findBasketAndShip(event.getEntityPlayer(), list)) {
+				event.getItem().setDead();
+				event.setCanceled(true);
+			}
+		}
+	}
 
-    public static void setBasket(World world, BlockPos pos, IItemHandler handler) {
-        world.setBlockState(pos, HFCore.STORAGE.getStateFromEnum(Storage.BASKET));
-        TileEntity tile = world.getTileEntity(pos);
-        if (tile instanceof TileBasket) {
-            TileBasket basket = (TileBasket) tile;
-            for (int i = 0; i < handler.getSlots(); i++) {
-                basket.handler.setStackInSlot(i, handler.getStackInSlot(i));
-            }
-        }
-    }
+	public static void setBasket(World world, BlockPos pos, IItemHandler handler) {
+		world.setBlockState(pos, HFCore.STORAGE.getStateFromEnum(Storage.BASKET));
+		TileEntity tile = world.getTileEntity(pos);
+		if (tile instanceof TileBasket) {
+			TileBasket basket = (TileBasket) tile;
+			for (int i = 0; i < handler.getSlots(); i++) {
+				basket.handler.setStackInSlot(i, handler.getStackInSlot(i));
+			}
+		}
+	}
 
-    private static final Set<Entity> EMPTY = new HashSet<>();
-    private final Cache<EntityPlayer, Set<Entity>> droppedClient = CacheBuilder.newBuilder().expireAfterWrite(1L, TimeUnit.MINUTES).build();
-    private final Cache<EntityPlayer, Set<Entity>> droppedServer = CacheBuilder.newBuilder().expireAfterWrite(1L, TimeUnit.MINUTES).build();
+	private static final Set<Entity> EMPTY = new HashSet<>();
+	private final Cache<EntityPlayer, Set<Entity>> droppedClient = CacheBuilder.newBuilder().expireAfterWrite(1L, TimeUnit.MINUTES).build();
+	private final Cache<EntityPlayer, Set<Entity>> droppedServer = CacheBuilder.newBuilder().expireAfterWrite(1L, TimeUnit.MINUTES).build();
 
-    private Set<Entity> getSetFromPlayer(EntityPlayer player) {
-        try {
-            return player.world.isRemote ? droppedClient.get(player, HashSet::new) : droppedServer.get(player, HashSet::new);
-        } catch (ExecutionException ex) {
-            return EMPTY;
-        }
-    }
+	private Set<Entity> getSetFromPlayer(EntityPlayer player) {
+		try {
+			return player.world.isRemote ? droppedClient.get(player, HashSet::new) : droppedServer.get(player, HashSet::new);
+		} catch (ExecutionException ex) {
+			return EMPTY;
+		}
+	}
 
-    public static EntityBasket getWearingBasket(EntityPlayer player) {
-        for (Entity entity : player.getPassengers()) {
-            if (entity instanceof EntityBasket)
-                return (EntityBasket) entity;
-        }
+	public static EntityBasket getWearingBasket(EntityPlayer player) {
+		for (Entity entity : player.getPassengers()) {
+			if (entity instanceof EntityBasket) {
+				return (EntityBasket) entity;
+			}
+		}
 
-        return null;
-    }
+		return null;
+	}
 
-    @SubscribeEvent
-    @SuppressWarnings("ConstantConditions")
-    public void onRightClickEmpty(PlayerInteractEvent.RightClickEmpty event) {
-        EntityPlayer player = event.getEntityPlayer();
-        if (player.isSneaking()) {
-            EntityBasket basket = getWearingBasket(player);
-            if (basket != null) {
-                PacketHandler.sendToServer(new PacketOpenBasket());
-            }
-        }
-    }
+	@SubscribeEvent
+	@SuppressWarnings("ConstantConditions")
+	public void onRightClickEmpty(PlayerInteractEvent.RightClickEmpty event) {
+		EntityPlayer player = event.getEntityPlayer();
+		if (player.isSneaking()) {
+			EntityBasket basket = getWearingBasket(player);
+			if (basket != null) {
+				PacketHandler.sendToServer(new PacketOpenBasket());
+			}
+		}
+	}
 
-    @SubscribeEvent
-    @SuppressWarnings("ConstantConditions")
-    public void onRightClickGround(PlayerInteractEvent.RightClickBlock event) {
-        EntityPlayer player = event.getEntityPlayer();
-        if (event.getHand() == EnumHand.MAIN_HAND && !player.isSneaking() && player.getHeldItemMainhand().isEmpty() && player.getHeldItemOffhand().isEmpty() && !forbidsDrop(event.getWorld().getBlockState(event.getPos()).getBlock())) {
-            Set<Entity> set = getSetFromPlayer(player);
-            player.getPassengers().stream().filter(entity -> entity instanceof EntityBasket && !set.contains(entity)).forEach(entity -> {
-                ItemStack basket = HFCore.STORAGE.getStackFromEnum(Storage.BASKET);
-                player.setHeldItem(EnumHand.MAIN_HAND, basket);
-                TileEntity tile = (((ItemBlockStorage) basket.getItem()).onBasketUsed(basket, player, player.world, event.getPos(), EnumHand.MAIN_HAND, event.getFace(), 0F, 0F, 0F));
-                if (tile instanceof TileBasket) {
-                    ((TileBasket) tile).setAppearanceAndContents(((EntityBasket) entity).getEntityItem().copy(), ((EntityBasket) entity).handler);
-                    set.add(entity);
-                    entity.setDead();
-                }
-                player.setHeldItem(EnumHand.MAIN_HAND, ItemStack.EMPTY);
-            });
-        } else if (player.isSneaking() && player.world.isRemote) {
-            EntityBasket basket = getWearingBasket(player);
-            if (basket != null) {
-                PacketHandler.sendToServer(new PacketOpenBasket());
-            }
-        }
-    }
+	@SubscribeEvent
+	@SuppressWarnings("ConstantConditions")
+	public void onRightClickGround(PlayerInteractEvent.RightClickBlock event) {
+		EntityPlayer player = event.getEntityPlayer();
+		if (event.getHand() == EnumHand.MAIN_HAND && !player.isSneaking() && player.getHeldItemMainhand().isEmpty() &&
+				player.getHeldItemOffhand().isEmpty() && !forbidsDrop(event.getWorld().getBlockState(event.getPos()).getBlock())) {
+			Set<Entity> set = getSetFromPlayer(player);
+			player.getPassengers().stream().filter(entity -> entity instanceof EntityBasket && !set.contains(entity)).forEach(entity -> {
+				ItemStack basket = HFCore.STORAGE.getStackFromEnum(Storage.BASKET);
+				player.setHeldItem(EnumHand.MAIN_HAND, basket);
+				TileEntity tile = (
+						((ItemBlockStorage) basket.getItem()).onBasketUsed(
+								basket,
+								player,
+								player.world,
+								event.getPos(),
+								EnumHand.MAIN_HAND,
+								event.getFace(),
+								0F,
+								0F,
+								0F));
+				if (tile instanceof TileBasket) {
+					((TileBasket) tile).setAppearanceAndContents(
+							((EntityBasket) entity).getEntityItem().copy(),
+							((EntityBasket) entity).handler);
+					set.add(entity);
+					entity.setDead();
+				}
+				player.setHeldItem(EnumHand.MAIN_HAND, ItemStack.EMPTY);
+			});
+		} else if (player.isSneaking() && player.world.isRemote) {
+			EntityBasket basket = getWearingBasket(player);
+			if (basket != null) {
+				PacketHandler.sendToServer(new PacketOpenBasket());
+			}
+		}
+	}
 }

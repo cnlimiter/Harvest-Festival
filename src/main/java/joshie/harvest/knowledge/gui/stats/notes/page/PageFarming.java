@@ -5,9 +5,9 @@ import joshie.harvest.core.base.gui.BookPage;
 import joshie.harvest.crops.HFCrops;
 
 public class PageFarming extends PageNotes {
-    public static final BookPage INSTANCE = new PageFarming();
+	public static final BookPage INSTANCE = new PageFarming();
 
-    PageFarming() {
-        super(Category.FARMING, HFCrops.STRAWBERRY.getCropStack(1));
-    }
+	PageFarming() {
+		super(Category.FARMING, HFCrops.STRAWBERRY.getCropStack(1));
+	}
 }

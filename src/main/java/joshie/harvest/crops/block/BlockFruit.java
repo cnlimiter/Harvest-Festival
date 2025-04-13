@@ -5,7 +5,6 @@ import static joshie.harvest.core.lib.HFModInfo.MODID;
 import java.util.Locale;
 
 import javax.annotation.Nonnull;
-
 import joshie.harvest.api.crops.Crop;
 import joshie.harvest.core.base.block.BlockHFEnum;
 import joshie.harvest.crops.block.BlockFruit.Fruit;
@@ -26,84 +25,81 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockFruit extends BlockHFEnum<BlockFruit, Fruit>
-{
-    @SuppressWarnings("ConstantConditions")
-    public BlockFruit()
-    {
-        super(Material.PLANTS, Fruit.class);
-        setSoundType(SoundType.PLANT);
-        setCreativeTab(null);
-    }
+public class BlockFruit extends BlockHFEnum<BlockFruit, Fruit> {
+	@SuppressWarnings("ConstantConditions")
+	public BlockFruit() {
+		super(Material.PLANTS, Fruit.class);
+		setSoundType(SoundType.PLANT);
+		setCreativeTab(null);
+	}
 
-    public enum Fruit implements IStringSerializable
-    {
-        APPLE, BANANA, GRAPE, ORANGE, PEACH;
+	public enum Fruit implements IStringSerializable {
+		APPLE, BANANA, GRAPE, ORANGE, PEACH;
 
-        private final ResourceLocation cropLocation;
-        private Crop crop;
+		private final ResourceLocation cropLocation;
+		private Crop crop;
 
-        Fruit()
-        {
-            this.cropLocation = new ResourceLocation(MODID, getName());
-        }
+		Fruit() {
+			this.cropLocation = new ResourceLocation(MODID, getName());
+		}
 
-        public Crop getCrop()
-        {
-            if (crop != null)
-                return crop;
-            else
-            {
-                crop = Crop.REGISTRY.get(cropLocation);
-                return crop;
-            }
-        }
+		public Crop getCrop() {
+			if (crop != null) {
+				return crop;
+			} else {
+				crop = Crop.REGISTRY.get(cropLocation);
+				return crop;
+			}
+		}
 
-        @Override
-        public String getName()
-        {
-            return toString().toLowerCase(Locale.ENGLISH);
-        }
-    }
+		@Override
+		public String getName() {
+			return toString().toLowerCase(Locale.ENGLISH);
+		}
+	}
 
-    @Override
-    protected boolean shouldDisplayInCreative(Fruit fruit) {
-        return false;
-    }
+	@Override
+	protected boolean shouldDisplayInCreative(Fruit fruit) {
+		return false;
+	}
 
-    @Override
-    @SuppressWarnings("deprecation, unchecked")
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos)
-    {
-        return NULL_AABB;
-    }
+	@Override
+	@SuppressWarnings("deprecation, unchecked")
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
+		return NULL_AABB;
+	}
 
-    @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
-    {
-        Fruit fruit = getEnumFromState(state);
-        world.setBlockToAir(pos);
-        spawnAsEntity(world, pos, fruit.getCrop().getCropStack(1));
-        return true;
-    }
+	@Override
+	public boolean onBlockActivated(
+			World world,
+			BlockPos pos,
+			IBlockState state,
+			EntityPlayer player,
+			EnumHand hand,
+			EnumFacing side,
+			float hitX,
+			float hitY,
+			float hitZ) {
+		Fruit fruit = getEnumFromState(state);
+		world.setBlockToAir(pos);
+		spawnAsEntity(world, pos, fruit.getCrop().getCropStack(1));
+		return true;
+	}
 
-    @Override
-    public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
-    {
-        Fruit fruit = getEnumFromState(state);
-        drops.add(fruit.getCrop().getCropStack(1));
-    }
+	@Override
+	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
+		Fruit fruit = getEnumFromState(state);
+		drops.add(fruit.getCrop().getCropStack(1));
+	}
 
-    @Override
-    public boolean hasTileEntity(IBlockState state)
-    {
-        return true;
-    }
+	@Override
+	public boolean hasTileEntity(IBlockState state) {
+		return true;
+	}
 
-    @Override
-    @Nonnull
-    public TileEntity createTileEntity(@Nonnull World world, @Nonnull IBlockState state)
-    {
-        return new TileFruit();
-    }
+	@Override
+	@Nonnull
+	public TileEntity createTileEntity(@Nonnull World world, @Nonnull IBlockState state) {
+		return new TileFruit();
+	}
 }

@@ -10,20 +10,20 @@ import net.minecraft.entity.player.EntityPlayer;
 
 @HFApiImplementation
 public class PlayerHelper implements IPlayerHelper {
-    public static final PlayerHelper INSTANCE = new PlayerHelper();
+	public static final PlayerHelper INSTANCE = new PlayerHelper();
 
-    @Override
-    public IPlayerStats getStatsForPlayer(EntityPlayer player) {
-        return HFTrackers.getPlayerTrackerFromPlayer(player).getStats();
-    }
+	@Override
+	public IPlayerStats getStatsForPlayer(EntityPlayer player) {
+		return HFTrackers.getPlayerTrackerFromPlayer(player).getStats();
+	}
 
-    @Override
-    public IRelations getRelationsForPlayer(EntityPlayer player) {
-        return HFTrackers.getPlayerTrackerFromPlayer(player).getRelationships();
-    }
+	@Override
+	public IRelations getRelationsForPlayer(EntityPlayer player) {
+		return HFTrackers.getPlayerTrackerFromPlayer(player).getRelationships();
+	}
 
-    @Override
-    public IPlayerTracking getTrackingForPlayer(EntityPlayer player) {
-        return HFTrackers.getPlayerTrackerFromPlayer(player).getTracking();
-    }
+	@Override
+	public IPlayerTracking getTrackingForPlayer(EntityPlayer player) {
+		return HFTrackers.getPlayerTrackerFromPlayer(player).getTracking();
+	}
 }

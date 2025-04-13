@@ -1,6 +1,12 @@
 package joshie.harvest.core.util;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 import com.google.gson.annotations.Expose;
+
+import javax.annotation.Nullable;
 import joshie.harvest.api.buildings.Building;
 import joshie.harvest.buildings.placeable.Placeable;
 import joshie.harvest.buildings.placeable.Placeable.ConstructionStage;
@@ -14,95 +20,112 @@ import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 public class HFTemplate {
-    @Expose
-    private Placeable[] components;
-    private final HashMap<String, PlaceableNPC> npc_offsets = new HashMap<>();
+	@Expose
+	private Placeable[] components;
+	private final HashMap<String, PlaceableNPC> npc_offsets = new HashMap<>();
 
-    public HFTemplate() {}
-    public HFTemplate(ArrayList<Placeable> ret) {
-        components = new Placeable[ret.size()];
-        for (int j = 0; j < ret.size(); j++) {
-            components[j] = ret.get(j);
-        }
-    }
+	public HFTemplate() {}
 
-    public void merge(HFTemplate park) {
-        List<Placeable> set = new ArrayList<>();
-        for (Placeable component: park.components) {
-            if (!set.contains(component)) set.add(component);
-        }
+	public HFTemplate(ArrayList<Placeable> ret) {
+		components = new Placeable[ret.size()];
+		for (int j = 0; j < ret.size(); j++) {
+			components[j] = ret.get(j);
+		}
+	}
 
-        for (Placeable component: components) {
-            if (!set.contains(component)) set.add(component);
-        }
+	public void merge(HFTemplate park) {
+		List<Placeable> set = new ArrayList<>();
+		for (Placeable component : park.components) {
+			if (!set.contains(component)) {
+				set.add(component);
+			}
+		}
 
-        components = set.toArray(new Placeable[set.size()]);
-    }
+		for (Placeable component : components) {
+			if (!set.contains(component)) {
+				set.add(component);
+			}
+		}
 
-    public void initTemplate() {
-        for (Placeable placeable: components) {
-            if (placeable instanceof PlaceableNPC) {
-                PlaceableNPC npc = ((PlaceableNPC)placeable);
-                String home = npc.getHomeString();
-                if (home != null) {
-                    npc_offsets.put(home, npc);
-                }
-            }
-        }
-    }
+		components = set.toArray(new Placeable[set.size()]);
+	}
 
-    public Placeable[] getComponents() {
-        return components;
-    }
+	public void initTemplate() {
+		for (Placeable placeable : components) {
+			if (placeable instanceof PlaceableNPC) {
+				PlaceableNPC npc = ((PlaceableNPC) placeable);
+				String home = npc.getHomeString();
+				if (home != null) {
+					npc_offsets.put(home, npc);
+				}
+			}
+		}
+	}
 
-    public void removeBlocks(World world, BlockPos pos, Rotation rotation, IBlockState state, boolean removeEntities) {
-        if (!world.isRemote) {
-            if (components != null) {
-                if (removeEntities) for (int i = components.length - 1; i >= 0; i--) components[i].remove(world, pos, rotation, ConstructionStage.MOVEIN, state);
-                if (removeEntities) for (int i = components.length - 1; i >= 0; i--) components[i].remove(world, pos, rotation, ConstructionStage.PAINT, state);
-                for (int i = components.length - 1; i >= 0; i--) components[i].remove(world, pos, rotation, ConstructionStage.DECORATE, state);
-                for (int i = components.length - 1; i >= 0; i--) components[i].remove(world, pos, rotation, ConstructionStage.BUILD, state);
-                MCServerHelper.markForUpdate(world, pos);
-            }
-        }
-    }
+	public Placeable[] getComponents() {
+		return components;
+	}
 
-    public EnumActionResult placeBlocks(World world, BlockPos pos, Rotation rotation, @Nullable Building building) {
-        return placeBlocks(world, pos, rotation, building, Placeable.DEFAULT);
-    }
+	public void removeBlocks(World world, BlockPos pos, Rotation rotation, IBlockState state, boolean removeEntities) {
+		if (!world.isRemote) {
+			if (components != null) {
+				if (removeEntities) {
+					for (int i = components.length - 1; i >= 0; i--)
+						components[i].remove(world, pos, rotation, ConstructionStage.MOVEIN, state);
+				}
+				if (removeEntities) {
+					for (int i = components.length - 1; i >= 0; i--)
+						components[i].remove(world, pos, rotation, ConstructionStage.PAINT, state);
+				}
+				for (int i = components.length - 1; i >= 0; i--)
+					components[i].remove(world, pos, rotation, ConstructionStage.DECORATE, state);
+				for (int i = components.length - 1; i >= 0; i--)
+					components[i].remove(world, pos, rotation, ConstructionStage.BUILD, state);
+				MCServerHelper.markForUpdate(world, pos);
+			}
+		}
+	}
 
-    public EnumActionResult placeBlocks(World world, BlockPos pos, Rotation rotation, @Nullable Building building, @Nullable Replaceable replaceable) {
-        if (!world.isRemote) {
-            if (components != null) {
-                for (Placeable placeable : components) placeable.place(world, pos, rotation, ConstructionStage.BUILD, false, replaceable);
-                for (Placeable placeable : components) placeable.place(world, pos, rotation, ConstructionStage.DECORATE, false, replaceable);
-                for (Placeable placeable : components) placeable.place(world, pos, rotation, ConstructionStage.PAINT, false, replaceable);
-                for (Placeable placeable : components) placeable.place(world, pos, rotation, ConstructionStage.MOVEIN, false, replaceable);
-                if (building != null) {
-                    TownHelper.<TownDataServer>getClosestTownToBlockPos(world, pos, true).addBuilding(world, building, rotation, pos);
-                }
+	public EnumActionResult placeBlocks(World world, BlockPos pos, Rotation rotation, @Nullable Building building) {
+		return placeBlocks(world, pos, rotation, building, Placeable.DEFAULT);
+	}
 
-                MCServerHelper.markForUpdate(world, pos);
-            }
-        }
+	public EnumActionResult placeBlocks(
+			World world,
+			BlockPos pos,
+			Rotation rotation,
+			@Nullable Building building,
+			@Nullable Replaceable replaceable) {
+		if (!world.isRemote) {
+			if (components != null) {
+				for (Placeable placeable : components)
+					placeable.place(world, pos, rotation, ConstructionStage.BUILD, false, replaceable);
+				for (Placeable placeable : components)
+					placeable.place(world, pos, rotation, ConstructionStage.DECORATE, false, replaceable);
+				for (Placeable placeable : components)
+					placeable.place(world, pos, rotation, ConstructionStage.PAINT, false, replaceable);
+				for (Placeable placeable : components)
+					placeable.place(world, pos, rotation, ConstructionStage.MOVEIN, false, replaceable);
+				if (building != null) {
+					TownHelper.<TownDataServer>getClosestTownToBlockPos(world, pos, true).addBuilding(world, building, rotation, pos);
+				}
+
+				MCServerHelper.markForUpdate(world, pos);
+			}
+		}
 
 
-        return EnumActionResult.SUCCESS;
-    }
+		return EnumActionResult.SUCCESS;
+	}
 
-    public PlaceableNPC getNPCOffset(String npc_location) {
-        return npc_offsets.get(npc_location);
-    }
+	public PlaceableNPC getNPCOffset(String npc_location) {
+		return npc_offsets.get(npc_location);
+	}
 
-    public static class Replaceable {
-        public boolean canReplace(World world, BlockPos transformed) {
-            return world.getBlockState(transformed).getBlockHardness(world, transformed) != -1F;
-        }
-    }
+	public static class Replaceable {
+		public boolean canReplace(World world, BlockPos transformed) {
+			return world.getBlockState(transformed).getBlockHardness(world, transformed) != -1F;
+		}
+	}
 }

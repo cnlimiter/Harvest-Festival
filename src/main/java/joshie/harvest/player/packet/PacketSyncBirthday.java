@@ -10,33 +10,34 @@ import net.minecraft.entity.player.EntityPlayer;
 
 @Packet(Packet.Side.CLIENT)
 public class PacketSyncBirthday extends PenguinPacket {
-    private int day;
-    private Season season;
-    private int year;
+	private int day;
+	private Season season;
+	private int year;
 
-    public PacketSyncBirthday() {}
-    public PacketSyncBirthday(CalendarDate date) {
-        this.day = date.getDay();
-        this.season = date.getSeason();
-        this.year = date.getYear();
-    }
+	public PacketSyncBirthday() {}
 
-    @Override
-    public void toBytes(ByteBuf buf) {
-        buf.writeByte(day);
-        buf.writeByte(season.ordinal());
-        buf.writeShort(year);
-    }
+	public PacketSyncBirthday(CalendarDate date) {
+		this.day = date.getDay();
+		this.season = date.getSeason();
+		this.year = date.getYear();
+	}
 
-    @Override
-    public void fromBytes(ByteBuf buf) {
-        day = buf.readByte();
-        season = Season.VALUES.get(buf.readByte());
-        year = buf.readShort();
-    }
+	@Override
+	public void toBytes(ByteBuf buf) {
+		buf.writeByte(day);
+		buf.writeByte(season.ordinal());
+		buf.writeShort(year);
+	}
 
-    @Override
-    public void handlePacket(EntityPlayer player) {
-        HFTrackers.getClientPlayerTracker().getStats().setBirthday(new CalendarDate(day, season, year));
-    }
+	@Override
+	public void fromBytes(ByteBuf buf) {
+		day = buf.readByte();
+		season = Season.VALUES.get(buf.readByte());
+		year = buf.readShort();
+	}
+
+	@Override
+	public void handlePacket(EntityPlayer player) {
+		HFTrackers.getClientPlayerTracker().getStats().setBirthday(new CalendarDate(day, season, year));
+	}
 }

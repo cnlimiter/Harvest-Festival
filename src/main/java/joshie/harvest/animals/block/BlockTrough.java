@@ -1,5 +1,16 @@
 package joshie.harvest.animals.block;
 
+import static joshie.harvest.animals.block.BlockTrough.Trough.WOOD;
+import static net.minecraft.util.EnumFacing.EAST;
+import static net.minecraft.util.EnumFacing.NORTH;
+import static net.minecraft.util.EnumFacing.SOUTH;
+import static net.minecraft.util.EnumFacing.WEST;
+
+import java.util.List;
+import java.util.Locale;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import joshie.harvest.animals.block.BlockTrough.Trough;
 import joshie.harvest.animals.tile.TileTrough;
 import joshie.harvest.api.HFApi;
@@ -37,181 +48,218 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.List;
-import java.util.Locale;
-
-import static joshie.harvest.animals.block.BlockTrough.Trough.WOOD;
-import static net.minecraft.util.EnumFacing.*;
-
 public class BlockTrough extends BlockHFEnumRotatableMeta<BlockTrough, Trough> implements IAnimalFeeder {
-    private static final AxisAlignedBB TROUGH_AABB =  new AxisAlignedBB(0D, 0D, 0D, 1D, 0.75D, 1D);
-    public static final PropertyEnum<Section> SECTION = PropertyEnum.create("section", Section.class);
+	private static final AxisAlignedBB TROUGH_AABB = new AxisAlignedBB(0D, 0D, 0D, 1D, 0.75D, 1D);
+	public static final PropertyEnum<Section> SECTION = PropertyEnum.create("section", Section.class);
 
-    public enum Trough implements IStringSerializable {
-        WOOD;
+	public enum Trough implements IStringSerializable {
+		WOOD;
 
-        @Override
-        public String getName() {
-            return toString().toLowerCase(Locale.ENGLISH);
-        }
-    }
+		@Override
+		public String getName() {
+			return toString().toLowerCase(Locale.ENGLISH);
+		}
+	}
 
-    public enum Section implements IStringSerializable {
-        SINGLE, END, MIDDLE;
+	public enum Section implements IStringSerializable {
+		SINGLE, END, MIDDLE;
 
-        @Override
-        public String getName() {
-            return toString().toLowerCase(Locale.ENGLISH);
-        }
-    }
+		@Override
+		public String getName() {
+			return toString().toLowerCase(Locale.ENGLISH);
+		}
+	}
 
-    public BlockTrough() {
-        super(Material.WOOD, Trough.class);
-        setHardness(1.5F);
-        setSoundType(SoundType.WOOD);
-        setDefaultState(getDefaultState().withProperty(SECTION, Section.SINGLE));
-    }
+	public BlockTrough() {
+		super(Material.WOOD, Trough.class);
+		setHardness(1.5F);
+		setSoundType(SoundType.WOOD);
+		setDefaultState(getDefaultState().withProperty(SECTION, Section.SINGLE));
+	}
 
-    @Override
-    @Nonnull
-    protected BlockStateContainer createBlockState() {
-        if(property == null) return new BlockStateContainer(this, temporary, FACING, SECTION);
-        return new BlockStateContainer(this, property, FACING, SECTION);
-    }
+	@Override
+	@Nonnull
+	protected BlockStateContainer createBlockState() {
+		if (property == null) {
+			return new BlockStateContainer(this, temporary, FACING, SECTION);
+		}
+		return new BlockStateContainer(this, property, FACING, SECTION);
+	}
 
-    @Override
-    public String getToolType(Trough wood) {
-        return "axe";
-    }
+	@Override
+	public String getToolType(Trough wood) {
+		return "axe";
+	}
 
-    @SuppressWarnings("deprecation")
-    @Override
-    public void addCollisionBoxToList(IBlockState state, @Nonnull World worldIn, @Nonnull BlockPos pos, @Nonnull AxisAlignedBB entityBox, @Nonnull List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean bool) {
-        if (entityIn instanceof EntityAnimal) addCollisionBoxToList(pos, entityBox, collidingBoxes, HFCore.FENCE_COLLISION);
-        else addCollisionBoxToList(pos, entityBox, collidingBoxes, TROUGH_AABB);
-    }
+	@SuppressWarnings("deprecation")
+	@Override
+	public void addCollisionBoxToList(
+			IBlockState state,
+			@Nonnull World worldIn,
+			@Nonnull BlockPos pos,
+			@Nonnull AxisAlignedBB entityBox,
+			@Nonnull List<AxisAlignedBB> collidingBoxes,
+			@Nullable Entity entityIn,
+			boolean bool) {
+		if (entityIn instanceof EntityAnimal) {
+			addCollisionBoxToList(pos, entityBox, collidingBoxes, HFCore.FENCE_COLLISION);
+		} else {
+			addCollisionBoxToList(pos, entityBox, collidingBoxes, TROUGH_AABB);
+		}
+	}
 
-    @SuppressWarnings("deprecation")
-    @Override
-    @Nonnull
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
-        return TROUGH_AABB;
-    }
+	@SuppressWarnings("deprecation")
+	@Override
+	@Nonnull
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return TROUGH_AABB;
+	}
 
-    @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-        if (player.isSneaking()) return false;
-        else {
-            TileEntity tile = world.getTileEntity(pos);
-            if (tile instanceof TileFillable) {
-                return ((TileFillable)tile).onActivated(player.getHeldItem(hand));
-            }
-        }
+	@Override
+	public boolean onBlockActivated(
+			World world,
+			BlockPos pos,
+			IBlockState state,
+			EntityPlayer player,
+			EnumHand hand,
+			EnumFacing side,
+			float hitX,
+			float hitY,
+			float hitZ) {
+		if (player.isSneaking()) {
+			return false;
+		} else {
+			TileEntity tile = world.getTileEntity(pos);
+			if (tile instanceof TileFillable) {
+				return ((TileFillable) tile).onActivated(player.getHeldItem(hand));
+			}
+		}
 
-        return false;
-    }
+		return false;
+	}
 
-    @Override
-    public boolean hasTileEntity(IBlockState state) {
-        return true;
-    }
+	@Override
+	public boolean hasTileEntity(IBlockState state) {
+		return true;
+	}
 
-    @Override
-    @Nonnull
-    public TileEntity createTileEntity(@Nonnull World world, @Nonnull IBlockState state) {
-        Trough trough = getEnumFromState(state);
-        switch (trough) {
-            case WOOD:
-                return new TileTrough();
-            default:
-                return null;
-        }
-    }
+	@Override
+	@Nonnull
+	public TileEntity createTileEntity(@Nonnull World world, @Nonnull IBlockState state) {
+		Trough trough = getEnumFromState(state);
+		switch (trough) {
+			case WOOD:
+				return new TileTrough();
+			default:
+				return null;
+		}
+	}
 
-    @SuppressWarnings("deprecation")
-    @Override
-    @Nonnull
-    public IBlockState getActualState(@Nonnull IBlockState state, IBlockAccess world, BlockPos pos) {
-        TileEntity tile = world instanceof ChunkCache ? ((ChunkCache)world).getTileEntity(pos, Chunk.EnumCreateEntityType.CHECK) : world.getTileEntity(pos);
-        if (tile instanceof TileTrough) {
-            boolean north = isTrough(NORTH, world, pos);
-            boolean south = isTrough(SOUTH, world, pos);
-            if (north && !south) return state.withProperty(SECTION, Section.END).withProperty(FACING, EAST);
-            if (south && !north) return state.withProperty(SECTION, Section.END).withProperty(FACING, WEST);
-            if (south) return state.withProperty(SECTION, Section.MIDDLE).withProperty(FACING, EAST);
+	@SuppressWarnings("deprecation")
+	@Override
+	@Nonnull
+	public IBlockState getActualState(@Nonnull IBlockState state, IBlockAccess world, BlockPos pos) {
+		TileEntity tile = world instanceof ChunkCache ?
+				((ChunkCache) world).getTileEntity(pos, Chunk.EnumCreateEntityType.CHECK) :
+				world.getTileEntity(pos);
+		if (tile instanceof TileTrough) {
+			boolean north = isTrough(NORTH, world, pos);
+			boolean south = isTrough(SOUTH, world, pos);
+			if (north && !south) {
+				return state.withProperty(SECTION, Section.END).withProperty(FACING, EAST);
+			}
+			if (south && !north) {
+				return state.withProperty(SECTION, Section.END).withProperty(FACING, WEST);
+			}
+			if (south) {
+				return state.withProperty(SECTION, Section.MIDDLE).withProperty(FACING, EAST);
+			}
 
-            boolean east = isTrough(EAST, world, pos);
-            boolean west = isTrough(WEST, world, pos);
-            if (west && east) return state.withProperty(SECTION, Section.MIDDLE).withProperty(FACING, SOUTH);
-            if (east) return state.withProperty(SECTION, Section.END).withProperty(FACING, SOUTH);
-            if (west) return state.withProperty(SECTION, Section.END).withProperty(FACING, NORTH);
+			boolean east = isTrough(EAST, world, pos);
+			boolean west = isTrough(WEST, world, pos);
+			if (west && east) {
+				return state.withProperty(SECTION, Section.MIDDLE).withProperty(FACING, SOUTH);
+			}
+			if (east) {
+				return state.withProperty(SECTION, Section.END).withProperty(FACING, SOUTH);
+			}
+			if (west) {
+				return state.withProperty(SECTION, Section.END).withProperty(FACING, NORTH);
+			}
 
-            return state.withProperty(SECTION, Section.SINGLE);
-        }
+			return state.withProperty(SECTION, Section.SINGLE);
+		}
 
-        return state;
-    }
+		return state;
+	}
 
-    @SuppressWarnings("ConstantConditions")
-    private boolean isTrough(EnumFacing facing, IBlockAccess world, BlockPos pos) {
-        IBlockState state = world.getBlockState(pos.offset(facing));
-        if (state.getBlock() == this) {
-            if(getEnumFromState(state) == WOOD) {
-                return (((TileTrough)world.getTileEntity(pos)).getMaster() == ((TileTrough)world.getTileEntity(pos.offset(facing))).getMaster());
-            }
-        }
+	@SuppressWarnings("ConstantConditions")
+	private boolean isTrough(EnumFacing facing, IBlockAccess world, BlockPos pos) {
+		IBlockState state = world.getBlockState(pos.offset(facing));
+		if (state.getBlock() == this) {
+			if (getEnumFromState(state) == WOOD) {
+				return (
+						((TileTrough) world.getTileEntity(pos)).getMaster() ==
+								((TileTrough) world.getTileEntity(pos.offset(facing))).getMaster());
+			}
+		}
 
-        return false;
-    }
+		return false;
+	}
 
-    @Override
-    @SuppressWarnings("ConstantConditions")
-    public boolean feedAnimal(AnimalStats stats, World world, BlockPos pos, IBlockState state, boolean simulate) {
-        if (HFApi.animals.canAnimalEatFoodType(stats, AnimalFoodType.GRASS)) {
-            TileTrough master = ((TileTrough) world.getTileEntity(pos)).getMaster();
-            if (master.getFillAmount() > 0) {
-                if (simulate) return true;
-                master.adjustFill(-1);
-                stats.performAction(world, ItemStack.EMPTY, AnimalAction.FEED);
-                //Good ol master block
-                return true;
-            }
-        }
+	@Override
+	@SuppressWarnings("ConstantConditions")
+	public boolean feedAnimal(AnimalStats stats, World world, BlockPos pos, IBlockState state, boolean simulate) {
+		if (HFApi.animals.canAnimalEatFoodType(stats, AnimalFoodType.GRASS)) {
+			TileTrough master = ((TileTrough) world.getTileEntity(pos)).getMaster();
+			if (master.getFillAmount() > 0) {
+				if (simulate) {
+					return true;
+				}
+				master.adjustFill(-1);
+				stats.performAction(world, ItemStack.EMPTY, AnimalAction.FEED);
+				//Good ol master block
+				return true;
+			}
+		}
 
-        return false;
-    }
+		return false;
+	}
 
-    @Override
-    @SuppressWarnings("ConstantConditions")
-    public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, @Nonnull ItemStack stack) {
-        super.onBlockPlacedBy(world, pos, state, placer, stack);
-        if (getEnumFromState(state) == WOOD) {
-            ((TileTrough)world.getTileEntity(pos)).onPlaced();
-        }
-    }
+	@Override
+	@SuppressWarnings("ConstantConditions")
+	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, @Nonnull ItemStack stack) {
+		super.onBlockPlacedBy(world, pos, state, placer, stack);
+		if (getEnumFromState(state) == WOOD) {
+			((TileTrough) world.getTileEntity(pos)).onPlaced();
+		}
+	}
 
-    @Override
-    @SuppressWarnings("ConstantConditions")
-    public void breakBlock(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state) {
-        if (getEnumFromState(state) == WOOD) {
-            ((TileTrough)world.getTileEntity(pos)).onRemoved();
-        }
+	@Override
+	@SuppressWarnings("ConstantConditions")
+	public void breakBlock(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state) {
+		if (getEnumFromState(state) == WOOD) {
+			((TileTrough) world.getTileEntity(pos)).onRemoved();
+		}
 
-        super.breakBlock(world, pos, state);
-    }
+		super.breakBlock(world, pos, state);
+	}
 
-    @Override
-    public int getSortValue(@Nonnull ItemStack stack) {
-        return CreativeSort.TROUGH;
-    }
+	@Override
+	public int getSortValue(@Nonnull ItemStack stack) {
+		return CreativeSort.TROUGH;
+	}
 
-    @SideOnly(Side.CLIENT)
-    @Override
-    public void registerModels(Item item, String name) {
-        for (int i = 0; i < values.length; i++) {
-            ModelLoader.setCustomModelResourceLocation(item, i, new ModelResourceLocation(getRegistryName(), "facing=north,section=single," + property.getName() + "=" + getEnumFromMeta(i).getName()));
-        }
-    }
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void registerModels(Item item, String name) {
+		for (int i = 0; i < values.length; i++) {
+			ModelLoader.setCustomModelResourceLocation(
+					item,
+					i,
+					new ModelResourceLocation(
+							getRegistryName(),
+							"facing=north,section=single," + property.getName() + "=" + getEnumFromMeta(i).getName()));
+		}
+	}
 }

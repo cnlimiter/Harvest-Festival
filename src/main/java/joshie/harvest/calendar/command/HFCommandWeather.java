@@ -43,7 +43,7 @@ public class HFCommandWeather extends CommandBase {
 		World world = sender.getEntityWorld();
 		CalendarServer calendar = HFTrackers.getCalendar(world);
 		if (parameters.length == 0) {
-			notifyCommandListener(sender, this, "Weather: " +	calendar.getTodaysWeather());
+			notifyCommandListener(sender, this, "Weather: " + calendar.getTodaysWeather());
 			notifyCommandListener(sender, this, "LastWeather: " + calendar.getRecentNonSunnyWeather());
 			notifyCommandListener(sender, this, "RainingStrength: " + world.rainingStrength);
 			notifyCommandListener(sender, this, "ThunderingStrength: " + world.thunderingStrength);

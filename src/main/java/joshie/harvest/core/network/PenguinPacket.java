@@ -11,26 +11,26 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class PenguinPacket implements IMessage {
-    public void handlePacket(EntityPlayer player) {}
+	public void handlePacket(EntityPlayer player) {}
 
-    public boolean handleServerPacket(EntityPlayerMP player) {
-        return false;
-    }
+	public boolean handleServerPacket(EntityPlayerMP player) {
+		return false;
+	}
 
-    @Override
-    public void toBytes(ByteBuf to) {}
+	@Override
+	public void toBytes(ByteBuf to) {}
 
-    @Override
-    public void fromBytes(ByteBuf from) {}
+	@Override
+	public void fromBytes(ByteBuf from) {}
 
-    @SideOnly(Side.CLIENT)
-    public void handleQueuedClient(NetHandlerPlayClient handler) {
-        handlePacket(MCClientHelper.getPlayer());
-    }
+	@SideOnly(Side.CLIENT)
+	public void handleQueuedClient(NetHandlerPlayClient handler) {
+		handlePacket(MCClientHelper.getPlayer());
+	}
 
-    public void handleQueuedServer(NetHandlerPlayServer serverHandler) {
-        if (!handleServerPacket(serverHandler.player)) {
-            handlePacket(serverHandler.player);
-        }
-    }
+	public void handleQueuedServer(NetHandlerPlayServer serverHandler) {
+		if (!handleServerPacket(serverHandler.player)) {
+			handlePacket(serverHandler.player);
+		}
+	}
 }

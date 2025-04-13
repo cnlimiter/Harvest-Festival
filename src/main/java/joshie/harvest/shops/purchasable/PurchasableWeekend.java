@@ -1,5 +1,6 @@
 package joshie.harvest.shops.purchasable;
 
+import javax.annotation.Nonnull;
 import joshie.harvest.api.HFApi;
 import joshie.harvest.core.HFTrackers;
 import joshie.harvest.core.helpers.MCClientHelper;
@@ -7,36 +8,39 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-import javax.annotation.Nonnull;
-
 public class PurchasableWeekend extends Purchasable {
-    private final ItemStack[] required;
+	private final ItemStack[] required;
 
-    public PurchasableWeekend(long cost, @Nonnull ItemStack stack, ItemStack... required) {
-        super(cost, stack);
-        this.required = required;
-    }
+	public PurchasableWeekend(long cost, @Nonnull ItemStack stack, ItemStack... required) {
+		super(cost, stack);
+		this.required = required;
+	}
 
-    private boolean hasRequiredItem(EntityPlayer player) {
-        if (required == null || required.length == 0) return true;
-        else {
-            for (ItemStack stack : required) {
-                if (!HFTrackers.getPlayerTrackerFromPlayer(player).getTracking().hasObtainedItem(stack)) return false;
-            }
+	private boolean hasRequiredItem(EntityPlayer player) {
+		if (required == null || required.length == 0) {
+			return true;
+		} else {
+			for (ItemStack stack : required) {
+				if (!HFTrackers.getPlayerTrackerFromPlayer(player).getTracking().hasObtainedItem(stack)) {
+					return false;
+				}
+			}
 
-            return true;
-        }
-    }
+			return true;
+		}
+	}
 
-    @Override
-    public boolean canDo(@Nonnull World world, @Nonnull EntityPlayer player, int amount) {
-        return amount == 1 && HFApi.calendar.getDate(world).getWeekday().isWeekend() && hasRequiredItem(player);
-    }
+	@Override
+	public boolean canDo(@Nonnull World world, @Nonnull EntityPlayer player, int amount) {
+		return amount == 1 && HFApi.calendar.getDate(world).getWeekday().isWeekend() && hasRequiredItem(player);
+	}
 
-    @Override
-    public void onPurchased(EntityPlayer player) {
-        HFTrackers.getPlayerTrackerFromPlayer(player).getTracking().addAsObtained(stack);
-        if (player.world.isRemote) MCClientHelper.initGui();
-        super.onPurchased(player);
-    }
+	@Override
+	public void onPurchased(EntityPlayer player) {
+		HFTrackers.getPlayerTrackerFromPlayer(player).getTracking().addAsObtained(stack);
+		if (player.world.isRemote) {
+			MCClientHelper.initGui();
+		}
+		super.onPurchased(player);
+	}
 }

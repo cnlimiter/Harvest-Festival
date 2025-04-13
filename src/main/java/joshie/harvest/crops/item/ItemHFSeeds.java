@@ -1,5 +1,13 @@
 package joshie.harvest.crops.item;
 
+import static joshie.harvest.core.lib.HFModInfo.MODID;
+import static net.minecraft.init.Blocks.FARMLAND;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.crops.Crop;
 import joshie.harvest.api.trees.Tree;
@@ -16,7 +24,11 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemSeeds;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.*;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
@@ -24,80 +36,91 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.registries.GameData;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import java.util.List;
-import java.util.stream.Collectors;
-
-import static joshie.harvest.core.lib.HFModInfo.MODID;
-import static net.minecraft.init.Blocks.FARMLAND;
-
 public class ItemHFSeeds extends ItemSeeds implements ICreativeSorted {
-    public ItemHFSeeds() {
-        super(HFCrops.CROPS, FARMLAND);
-        setCreativeTab(HFTab.FARMING);
-    }
+	public ItemHFSeeds() {
+		super(HFCrops.CROPS, FARMLAND);
+		setCreativeTab(HFTab.FARMING);
+	}
 
-    @Override
-    public int getSortValue(@Nonnull ItemStack stack) {
-        return CreativeSort.SEEDS;
-    }
+	@Override
+	public int getSortValue(@Nonnull ItemStack stack) {
+		return CreativeSort.SEEDS;
+	}
 
-    @Override
-    @Nonnull
-    public String getItemStackDisplayName(@Nonnull ItemStack stack) {
-        Crop crop = getCropFromStack(stack);
-        return (crop == null) ? TextHelper.translate("crop.seeds.useless") : crop.getSeedsName();
-    }
+	@Override
+	@Nonnull
+	public String getItemStackDisplayName(@Nonnull ItemStack stack) {
+		Crop crop = getCropFromStack(stack);
+		return (crop == null) ? TextHelper.translate("crop.seeds.useless") : crop.getSeedsName();
+	}
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    @SuppressWarnings("unchecked")
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-        Crop crop = getCropFromStack(stack);
-        if (crop != null) {
-            if (crop.requiresSickle()) tooltip.add("" + TextFormatting.AQUA + TextFormatting.ITALIC + TextHelper.translate("crop.sickle"));
-            if (!crop.requiresWater()) tooltip.add("" + TextFormatting.BLUE + TextFormatting.ITALIC + TextHelper.translate("crop.water"));
-            crop.getGrowthHandler().addInformation(tooltip, crop, flagIn);
-            int amount = crop instanceof Tree ? ((Tree)crop).getStagesToMaturity() : crop.getStages();
-            tooltip.add(amount + " " + TextHelper.translate("crop.seeds.days"));
-        }
-    }
+	@Override
+	@SideOnly(Side.CLIENT)
+	@SuppressWarnings("unchecked")
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+		Crop crop = getCropFromStack(stack);
+		if (crop != null) {
+			if (crop.requiresSickle()) {
+				tooltip.add("" + TextFormatting.AQUA + TextFormatting.ITALIC + TextHelper.translate("crop.sickle"));
+			}
+			if (!crop.requiresWater()) {
+				tooltip.add("" + TextFormatting.BLUE + TextFormatting.ITALIC + TextHelper.translate("crop.water"));
+			}
+			crop.getGrowthHandler().addInformation(tooltip, crop, flagIn);
+			int amount = crop instanceof Tree ? ((Tree) crop).getStagesToMaturity() : crop.getStages();
+			tooltip.add(amount + " " + TextHelper.translate("crop.seeds.days"));
+		}
+	}
 
-    @Override
-    @Nonnull
-    public EnumActionResult onItemUse(@Nonnull EntityPlayer player, World world, @Nonnull BlockPos pos, @Nonnull EnumHand hand, @Nonnull EnumFacing facing, float hitX, float hitY, float hitZ) {
-        if (facing != EnumFacing.UP) {
-            return EnumActionResult.FAIL;
-        } else {
-            ItemStack stack = player.getHeldItem(hand);
-            Crop crop = getCropFromStack(stack);
+	@Override
+	@Nonnull
+	public EnumActionResult onItemUse(
+			@Nonnull EntityPlayer player,
+			World world,
+			@Nonnull BlockPos pos,
+			@Nonnull EnumHand hand,
+			@Nonnull EnumFacing facing,
+			float hitX,
+			float hitY,
+			float hitZ) {
+		if (facing != EnumFacing.UP) {
+			return EnumActionResult.FAIL;
+		} else {
+			ItemStack stack = player.getHeldItem(hand);
+			Crop crop = getCropFromStack(stack);
 			BlockPos original = pos.up();
 			if (crop != null) {
 				BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos(pos);
 				int planted = 0;
-                for (int x = -1; x <= 1; x++) {
-                    for (int z = -1; z <= 1; z++) {
+				for (int x = -1; x <= 1; x++) {
+					for (int z = -1; z <= 1; z++) {
 						mutablePos.setPos(original.getX() + x, original.getY(), original.getZ() + z);
-                        planted = plantSeedAt(player, stack, world, mutablePos, facing, crop, planted, original);
-                    }
-                }
+						planted = plantSeedAt(player, stack, world, mutablePos, facing, crop, planted, original);
+					}
+				}
 
-                if (planted > 0) {
-                    stack.shrink(1);
-                    return EnumActionResult.SUCCESS;
-                } else {
-                    return EnumActionResult.PASS;
-                }
-            }
+				if (planted > 0) {
+					stack.shrink(1);
+					return EnumActionResult.SUCCESS;
+				} else {
+					return EnumActionResult.PASS;
+				}
+			}
 
-            return EnumActionResult.FAIL;
-        }
-    }
+			return EnumActionResult.FAIL;
+		}
+	}
 
-    @SuppressWarnings("unchecked")
-    private int plantSeedAt(EntityPlayer player, @Nonnull ItemStack stack, World world, BlockPos pos, EnumFacing facing, Crop crop, int planted, BlockPos original) {
+	@SuppressWarnings("unchecked")
+	private int plantSeedAt(
+			EntityPlayer player,
+			@Nonnull ItemStack stack,
+			World world,
+			BlockPos pos,
+			EnumFacing facing,
+			Crop crop,
+			int planted,
+			BlockPos original) {
 		if (player.canPlayerEdit(pos, facing, stack) && player.canPlayerEdit(pos.up(), facing, stack) && world.isAirBlock(pos)) {
 			IBlockState down = world.getBlockState(pos.down());
 			if (crop.getGrowthHandler().canPlantSeedAt(world, pos, down, crop, original)) {
@@ -107,40 +130,42 @@ public class ItemHFSeeds extends ItemSeeds implements ICreativeSorted {
 		}
 
 		return planted;
-    }
+	}
 
-    @Nonnull
-    public ItemStack getStackFromCrop(Crop crop) {
-        return getStackFromCrop(crop, 1);
-    }
+	@Nonnull
+	public ItemStack getStackFromCrop(Crop crop) {
+		return getStackFromCrop(crop, 1);
+	}
 
-    @Nonnull
-    public ItemStack getStackFromCrop(Crop crop, int amount) {
-        ItemStack stack = new ItemStack(this, amount);
-        NBTTagCompound tag = new NBTTagCompound();
-        tag.setString("Crop", crop.getResource().toString());
-        stack.setTagCompound(tag);
-        return stack;
-    }
+	@Nonnull
+	public ItemStack getStackFromCrop(Crop crop, int amount) {
+		ItemStack stack = new ItemStack(this, amount);
+		NBTTagCompound tag = new NBTTagCompound();
+		tag.setString("Crop", crop.getResource().toString());
+		stack.setTagCompound(tag);
+		return stack;
+	}
 
-    public Crop getCropFromStack(@Nonnull ItemStack stack) {
-        if (stack.getTagCompound() == null || !stack.getTagCompound().hasKey("Crop")) {
-            return Crop.NULL_CROP;
-        } else return Crop.REGISTRY.get(new ResourceLocation(stack.getTagCompound().getString("Crop")));
-    }
+	public Crop getCropFromStack(@Nonnull ItemStack stack) {
+		if (stack.getTagCompound() == null || !stack.getTagCompound().hasKey("Crop")) {
+			return Crop.NULL_CROP;
+		} else {
+			return Crop.REGISTRY.get(new ResourceLocation(stack.getTagCompound().getString("Crop")));
+		}
+	}
 
-    @Override
-    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
-        if (this.isInCreativeTab(tab))
-        {
-        	items.addAll(Crop.REGISTRY.values().stream().filter(crop -> crop != Crop.NULL_CROP && crop.getCropStack(1).getItem() != Items.BRICK).map(this::getStackFromCrop).collect(Collectors.toList()));
-        }
-    }
+	@Override
+	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
+		if (this.isInCreativeTab(tab)) {
+			items.addAll(Crop.REGISTRY.values().stream().filter(crop -> crop != Crop.NULL_CROP &&
+					crop.getCropStack(1).getItem() != Items.BRICK).map(this::getStackFromCrop).collect(Collectors.toList()));
+		}
+	}
 
-    public ItemHFSeeds register(String name) {
-        setUnlocalizedName(name.replace("_", "."));
-        setRegistryName(new ResourceLocation(MODID, name));
-        GameData.register_impl(this);
-        return this;
-    }
+	public ItemHFSeeds register(String name) {
+		setUnlocalizedName(name.replace("_", "."));
+		setRegistryName(new ResourceLocation(MODID, name));
+		GameData.register_impl(this);
+		return this;
+	}
 }

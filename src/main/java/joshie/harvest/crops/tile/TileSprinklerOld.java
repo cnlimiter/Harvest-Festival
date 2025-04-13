@@ -1,12 +1,12 @@
 package joshie.harvest.crops.tile;
 
 public class TileSprinklerOld extends TileSprinkler {
-    public TileSprinklerOld() {
-        super(0.5D, 1);
-    }
+	public TileSprinklerOld() {
+		super(0.5D, 1);
+	}
 
-    @Override
-    protected double getRandomDouble() {
-        return (world.rand.nextDouble() - 0.5D) / 3;
-    }
+	@Override
+	protected double getRandomDouble() {
+		return (world.rand.nextDouble() - 0.5D) / 3;
+	}
 }

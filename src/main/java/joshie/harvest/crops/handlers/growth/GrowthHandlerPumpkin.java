@@ -8,12 +8,14 @@ import net.minecraft.world.World;
 
 @SuppressWarnings("unused")
 public class GrowthHandlerPumpkin extends GrowthHandlerSide {
-    public GrowthHandlerPumpkin() {
-        super(Blocks.PUMPKIN);
-    }
+	public GrowthHandlerPumpkin() {
+		super(Blocks.PUMPKIN);
+	}
 
-    @Override
-    protected IBlockState getBlockState(World world) {
-        return block.getDefaultState().withProperty(BlockHorizontal.FACING, EnumFacing.HORIZONTALS[world.rand.nextInt(EnumFacing.HORIZONTALS.length)]);
-    }
+	@Override
+	protected IBlockState getBlockState(World world) {
+		return block.getDefaultState().withProperty(
+				BlockHorizontal.FACING,
+				EnumFacing.HORIZONTALS[world.rand.nextInt(EnumFacing.HORIZONTALS.length)]);
+	}
 }

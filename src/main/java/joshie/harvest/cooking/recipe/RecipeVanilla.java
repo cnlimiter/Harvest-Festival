@@ -1,35 +1,34 @@
 package joshie.harvest.cooking.recipe;
 
+import javax.annotation.Nonnull;
 import joshie.harvest.api.cooking.IngredientStack;
 import joshie.harvest.api.cooking.Recipe;
 import joshie.harvest.api.cooking.Utensil;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
-import javax.annotation.Nonnull;
-
 public class RecipeVanilla extends Recipe {
-    @Nonnull
-    private final ItemStack stack;
+	@Nonnull
+	private final ItemStack stack;
 
-    public RecipeVanilla(ResourceLocation resource, @Nonnull ItemStack result, Utensil utensil, IngredientStack... required) {
-        super(resource, utensil, required);
-        this.stack = result;
-    }
+	public RecipeVanilla(ResourceLocation resource, @Nonnull ItemStack result, Utensil utensil, IngredientStack... required) {
+		super(resource, utensil, required);
+		this.stack = result;
+	}
 
-    @Override
-    public String getDisplayName() {
-        return stack.getDisplayName();
-    }
+	@Override
+	public String getDisplayName() {
+		return stack.getDisplayName();
+	}
 
-    @Override
-    public boolean supportsNBTData() {
-        return false;
-    }
+	@Override
+	public boolean supportsNBTData() {
+		return false;
+	}
 
-    @Override
-    @Nonnull
-    public ItemStack getStack() {
-        return stack;
-    }
+	@Override
+	@Nonnull
+	public ItemStack getStack() {
+		return stack;
+	}
 }

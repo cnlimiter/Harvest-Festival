@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.crops.IStateHandler.PlantSection;
 import joshie.harvest.core.HFCore;
@@ -48,183 +47,186 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemWateringCan extends ItemTool<ItemWateringCan> {
-    private static final double MAX_WATER = 128D;
+	private static final double MAX_WATER = 128D;
 
-    public ItemWateringCan(ToolTier tier) {
-        super(tier, "watering_can", Collections.EMPTY_SET);
-    }
+	public ItemWateringCan(ToolTier tier) {
+		super(tier, "watering_can", Collections.EMPTY_SET);
+	}
 
-    @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
-        return new SingleFluidHandler(stack, FluidRegistry.WATER, (int) MAX_WATER);
-    }
+	@Override
+	public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
+		return new SingleFluidHandler(stack, FluidRegistry.WATER, (int) MAX_WATER);
+	}
 
-    @Override
-    public int getFront(ToolTier tier) {
-        switch (tier) {
-        case BASIC:
-        case COPPER:
-            return 0;
-        case SILVER:
-            return 2;
-        case GOLD:
-            return 2;
-        case MYSTRIL:
-            return 2;
-        case CURSED:
-        case BLESSED:
-            return 5;
-        case MYTHIC:
-            return 11;
-        default:
-            return 0;
-        }
-    }
+	@Override
+	public int getFront(ToolTier tier) {
+		switch (tier) {
+			case BASIC:
+			case COPPER:
+				return 0;
+			case SILVER:
+				return 2;
+			case GOLD:
+				return 2;
+			case MYSTRIL:
+				return 2;
+			case CURSED:
+			case BLESSED:
+				return 5;
+			case MYTHIC:
+				return 11;
+			default:
+				return 0;
+		}
+	}
 
-    @Override
-    public int getSides(ToolTier tier) {
-        switch (tier) {
-        case BASIC:
-            return 0;
-        case COPPER:
-            return 1;
-        case SILVER:
-            return 1;
-        case GOLD:
-            return 2;
-        case MYSTRIL:
-            return 3;
-        case CURSED:
-        case BLESSED:
-            return 6;
-        case MYTHIC:
-            return 10;
-        default:
-            return 0;
-        }
-    }
+	@Override
+	public int getSides(ToolTier tier) {
+		switch (tier) {
+			case BASIC:
+				return 0;
+			case COPPER:
+				return 1;
+			case SILVER:
+				return 1;
+			case GOLD:
+				return 2;
+			case MYSTRIL:
+				return 3;
+			case CURSED:
+			case BLESSED:
+				return 6;
+			case MYTHIC:
+				return 10;
+			default:
+				return 0;
+		}
+	}
 
-    @Override
-    public boolean canBeDamaged() {
-        return false;
-    }
+	@Override
+	public boolean canBeDamaged() {
+		return false;
+	}
 
-    @Override
-    public double getDurabilityForDisplay(@Nonnull ItemStack stack) {
-        int water = getCapacity(stack);
-        return (MAX_WATER - water) / MAX_WATER;
-    }
+	@Override
+	public double getDurabilityForDisplay(@Nonnull ItemStack stack) {
+		int water = getCapacity(stack);
+		return (MAX_WATER - water) / MAX_WATER;
+	}
 
-    @Override
-    public boolean showDurabilityBar(@Nonnull ItemStack stack) {
-        return true;
-    }
+	@Override
+	public boolean showDurabilityBar(@Nonnull ItemStack stack) {
+		return true;
+	}
 
-    @Override
-    public int getRGBDurabilityForDisplay(ItemStack stack) {
-        return 0x3147f4;
-    }
+	@Override
+	public int getRGBDurabilityForDisplay(ItemStack stack) {
+		return 0x3147f4;
+	}
 
-    @Override
-    @Nonnull
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, @Nonnull EnumHand hand) {
-        ItemStack stack = player.getHeldItem(hand);
-        if (attemptToFill(world, player, stack))
-            return new ActionResult<>(EnumActionResult.SUCCESS, stack);
-        else {
-            waterCrops(world, player, getMovingObjectPositionFromPlayer(world, player), stack, getTier(stack));
-            return new ActionResult<>(EnumActionResult.SUCCESS, stack);
-        }
-    }
+	@Override
+	@Nonnull
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, @Nonnull EnumHand hand) {
+		ItemStack stack = player.getHeldItem(hand);
+		if (attemptToFill(world, player, stack)) {
+			return new ActionResult<>(EnumActionResult.SUCCESS, stack);
+		} else {
+			waterCrops(world, player, getMovingObjectPositionFromPlayer(world, player), stack, getTier(stack));
+			return new ActionResult<>(EnumActionResult.SUCCESS, stack);
+		}
+	}
 
-    private EnumActionResult hydrate(EntityPlayer player, @Nonnull ItemStack stack, World world, BlockPos pos) {
-        if (HFApi.crops.hydrateSoil(player, world, pos)) {
-            displayParticle(world, pos, EnumParticleTypes.WATER_SPLASH, Blocks.WATER.getDefaultState());
-            playSound(world, pos, SoundEvents.ENTITY_GENERIC_SWIM, SoundCategory.NEUTRAL);
-            ToolHelper.performTask(player, stack, this);
-            if (!player.capabilities.isCreativeMode) {
-                getCapability(stack).drain(1, true);
-            }
-            return EnumActionResult.SUCCESS;
-        } else
-            return EnumActionResult.FAIL;
-    }
+	private EnumActionResult hydrate(EntityPlayer player, @Nonnull ItemStack stack, World world, BlockPos pos) {
+		if (HFApi.crops.hydrateSoil(player, world, pos)) {
+			displayParticle(world, pos, EnumParticleTypes.WATER_SPLASH, Blocks.WATER.getDefaultState());
+			playSound(world, pos, SoundEvents.ENTITY_GENERIC_SWIM, SoundCategory.NEUTRAL);
+			ToolHelper.performTask(player, stack, this);
+			if (!player.capabilities.isCreativeMode) {
+				getCapability(stack).drain(1, true);
+			}
+			return EnumActionResult.SUCCESS;
+		} else {
+			return EnumActionResult.FAIL;
+		}
+	}
 
-    @SuppressWarnings("ConstantConditions")
-    private boolean attemptToFill(World world, EntityPlayer player, @Nonnull ItemStack stack) {
-        RayTraceResult rayTraceResult = this.rayTrace(world, player, true);
-        if (rayTraceResult != null && rayTraceResult.typeOfHit == RayTraceResult.Type.BLOCK) {
-            IBlockState state = world.getBlockState(rayTraceResult.getBlockPos());
-            if (state.getMaterial() == Material.WATER) {
-                return getCapability(stack).fill(new FluidStack(FluidRegistry.WATER, 128), true) > 0;
-            }
-        }
+	@SuppressWarnings("ConstantConditions")
+	private boolean attemptToFill(World world, EntityPlayer player, @Nonnull ItemStack stack) {
+		RayTraceResult rayTraceResult = this.rayTrace(world, player, true);
+		if (rayTraceResult != null && rayTraceResult.typeOfHit == RayTraceResult.Type.BLOCK) {
+			IBlockState state = world.getBlockState(rayTraceResult.getBlockPos());
+			if (state.getMaterial() == Material.WATER) {
+				return getCapability(stack).fill(new FluidStack(FluidRegistry.WATER, 128), true) > 0;
+			}
+		}
 
-        return false;
-    }
+		return false;
+	}
 
-    private IFluidHandler getCapability(@Nonnull ItemStack stack) {
-        return stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, EnumFacing.DOWN);
-    }
+	private IFluidHandler getCapability(@Nonnull ItemStack stack) {
+		return stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, EnumFacing.DOWN);
+	}
 
-    private int getCapacity(@Nonnull ItemStack stack) {
-        IFluidTankProperties properties = getCapability(stack).getTankProperties()[0];
-        if (properties.getContents() == null)
-            return 0;
-        else
-            return properties.getContents().amount;
-    }
+	private int getCapacity(@Nonnull ItemStack stack) {
+		IFluidTankProperties properties = getCapability(stack).getTankProperties()[0];
+		if (properties.getContents() == null) {
+			return 0;
+		} else {
+			return properties.getContents().amount;
+		}
+	}
 
-    private void waterCrops(World world, EntityPlayer player, @Nullable RayTraceResult result, ItemStack stack, ToolTier tier) {
-        if (result != null) {
-            BlockPos pos = result.getBlockPos();
-            EnumFacing front = EntityHelper.getFacingFromEntity(player);
-            IBlockState initialState = world.getBlockState(pos);
-            Block initial = initialState.getBlock();
-            if (CropHelper.getWateringHandler(world, pos, initialState) == null && (!(initial instanceof IPlantable))) {
-                return;
-            }
+	private void waterCrops(World world, EntityPlayer player, @Nullable RayTraceResult result, ItemStack stack, ToolTier tier) {
+		if (result != null) {
+			BlockPos pos = result.getBlockPos();
+			EnumFacing front = EntityHelper.getFacingFromEntity(player);
+			IBlockState initialState = world.getBlockState(pos);
+			Block initial = initialState.getBlock();
+			if (CropHelper.getWateringHandler(world, pos, initialState) == null && (!(initial instanceof IPlantable))) {
+				return;
+			}
 
-            //Facing North, We Want East and West to be 1, left * this.left
-            for (int y2 = pos.getY() - 1; y2 <= pos.getY(); y2++) {
-                for (int x2 = getXMinus(tier, front, pos.getX()); x2 <= getXPlus(tier, front, pos.getX()); x2++) {
-                    for (int z2 = getZMinus(tier, front, pos.getZ()); z2 <= getZPlus(tier, front, pos.getZ()); z2++) {
-                        if (getCapacity(stack) > 0 && canUse(stack)) {
-                            BlockPos position = new BlockPos(x2, y2, z2);
-                            IBlockState state = world.getBlockState(position);
-                            PlantSection section = BlockHFCrops.getSection(state);
-                            if (section != null) {
-                                int down = section == PlantSection.BOTTOM ? 1 : 2;
-                                hydrate(player, stack, world, position.down(down));
-                            } else
-                                hydrate(player, stack, world, position);
-                        }
-                    }
-                }
-            }
-        }
-    }
+			//Facing North, We Want East and West to be 1, left * this.left
+			for (int y2 = pos.getY() - 1; y2 <= pos.getY(); y2++) {
+				for (int x2 = getXMinus(tier, front, pos.getX()); x2 <= getXPlus(tier, front, pos.getX()); x2++) {
+					for (int z2 = getZMinus(tier, front, pos.getZ()); z2 <= getZPlus(tier, front, pos.getZ()); z2++) {
+						if (getCapacity(stack) > 0 && canUse(stack)) {
+							BlockPos position = new BlockPos(x2, y2, z2);
+							IBlockState state = world.getBlockState(position);
+							PlantSection section = BlockHFCrops.getSection(state);
+							if (section != null) {
+								int down = section == PlantSection.BOTTOM ? 1 : 2;
+								hydrate(player, stack, world, position.down(down));
+							} else {
+								hydrate(player, stack, world, position);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-        ToolTier tier = getTier(stack);
-        int width = 1 + (2 * getSides(tier));
-        int depth = 1 + getFront(tier);
-        tooltip.add(TextFormatting.AQUA + TextHelper.formatHF("wateringcan.tooltip.dimensions", width, depth));
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+		ToolTier tier = getTier(stack);
+		int width = 1 + (2 * getSides(tier));
+		int depth = 1 + getFront(tier);
+		tooltip.add(TextFormatting.AQUA + TextHelper.formatHF("wateringcan.tooltip.dimensions", width, depth));
 
-        if (HFCore.DEBUG_MODE && flagIn.isAdvanced()) {
-            tooltip.add("Water: " + getCapacity(stack));
-            tooltip.add("Level: " + getLevel(stack));
-        }
-    }
+		if (HFCore.DEBUG_MODE && flagIn.isAdvanced()) {
+			tooltip.add("Water: " + getCapacity(stack));
+			tooltip.add("Level: " + getLevel(stack));
+		}
+	}
 
-    @Override
-    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
-        if (this.isInCreativeTab(tab)) {
-            ItemStack unleveled = new ItemStack(this);
-            getCapability(unleveled).fill(new FluidStack(FluidRegistry.WATER, 128), true);
-            items.add(unleveled);
-        }
-    }
+	@Override
+	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
+		if (this.isInCreativeTab(tab)) {
+			ItemStack unleveled = new ItemStack(this);
+			getCapability(unleveled).fill(new FluidStack(FluidRegistry.WATER, 128), true);
+			items.add(unleveled);
+		}
+	}
 }

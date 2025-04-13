@@ -1,5 +1,6 @@
 package joshie.harvest.core.base.block;
 
+import javax.annotation.Nonnull;
 import joshie.harvest.core.HFTab;
 import joshie.harvest.core.helpers.EntityHelper;
 import joshie.harvest.core.lib.CreativeSort;
@@ -29,106 +30,115 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
-
 public abstract class BlockHFEnumRotatableTile<B extends BlockHFEnumRotatableTile, E extends Enum<E> & IStringSerializable> extends BlockHFEnum<B, E> {
-    protected static final PropertyDirection FACING = BlockHorizontal.FACING;
+	protected static final PropertyDirection FACING = BlockHorizontal.FACING;
 
-    //Main Constructor
-    public BlockHFEnumRotatableTile(Material material, Class<E> clazz, CreativeTabs tab) {
-        super(material, clazz, tab);
-        setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
-    }
+	//Main Constructor
+	public BlockHFEnumRotatableTile(Material material, Class<E> clazz, CreativeTabs tab) {
+		super(material, clazz, tab);
+		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
+	}
 
-    public BlockHFEnumRotatableTile(Material material, Class<E> clazz) {
-        this(material, clazz, HFTab.FARMING);
-    }
+	public BlockHFEnumRotatableTile(Material material, Class<E> clazz) {
+		this(material, clazz, HFTab.FARMING);
+	}
 
-    @Override
-    @Nonnull
-    protected BlockStateContainer createBlockState() {
-        if(property == null) return new BlockStateContainer(this, temporary, FACING);
-        return new BlockStateContainer(this, property, FACING);
-    }
+	@Override
+	@Nonnull
+	protected BlockStateContainer createBlockState() {
+		if (property == null) {
+			return new BlockStateContainer(this, temporary, FACING);
+		}
+		return new BlockStateContainer(this, property, FACING);
+	}
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    @Nonnull
-    public BlockRenderLayer getBlockLayer() {
-        return BlockRenderLayer.CUTOUT_MIPPED;
-    }
+	@Override
+	@SideOnly(Side.CLIENT)
+	@Nonnull
+	public BlockRenderLayer getBlockLayer() {
+		return BlockRenderLayer.CUTOUT_MIPPED;
+	}
 
-    @Override
-    @SuppressWarnings("deprecation")
-    public boolean causesSuffocation(IBlockState state) {
-        return false;
-    }
+	@Override
+	@SuppressWarnings("deprecation")
+	public boolean causesSuffocation(IBlockState state) {
+		return false;
+	}
 
-    @SuppressWarnings("deprecation")
-    @Override
-    @Nonnull
-    public IBlockState withRotation(@Nonnull IBlockState state, Rotation rot) {
-        return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
-    }
+	@SuppressWarnings("deprecation")
+	@Override
+	@Nonnull
+	public IBlockState withRotation(@Nonnull IBlockState state, Rotation rot) {
+		return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
+	}
 
-    @Override
-    public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase entity, @Nonnull ItemStack stack) {
-        TileEntity tile = world.getTileEntity(pos);
-        if (tile instanceof IFaceable) {
-            ((IFaceable) tile).setFacing(EntityHelper.getFacingFromEntity(entity));
-        }
-    }
+	@Override
+	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase entity, @Nonnull ItemStack stack) {
+		TileEntity tile = world.getTileEntity(pos);
+		if (tile instanceof IFaceable) {
+			((IFaceable) tile).setFacing(EntityHelper.getFacingFromEntity(entity));
+		}
+	}
 
-    @SuppressWarnings("deprecation")
-    @Override
-    @Nonnull
-    public IBlockState getActualState(@Nonnull IBlockState state, IBlockAccess world, BlockPos pos) {
-        TileEntity tile = world instanceof ChunkCache ? ((ChunkCache)world).getTileEntity(pos, Chunk.EnumCreateEntityType.CHECK) : world.getTileEntity(pos);
-        if (tile instanceof IFaceable) {
-            return state.withProperty(FACING, ((IFaceable)tile).getFacing());
-        }
+	@SuppressWarnings("deprecation")
+	@Override
+	@Nonnull
+	public IBlockState getActualState(@Nonnull IBlockState state, IBlockAccess world, BlockPos pos) {
+		TileEntity tile = world instanceof ChunkCache ?
+				((ChunkCache) world).getTileEntity(pos, Chunk.EnumCreateEntityType.CHECK) :
+				world.getTileEntity(pos);
+		if (tile instanceof IFaceable) {
+			return state.withProperty(FACING, ((IFaceable) tile).getFacing());
+		}
 
-        return state;
-    }
+		return state;
+	}
 
-    @Override
-    public boolean hasTileEntity(IBlockState state) {
-        return true;
-    }
+	@Override
+	public boolean hasTileEntity(IBlockState state) {
+		return true;
+	}
 
-    @Override
-    public int getSortValue(@Nonnull ItemStack stack) {
-        return CreativeSort.TROUGH;
-    }
+	@Override
+	public int getSortValue(@Nonnull ItemStack stack) {
+		return CreativeSort.TROUGH;
+	}
 
-    @SideOnly(Side.CLIENT)
-    @Override
-    public void registerModels(Item item, String name) {
-        for (int i = 0; i < values.length; i++) {
-            if (Character.toLowerCase(property.getName().charAt(0)) < Character.toLowerCase('f')) {
-                ModelLoader.setCustomModelResourceLocation(item, i, new ModelResourceLocation(getRegistryName(), property.getName() + "=" + getEnumFromMeta(i).getName() + ",facing=north"));
-            } else {
-                ModelLoader.setCustomModelResourceLocation(item, i, new ModelResourceLocation(getRegistryName(), "facing=north," + property.getName() + "=" + getEnumFromMeta(i).getName()));
-            }
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void registerModels(Item item, String name) {
+		for (int i = 0; i < values.length; i++) {
+			if (Character.toLowerCase(property.getName().charAt(0)) < Character.toLowerCase('f')) {
+				ModelLoader.setCustomModelResourceLocation(
+						item,
+						i,
+						new ModelResourceLocation(
+								getRegistryName(),
+								property.getName() + "=" + getEnumFromMeta(i).getName() + ",facing=north"));
+			} else {
+				ModelLoader.setCustomModelResourceLocation(
+						item,
+						i,
+						new ModelResourceLocation(
+								getRegistryName(),
+								"facing=north," + property.getName() + "=" + getEnumFromMeta(i).getName()));
+			}
 
-        }
-    }
+		}
+	}
 
-    @Override
-    public boolean isFullBlock(IBlockState state)
-    {
-        return false;
-    }
+	@Override
+	public boolean isFullBlock(IBlockState state) {
+		return false;
+	}
 
-    @Override
-    public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos)
-    {
-        return false;
-    }
+	@Override
+	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return false;
+	}
 
-    @Override
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
-    {
-        return BlockFaceShape.UNDEFINED;
-    }
+	@Override
+	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+		return BlockFaceShape.UNDEFINED;
+	}
 }

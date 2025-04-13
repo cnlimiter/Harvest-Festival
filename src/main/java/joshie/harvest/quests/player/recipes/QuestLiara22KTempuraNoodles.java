@@ -1,21 +1,21 @@
 package joshie.harvest.quests.player.recipes;
 
+import java.util.Set;
+
 import joshie.harvest.api.quests.HFQuest;
 import joshie.harvest.api.quests.Quest;
 import joshie.harvest.npcs.HFNPCs;
 import joshie.harvest.quests.Quests;
 import joshie.harvest.quests.base.QuestRecipe;
 
-import java.util.Set;
-
 @HFQuest("recipe.tempura.noodles")
 public class QuestLiara22KTempuraNoodles extends QuestRecipe {
-    public QuestLiara22KTempuraNoodles() {
-        super("noodles_tempura", HFNPCs.CAFE_OWNER, 22500);
-    }
+	public QuestLiara22KTempuraNoodles() {
+		super("noodles_tempura", HFNPCs.CAFE_OWNER, 22500);
+	}
 
-    @Override
-    public boolean canStartQuest(Set<Quest> active, Set<Quest> finished) {
-        return finished.contains(Quests.LIARA_20K);
-    }
+	@Override
+	public boolean canStartQuest(Set<Quest> active, Set<Quest> finished) {
+		return finished.contains(Quests.LIARA_20K);
+	}
 }

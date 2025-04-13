@@ -1,11 +1,15 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "model": "minecraft:leaves"
-  },
-  "variants": {
-    "leavestropical": {
-      "banana": { "textures": { "all": "harvestfestival:blocks/leaves_banana" }}
-    }
-  }
+	"forge_marker": 1,
+	"defaults": {
+		"model": "minecraft:leaves"
+	},
+	"variants": {
+		"leavestropical": {
+			"banana": {
+				"textures": {
+					"all": "harvestfestival:blocks/leaves_banana"
+				}
+			}
+		}
+	}
 }

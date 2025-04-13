@@ -12,27 +12,28 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 
 @Packet(Side.CLIENT)
 public class PacketAddLetter extends PacketSharedSync {
-    private ResourceLocation letter;
+	private ResourceLocation letter;
 
-    public PacketAddLetter(){}
-    public PacketAddLetter(Letter letter) {
-        this.letter = letter.getResource();
-    }
+	public PacketAddLetter() {}
 
-    @Override
-    public void toBytes(ByteBuf buf) {
-        super.toBytes(buf);
-        ByteBufUtils.writeUTF8String(buf, letter.toString());
-    }
+	public PacketAddLetter(Letter letter) {
+		this.letter = letter.getResource();
+	}
 
-    @Override
-    public void fromBytes(ByteBuf buf) {
-        super.fromBytes(buf);
-        letter = new ResourceLocation(ByteBufUtils.readUTF8String(buf));
-    }
+	@Override
+	public void toBytes(ByteBuf buf) {
+		super.toBytes(buf);
+		ByteBufUtils.writeUTF8String(buf, letter.toString());
+	}
 
-    @Override
-    public void handlePacket(EntityPlayer player) {
-        this.<LetterDataClient>getLetterDataFromPlayer(player).add(letter);
-    }
+	@Override
+	public void fromBytes(ByteBuf buf) {
+		super.fromBytes(buf);
+		letter = new ResourceLocation(ByteBufUtils.readUTF8String(buf));
+	}
+
+	@Override
+	public void handlePacket(EntityPlayer player) {
+		this.<LetterDataClient>getLetterDataFromPlayer(player).add(letter);
+	}
 }

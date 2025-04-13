@@ -1,5 +1,6 @@
 package joshie.harvest.shops.purchasable;
 
+import javax.annotation.Nonnull;
 import joshie.harvest.api.shops.IPurchaseableMaterials;
 import joshie.harvest.api.shops.IRequirement;
 import joshie.harvest.shops.requirement.Logs;
@@ -8,67 +9,71 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-import javax.annotation.Nonnull;
-
 public class PurchasableMaterials extends Purchasable implements IPurchaseableMaterials {
-    protected IRequirement[] requirements;
+	protected IRequirement[] requirements;
 
-    public PurchasableMaterials(IRequirement... requirements) {
-        this.requirements = requirements;
-    }
+	public PurchasableMaterials(IRequirement... requirements) {
+		this.requirements = requirements;
+	}
 
-    public PurchasableMaterials(long cost, int logs, int stone, @Nonnull ItemStack stack) {
-        super(cost, stack);
-        if (logs != 0 && stone == 0) requirements = new IRequirement[]{Logs.of(logs)};
-        else if (logs == 0 && stone != 0) requirements = new IRequirement[]{Stone.of(stone)};
-        else requirements = new IRequirement[]{Logs.of(logs), Stone.of(stone)};
-    }
+	public PurchasableMaterials(long cost, int logs, int stone, @Nonnull ItemStack stack) {
+		super(cost, stack);
+		if (logs != 0 && stone == 0) {
+			requirements = new IRequirement[]{Logs.of(logs)};
+		} else if (logs == 0 && stone != 0) {
+			requirements = new IRequirement[]{Stone.of(stone)};
+		} else {
+			requirements = new IRequirement[]{Logs.of(logs), Stone.of(stone)};
+		}
+	}
 
-    public PurchasableMaterials(long cost, @Nonnull ItemStack stack, IRequirement... requirements) {
-        super(cost, stack);
-        this.requirements = requirements;
-    }
+	public PurchasableMaterials(long cost, @Nonnull ItemStack stack, IRequirement... requirements) {
+		super(cost, stack);
+		this.requirements = requirements;
+	}
 
-    @Override
-    public IRequirement[] getRequirements() {
-        return requirements;
-    }
+	@Override
+	public IRequirement[] getRequirements() {
+		return requirements;
+	}
 
-    @Override
-    public boolean canDo(@Nonnull World world, @Nonnull EntityPlayer player, int amount) {
-        for (IRequirement requirement : requirements) {
-            if (!requirement.isFulfilled(world, player, amount)) return false;
-        }
+	@Override
+	public boolean canDo(@Nonnull World world, @Nonnull EntityPlayer player, int amount) {
+		for (IRequirement requirement : requirements) {
+			if (!requirement.isFulfilled(world, player, amount)) {
+				return false;
+			}
+		}
 
-        return isPurchasable(world, player);
-    }
+		return isPurchasable(world, player);
+	}
 
-    @Override
-    public boolean canList(@Nonnull World world, @Nonnull EntityPlayer player) {
-        return true;
-    }
+	@Override
+	public boolean canList(@Nonnull World world, @Nonnull EntityPlayer player) {
+		return true;
+	}
 
-    @Override
-    @Nonnull
-    public ItemStack getDisplayStack() {
-        return stack;
-    }
+	@Override
+	@Nonnull
+	public ItemStack getDisplayStack() {
+		return stack;
+	}
 
-    @Override
-    public void onPurchased(EntityPlayer player) {
-        for (IRequirement requirement : requirements) {
-            requirement.onPurchased(player);
-        }
+	@Override
+	public void onPurchased(EntityPlayer player) {
+		for (IRequirement requirement : requirements) {
+			requirement.onPurchased(player);
+		}
 
-        super.onPurchased(player);
-    }
+		super.onPurchased(player);
+	}
 
-    public boolean isPurchasable(World world, EntityPlayer player) {
-        return true;
-    }
+	public boolean isPurchasable(World world, EntityPlayer player) {
+		return true;
+	}
 
-    @Override
-    public String getDisplayName() {
-        return !stack.isEmpty() ? stack.getDisplayName() : getDisplayStack().getDisplayName();
-    }
+	@Override
+	public String getDisplayName() {
+		return !stack.isEmpty() ? stack.getDisplayName() : getDisplayStack().getDisplayName();
+	}
 }

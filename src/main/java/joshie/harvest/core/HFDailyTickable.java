@@ -9,12 +9,14 @@ import net.minecraft.world.World;
 @HFApiImplementation
 @SuppressWarnings("unused, WeakerAccess")
 public class HFDailyTickable implements IDailyTickableRegistry {
-    public static final HFDailyTickable INSTANCE = new HFDailyTickable();
+	public static final HFDailyTickable INSTANCE = new HFDailyTickable();
 
-    private HFDailyTickable() {}
+	private HFDailyTickable() {}
 
-    @Override
-    public void addTickable(World world, BlockPos pos, DailyTickableBlock tickable) {
-        if (!world.isRemote) HFTrackers.getTickables(world).add(pos, tickable);
-    }
+	@Override
+	public void addTickable(World world, BlockPos pos, DailyTickableBlock tickable) {
+		if (!world.isRemote) {
+			HFTrackers.getTickables(world).add(pos, tickable);
+		}
+	}
 }

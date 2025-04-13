@@ -1,5 +1,18 @@
 package joshie.harvest.gathering;
 
+import static joshie.harvest.api.calendar.Season.AUTUMN;
+import static joshie.harvest.api.calendar.Season.SPRING;
+import static joshie.harvest.api.calendar.Season.SUMMER;
+import static joshie.harvest.api.calendar.Season.WINTER;
+
+import java.util.EnumMap;
+import java.util.HashSet;
+import java.util.NavigableMap;
+import java.util.Random;
+import java.util.Set;
+import java.util.TreeMap;
+
+import javax.annotation.Nonnull;
 import joshie.harvest.api.calendar.Season;
 import joshie.harvest.api.gathering.IGatheringRegistry;
 import joshie.harvest.core.util.annotations.HFApiImplementation;
@@ -8,60 +21,59 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 
-import javax.annotation.Nonnull;
-import java.util.*;
-
-import static joshie.harvest.api.calendar.Season.*;
-
 @HFApiImplementation
 @HFEvents
 public class GatheringRegistry implements IGatheringRegistry {
-    public static final GatheringRegistry INSTANCE = new GatheringRegistry();
-    private final EnumMap<Season, WeightedState> gatherings = new EnumMap<>(Season.class);
-    private final Set<Block> gatheringStates = new HashSet<>();
+	public static final GatheringRegistry INSTANCE = new GatheringRegistry();
+	private final EnumMap<Season, WeightedState> gatherings = new EnumMap<>(Season.class);
+	private final Set<Block> gatheringStates = new HashSet<>();
 
-    private GatheringRegistry() {
-        registerValidGatheringSpawn(Blocks.GRASS);
-    }
+	private GatheringRegistry() {
+		registerValidGatheringSpawn(Blocks.GRASS);
+	}
 
-    @Override
-    public void registerGathering(IBlockState state, double weight, Season... seasons) {
-        if (seasons == null || seasons.length == 0) seasons = new Season[] { SPRING, SUMMER, AUTUMN, WINTER };
-        for (Season season: seasons) {
-            WeightedState weightedState = gatherings.computeIfAbsent(season, k -> new WeightedState());
+	@Override
+	public void registerGathering(IBlockState state, double weight, Season... seasons) {
+		if (seasons == null || seasons.length == 0) {
+			seasons = new Season[]{SPRING, SUMMER, AUTUMN, WINTER};
+		}
+		for (Season season : seasons) {
+			WeightedState weightedState = gatherings.computeIfAbsent(season, k -> new WeightedState());
 
-            weightedState.add(state, weight);
-        }
-    }
+			weightedState.add(state, weight);
+		}
+	}
 
-    @Override
-    @Nonnull
-    public IBlockState getRandomStateForSeason(@Nonnull Season season) {
-        return gatherings.get(season).get();
-    }
+	@Override
+	@Nonnull
+	public IBlockState getRandomStateForSeason(@Nonnull Season season) {
+		return gatherings.get(season).get();
+	}
 
-    @Override
-    public void registerValidGatheringSpawn(Block block) {
-        gatheringStates.add(block);
-    }
+	@Override
+	public void registerValidGatheringSpawn(Block block) {
+		gatheringStates.add(block);
+	}
 
-    boolean isValidGatheringSpawn(Block block) {
-        return gatheringStates.contains(block);
-    }
+	boolean isValidGatheringSpawn(Block block) {
+		return gatheringStates.contains(block);
+	}
 
-    private class WeightedState {
-        private final NavigableMap<Double, IBlockState> map = new TreeMap<>();
-        private final Random random = new Random();
-        private double total = 0;
+	private class WeightedState {
+		private final NavigableMap<Double, IBlockState> map = new TreeMap<>();
+		private final Random random = new Random();
+		private double total = 0;
 
-        public void add(IBlockState state, double weight) {
-            if (weight <= 0) return;
-            total += weight;
-            map.put(total, state);
-        }
+		public void add(IBlockState state, double weight) {
+			if (weight <= 0) {
+				return;
+			}
+			total += weight;
+			map.put(total, state);
+		}
 
-        public IBlockState get() {
-            return map.ceilingEntry((random.nextDouble() * total)).getValue();
-        }
-    }
+		public IBlockState get() {
+			return map.ceilingEntry((random.nextDouble() * total)).getValue();
+		}
+	}
 }

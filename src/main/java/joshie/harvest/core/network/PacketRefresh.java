@@ -11,33 +11,34 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 
 @Packet(Side.CLIENT)
 public class PacketRefresh extends PenguinPacket {
-    private BlockPos pos;
-    private NBTTagCompound tag;
+	private BlockPos pos;
+	private NBTTagCompound tag;
 
-    public PacketRefresh() {}
-    public PacketRefresh(BlockPos pos, NBTTagCompound tag) {
-        this.pos = pos;
-        this.tag = tag;
-    }
+	public PacketRefresh() {}
 
-    @Override
-    public void toBytes(ByteBuf to) {
-        to.writeLong(pos.toLong());
-        ByteBufUtils.writeTag(to, tag);
-    }
+	public PacketRefresh(BlockPos pos, NBTTagCompound tag) {
+		this.pos = pos;
+		this.tag = tag;
+	}
 
-    @Override
-    public void fromBytes(ByteBuf from) {
-        pos = BlockPos.fromLong(from.readLong());
-        tag = ByteBufUtils.readTag(from);
-    }
+	@Override
+	public void toBytes(ByteBuf to) {
+		to.writeLong(pos.toLong());
+		ByteBufUtils.writeTag(to, tag);
+	}
 
-    @Override
-    public void handlePacket(EntityPlayer player) {
-        TileEntity tile = player.world.getTileEntity(pos);
-        if (tile != null) {
-            tile.handleUpdateTag(tag);
-            player.world.markBlockRangeForRenderUpdate(pos, pos);
-        }
-    }
+	@Override
+	public void fromBytes(ByteBuf from) {
+		pos = BlockPos.fromLong(from.readLong());
+		tag = ByteBufUtils.readTag(from);
+	}
+
+	@Override
+	public void handlePacket(EntityPlayer player) {
+		TileEntity tile = player.world.getTileEntity(pos);
+		if (tile != null) {
+			tile.handleUpdateTag(tag);
+			player.world.markBlockRangeForRenderUpdate(pos, pos);
+		}
+	}
 }

@@ -10,12 +10,12 @@ import net.minecraft.entity.player.EntityPlayer;
 
 @HFQuest("meeting.candice")
 public class QuestMeetCandice extends QuestMeeting {
-    public QuestMeetCandice() {
-        super(HFBuildings.SUPERMARKET, HFNPCs.MILKMAID);
-    }
+	public QuestMeetCandice() {
+		super(HFBuildings.SUPERMARKET, HFNPCs.MILKMAID);
+	}
 
-    @Override
-    public void onQuestCompleted(EntityPlayer player) {
-        rewardItem(player, HFCooking.MEAL.getCreativeStack(Meal.MILK_HOT));
-    }
+	@Override
+	public void onQuestCompleted(EntityPlayer player) {
+		rewardItem(player, HFCooking.MEAL.getCreativeStack(Meal.MILK_HOT));
+	}
 }

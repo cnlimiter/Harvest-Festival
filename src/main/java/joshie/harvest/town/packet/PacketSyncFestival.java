@@ -1,5 +1,7 @@
 package joshie.harvest.town.packet;
 
+import java.util.UUID;
+
 import io.netty.buffer.ByteBuf;
 import joshie.harvest.api.calendar.Festival;
 import joshie.harvest.core.network.Packet;
@@ -8,37 +10,36 @@ import joshie.harvest.town.data.TownDataClient;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 
-import java.util.UUID;
-
 @Packet(Side.CLIENT)
 public class PacketSyncFestival extends PacketSyncTown {
-    private Festival festival;
-    private int days;
+	private Festival festival;
+	private int days;
 
-    @SuppressWarnings("unused")
-    public PacketSyncFestival(){}
-    public PacketSyncFestival(UUID town, Festival festival, int days) {
-        super(town);
-        this.festival = festival;
-        this.days = days;
-    }
+	@SuppressWarnings("unused")
+	public PacketSyncFestival() {}
 
-    @Override
-    public void toBytes(ByteBuf buf) {
-        super.toBytes(buf);
-        ByteBufUtils.writeUTF8String(buf, festival.getResource().toString());
-        buf.writeInt(days);
-    }
+	public PacketSyncFestival(UUID town, Festival festival, int days) {
+		super(town);
+		this.festival = festival;
+		this.days = days;
+	}
 
-    @Override
-    public void fromBytes(ByteBuf buf) {
-        super.fromBytes(buf);
-        festival = Festival.REGISTRY.get(new ResourceLocation(ByteBufUtils.readUTF8String(buf)));
-        days = buf.readInt();
-    }
+	@Override
+	public void toBytes(ByteBuf buf) {
+		super.toBytes(buf);
+		ByteBufUtils.writeUTF8String(buf, festival.getResource().toString());
+		buf.writeInt(days);
+	}
 
-    @Override
-    public void handlePacket(TownDataClient town) {
-        town.setFestival(festival, days);
-    }
+	@Override
+	public void fromBytes(ByteBuf buf) {
+		super.fromBytes(buf);
+		festival = Festival.REGISTRY.get(new ResourceLocation(ByteBufUtils.readUTF8String(buf)));
+		days = buf.readInt();
+	}
+
+	@Override
+	public void handlePacket(TownDataClient town) {
+		town.setFestival(festival, days);
+	}
 }

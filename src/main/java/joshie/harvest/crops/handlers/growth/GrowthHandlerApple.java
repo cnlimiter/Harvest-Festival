@@ -9,28 +9,28 @@ import net.minecraft.util.math.BlockPos;
 
 @SuppressWarnings("unused")
 public class GrowthHandlerApple extends GrowthHandlerHFTree {
-    public GrowthHandlerApple() {
-        super(Fruit.APPLE, 2);
-    }
+	public GrowthHandlerApple() {
+		super(Fruit.APPLE, 2);
+	}
 
-    @Override
-    protected boolean isLeaves(IBlockState state) {
-        return state.getBlock() == HFCrops.LEAVES_FRUIT && HFCrops.LEAVES_FRUIT.getEnumFromState(state) == LeavesFruit.APPLE;
-    }
+	@Override
+	protected boolean isLeaves(IBlockState state) {
+		return state.getBlock() == HFCrops.LEAVES_FRUIT && HFCrops.LEAVES_FRUIT.getEnumFromState(state) == LeavesFruit.APPLE;
+	}
 
-    @Override
-    protected BlockPos getAdjustedPositionBasedOnRotation(BlockPos pos, Rotation rotation) {
-        switch (rotation) {
-            case NONE:
-                return pos.west(3).north(4);
-            case CLOCKWISE_90:
-                return pos.north(3).east(4);
-            case CLOCKWISE_180:
-                return pos.east(3).south(4);
-            case COUNTERCLOCKWISE_90:
-                return pos.south(3).west(4);
-            default:
-                return pos;
-        }
-    }
+	@Override
+	protected BlockPos getAdjustedPositionBasedOnRotation(BlockPos pos, Rotation rotation) {
+		switch (rotation) {
+			case NONE:
+				return pos.west(3).north(4);
+			case CLOCKWISE_90:
+				return pos.north(3).east(4);
+			case CLOCKWISE_180:
+				return pos.east(3).south(4);
+			case COUNTERCLOCKWISE_90:
+				return pos.south(3).west(4);
+			default:
+				return pos;
+		}
+	}
 }

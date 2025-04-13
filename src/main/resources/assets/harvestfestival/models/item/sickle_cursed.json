@@ -1,6 +1,6 @@
 {
-  "parent": "harvestfestival:item/handheld_rotated",
-  "textures": {
-    "layer0": "harvestfestival:items/tools/sickle_cursed"
-  }
+	"parent": "harvestfestival:item/handheld_rotated",
+	"textures": {
+		"layer0": "harvestfestival:items/tools/sickle_cursed"
+	}
 }

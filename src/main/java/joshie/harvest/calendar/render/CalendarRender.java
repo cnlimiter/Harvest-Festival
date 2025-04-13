@@ -29,112 +29,128 @@ import net.minecraftforge.fml.relauncher.Side;
 @HFEvents(Side.CLIENT)
 @SuppressWarnings("unused")
 public class CalendarRender {
-    private static final BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
-    public static volatile TIntIntMap grassToBlend = new TIntIntHashMap();
-    public static volatile TIntIntMap leavesToBlend = new TIntIntHashMap();
-    private static int fogStart = 0;
-    private static int fogTarget = 0;
+	private static final BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
+	public static volatile TIntIntMap grassToBlend = new TIntIntHashMap();
+	public static volatile TIntIntMap leavesToBlend = new TIntIntHashMap();
+	private static int fogStart = 0;
+	private static int fogTarget = 0;
 
-    @SubscribeEvent
-    public void onRenderOverlay(RenderGameOverlayEvent.Pre event) {
-        if (event.getType() == ElementType.CROSSHAIRS) {
-            if (Minecraft.getMinecraft().currentScreen instanceof GuiNPCBase) {
-                event.setCanceled(true);
-            }
-        }
-    }
+	@SubscribeEvent
+	public void onRenderOverlay(RenderGameOverlayEvent.Pre event) {
+		if (event.getType() == ElementType.CROSSHAIRS) {
+			if (Minecraft.getMinecraft().currentScreen instanceof GuiNPCBase) {
+				event.setCanceled(true);
+			}
+		}
+	}
 
-    @SubscribeEvent
-    public void onFogRender(RenderFogEvent event) {
-        if (HFCalendar.ENABLE_SNOW_FOG && event.getEntity().world.provider.getDimension() == 0) {
-            if (!event.getState().getMaterial().isLiquid()) {
-                //Update the fog smoothly
-                if (fogTarget != fogStart) {
-                    if (fogTarget > fogStart) {
-                        fogStart += 5;
-                    } else {
-                        fogStart -= 5;
-                    }
-                }
+	@SubscribeEvent
+	public void onFogRender(RenderFogEvent event) {
+		if (HFCalendar.ENABLE_SNOW_FOG && event.getEntity().world.provider.getDimension() == 0) {
+			if (!event.getState().getMaterial().isLiquid()) {
+				//Update the fog smoothly
+				if (fogTarget != fogStart) {
+					if (fogTarget > fogStart) {
+						fogStart += 5;
+					} else {
+						fogStart -= 5;
+					}
+				}
 
-                Minecraft mc = MCClientHelper.getMinecraft();
-                blockpos$mutableblockpos.setPos(mc.player.posX, mc.player.posY, mc.player.posZ);
-                int i1 = mc.gameSettings.fancyGraphics ? 10 : 5;
-                int j = MathHelper.floor(mc.player.posY);
-                int j2 = mc.world.getPrecipitationHeight(blockpos$mutableblockpos).getY();
-                int k2 = j - i1;
-                int l2 = j + i1;
+				Minecraft mc = MCClientHelper.getMinecraft();
+				blockpos$mutableblockpos.setPos(mc.player.posX, mc.player.posY, mc.player.posZ);
+				int i1 = mc.gameSettings.fancyGraphics ? 10 : 5;
+				int j = MathHelper.floor(mc.player.posY);
+				int j2 = mc.world.getPrecipitationHeight(blockpos$mutableblockpos).getY();
+				int k2 = j - i1;
+				int l2 = j + i1;
 
-                if (k2 < j2) {
-                    k2 = j2;
-                }
+				if (k2 < j2) {
+					k2 = j2;
+				}
 
-                if (l2 < j2) {
-                    l2 = j2;
-                }
+				if (l2 < j2) {
+					l2 = j2;
+				}
 
-                Weather weather = HFApi.calendar.getWeather(mc.world);
-                if (k2 != l2) {
-                    Biome biome = mc.world.getBiome(blockpos$mutableblockpos);
-                    if (biome.canRain() && !biome.isHighHumidity()) {
-                        if (weather == Weather.BLIZZARD) {
-                            fogTarget = -20000;
-                        } else if (weather == Weather.SNOW) {
-                            fogTarget = -1000;
-                        } else fogTarget = 100;
-                    } else fogTarget = 5000;
-                } else fogTarget = 100;
-                if (blockpos$mutableblockpos.getY() < j2) fogTarget = 5000;
+				Weather weather = HFApi.calendar.getWeather(mc.world);
+				if (k2 != l2) {
+					Biome biome = mc.world.getBiome(blockpos$mutableblockpos);
+					if (biome.canRain() && !biome.isHighHumidity()) {
+						if (weather == Weather.BLIZZARD) {
+							fogTarget = -20000;
+						} else if (weather == Weather.SNOW) {
+							fogTarget = -1000;
+						} else {
+							fogTarget = 100;
+						}
+					} else {
+						fogTarget = 5000;
+					}
+				} else {
+					fogTarget = 100;
+				}
+				if (blockpos$mutableblockpos.getY() < j2) {
+					fogTarget = 5000;
+				}
 
-                //If we're snow or resetting the target
-                if (weather.isSnow()) {
-                    GlStateManager.setFogEnd(Math.min(event.getFarPlaneDistance(), 150F) * 0.5F);
-                    GlStateManager.setFogStart(fogStart / 100F);
-                }
-            } else {
-                fogStart = 100;
-                fogTarget = 100;
-            }
-        }
-    }
+				//If we're snow or resetting the target
+				if (weather.isSnow()) {
+					GlStateManager.setFogEnd(Math.min(event.getFarPlaneDistance(), 150F) * 0.5F);
+					GlStateManager.setFogStart(fogStart / 100F);
+				}
+			} else {
+				fogStart = 100;
+				fogTarget = 100;
+			}
+		}
+	}
 
-    @SubscribeEvent
-    public void onFogColor(FogColors event) {
-        if (HFCalendar.ENABLE_SNOW_FOG && event.getEntity().world.provider.getDimension() == 0) {
-            if (!event.getState().getMaterial().isLiquid()) {
-                Weather weather = HFApi.calendar.getWeather(event.getEntity().world);
-                if (weather == Weather.SNOW || weather == Weather.BLIZZARD) {
-                    event.setRed(1F);
-                    event.setBlue(1F);
-                    event.setGreen(1F);
-                }
-            }
-        }
-    }
+	@SubscribeEvent
+	public void onFogColor(FogColors event) {
+		if (HFCalendar.ENABLE_SNOW_FOG && event.getEntity().world.provider.getDimension() == 0) {
+			if (!event.getState().getMaterial().isLiquid()) {
+				Weather weather = HFApi.calendar.getWeather(event.getEntity().world);
+				if (weather == Weather.SNOW || weather == Weather.BLIZZARD) {
+					event.setRed(1F);
+					event.setBlue(1F);
+					event.setGreen(1F);
+				}
+			}
+		}
+	}
 
-    @SubscribeEvent
-    public void getFoliageColor(GetFoliageColor event) {
-        if (!event.getBiome().canRain() || event.getBiome().isHighHumidity()) return;
+	@SubscribeEvent
+	public void getFoliageColor(GetFoliageColor event) {
+		if (!event.getBiome().canRain() || event.getBiome().isHighHumidity()) {
+			return;
+		}
 		World world = MCClientHelper.getWorld();
-		if (world == null) return;
+		if (world == null) {
+			return;
+		}
 		if (HFApi.calendar.getDate(world).getSeason() == Season.AUTUMN) {
-            event.setNewColor(0xFF9900);
-        } else {
-            int leaves = HFTrackers.getCalendar(world).getSeasonData().leavesColor;
-            if (leaves != 0) {
-                event.setNewColor(CalendarHelper.getBlendedColour(leavesToBlend, event.getOriginalColor(), leaves));
-            }
-        }
-    }
+			event.setNewColor(0xFF9900);
+		} else {
+			int leaves = HFTrackers.getCalendar(world).getSeasonData().leavesColor;
+			if (leaves != 0) {
+				event.setNewColor(CalendarHelper.getBlendedColour(leavesToBlend, event.getOriginalColor(), leaves));
+			}
+		}
+	}
 
-    @SubscribeEvent
-    public void getGrassColor(GetGrassColor event) {
-        if (!event.getBiome().canRain() || event.getBiome().isHighHumidity()) return;
+	@SubscribeEvent
+	public void getGrassColor(GetGrassColor event) {
+		if (!event.getBiome().canRain() || event.getBiome().isHighHumidity()) {
+			return;
+		}
 		World world = MCClientHelper.getWorld();
-		if (world == null) return;
+		if (world == null) {
+			return;
+		}
 		int grass = HFTrackers.getCalendar(world).getSeasonData().grassColor;
-        if (grass != 0) {
-            event.setNewColor(CalendarHelper.getBlendedColour(grassToBlend, event.getOriginalColor(), grass));
-        }
-    }
+		if (grass != 0) {
+			event.setNewColor(CalendarHelper.getBlendedColour(grassToBlend, event.getOriginalColor(), grass));
+		}
+	}
 }

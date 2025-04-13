@@ -12,17 +12,17 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class AnimalItemRenderer extends EntityItemRenderer {
-    public static final AnimalItemRenderer INSTANCE = new AnimalItemRenderer();
+	public static final AnimalItemRenderer INSTANCE = new AnimalItemRenderer();
 
-    @SuppressWarnings("deprecation")
-    public void register(Spawner spawner, String name, ModelBase model) {
-        map.put(spawner.ordinal(), new RenderPair(name, model));
-        ForgeHooksClient.registerTESRItemStack(HFAnimals.ANIMAL, spawner.ordinal(), this.getClass());
-    }
+	@SuppressWarnings("deprecation")
+	public void register(Spawner spawner, String name, ModelBase model) {
+		map.put(spawner.ordinal(), new RenderPair(name, model));
+		ForgeHooksClient.registerTESRItemStack(HFAnimals.ANIMAL, spawner.ordinal(), this.getClass());
+	}
 
-    @SuppressWarnings("deprecation")
-    public void register(Spawner spawner, ResourceLocation texture, ModelBase model) {
-        map.put(spawner.ordinal(), new RenderPair(texture, model));
-        ForgeHooksClient.registerTESRItemStack(HFAnimals.ANIMAL, spawner.ordinal(), this.getClass());
-    }
+	@SuppressWarnings("deprecation")
+	public void register(Spawner spawner, ResourceLocation texture, ModelBase model) {
+		map.put(spawner.ordinal(), new RenderPair(texture, model));
+		ForgeHooksClient.registerTESRItemStack(HFAnimals.ANIMAL, spawner.ordinal(), this.getClass());
+	}
 }

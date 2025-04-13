@@ -10,17 +10,17 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SuppressWarnings("WeakerAccess")
 public class BuildingRendererNoFloor extends BuildingRenderer {
 
-    BuildingRendererNoFloor(BuildingAccess world, BuildingKey key) {
-        super(world, key);
-    }
+	BuildingRendererNoFloor(BuildingAccess world, BuildingKey key) {
+		super(world, key);
+	}
 
-    @Override
-    protected void setupRender(BuildingAccess world) {
-        for (BlockRenderLayer layer: BlockRenderLayer.values()) {
-            BufferBuilder buffer = renderer.getWorldRendererByLayer(layer);
-            buffer.begin(7, DefaultVertexFormats.BLOCK);
-            world.getBlockMap().entrySet().stream().filter(placeable -> placeable.getKey().getY() != 0)
-                    .forEach(placeable -> addRender(world, placeable.getValue(), placeable.getKey(), layer, buffer));
-        }
-    }
+	@Override
+	protected void setupRender(BuildingAccess world) {
+		for (BlockRenderLayer layer : BlockRenderLayer.values()) {
+			BufferBuilder buffer = renderer.getWorldRendererByLayer(layer);
+			buffer.begin(7, DefaultVertexFormats.BLOCK);
+			world.getBlockMap().entrySet().stream().filter(placeable -> placeable.getKey().getY() != 0)
+					.forEach(placeable -> addRender(world, placeable.getValue(), placeable.getKey(), layer, buffer));
+		}
+	}
 }

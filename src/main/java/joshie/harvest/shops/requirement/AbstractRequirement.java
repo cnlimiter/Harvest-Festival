@@ -1,28 +1,27 @@
 package joshie.harvest.shops.requirement;
 
+import javax.annotation.Nonnull;
 import joshie.harvest.api.shops.IRequirement;
 import net.minecraft.item.ItemStack;
 
-import javax.annotation.Nonnull;
-
 public abstract class AbstractRequirement implements IRequirement {
-    @Nonnull
-    private final ItemStack icon;
-    protected final int cost;
+	@Nonnull
+	private final ItemStack icon;
+	protected final int cost;
 
-    public AbstractRequirement(@Nonnull ItemStack icon, int cost) {
-        this.icon = icon;
-        this.cost = cost;
-    }
+	public AbstractRequirement(@Nonnull ItemStack icon, int cost) {
+		this.icon = icon;
+		this.cost = cost;
+	}
 
-    @Override
-    @Nonnull
-    public ItemStack getIcon() {
-        return icon;
-    }
+	@Override
+	@Nonnull
+	public ItemStack getIcon() {
+		return icon;
+	}
 
-    @Override
-    public int getCost() {
-        return cost;
-    }
+	@Override
+	public int getCost() {
+		return cost;
+	}
 }

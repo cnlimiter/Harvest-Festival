@@ -3,19 +3,20 @@ package joshie.harvest.cooking.gui;
 import joshie.harvest.api.cooking.Utensil;
 
 public abstract class Page {
-    protected GuiCookbook gui;
+	protected GuiCookbook gui;
 
-    public Page initGui(GuiCookbook gui) {
-        this.gui = gui;
-        return this;
-    }
+	public Page initGui(GuiCookbook gui) {
+		this.gui = gui;
+		return this;
+	}
 
-    public abstract void draw(int mouseX, int mouseY);
-    public abstract boolean mouseClicked(int mouseX, int mouseY);
+	public abstract void draw(int mouseX, int mouseY);
 
-    public abstract Page getOwner();
+	public abstract boolean mouseClicked(int mouseX, int mouseY);
 
-    public Utensil getUtensil() {
-        return null;
-    }
+	public abstract Page getOwner();
+
+	public Utensil getUtensil() {
+		return null;
+	}
 }

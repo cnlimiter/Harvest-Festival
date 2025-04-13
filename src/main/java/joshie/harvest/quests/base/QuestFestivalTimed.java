@@ -1,5 +1,6 @@
 package joshie.harvest.quests.base;
 
+import javax.annotation.Nullable;
 import joshie.harvest.api.npc.NPC;
 import joshie.harvest.api.npc.NPCEntity;
 import joshie.harvest.api.quests.Selection;
@@ -8,42 +9,44 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nullable;
-
 public abstract class QuestFestivalTimed extends QuestFestival {
-    protected long time;
+	protected long time;
 
-    @Override
-    public void onQuestSelectedForDisplay(EntityPlayer player, NPCEntity entity) {
-        time = CalendarHelper.getTime(player.world);
-    }
+	@Override
+	public void onQuestSelectedForDisplay(EntityPlayer player, NPCEntity entity) {
+		time = CalendarHelper.getTime(player.world);
+	}
 
-    @Nullable
-    @Override
-    public Selection getSelection(EntityPlayer player, NPCEntity npc) {
-        return isCorrectTime(time) ? getSelection(player, npc.getNPC()) : null;
-    }
+	@Nullable
+	@Override
+	public Selection getSelection(EntityPlayer player, NPCEntity npc) {
+		return isCorrectTime(time) ? getSelection(player, npc.getNPC()) : null;
+	}
 
-    public Selection getSelection(EntityPlayer player, NPC npc) { return null; }
+	public Selection getSelection(EntityPlayer player, NPC npc) {return null;}
 
-    protected abstract boolean isCorrectTime(long time);
+	protected abstract boolean isCorrectTime(long time);
 
-    @Override
-    @Nullable
-    @SideOnly(Side.CLIENT)
-    public String getLocalizedScript(EntityPlayer player, NPCEntity entity) {
-        if (!isCorrectTime(time)) return null; //Don't process
-        return getLocalizedScript(player, entity.getNPC());
-    }
+	@Override
+	@Nullable
+	@SideOnly(Side.CLIENT)
+	public String getLocalizedScript(EntityPlayer player, NPCEntity entity) {
+		if (!isCorrectTime(time)) {
+			return null; //Don't process
+		}
+		return getLocalizedScript(player, entity.getNPC());
+	}
 
-    @Nullable
-    protected abstract String getLocalizedScript(EntityPlayer player, NPC npc);
+	@Nullable
+	protected abstract String getLocalizedScript(EntityPlayer player, NPC npc);
 
-    @Override
-    public void onChatClosed(EntityPlayer player, NPCEntity entity, boolean wasSneaking) {
-        if (!isCorrectTime(time)) return; //Don't process
-        onChatClosed(player, entity.getNPC());
-    }
+	@Override
+	public void onChatClosed(EntityPlayer player, NPCEntity entity, boolean wasSneaking) {
+		if (!isCorrectTime(time)) {
+			return; //Don't process
+		}
+		onChatClosed(player, entity.getNPC());
+	}
 
-    public abstract void onChatClosed(EntityPlayer player, NPC npc);
+	public abstract void onChatClosed(EntityPlayer player, NPC npc);
 }

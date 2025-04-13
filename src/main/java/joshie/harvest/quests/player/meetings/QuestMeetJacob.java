@@ -12,19 +12,23 @@ import net.minecraft.world.World;
 
 @HFQuest("meeting.jacob")
 public class QuestMeetJacob extends QuestMeeting {
-    public QuestMeetJacob() {
-        super(HFBuildings.FISHING_HUT, HFNPCs.FISHERMAN);
-    }
+	public QuestMeetJacob() {
+		super(HFBuildings.FISHING_HUT, HFNPCs.FISHERMAN);
+	}
 
-    @Override
-    public String getDescription(World world, EntityPlayer player) {
-        if (hasBuilding(player)) return getLocalized("description");
-        else if (TownHelper.getClosestTownToEntity(player, false).hasBuildings(building.getRequirements())) return getLocalized("build");
-        else return null;
-    }
+	@Override
+	public String getDescription(World world, EntityPlayer player) {
+		if (hasBuilding(player)) {
+			return getLocalized("description");
+		} else if (TownHelper.getClosestTownToEntity(player, false).hasBuildings(building.getRequirements())) {
+			return getLocalized("build");
+		} else {
+			return null;
+		}
+	}
 
-    @Override
-    public void onQuestCompleted(EntityPlayer player) {
-        rewardItem(player, HFFishing.FISHING_RODS.get(ToolTier.BASIC).getStack());
-    }
+	@Override
+	public void onQuestCompleted(EntityPlayer player) {
+		rewardItem(player, HFFishing.FISHING_RODS.get(ToolTier.BASIC).getStack());
+	}
 }

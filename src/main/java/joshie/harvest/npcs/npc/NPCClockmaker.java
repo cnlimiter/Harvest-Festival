@@ -1,5 +1,6 @@
 package joshie.harvest.npcs.npc;
 
+import javax.annotation.Nullable;
 import joshie.harvest.api.calendar.CalendarDate;
 import joshie.harvest.api.npc.INPCHelper.Age;
 import joshie.harvest.api.npc.INPCHelper.Gender;
@@ -12,17 +13,18 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import javax.annotation.Nullable;
-
 public class NPCClockmaker extends NPC {
-    public NPCClockmaker(ResourceLocation resource, Gender gender, Age age, CalendarDate birthday, int insideColor, int outsideColor) {
-        super(resource, gender, age, birthday, insideColor, outsideColor);
-    }
+	public NPCClockmaker(ResourceLocation resource, Gender gender, Age age, CalendarDate birthday, int insideColor, int outsideColor) {
+		super(resource, gender, age, birthday, insideColor, outsideColor);
+	}
 
-    @Override
-    public Shop getShop(World world, BlockPos pos, @Nullable EntityPlayer player) {
-        long time = CalendarHelper.getTime(world);
-        if (time >= 8000 && time <= 15000) return super.getShop(world, pos, player);
-        else return HFShops.BLOODMAGE;
-    }
+	@Override
+	public Shop getShop(World world, BlockPos pos, @Nullable EntityPlayer player) {
+		long time = CalendarHelper.getTime(world);
+		if (time >= 8000 && time <= 15000) {
+			return super.getShop(world, pos, player);
+		} else {
+			return HFShops.BLOODMAGE;
+		}
+	}
 }

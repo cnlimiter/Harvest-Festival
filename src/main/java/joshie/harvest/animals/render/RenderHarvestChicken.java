@@ -8,15 +8,15 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class RenderHarvestChicken extends RenderHarvestAnimal<EntityHarvestChicken> {
-    public RenderHarvestChicken(RenderManager manager) {
-        super(manager, new ModelHarvestChicken(), "chicken");
-    }
+	public RenderHarvestChicken(RenderManager manager) {
+		super(manager, new ModelHarvestChicken(), "chicken");
+	}
 
-    @Override
-    protected float handleRotationFloat(EntityHarvestChicken livingBase, float partialTicks) {
-        this.shadowSize = 0.3F;
-        float f = livingBase.oFlap + (livingBase.wingRotation - livingBase.oFlap) * partialTicks;
-        float f1 = livingBase.oFlapSpeed + (livingBase.destPos - livingBase.oFlapSpeed) * partialTicks;
-        return (MathHelper.sin(f) + 1.0F) * f1;
-    }
+	@Override
+	protected float handleRotationFloat(EntityHarvestChicken livingBase, float partialTicks) {
+		this.shadowSize = 0.3F;
+		float f = livingBase.oFlap + (livingBase.wingRotation - livingBase.oFlap) * partialTicks;
+		float f1 = livingBase.oFlapSpeed + (livingBase.destPos - livingBase.oFlapSpeed) * partialTicks;
+		return (MathHelper.sin(f) + 1.0F) * f1;
+	}
 }

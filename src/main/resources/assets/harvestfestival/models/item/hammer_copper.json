@@ -1,6 +1,6 @@
 {
-  "parent": "item/handheld",
-  "textures": {
-    "layer0": "harvestfestival:items/tools/hammer_copper"
-  }
+	"parent": "item/handheld",
+	"textures": {
+		"layer0": "harvestfestival:items/tools/hammer_copper"
+	}
 }

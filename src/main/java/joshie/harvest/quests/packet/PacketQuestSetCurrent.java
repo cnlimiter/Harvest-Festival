@@ -11,40 +11,42 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 
 @Packet(Packet.Side.CLIENT)
 public class PacketQuestSetCurrent extends PacketSharedSync {
-    private Quest quest;
+	private Quest quest;
 
-    @SuppressWarnings("unused")
-    public PacketQuestSetCurrent() {}
-    public PacketQuestSetCurrent(Quest quest) {
-        this.quest = quest;
-    }
+	@SuppressWarnings("unused")
+	public PacketQuestSetCurrent() {}
 
-    @Override
-    public void toBytes(ByteBuf buf) {
-        super.toBytes(buf);
-        buf.writeBoolean(quest == null);
-        if (quest != null) {
-            ByteBufUtils.writeUTF8String(buf, String.valueOf(quest.getRegistryName()));
-            ByteBufUtils.writeTag(buf, quest.writeToNBT(new NBTTagCompound()));
-        }
-    }
+	public PacketQuestSetCurrent(Quest quest) {
+		this.quest = quest;
+	}
 
-    @Override
-    public void fromBytes(ByteBuf buf) {
-        super.fromBytes(buf);
-        boolean isNull = buf.readBoolean();
-        if (!isNull) {
-            Quest q = Quest.REGISTRY.getValue(new ResourceLocation(ByteBufUtils.readUTF8String(buf)));
-            try {
-                quest = q.getClass().newInstance().setRegistryName(q.getRegistryName());
-                quest.readFromNBT(ByteBufUtils.readTag(buf));
-                quest.onQuestActivated();
-            } catch (Exception ignored) {}
-        }
-    }
+	@Override
+	public void toBytes(ByteBuf buf) {
+		super.toBytes(buf);
+		buf.writeBoolean(quest == null);
+		if (quest != null) {
+			ByteBufUtils.writeUTF8String(buf, String.valueOf(quest.getRegistryName()));
+			ByteBufUtils.writeTag(buf, quest.writeToNBT(new NBTTagCompound()));
+		}
+	}
 
-    @Override
-    public void handlePacket(EntityPlayer player) {
-        this.<QuestDataClient>getQuestDataFromPlayer(player).addAsCurrent(quest);
-    }
+	@Override
+	public void fromBytes(ByteBuf buf) {
+		super.fromBytes(buf);
+		boolean isNull = buf.readBoolean();
+		if (!isNull) {
+			Quest q = Quest.REGISTRY.getValue(new ResourceLocation(ByteBufUtils.readUTF8String(buf)));
+			try {
+				quest = q.getClass().newInstance().setRegistryName(q.getRegistryName());
+				quest.readFromNBT(ByteBufUtils.readTag(buf));
+				quest.onQuestActivated();
+			} catch (Exception ignored) {
+			}
+		}
+	}
+
+	@Override
+	public void handlePacket(EntityPlayer player) {
+		this.<QuestDataClient>getQuestDataFromPlayer(player).addAsCurrent(quest);
+	}
 }

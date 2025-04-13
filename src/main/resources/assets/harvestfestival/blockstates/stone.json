@@ -1,19 +1,51 @@
 {
-  "variants": {
-    "type=real": [
-      { "model": "harvestfestival:mine/mine_wall", "weight": 30 },
-      { "model": "harvestfestival:mine/mine_wall1", "weight": 1 },
-      { "model": "harvestfestival:mine/mine_wall2", "weight": 1 },
-      { "model": "harvestfestival:mine/mine_wall3", "weight": 1 },
-      { "model": "harvestfestival:mine/mine_wall4", "weight": 1 },
-      { "model": "harvestfestival:mine/mine_wall5", "weight": 1 }
-    ],
-    "type=decorative_blank": { "model": "harvestfestival:mine/mine_wall" },
-    "type=decorative_purple": { "model": "harvestfestival:mine/mine_wall1" },
-    "type=decorative_silver": { "model": "harvestfestival:mine/mine_wall2" },
-    "type=decorative_green": { "model": "harvestfestival:mine/mine_wall3" },
-    "type=decorative_blue": { "model": "harvestfestival:mine/mine_wall4" },
-    "type=decorative_red": { "model": "harvestfestival:mine/mine_wall5" },
-    "type=ladder_hole": { "model": "harvestfestival:mine/mine_hole" }
-  }
+	"variants": {
+		"type=real": [
+			{
+				"model": "harvestfestival:mine/mine_wall",
+				"weight": 30
+			},
+			{
+				"model": "harvestfestival:mine/mine_wall1",
+				"weight": 1
+			},
+			{
+				"model": "harvestfestival:mine/mine_wall2",
+				"weight": 1
+			},
+			{
+				"model": "harvestfestival:mine/mine_wall3",
+				"weight": 1
+			},
+			{
+				"model": "harvestfestival:mine/mine_wall4",
+				"weight": 1
+			},
+			{
+				"model": "harvestfestival:mine/mine_wall5",
+				"weight": 1
+			}
+		],
+		"type=decorative_blank": {
+			"model": "harvestfestival:mine/mine_wall"
+		},
+		"type=decorative_purple": {
+			"model": "harvestfestival:mine/mine_wall1"
+		},
+		"type=decorative_silver": {
+			"model": "harvestfestival:mine/mine_wall2"
+		},
+		"type=decorative_green": {
+			"model": "harvestfestival:mine/mine_wall3"
+		},
+		"type=decorative_blue": {
+			"model": "harvestfestival:mine/mine_wall4"
+		},
+		"type=decorative_red": {
+			"model": "harvestfestival:mine/mine_wall5"
+		},
+		"type=ladder_hole": {
+			"model": "harvestfestival:mine/mine_hole"
+		}
+	}
 }

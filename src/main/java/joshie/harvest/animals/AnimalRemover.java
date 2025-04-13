@@ -9,12 +9,13 @@ import net.minecraft.world.biome.Biome;
 
 @HFLoader
 public class AnimalRemover {
-    /* Disables vanilla cows, chickens and sheep from spawning naturally if spawning is disabled **/
-    public static void complete() {
-        if (!HFAnimals.CAN_SPAWN) {
-            for (Biome biome: Biome.REGISTRY) {
-                biome.getSpawnableList(EnumCreatureType.CREATURE).removeIf(entry -> entry.entityClass == EntityCow.class || entry.entityClass == EntityChicken.class || entry.entityClass == EntitySheep.class);
-            }
-        }
-    }
+	/* Disables vanilla cows, chickens and sheep from spawning naturally if spawning is disabled **/
+	public static void complete() {
+		if (!HFAnimals.CAN_SPAWN) {
+			for (Biome biome : Biome.REGISTRY) {
+				biome.getSpawnableList(EnumCreatureType.CREATURE).removeIf(entry -> entry.entityClass == EntityCow.class ||
+						entry.entityClass == EntityChicken.class || entry.entityClass == EntitySheep.class);
+			}
+		}
+	}
 }

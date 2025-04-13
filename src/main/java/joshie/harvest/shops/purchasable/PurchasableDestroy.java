@@ -1,5 +1,8 @@
 package joshie.harvest.shops.purchasable;
 
+import java.util.List;
+
+import javax.annotation.Nonnull;
 import joshie.harvest.api.buildings.Building;
 import joshie.harvest.buildings.BuildingRegistry;
 import joshie.harvest.buildings.HFBuildings;
@@ -18,67 +21,69 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
-import java.util.List;
-
 public class PurchasableDestroy extends Purchasable {
-    private final Building building;
+	private final Building building;
 
-    public PurchasableDestroy(long cost, Building building) {
-        super(cost, ItemStack.EMPTY);
-        this.building = building;
-        this.cost = cost;
-        this.resource = ((cost >= 0) ? "buy:" : "sell:") + building.getResource().toString().replace(":", "_");
-    }
+	public PurchasableDestroy(long cost, Building building) {
+		super(cost, ItemStack.EMPTY);
+		this.building = building;
+		this.cost = cost;
+		this.resource = ((cost >= 0) ? "buy:" : "sell:") + building.getResource().toString().replace(":", "_");
+	}
 
-    @Override
-    @Nonnull
-    public ItemStack getDisplayStack() {
-        return building.getSpawner();
-    }
+	@Override
+	@Nonnull
+	public ItemStack getDisplayStack() {
+		return building.getSpawner();
+	}
 
-    @Override
-    @Nonnull
-    protected ItemStack getPurchasedStack() {
-        return building.getSpawner();
-    }
+	@Override
+	@Nonnull
+	protected ItemStack getPurchasedStack() {
+		return building.getSpawner();
+	}
 
-    @Override
-    public boolean canDo(@Nonnull World world, @Nonnull EntityPlayer player, int amount) {
-        return amount == 1 && TownHelper.getClosestTownToEntity(player, false).hasBuilding(building);
-    }
+	@Override
+	public boolean canDo(@Nonnull World world, @Nonnull EntityPlayer player, int amount) {
+		return amount == 1 && TownHelper.getClosestTownToEntity(player, false).hasBuilding(building);
+	}
 
-    @Override
-    @SuppressWarnings("unchecked")
-    public boolean canList(@Nonnull World world, @Nonnull EntityPlayer player) {
-        return TownHelper.getClosestTownToEntity(player, false).hasBuilding(building);
-    }
+	@Override
+	@SuppressWarnings("unchecked")
+	public boolean canList(@Nonnull World world, @Nonnull EntityPlayer player) {
+		return TownHelper.getClosestTownToEntity(player, false).hasBuilding(building);
+	}
 
-    @Override
-    public void onPurchased(EntityPlayer player) {
-        TownData town = TownHelper.getClosestTownToEntity(player, false);
-        TownBuilding theBuilding = town.getBuilding(building);
-        HFTemplate template = BuildingRegistry.INSTANCE.getTemplateForBuilding(building);
-        if (template != null && theBuilding != null) {
-            template.removeBlocks(player.world, theBuilding.pos, theBuilding.rotation, Blocks.AIR.getDefaultState(), true);
-            if (theBuilding.building == HFBuildings.FESTIVAL_GROUNDS) {
-                BuildingFestival.getFestivalTemplateFromFestival(town.getFestival()).removeBlocks(player.world, theBuilding.pos, theBuilding.rotation, Blocks.AIR.getDefaultState(), true);
-            }
+	@Override
+	public void onPurchased(EntityPlayer player) {
+		TownData town = TownHelper.getClosestTownToEntity(player, false);
+		TownBuilding theBuilding = town.getBuilding(building);
+		HFTemplate template = BuildingRegistry.INSTANCE.getTemplateForBuilding(building);
+		if (template != null && theBuilding != null) {
+			template.removeBlocks(player.world, theBuilding.pos, theBuilding.rotation, Blocks.AIR.getDefaultState(), true);
+			if (theBuilding.building == HFBuildings.FESTIVAL_GROUNDS) {
+				BuildingFestival.getFestivalTemplateFromFestival(town.getFestival()).removeBlocks(
+						player.world,
+						theBuilding.pos,
+						theBuilding.rotation,
+						Blocks.AIR.getDefaultState(),
+						true);
+			}
 
-            TownHelper.<TownDataServer>getClosestTownToEntity(player, false).removeBuilding(theBuilding);
-        }
-    }
+			TownHelper.<TownDataServer>getClosestTownToEntity(player, false).removeBuilding(theBuilding);
+		}
+	}
 
-    @Override
-    public String getDisplayName() {
-        return TextHelper.formatHF("structures.demolish", building.getLocalisedName());
-    }
+	@Override
+	public String getDisplayName() {
+		return TextHelper.formatHF("structures.demolish", building.getLocalisedName());
+	}
 
-    @SideOnly(Side.CLIENT)
-    @Override
-    public void addTooltip(List<String> list) {
-        list.add(TextFormatting.RED + TextHelper.translate("structures.warning1"));
-        list.add(TextFormatting.RED + TextHelper.translate("structures.warning2"));
-        list.add(TextFormatting.RED + TextHelper.translate("structures.warning3"));
-    }
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void addTooltip(List<String> list) {
+		list.add(TextFormatting.RED + TextHelper.translate("structures.warning1"));
+		list.add(TextFormatting.RED + TextHelper.translate("structures.warning2"));
+		list.add(TextFormatting.RED + TextHelper.translate("structures.warning3"));
+	}
 }

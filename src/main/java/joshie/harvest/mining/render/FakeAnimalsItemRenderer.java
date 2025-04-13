@@ -11,12 +11,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class FakeAnimalsItemRenderer extends EntityItemRenderer {
-    public static final FakeAnimalsItemRenderer INSTANCE = new FakeAnimalsItemRenderer();
+	public static final FakeAnimalsItemRenderer INSTANCE = new FakeAnimalsItemRenderer();
 
-    @SuppressWarnings("deprecation")
-    public void register(DarkSpawner spawner, String name, ModelBase model) {
-        map.put(spawner.ordinal(), new RenderPair(name, model));
-        ForgeHooksClient.registerTESRItemStack(HFMining.DARK_SPAWNER, spawner.ordinal(), this.getClass());
+	@SuppressWarnings("deprecation")
+	public void register(DarkSpawner spawner, String name, ModelBase model) {
+		map.put(spawner.ordinal(), new RenderPair(name, model));
+		ForgeHooksClient.registerTESRItemStack(HFMining.DARK_SPAWNER, spawner.ordinal(), this.getClass());
 
-    }
+	}
 }

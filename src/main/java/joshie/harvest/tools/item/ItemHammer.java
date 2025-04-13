@@ -1,8 +1,16 @@
 package joshie.harvest.tools.item;
 
+import static net.minecraft.block.Block.spawnAsEntity;
+
+import java.util.List;
+import java.util.Set;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import joshie.harvest.api.core.Ore;
 import joshie.harvest.api.crops.WateringHandler;
 import joshie.harvest.api.gathering.ISmashable.ToolType;
@@ -36,194 +44,269 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import java.util.List;
-import java.util.Set;
-
-import static net.minecraft.block.Block.spawnAsEntity;
-
 public class ItemHammer extends ItemToolSmashing<ItemHammer> {
-    private static final Set<Block> EFFECTIVE_ON = Sets.newHashSet(Blocks.ACTIVATOR_RAIL, Blocks.COAL_ORE, Blocks.COBBLESTONE, Blocks.DETECTOR_RAIL, Blocks.DIAMOND_BLOCK, Blocks.DIAMOND_ORE, Blocks.DOUBLE_STONE_SLAB, Blocks.GOLDEN_RAIL, Blocks.GOLD_BLOCK, Blocks.GOLD_ORE, Blocks.ICE, Blocks.IRON_BLOCK, Blocks.IRON_ORE, Blocks.LAPIS_BLOCK, Blocks.LAPIS_ORE, Blocks.LIT_REDSTONE_ORE, Blocks.MOSSY_COBBLESTONE, Blocks.NETHERRACK, Blocks.PACKED_ICE, Blocks.RAIL, Blocks.REDSTONE_ORE, Blocks.SANDSTONE, Blocks.RED_SANDSTONE, Blocks.STONE, Blocks.STONE_SLAB, Blocks.STONE_BUTTON, Blocks.STONE_PRESSURE_PLATE);
-    private static final double[] ATTACK_DAMAGES = new double[] { 3D, 3.5D, 4D, 4.5D, 5D, 5.5D, 5.5D, 6D};
-    private final HolderRegistrySet blocks = new HolderRegistrySet();
+	private static final Set<Block> EFFECTIVE_ON = Sets.newHashSet(
+			Blocks.ACTIVATOR_RAIL,
+			Blocks.COAL_ORE,
+			Blocks.COBBLESTONE,
+			Blocks.DETECTOR_RAIL,
+			Blocks.DIAMOND_BLOCK,
+			Blocks.DIAMOND_ORE,
+			Blocks.DOUBLE_STONE_SLAB,
+			Blocks.GOLDEN_RAIL,
+			Blocks.GOLD_BLOCK,
+			Blocks.GOLD_ORE,
+			Blocks.ICE,
+			Blocks.IRON_BLOCK,
+			Blocks.IRON_ORE,
+			Blocks.LAPIS_BLOCK,
+			Blocks.LAPIS_ORE,
+			Blocks.LIT_REDSTONE_ORE,
+			Blocks.MOSSY_COBBLESTONE,
+			Blocks.NETHERRACK,
+			Blocks.PACKED_ICE,
+			Blocks.RAIL,
+			Blocks.REDSTONE_ORE,
+			Blocks.SANDSTONE,
+			Blocks.RED_SANDSTONE,
+			Blocks.STONE,
+			Blocks.STONE_SLAB,
+			Blocks.STONE_BUTTON,
+			Blocks.STONE_PRESSURE_PLATE);
+	private static final double[] ATTACK_DAMAGES = new double[]{3D, 3.5D, 4D, 4.5D, 5D, 5.5D, 5.5D, 6D};
+	private final HolderRegistrySet blocks = new HolderRegistrySet();
 
-    public ItemHammer(ToolTier tier) {
-        super(tier, "pickaxe", EFFECTIVE_ON);
-        setCreativeTab(HFTab.MINING);
-        blocks.register(Blocks.STONE);
-        blocks.register(Ore.of("cobblestone"));
-        blocks.register(Ore.of("blockLimestone"));
-        blocks.register(Ore.of("blockMarble"));
-        blocks.register(Ore.of("sandstone"));
-        blocks.register(Ore.of("stone"));
-    }
+	public ItemHammer(ToolTier tier) {
+		super(tier, "pickaxe", EFFECTIVE_ON);
+		setCreativeTab(HFTab.MINING);
+		blocks.register(Blocks.STONE);
+		blocks.register(Ore.of("cobblestone"));
+		blocks.register(Ore.of("blockLimestone"));
+		blocks.register(Ore.of("blockMarble"));
+		blocks.register(Ore.of("sandstone"));
+		blocks.register(Ore.of("stone"));
+	}
 
-    @Override
-    public ToolType getToolType() {
-        return ToolType.HAMMER;
-    }
+	@Override
+	public ToolType getToolType() {
+		return ToolType.HAMMER;
+	}
 
-    private int getWidthAndHeight(ToolTier tier) {
-        switch (tier) {
-            case COPPER:
-            case SILVER:
-                return 0;
-            case GOLD:
-            case MYSTRIL:
-            case CURSED:
-            case BLESSED:
-            case MYTHIC:
-                return 1;
-            default: return 0;
-        }
-    }
+	private int getWidthAndHeight(ToolTier tier) {
+		switch (tier) {
+			case COPPER:
+			case SILVER:
+				return 0;
+			case GOLD:
+			case MYSTRIL:
+			case CURSED:
+			case BLESSED:
+			case MYTHIC:
+				return 1;
+			default:
+				return 0;
+		}
+	}
 
-    private int getDepth(ToolTier tier) {
-        switch (tier) {
-            case SILVER:
-            case MYSTRIL:
-                return 2;
-            case CURSED:
-            case BLESSED:
-                return 5;
-            case MYTHIC:
-                return 11;
-            default: return 0;
-        }
-    }
+	private int getDepth(ToolTier tier) {
+		switch (tier) {
+			case SILVER:
+			case MYSTRIL:
+				return 2;
+			case CURSED:
+			case BLESSED:
+				return 5;
+			case MYTHIC:
+				return 11;
+			default:
+				return 0;
+		}
+	}
 
-    @Override
-    public boolean onBlockDestroyed(@Nonnull ItemStack stack, World worldIn, IBlockState state, BlockPos position, EntityLivingBase entityLiving) {
-        if (entityLiving instanceof EntityPlayer) {
-            EntityPlayer player = (EntityPlayer) entityLiving;
-            if (canUse(stack) && canBeDamaged()) {
-                if (canLevel(stack, state)) ToolHelper.levelTool(stack);
-                NonNullList<ItemStack> drops = NonNullList.create();
-                for (BlockPos pos : getBlocks(worldIn, position, player, stack)) {
-                    if (canUse(stack) && canBeDamaged()) {
-                        ToolHelper.performTask(player, stack, this);
-                        ToolHelper.collectDrops(worldIn, pos, worldIn.getBlockState(pos), player, drops);
-                        worldIn.setBlockToAir(pos); //No particles
-                    } else break; //Exist since we can't damage anymore
-                }
+	@Override
+	public boolean onBlockDestroyed(
+			@Nonnull ItemStack stack,
+			World worldIn,
+			IBlockState state,
+			BlockPos position,
+			EntityLivingBase entityLiving) {
+		if (entityLiving instanceof EntityPlayer) {
+			EntityPlayer player = (EntityPlayer) entityLiving;
+			if (canUse(stack) && canBeDamaged()) {
+				if (canLevel(stack, state)) {
+					ToolHelper.levelTool(stack);
+				}
+				NonNullList<ItemStack> drops = NonNullList.create();
+				for (BlockPos pos : getBlocks(worldIn, position, player, stack)) {
+					if (canUse(stack) && canBeDamaged()) {
+						ToolHelper.performTask(player, stack, this);
+						ToolHelper.collectDrops(worldIn, pos, worldIn.getBlockState(pos), player, drops);
+						worldIn.setBlockToAir(pos); //No particles
+					} else {
+						break; //Exist since we can't damage anymore
+					}
+				}
 
-                drops.stream().forEach(item -> spawnAsEntity(worldIn, new BlockPos(player), item));
-            }
+				drops.stream().forEach(item -> spawnAsEntity(worldIn, new BlockPos(player), item));
+			}
 
-            return true;
-        } else return false;
-    }
+			return true;
+		} else {
+			return false;
+		}
+	}
 
-    @SuppressWarnings("ConstantConditions")
-    public ImmutableList<BlockPos> getBlocks(World world, BlockPos position, EntityPlayer player, ItemStack tool) {
-        ToolTier tier = getTier(tool);
-        IBlockState state = world.getBlockState(position);
-        NonNullList<ItemStack> drops = NonNullList.create();
-        state.getBlock().getDrops(drops, world, position, state, 0);
-        if (!drops.stream().anyMatch(blocks::contains)) return ImmutableList.of();
-        if (tier == ToolTier.BASIC || player.isSneaking()) return ImmutableList.of(position);
+	@SuppressWarnings("ConstantConditions")
+	public ImmutableList<BlockPos> getBlocks(World world, BlockPos position, EntityPlayer player, ItemStack tool) {
+		ToolTier tier = getTier(tool);
+		IBlockState state = world.getBlockState(position);
+		NonNullList<ItemStack> drops = NonNullList.create();
+		state.getBlock().getDrops(drops, world, position, state, 0);
+		if (!drops.stream().anyMatch(blocks::contains)) {
+			return ImmutableList.of();
+		}
+		if (tier == ToolTier.BASIC || player.isSneaking()) {
+			return ImmutableList.of(position);
+		}
 
-        RayTraceResult rt = rayTrace(world, player, true);
-        if (rt == null || !position.equals(rt.getBlockPos())) {
-            rt = rayTrace(world, player, false);
-            if (rt == null || !position.equals(rt.getBlockPos())) {
-                return ImmutableList.of();
-            }
-        }
+		RayTraceResult rt = rayTrace(world, player, true);
+		if (rt == null || !position.equals(rt.getBlockPos())) {
+			rt = rayTrace(world, player, false);
+			if (rt == null || !position.equals(rt.getBlockPos())) {
+				return ImmutableList.of();
+			}
+		}
 
-        EnumFacing front = rt.sideHit;
-        ImmutableList.Builder<BlockPos> builder = ImmutableList.builder();
-        for (int horizontal = -getWidthAndHeight(tier); horizontal <= getWidthAndHeight(tier); horizontal++) {
-            for (int vertical = -1; vertical <= getWidthAndHeight(tier); vertical++) {
-                for (int depth = 0; depth <= getDepth(tier); depth++) {
-                    BlockPos pos = front == EnumFacing.EAST || front == EnumFacing.WEST ?
-                            new BlockPos(position.getX() + ((front == EnumFacing.WEST) ? depth : -depth), position.getY() + vertical, position.getZ() + horizontal) :
-                            new BlockPos(position.getX() + horizontal, position.getY() + vertical, position.getZ() + + ((front == EnumFacing.NORTH) ? depth : -depth));
-                    if (front == EnumFacing.DOWN || front == EnumFacing.UP) {
-                        EnumFacing playerFacing = EntityHelper.getFacingFromEntity(player);
-                        if (playerFacing == EnumFacing.EAST) {
-                            pos = new BlockPos(position.getX() - vertical, position.getY() + (front == EnumFacing.UP ? -depth: depth), position.getZ() + horizontal);
-                        } else if (playerFacing == EnumFacing.WEST) {
-                            pos = new BlockPos(position.getX() + vertical, position.getY() + (front == EnumFacing.UP ? -depth: depth), position.getZ() + horizontal);
-                        } else if (playerFacing == EnumFacing.SOUTH) {
-                            pos = new BlockPos(position.getX() + horizontal, position.getY() + (front == EnumFacing.UP ? -depth: depth), position.getZ() - vertical);
-                        } else if (playerFacing == EnumFacing.NORTH) {
-                            pos = new BlockPos(position.getX() + horizontal, position.getY() + (front == EnumFacing.UP ? -depth: depth), position.getZ() + vertical);
-                        }
-                    }
+		EnumFacing front = rt.sideHit;
+		ImmutableList.Builder<BlockPos> builder = ImmutableList.builder();
+		for (int horizontal = -getWidthAndHeight(tier); horizontal <= getWidthAndHeight(tier); horizontal++) {
+			for (int vertical = -1; vertical <= getWidthAndHeight(tier); vertical++) {
+				for (int depth = 0; depth <= getDepth(tier); depth++) {
+					BlockPos pos = front == EnumFacing.EAST || front == EnumFacing.WEST ?
+							new BlockPos(
+									position.getX() + ((front == EnumFacing.WEST) ? depth : -depth),
+									position.getY() + vertical,
+									position.getZ() + horizontal) :
+							new BlockPos(
+									position.getX() + horizontal,
+									position.getY() + vertical,
+									position.getZ() + +((front == EnumFacing.NORTH) ? depth : -depth));
+					if (front == EnumFacing.DOWN || front == EnumFacing.UP) {
+						EnumFacing playerFacing = EntityHelper.getFacingFromEntity(player);
+						if (playerFacing == EnumFacing.EAST) {
+							pos = new BlockPos(
+									position.getX() - vertical,
+									position.getY() + (front == EnumFacing.UP ? -depth : depth),
+									position.getZ() + horizontal);
+						} else if (playerFacing == EnumFacing.WEST) {
+							pos = new BlockPos(
+									position.getX() + vertical,
+									position.getY() + (front == EnumFacing.UP ? -depth : depth),
+									position.getZ() + horizontal);
+						} else if (playerFacing == EnumFacing.SOUTH) {
+							pos = new BlockPos(
+									position.getX() + horizontal,
+									position.getY() + (front == EnumFacing.UP ? -depth : depth),
+									position.getZ() - vertical);
+						} else if (playerFacing == EnumFacing.NORTH) {
+							pos = new BlockPos(
+									position.getX() + horizontal,
+									position.getY() + (front == EnumFacing.UP ? -depth : depth),
+									position.getZ() + vertical);
+						}
+					}
 
-                    if (world.getBlockState(pos).getBlock() == Blocks.STONE) {
-                        builder.add(pos);
-                    }
-                }
-            }
-        }
+					if (world.getBlockState(pos).getBlock() == Blocks.STONE) {
+						builder.add(pos);
+					}
+				}
+			}
+		}
 
-        return builder.build();
-    }
+		return builder.build();
+	}
 
-    @Override
-    public void playSound(World world, BlockPos pos) {
-        world.playSound(null, pos, HFSounds.SMASH_ROCK, SoundCategory.BLOCKS, world.rand.nextFloat() * 0.45F, world.rand.nextFloat() * 1.0F + 0.5F);
-    }
+	@Override
+	public void playSound(World world, BlockPos pos) {
+		world.playSound(
+				null,
+				pos,
+				HFSounds.SMASH_ROCK,
+				SoundCategory.BLOCKS,
+				world.rand.nextFloat() * 0.45F,
+				world.rand.nextFloat() * 1.0F + 0.5F);
+	}
 
-    @Override
-    public float getDestroySpeed(@Nonnull ItemStack stack, IBlockState state) {
-        if (canUse(stack)) {
-            Material material = state.getMaterial();
-            return material != Material.IRON && material != Material.ANVIL && material != Material.ROCK ? super.getDestroySpeed(stack, state) : this.getEffiency(stack);
-        } else return 0.05F;
-    }
+	@Override
+	public float getDestroySpeed(@Nonnull ItemStack stack, IBlockState state) {
+		if (canUse(stack)) {
+			Material material = state.getMaterial();
+			return material != Material.IRON && material != Material.ANVIL && material != Material.ROCK ? super.getDestroySpeed(
+					stack,
+					state) : this.getEffiency(stack);
+		} else {
+			return 0.05F;
+		}
+	}
 
-    @Override
-    public boolean onSmashed(EntityPlayer player, @Nonnull ItemStack stack, ToolTier tier, int harvestLevel, World world, BlockPos pos, IBlockState state) {
-        if (canUse(stack) && !world.isRemote) {
-            WateringHandler handler = CropHelper.getWateringHandler(world, pos, state);
-            if (handler != null) {
-                ToolHelper.performTask(player, stack, this);
-                handler.dehydrate(world, pos, state, true);
-                return true;
-            }
-        }
+	@Override
+	public boolean onSmashed(
+			EntityPlayer player,
+			@Nonnull ItemStack stack,
+			ToolTier tier,
+			int harvestLevel,
+			World world,
+			BlockPos pos,
+			IBlockState state) {
+		if (canUse(stack) && !world.isRemote) {
+			WateringHandler handler = CropHelper.getWateringHandler(world, pos, state);
+			if (handler != null) {
+				ToolHelper.performTask(player, stack, this);
+				handler.dehydrate(world, pos, state, true);
+				return true;
+			}
+		}
 
-        return super.onSmashed(player, stack, tier, harvestLevel, world, pos, state);
-    }
+		return super.onSmashed(player, stack, tier, harvestLevel, world, pos, state);
+	}
 
-    @Override
-    @Nonnull
-    public CreativeTabs[] getCreativeTabs() {
-        return new CreativeTabs[]{ getCreativeTab(), HFTab.GATHERING };
-    }
+	@Override
+	@Nonnull
+	public CreativeTabs[] getCreativeTabs() {
+		return new CreativeTabs[]{getCreativeTab(), HFTab.GATHERING};
+	}
 
-    @Override
-    @Nonnull
-    public Multimap<String, AttributeModifier> getAttributeModifiers(@Nonnull EntityEquipmentSlot slot, @Nonnull ItemStack stack) {
-        Multimap<String, AttributeModifier> multimap = super.getAttributeModifiers(slot, stack);
-        ToolTier tier = getTier(stack);
-        if (slot == EntityEquipmentSlot.MAINHAND) {
-            multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Tool modifier", ATTACK_DAMAGES[tier.ordinal()], 0));
-            multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Tool modifier", -3.0D, 0));
-        }
+	@Override
+	@Nonnull
+	public Multimap<String, AttributeModifier> getAttributeModifiers(@Nonnull EntityEquipmentSlot slot, @Nonnull ItemStack stack) {
+		Multimap<String, AttributeModifier> multimap = super.getAttributeModifiers(slot, stack);
+		ToolTier tier = getTier(stack);
+		if (slot == EntityEquipmentSlot.MAINHAND) {
+			multimap.put(
+					SharedMonsterAttributes.ATTACK_DAMAGE.getName(),
+					new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Tool modifier", ATTACK_DAMAGES[tier.ordinal()], 0));
+			multimap.put(
+					SharedMonsterAttributes.ATTACK_SPEED.getName(),
+					new AttributeModifier(ATTACK_SPEED_MODIFIER, "Tool modifier", -3.0D, 0));
+		}
 
-        return multimap;
-    }
+		return multimap;
+	}
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-        super.addInformation(stack, worldIn, tooltip, flagIn);
-        ToolTier tier = getTier(stack);
-        if (getFront(tier) > 0) {
-            int area = (1 + (getFront(tier) * 2));
-            tooltip.add(TextFormatting.DARK_GREEN + TextHelper.formatHF("hammer.tooltip.smash", area, area));
-        }
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+		super.addInformation(stack, worldIn, tooltip, flagIn);
+		ToolTier tier = getTier(stack);
+		if (getFront(tier) > 0) {
+			int area = (1 + (getFront(tier) * 2));
+			tooltip.add(TextFormatting.DARK_GREEN + TextHelper.formatHF("hammer.tooltip.smash", area, area));
+		}
 
-        int width = getWidthAndHeight(tier) == 0 ? 1 : 3;
-        int height = tier == ToolTier.BASIC ? 1: getWidthAndHeight(tier) == 0 ? 2 : 3;
-        int depth = getDepth(tier) + 1;
-        tooltip.add(TextFormatting.GOLD + TextHelper.formatHF("hammer.tooltip.dimensions", width, height, depth));
-        tooltip.add(TextFormatting.AQUA + "" + TextFormatting.ITALIC + TextHelper.translate("hammer.tooltip.titles"));
-    }
+		int width = getWidthAndHeight(tier) == 0 ? 1 : 3;
+		int height = tier == ToolTier.BASIC ? 1 : getWidthAndHeight(tier) == 0 ? 2 : 3;
+		int depth = getDepth(tier) + 1;
+		tooltip.add(TextFormatting.GOLD + TextHelper.formatHF("hammer.tooltip.dimensions", width, height, depth));
+		tooltip.add(TextFormatting.AQUA + "" + TextFormatting.ITALIC + TextHelper.translate("hammer.tooltip.titles"));
+	}
 }

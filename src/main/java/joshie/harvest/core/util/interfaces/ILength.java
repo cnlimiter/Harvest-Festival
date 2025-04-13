@@ -1,9 +1,8 @@
 package joshie.harvest.core.util.interfaces;
 
+import javax.annotation.Nonnull;
 import net.minecraft.item.ItemStack;
 
-import javax.annotation.Nonnull;
-
 public interface ILength {
-    double getLengthFromSizeOfFish(@Nonnull ItemStack stack, int size);
+	double getLengthFromSizeOfFish(@Nonnull ItemStack stack, int size);
 }

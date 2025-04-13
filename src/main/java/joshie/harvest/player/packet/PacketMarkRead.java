@@ -11,25 +11,26 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 
 @Packet(Side.SERVER)
 public class PacketMarkRead extends PenguinPacket {
-    private ResourceLocation resource;
+	private ResourceLocation resource;
 
-    public PacketMarkRead() { }
-    public PacketMarkRead(ResourceLocation resource) {
-        this.resource = resource;
-    }
+	public PacketMarkRead() {}
 
-    @Override
-    public void toBytes(ByteBuf buf) {
-        ByteBufUtils.writeUTF8String(buf, resource.toString());
-    }
+	public PacketMarkRead(ResourceLocation resource) {
+		this.resource = resource;
+	}
 
-    @Override
-    public void fromBytes(ByteBuf buf) {
-        resource = new ResourceLocation(ByteBufUtils.readUTF8String(buf));
-    }
+	@Override
+	public void toBytes(ByteBuf buf) {
+		ByteBufUtils.writeUTF8String(buf, resource.toString());
+	}
 
-    @Override
-    public void handlePacket(EntityPlayer player) {
-        HFTrackers.getPlayerTrackerFromPlayer(player).getTracking().getReadStatus().add(resource);
-    }
+	@Override
+	public void fromBytes(ByteBuf buf) {
+		resource = new ResourceLocation(ByteBufUtils.readUTF8String(buf));
+	}
+
+	@Override
+	public void handlePacket(EntityPlayer player) {
+		HFTrackers.getPlayerTrackerFromPlayer(player).getTracking().getReadStatus().add(resource);
+	}
 }

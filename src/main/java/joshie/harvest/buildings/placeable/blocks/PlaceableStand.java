@@ -1,6 +1,8 @@
 package joshie.harvest.buildings.placeable.blocks;
 
 import com.google.gson.annotations.Expose;
+
+import javax.annotation.Nonnull;
 import joshie.harvest.core.base.tile.TileStand;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
@@ -10,31 +12,30 @@ import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import javax.annotation.Nonnull;
-
 public class PlaceableStand extends PlaceableIFaceable {
-    @Expose
-    @Nonnull
-    private ItemStack stack = ItemStack.EMPTY;
+	@Expose
+	@Nonnull
+	private ItemStack stack = ItemStack.EMPTY;
 
-    @SuppressWarnings("unused")
-    public PlaceableStand() {}
-    public PlaceableStand(EnumFacing facing, ItemStack stack, IBlockState state, int x, int y, int z) {
-        super(facing, state, x, y, z);
-        this.stack = stack;
-    }
+	@SuppressWarnings("unused")
+	public PlaceableStand() {}
 
-    @Override
-    public boolean canPlace(ConstructionStage stage) {
-        return stage == ConstructionStage.DECORATE;
-    }
+	public PlaceableStand(EnumFacing facing, ItemStack stack, IBlockState state, int x, int y, int z) {
+		super(facing, state, x, y, z);
+		this.stack = stack;
+	}
 
-    @Override
-    public void postPlace(World world, BlockPos pos, Rotation rotation) {
-        super.postPlace(world, pos, rotation); //SUPERGIRL!!!!!!!
-        TileEntity tile = world.getTileEntity(pos);
-        if (!stack.isEmpty() && tile instanceof TileStand) {
-            ((TileStand)tile).setContents(stack);
-        }
-    }
+	@Override
+	public boolean canPlace(ConstructionStage stage) {
+		return stage == ConstructionStage.DECORATE;
+	}
+
+	@Override
+	public void postPlace(World world, BlockPos pos, Rotation rotation) {
+		super.postPlace(world, pos, rotation); //SUPERGIRL!!!!!!!
+		TileEntity tile = world.getTileEntity(pos);
+		if (!stack.isEmpty() && tile instanceof TileStand) {
+			((TileStand) tile).setContents(stack);
+		}
+	}
 }

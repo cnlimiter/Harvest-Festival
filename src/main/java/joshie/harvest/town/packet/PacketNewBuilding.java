@@ -1,5 +1,7 @@
 package joshie.harvest.town.packet;
 
+import java.util.UUID;
+
 import io.netty.buffer.ByteBuf;
 import joshie.harvest.core.HFTrackers;
 import joshie.harvest.core.network.Packet;
@@ -10,35 +12,34 @@ import joshie.harvest.town.tracker.TownTrackerClient;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 
-import java.util.UUID;
-
 @Packet(Side.CLIENT)
 public class PacketNewBuilding extends PenguinPacket {
-    private UUID uuid;
-    private TownBuilding building;
+	private UUID uuid;
+	private TownBuilding building;
 
-    @SuppressWarnings("unused")
-    public PacketNewBuilding() {}
-    public PacketNewBuilding(UUID uuid, TownBuilding building) {
-        this.uuid = uuid;
-        this.building = building;
-    }
+	@SuppressWarnings("unused")
+	public PacketNewBuilding() {}
 
-    @Override
-    public void toBytes(ByteBuf buf) {
-        ByteBufUtils.writeUTF8String(buf, uuid.toString());
-        ByteBufUtils.writeTag(buf, building.serializeNBT());
-    }
+	public PacketNewBuilding(UUID uuid, TownBuilding building) {
+		this.uuid = uuid;
+		this.building = building;
+	}
 
-    @Override
-    public void fromBytes(ByteBuf buf) {
-        uuid = UUID.fromString(ByteBufUtils.readUTF8String(buf));
-        building = new TownBuilding();
-        building.deserializeNBT(ByteBufUtils.readTag(buf));
-    }
+	@Override
+	public void toBytes(ByteBuf buf) {
+		ByteBufUtils.writeUTF8String(buf, uuid.toString());
+		ByteBufUtils.writeTag(buf, building.serializeNBT());
+	}
 
-    @Override
-    public void handlePacket(EntityPlayer player) {
-        HFTrackers.<TownTrackerClient>getTowns(player.world).getTownByID(uuid).addBuilding(building);
-    }
+	@Override
+	public void fromBytes(ByteBuf buf) {
+		uuid = UUID.fromString(ByteBufUtils.readUTF8String(buf));
+		building = new TownBuilding();
+		building.deserializeNBT(ByteBufUtils.readTag(buf));
+	}
+
+	@Override
+	public void handlePacket(EntityPlayer player) {
+		HFTrackers.<TownTrackerClient>getTowns(player.world).getTownByID(uuid).addBuilding(building);
+	}
 }

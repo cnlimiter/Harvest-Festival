@@ -1,5 +1,9 @@
 package joshie.harvest.crops.tile;
 
+import static joshie.harvest.crops.HFCrops.SPRINKLER_DRAIN_RATE;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.ticking.DailyTickableBlock;
 import joshie.harvest.api.ticking.DailyTickableBlock.Phases;
@@ -22,134 +26,170 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import static joshie.harvest.crops.HFCrops.SPRINKLER_DRAIN_RATE;
-
 public class TileSprinkler extends TileHarvest implements ITickable {
-    private static final DailyTickableBlock TICKABLE = new DailyTickableBlock(Phases.POST) {
-        @Override
-        public boolean isStateCorrect(World world, BlockPos pos, IBlockState state) {
-            return state.getBlock() == HFCrops.SPRINKLER;
-        }
+	private static final DailyTickableBlock TICKABLE = new DailyTickableBlock(Phases.POST) {
+		@Override
+		public boolean isStateCorrect(World world, BlockPos pos, IBlockState state) {
+			return state.getBlock() == HFCrops.SPRINKLER;
+		}
 
-        @Override
-        @SuppressWarnings("ConstantConditions")
-        public void newDay(World world, BlockPos pos, IBlockState state) {
-            TileSprinkler sprinkler = (TileSprinkler) world.getTileEntity(pos);
-            if (SPRINKLER_DRAIN_RATE <= 0 || sprinkler.getTank().getFluidAmount() > 1) {
-                //Reduce the amount in the tank
-                if (sprinkler.hydrateSoil() && SPRINKLER_DRAIN_RATE > 0) {
-                    sprinkler.getTank().drainInternal(SPRINKLER_DRAIN_RATE, true);
-                    if (sprinkler.getTank().getFluidAmount() <= 1) {
-                        MCServerHelper.markTileForUpdate(sprinkler);
-                    }
-                }
-            }
-        }
-    };
+		@Override
+		@SuppressWarnings("ConstantConditions")
+		public void newDay(World world, BlockPos pos, IBlockState state) {
+			TileSprinkler sprinkler = (TileSprinkler) world.getTileEntity(pos);
+			if (SPRINKLER_DRAIN_RATE <= 0 || sprinkler.getTank().getFluidAmount() > 1) {
+				//Reduce the amount in the tank
+				if (sprinkler.hydrateSoil() && SPRINKLER_DRAIN_RATE > 0) {
+					sprinkler.getTank().drainInternal(SPRINKLER_DRAIN_RATE, true);
+					if (sprinkler.getTank().getFluidAmount() <= 1) {
+						MCServerHelper.markTileForUpdate(sprinkler);
+					}
+				}
+			}
+		}
+	};
 
-    /** Main tile stuff **/
-    private final double height;
-    private final int range;
+	/**
+	 * Main tile stuff
+	 **/
+	private final double height;
+	private final int range;
 
-    protected int tick;
+	protected int tick;
 
-    public TileSprinkler() {
-        this(0.7D, 4);
-    }
+	public TileSprinkler() {
+		this(0.7D, 4);
+	}
 
-    @SuppressWarnings("WeakerAccess")
-    public TileSprinkler(double height, int range) {
-        this.height = height;
-        this.range = range;
-    }
+	@SuppressWarnings("WeakerAccess")
+	public TileSprinkler(double height, int range) {
+		this.height = height;
+		this.range = range;
+	}
 
-    protected double getRandomDouble() {
-        return world.rand.nextDouble() - 0.5D;
-    }
+	protected double getRandomDouble() {
+		return world.rand.nextDouble() - 0.5D;
+	}
 
-    @Override
-    public void update() {
-        if (world.isRemote) {
-            if (tick % 15 == 0 && (SPRINKLER_DRAIN_RATE <= 0 || tank.getFluidAmount() > 1) && CalendarHelper.isBetween(world, 6000, 6250) && !world.isRaining()) {
-                int setting = (2 - Minecraft.getMinecraft().gameSettings.particleSetting);
-                for (int i = 0; i < setting * 32; i++) {
-                    double one = getRandomDouble();
-                    double two = getRandomDouble();
+	@Override
+	public void update() {
+		if (world.isRemote) {
+			if (tick % 15 == 0 && (SPRINKLER_DRAIN_RATE <= 0 || tank.getFluidAmount() > 1) && CalendarHelper.isBetween(world, 6000, 6250) &&
+					!world.isRaining()) {
+				int setting = (2 - Minecraft.getMinecraft().gameSettings.particleSetting);
+				for (int i = 0; i < setting * 32; i++) {
+					double one = getRandomDouble();
+					double two = getRandomDouble();
 
-                    world.spawnParticle(EnumParticleTypes.WATER_SPLASH, getPos().getX() + 0.5D, getPos().getY() + height, getPos().getZ() + 0.5D, one, 0D, two);
-                    world.spawnParticle(EnumParticleTypes.WATER_SPLASH, getPos().getX() + 0.5D, getPos().getY() + height, getPos().getZ() + 0.5D, one - 0.05D, 0D, two - 0.05D);
-                    world.spawnParticle(EnumParticleTypes.WATER_SPLASH, getPos().getX() + 0.5D, getPos().getY() + height, getPos().getZ() + 0.5D, one - 0.05D, 0D, two + 0.05D);
-                    world.spawnParticle(EnumParticleTypes.WATER_SPLASH, getPos().getX() + 0.5D, getPos().getY() + height, getPos().getZ() + 0.5D, one + 0.05D, 0D, two - 0.05D);
-                    world.spawnParticle(EnumParticleTypes.WATER_SPLASH, getPos().getX() + 0.5D, getPos().getY() + height, getPos().getZ() + 0.5D, one + 0.05D, 0D, two + 0.05D);
-                }
-            }
+					world.spawnParticle(
+							EnumParticleTypes.WATER_SPLASH,
+							getPos().getX() + 0.5D,
+							getPos().getY() + height,
+							getPos().getZ() + 0.5D,
+							one,
+							0D,
+							two);
+					world.spawnParticle(
+							EnumParticleTypes.WATER_SPLASH,
+							getPos().getX() + 0.5D,
+							getPos().getY() + height,
+							getPos().getZ() + 0.5D,
+							one - 0.05D,
+							0D,
+							two - 0.05D);
+					world.spawnParticle(
+							EnumParticleTypes.WATER_SPLASH,
+							getPos().getX() + 0.5D,
+							getPos().getY() + height,
+							getPos().getZ() + 0.5D,
+							one - 0.05D,
+							0D,
+							two + 0.05D);
+					world.spawnParticle(
+							EnumParticleTypes.WATER_SPLASH,
+							getPos().getX() + 0.5D,
+							getPos().getY() + height,
+							getPos().getZ() + 0.5D,
+							one + 0.05D,
+							0D,
+							two - 0.05D);
+					world.spawnParticle(
+							EnumParticleTypes.WATER_SPLASH,
+							getPos().getX() + 0.5D,
+							getPos().getY() + height,
+							getPos().getZ() + 0.5D,
+							one + 0.05D,
+							0D,
+							two + 0.05D);
+				}
+			}
 
-            tick++;
-        }
-    }
+			tick++;
+		}
+	}
 
-    private boolean hydrateSoil() {
-        boolean ret = false;
-        for (int x = -range; x <= range; x++) {
-            for (int z = -range; z <= range; z++) {
-                for (int y = 0; y >= -1; y--) {
-                    BlockPos position = new BlockPos(getPos().getX() + x, getPos().getY() + y, getPos().getZ() + z);
-                    if (!position.equals(getPos())) {
-                        if(HFApi.crops.hydrateSoil(null, getWorld(), position) && !ret) {
-                            ret = true;
-                        }
-                    }
-                }
-            }
-        }
+	private boolean hydrateSoil() {
+		boolean ret = false;
+		for (int x = -range; x <= range; x++) {
+			for (int z = -range; z <= range; z++) {
+				for (int y = 0; y >= -1; y--) {
+					BlockPos position = new BlockPos(getPos().getX() + x, getPos().getY() + y, getPos().getZ() + z);
+					if (!position.equals(getPos())) {
+						if (HFApi.crops.hydrateSoil(null, getWorld(), position) && !ret) {
+							ret = true;
+						}
+					}
+				}
+			}
+		}
 
-        return ret;
-    }
+		return ret;
+	}
 
-    @Override
-    public void validate() {
-        tileEntityInvalid = false;
-        HFApi.tickable.addTickable(world, pos, TICKABLE);
-    }
+	@Override
+	public void validate() {
+		tileEntityInvalid = false;
+		HFApi.tickable.addTickable(world, pos, TICKABLE);
+	}
 
-    @Override
-    public void readFromNBT(NBTTagCompound tag) {
-        super.readFromNBT(tag);
-        tank.readFromNBT(tag);
-    }
+	@Override
+	public void readFromNBT(NBTTagCompound tag) {
+		super.readFromNBT(tag);
+		tank.readFromNBT(tag);
+	}
 
-    @Override
-    @Nonnull
-    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
-        tank.writeToNBT(tag);
-        return super.writeToNBT(tag);
-    }
+	@Override
+	@Nonnull
+	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
+		tank.writeToNBT(tag);
+		return super.writeToNBT(tag);
+	}
 
-    /** ================= Capabilities =================================== **/
-    private final FluidTank tank = new FluidTank(Fluid.BUCKET_VOLUME) {
-        @Override
-        public boolean canFillFluidType(FluidStack fluid) {
-            return fluid != null && fluid.getFluid() == FluidRegistry.WATER;
-        }
-    };
+	/**
+	 * ================= Capabilities ===================================
+	 **/
+	private final FluidTank tank = new FluidTank(Fluid.BUCKET_VOLUME) {
+		@Override
+		public boolean canFillFluidType(FluidStack fluid) {
+			return fluid != null && fluid.getFluid() == FluidRegistry.WATER;
+		}
+	};
 
-    public FluidTank getTank() {
-        return tank;
-    }
+	public FluidTank getTank() {
+		return tank;
+	}
 
-    @Override
-    public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
-        return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
-    }
+	@Override
+	public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
+		return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
+	}
 
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
-        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
-            return (T) tank;
-        return super.getCapability(capability, facing);
-    }
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
+		if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+			return (T) tank;
+		}
+		return super.getCapability(capability, facing);
+	}
 }

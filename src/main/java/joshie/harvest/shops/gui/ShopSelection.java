@@ -10,26 +10,44 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
 
 public class ShopSelection extends Selection {
-    private final Shop shop;
+	private final Shop shop;
 
-    public ShopSelection(Shop shop, EntityPlayer player) {
-        this.shop = shop;
-        if (shop.canBuyFromShop(player) && shop.canSellToShop(player)) {
-            setLines("harvestfestival.shop.general.options", "harvestfestival.shop.general.options.shop", "harvestfestival.shop.general.options.sell", "harvestfestival.shop.general.options.chat");
-        } else if (shop.canBuyFromShop(player)) setLines("harvestfestival.shop.general.options", "harvestfestival.shop.general.options.shop", "harvestfestival.shop.general.options.chat");
-        else if (shop.canSellToShop(player)) setLines("harvestfestival.shop.general.options", "harvestfestival.shop.general.options.sell", "harvestfestival.shop.general.options.chat");
-    }
+	public ShopSelection(Shop shop, EntityPlayer player) {
+		this.shop = shop;
+		if (shop.canBuyFromShop(player) && shop.canSellToShop(player)) {
+			setLines(
+					"harvestfestival.shop.general.options",
+					"harvestfestival.shop.general.options.shop",
+					"harvestfestival.shop.general.options.sell",
+					"harvestfestival.shop.general.options.chat");
+		} else if (shop.canBuyFromShop(player)) {
+			setLines(
+					"harvestfestival.shop.general.options",
+					"harvestfestival.shop.general.options.shop",
+					"harvestfestival.shop.general.options.chat");
+		} else if (shop.canSellToShop(player)) {
+			setLines(
+					"harvestfestival.shop.general.options",
+					"harvestfestival.shop.general.options.sell",
+					"harvestfestival.shop.general.options.chat");
+		}
+	}
 
-    /** Called when the option is selected **/
-    @Override
-    public Result onSelected(EntityPlayer player, NPCEntity entity, Quest quest, int option) {
-        //If we are able to buy from this shop
-        if(shop.canBuyFromShop(player) && option == 1) {
-            player.openGui(HarvestFestival.instance, GuiHandler.SHOP_MENU, player.world, entity.getAsEntity().getEntityId(), 0, 0);
-            return Result.DEFAULT;
-        } else if ((!shop.canBuyFromShop(player) && shop.canSellToShop(player) && option == 1) || (shop.canBuyFromShop(player) && shop.canSellToShop(player) && option == 2)) {
-            player.openGui(HarvestFestival.instance, GuiHandler.SHOP_MENU_SELL, player.world, entity.getAsEntity().getEntityId(), 0, 0);
-            return Result.DEFAULT;
-        } else return Result.ALLOW;
-    }
+	/**
+	 * Called when the option is selected
+	 **/
+	@Override
+	public Result onSelected(EntityPlayer player, NPCEntity entity, Quest quest, int option) {
+		//If we are able to buy from this shop
+		if (shop.canBuyFromShop(player) && option == 1) {
+			player.openGui(HarvestFestival.instance, GuiHandler.SHOP_MENU, player.world, entity.getAsEntity().getEntityId(), 0, 0);
+			return Result.DEFAULT;
+		} else if ((!shop.canBuyFromShop(player) && shop.canSellToShop(player) && option == 1) ||
+				(shop.canBuyFromShop(player) && shop.canSellToShop(player) && option == 2)) {
+			player.openGui(HarvestFestival.instance, GuiHandler.SHOP_MENU_SELL, player.world, entity.getAsEntity().getEntityId(), 0, 0);
+			return Result.DEFAULT;
+		} else {
+			return Result.ALLOW;
+		}
+	}
 }

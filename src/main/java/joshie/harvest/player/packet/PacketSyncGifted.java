@@ -9,33 +9,34 @@ import net.minecraft.entity.player.EntityPlayer;
 
 @Packet(Packet.Side.CLIENT)
 public class PacketSyncGifted extends PacketRelationship {
-    private boolean gifted;
-    private RelationStatus status;
+	private boolean gifted;
+	private RelationStatus status;
 
-    @SuppressWarnings("unused")
-    public PacketSyncGifted() {}
-    public PacketSyncGifted(NPC npc, RelationStatus status, boolean gifted) {
-        super(npc);
-        this.gifted = gifted;
-        this.status = status;
-    }
+	@SuppressWarnings("unused")
+	public PacketSyncGifted() {}
 
-    @Override
-    public void toBytes(ByteBuf buf) {
-        super.toBytes(buf);
-        buf.writeBoolean(gifted);
-        buf.writeByte(status.ordinal());
-    }
+	public PacketSyncGifted(NPC npc, RelationStatus status, boolean gifted) {
+		super(npc);
+		this.gifted = gifted;
+		this.status = status;
+	}
 
-    @Override
-    public void fromBytes(ByteBuf buf) {
-        super.fromBytes(buf);
-        gifted = buf.readBoolean();
-        status = RelationStatus.values()[buf.readByte()];
-    }
+	@Override
+	public void toBytes(ByteBuf buf) {
+		super.toBytes(buf);
+		buf.writeBoolean(gifted);
+		buf.writeByte(status.ordinal());
+	}
 
-    @Override
-    protected void handleRelationship(EntityPlayer player, NPC npc) {
-        HFTrackers.getClientPlayerTracker().getRelationships().setStatus(npc, status, gifted);
-    }
+	@Override
+	public void fromBytes(ByteBuf buf) {
+		super.fromBytes(buf);
+		gifted = buf.readBoolean();
+		status = RelationStatus.values()[buf.readByte()];
+	}
+
+	@Override
+	protected void handleRelationship(EntityPlayer player, NPC npc) {
+		HFTrackers.getClientPlayerTracker().getRelationships().setStatus(npc, status, gifted);
+	}
 }

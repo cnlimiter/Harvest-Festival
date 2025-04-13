@@ -1,6 +1,7 @@
 package joshie.harvest.buildings.placeable.entities;
 
 import com.google.gson.annotations.Expose;
+
 import joshie.harvest.api.npc.NPC;
 import joshie.harvest.npcs.NPCHelper;
 import joshie.harvest.npcs.entity.EntityNPC;
@@ -13,71 +14,86 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 
 public class PlaceableNPC extends PlaceableEntity {
-    @Expose
-    private String homeString;
-    @Expose
-    private String npc;
+	@Expose
+	private String homeString;
+	@Expose
+	private String npc;
 
-    public PlaceableNPC() {}
-    public PlaceableNPC(String homeString, String npc, int x, int y, int z) {
-        this.homeString = homeString;
-        this.npc = npc;
-        this.pos = new BlockPos(x, y, z);
-    }
+	public PlaceableNPC() {}
 
-    public String getHomeString() {
-        return homeString;
-    }
+	public PlaceableNPC(String homeString, String npc, int x, int y, int z) {
+		this.homeString = homeString;
+		this.npc = npc;
+		this.pos = new BlockPos(x, y, z);
+	}
 
-    public String getNPC() {
-        return npc;
-    }
+	public String getHomeString() {
+		return homeString;
+	}
 
-    @Override
-    public boolean canPlace(ConstructionStage stage) {
-        return stage == ConstructionStage.MOVEIN;
-    }
+	public String getNPC() {
+		return npc;
+	}
 
-    @Override
-    public void remove(World world, BlockPos pos, Rotation rotation, ConstructionStage stage, IBlockState replacement) {
-        NPC inpc = NPC.REGISTRY.get(new ResourceLocation(npc)); if (inpc == null) return;
-        Entity entity =  NPCHelper.getNPCIfExists((WorldServer)world, pos, inpc);
-        if (entity != null) {
-            entity.setDead();
-        }
-    }
+	@Override
+	public boolean canPlace(ConstructionStage stage) {
+		return stage == ConstructionStage.MOVEIN;
+	}
 
-    @Override
-    public Entity getEntity(World world, BlockPos pos, Rotation rotation) {
-        if (npc == null || npc.equals("")) return null;
-        NPC inpc = NPC.REGISTRY.get(new ResourceLocation(npc)); if (inpc == null) return null;
-        Entity entity = NPCHelper.getNPCIfExists((WorldServer) world, pos, inpc);
-        if (!(entity instanceof EntityNPC)) {
-            entity = NPCHelper.getEntityForNPC(world, inpc);
-        }
+	@Override
+	public void remove(World world, BlockPos pos, Rotation rotation, ConstructionStage stage, IBlockState replacement) {
+		NPC inpc = NPC.REGISTRY.get(new ResourceLocation(npc));
+		if (inpc == null) {
+			return;
+		}
+		Entity entity = NPCHelper.getNPCIfExists((WorldServer) world, pos, inpc);
+		if (entity != null) {
+			entity.setDead();
+		}
+	}
 
-        entity.setPosition(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
-        return entity;
-    }
+	@Override
+	public Entity getEntity(World world, BlockPos pos, Rotation rotation) {
+		if (npc == null || npc.equals("")) {
+			return null;
+		}
+		NPC inpc = NPC.REGISTRY.get(new ResourceLocation(npc));
+		if (inpc == null) {
+			return null;
+		}
+		Entity entity = NPCHelper.getNPCIfExists((WorldServer) world, pos, inpc);
+		if (!(entity instanceof EntityNPC)) {
+			entity = NPCHelper.getEntityForNPC(world, inpc);
+		}
 
-    @Override
-    public PlaceableNPC getCopyFromEntity(Entity e, int x, int y, int z) {
-        EntityNPC npc = (EntityNPC) e;
-        return new PlaceableNPC("", npc.getNPC().getResource().toString(), x, y, z);
-    }
+		entity.setPosition(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
+		return entity;
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        PlaceableNPC that = (PlaceableNPC) o;
-        return homeString != null ? homeString.equals(that.homeString) : that.homeString == null && (npc != null ? npc.equals(that.npc) : that.npc == null);
-    }
+	@Override
+	public PlaceableNPC getCopyFromEntity(Entity e, int x, int y, int z) {
+		EntityNPC npc = (EntityNPC) e;
+		return new PlaceableNPC("", npc.getNPC().getResource().toString(), x, y, z);
+	}
 
-    @Override
-    public int hashCode() {
-        int result = homeString != null ? homeString.hashCode() : 0;
-        result = 31 * result + (npc != null ? npc.hashCode() : 0);
-        return result;
-    }
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		PlaceableNPC that = (PlaceableNPC) o;
+		return homeString != null ?
+				homeString.equals(that.homeString) :
+				that.homeString == null && (npc != null ? npc.equals(that.npc) : that.npc == null);
+	}
+
+	@Override
+	public int hashCode() {
+		int result = homeString != null ? homeString.hashCode() : 0;
+		result = 31 * result + (npc != null ? npc.hashCode() : 0);
+		return result;
+	}
 }

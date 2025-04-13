@@ -1,5 +1,9 @@
 package joshie.harvest.shops.data;
 
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 import joshie.harvest.api.shops.IPurchasable;
 import joshie.harvest.api.shops.Shop;
 import joshie.harvest.core.helpers.HolderHelper;
@@ -9,71 +13,75 @@ import joshie.harvest.player.tracking.StackSold;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
 public class ShopInventory implements INBTSerializableMap<Shop, ShopInventory, NBTTagCompound> {
-    private Set<StackSold> soldToShop = new HashSet<>();
-    private Set<StackSold> purchasedFromShop = new HashSet<>();
-    private Shop shop;
+	private Set<StackSold> soldToShop = new HashSet<>();
+	private Set<StackSold> purchasedFromShop = new HashSet<>();
+	private Shop shop;
 
-    public ShopInventory() {}
-    public ShopInventory(Shop shop) {
-        this.shop = shop;
-    }
+	public ShopInventory() {}
 
-    public void onItemSoldToShop(IPurchasable purchasable) {
-        StackSold stack = StackSold.of(purchasable.getDisplayStack(), purchasable.getCost());
-        HolderHelper.mergeCollection(stack, soldToShop);
-    }
+	public ShopInventory(Shop shop) {
+		this.shop = shop;
+	}
 
-    public StackSold onItemPurchasedFromShop(IPurchasable purchasable) {
-        StackSold stack = StackSold.of(purchasable.getDisplayStack(), purchasable.getCost());
-        return HolderHelper.mergeCollection(stack, purchasedFromShop);
-    }
+	public void onItemSoldToShop(IPurchasable purchasable) {
+		StackSold stack = StackSold.of(purchasable.getDisplayStack(), purchasable.getCost());
+		HolderHelper.mergeCollection(stack, soldToShop);
+	}
 
-    public long getAdjustedSellToShopValue(IPurchasable purchasable) {
-        return purchasable.getStock() == 0 ? purchasable.getCost() : Math.min(0, (long)(purchasable.getCost() * (1 - (double)getAmountPurchased(purchasable)/purchasable.getStock())));
-    }
+	public StackSold onItemPurchasedFromShop(IPurchasable purchasable) {
+		StackSold stack = StackSold.of(purchasable.getDisplayStack(), purchasable.getCost());
+		return HolderHelper.mergeCollection(stack, purchasedFromShop);
+	}
 
-    public boolean canList(IPurchasable purchasable) {
-        return purchasable.getStock() == 0 || (purchasable.getCost() < 0 ? getAdjustedSellToShopValue(purchasable) < 0 : getAmountPurchased(purchasable) < purchasable.getStock());
-    }
+	public long getAdjustedSellToShopValue(IPurchasable purchasable) {
+		return purchasable.getStock() == 0 ? purchasable.getCost() : Math.min(
+				0,
+				(long) (purchasable.getCost() * (1 - (double) getAmountPurchased(purchasable) / purchasable.getStock())));
+	}
 
-    private int getAmountPurchased(IPurchasable purchasable) {
-        StackSold comparable = StackSold.of(purchasable.getDisplayStack(), purchasable.getCost());
-        for (StackSold sold: (purchasable.getCost() < 0) ? soldToShop : purchasedFromShop) {
-            if (sold.equals(comparable)) return sold.getAmount();
+	public boolean canList(IPurchasable purchasable) {
+		return purchasable.getStock() == 0 || (
+				purchasable.getCost() < 0 ?
+						getAdjustedSellToShopValue(purchasable) < 0 :
+						getAmountPurchased(purchasable) < purchasable.getStock());
+	}
 
-        }
+	private int getAmountPurchased(IPurchasable purchasable) {
+		StackSold comparable = StackSold.of(purchasable.getDisplayStack(), purchasable.getCost());
+		for (StackSold sold : (purchasable.getCost() < 0) ? soldToShop : purchasedFromShop) {
+			if (sold.equals(comparable)) {
+				return sold.getAmount();
+			}
 
-        return 0;
-    }
+		}
 
-    public void newDay() {
-        purchasedFromShop.stream().forEach(StackSold::reset);
-        soldToShop.stream().forEach(StackSold::depreciate);
-    }
+		return 0;
+	}
 
-    @Override
-    public void buildMap(Map<Shop, ShopInventory> map) {
-        map.put(shop, this);
-    }
+	public void newDay() {
+		purchasedFromShop.stream().forEach(StackSold::reset);
+		soldToShop.stream().forEach(StackSold::depreciate);
+	}
 
-    @Override
-    public void deserializeNBT(NBTTagCompound nbt) {
-        shop = Shop.REGISTRY.get(new ResourceLocation(nbt.getString("Shop")));
-        soldToShop = NBTHelper.readHashSet(StackSold.class, nbt.getTagList("Purchased", 10));
-        purchasedFromShop = NBTHelper.readHashSet(StackSold.class, nbt.getTagList("Sold", 10));
-    }
+	@Override
+	public void buildMap(Map<Shop, ShopInventory> map) {
+		map.put(shop, this);
+	}
 
-    @Override
-    public NBTTagCompound serializeNBT() {
-        NBTTagCompound tag = new NBTTagCompound();
-        tag.setString("Shop", shop.resourceLocation.toString());
-        tag.setTag("Purchased", NBTHelper.writeCollection(soldToShop));
-        tag.setTag("Sold", NBTHelper.writeCollection(purchasedFromShop));
-        return tag;
-    }
+	@Override
+	public void deserializeNBT(NBTTagCompound nbt) {
+		shop = Shop.REGISTRY.get(new ResourceLocation(nbt.getString("Shop")));
+		soldToShop = NBTHelper.readHashSet(StackSold.class, nbt.getTagList("Purchased", 10));
+		purchasedFromShop = NBTHelper.readHashSet(StackSold.class, nbt.getTagList("Sold", 10));
+	}
+
+	@Override
+	public NBTTagCompound serializeNBT() {
+		NBTTagCompound tag = new NBTTagCompound();
+		tag.setString("Shop", shop.resourceLocation.toString());
+		tag.setTag("Purchased", NBTHelper.writeCollection(soldToShop));
+		tag.setTag("Sold", NBTHelper.writeCollection(purchasedFromShop));
+		return tag;
+	}
 }

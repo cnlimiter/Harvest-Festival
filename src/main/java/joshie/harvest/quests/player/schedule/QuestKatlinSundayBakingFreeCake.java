@@ -1,5 +1,9 @@
 package joshie.harvest.quests.player.schedule;
 
+import java.util.Random;
+import java.util.Set;
+
+import javax.annotation.Nullable;
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.calendar.CalendarDate;
 import joshie.harvest.api.calendar.Weekday;
@@ -20,74 +24,82 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nullable;
-import java.util.Random;
-import java.util.Set;
-
 @HFQuest("schedule.katlin.baking")
-public class QuestKatlinSundayBakingFreeCake extends Quest  {
-    private final Meal[] meals;
-    private CalendarDate date;
+public class QuestKatlinSundayBakingFreeCake extends Quest {
+	private final Meal[] meals;
+	private CalendarDate date;
 
-    public QuestKatlinSundayBakingFreeCake() {
-        setNPCs(HFNPCs.CAFE_GRANNY);
-        meals = new Meal[] { Meal.COOKIES, Meal.COOKIES_CHOCOLATE, Meal.PIE_APPLE, Meal.CAKE, Meal.CAKE_CHOCOLATE, Meal.DOUGHNUT, Meal.BUN_JAM };
-    }
+	public QuestKatlinSundayBakingFreeCake() {
+		setNPCs(HFNPCs.CAFE_GRANNY);
+		meals = new Meal[]{
+				Meal.COOKIES,
+				Meal.COOKIES_CHOCOLATE,
+				Meal.PIE_APPLE,
+				Meal.CAKE,
+				Meal.CAKE_CHOCOLATE,
+				Meal.DOUGHNUT,
+				Meal.BUN_JAM};
+	}
 
-    @Override
-    public boolean canStartQuest(Set<Quest> active, Set<Quest> finished) {
-        return finished.contains(Quests.KATLIN_MEET) && finished.contains(Quests.TOMAS_MEET);
-    }
+	@Override
+	public boolean canStartQuest(Set<Quest> active, Set<Quest> finished) {
+		return finished.contains(Quests.KATLIN_MEET) && finished.contains(Quests.TOMAS_MEET);
+	}
 
-    @Override
-    public boolean isNPCUsed(EntityPlayer player, NPCEntity entity) {
-        if (entity.getNPC() != HFNPCs.CAFE_GRANNY || !TownHelper.getClosestTownToEntity(player, false).hasBuilding(HFBuildings.CHURCH)) return false;
-        CalendarDate today = HFApi.calendar.getDate(player.world);
-        long daytime = CalendarHelper.getTime(player.world);
-        if (today.getWeekday() == Weekday.SUNDAY && daytime >= 7000L && daytime <= 17000L) {
-            if (date == null || CalendarHelper.getDays(date, today) >= 7) {
-                return true;
-            }
-        }
+	@Override
+	public boolean isNPCUsed(EntityPlayer player, NPCEntity entity) {
+		if (entity.getNPC() != HFNPCs.CAFE_GRANNY || !TownHelper.getClosestTownToEntity(player, false).hasBuilding(HFBuildings.CHURCH)) {
+			return false;
+		}
+		CalendarDate today = HFApi.calendar.getDate(player.world);
+		long daytime = CalendarHelper.getTime(player.world);
+		if (today.getWeekday() == Weekday.SUNDAY && daytime >= 7000L && daytime <= 17000L) {
+			if (date == null || CalendarHelper.getDays(date, today) >= 7) {
+				return true;
+			}
+		}
 
-        return false;
-    }
+		return false;
+	}
 
-    @Nullable
-    @SideOnly(Side.CLIENT)
-    @Override
-    public String getLocalizedScript(EntityPlayer player, NPCEntity entity) {
-        return getLocalized("cake");
-    }
+	@Nullable
+	@SideOnly(Side.CLIENT)
+	@Override
+	public String getLocalizedScript(EntityPlayer player, NPCEntity entity) {
+		return getLocalized("cake");
+	}
 
-    private ItemStack getRandomBakedGoods(Random rand) {
-        if (rand.nextInt(10) == 0) return new ItemStack(rand.nextBoolean() ? Items.COOKIE : Items.CAKE, 3);
-        else return HFCooking.MEAL.getCreativeStack(meals[rand.nextInt(meals.length)], 3);
-    }
+	private ItemStack getRandomBakedGoods(Random rand) {
+		if (rand.nextInt(10) == 0) {
+			return new ItemStack(rand.nextBoolean() ? Items.COOKIE : Items.CAKE, 3);
+		} else {
+			return HFCooking.MEAL.getCreativeStack(meals[rand.nextInt(meals.length)], 3);
+		}
+	}
 
-    @Override
-    public void onChatClosed(EntityPlayer player, NPCEntity entity, boolean wasSneaking) {
-        CalendarDate today = HFApi.calendar.getDate(player.world);
-        date = today.copy(); //Save the date we received this
-        syncData(player); //Sync the new data
-        rewardItem(player, getRandomBakedGoods(player.world.rand));
-    }
+	@Override
+	public void onChatClosed(EntityPlayer player, NPCEntity entity, boolean wasSneaking) {
+		CalendarDate today = HFApi.calendar.getDate(player.world);
+		date = today.copy(); //Save the date we received this
+		syncData(player); //Sync the new data
+		rewardItem(player, getRandomBakedGoods(player.world.rand));
+	}
 
-    @Override
-    public void readFromNBT(NBTTagCompound nbt) {
-        super.readFromNBT(nbt);
-        if (nbt.hasKey("Date")) {
-            date = CalendarDate.fromNBT(nbt.getCompoundTag("Date"));
-        }
-    }
+	@Override
+	public void readFromNBT(NBTTagCompound nbt) {
+		super.readFromNBT(nbt);
+		if (nbt.hasKey("Date")) {
+			date = CalendarDate.fromNBT(nbt.getCompoundTag("Date"));
+		}
+	}
 
-    @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
-        super.writeToNBT(nbt);
-        if (date != null) {
-            nbt.setTag("Date", date.toNBT());
-        }
+	@Override
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+		super.writeToNBT(nbt);
+		if (date != null) {
+			nbt.setTag("Date", date.toNBT());
+		}
 
-        return nbt;
-    }
+		return nbt;
+	}
 }

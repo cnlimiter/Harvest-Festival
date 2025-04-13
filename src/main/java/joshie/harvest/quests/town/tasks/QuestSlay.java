@@ -1,5 +1,8 @@
 package joshie.harvest.quests.town.tasks;
 
+import static joshie.harvest.core.lib.HFModInfo.MODID;
+
+import javax.annotation.Nullable;
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.npc.NPCEntity;
 import joshie.harvest.api.quests.HFQuest;
@@ -22,112 +25,113 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nullable;
-
-import static joshie.harvest.core.lib.HFModInfo.MODID;
-
 @HFQuest("slay")
 public class QuestSlay extends QuestDaily {
-    private static final ResourceLocation[] list = new ResourceLocation[] { new ResourceLocation(MODID, "dark_chick"),
-                                                                            new ResourceLocation(MODID, "dark_chicken"),
-                                                                            new ResourceLocation(MODID, "dark_sheep"),
-                                                                            new ResourceLocation(MODID, "dark_cow") };
-    private int targetAmount = 1;
-    private ResourceLocation targetMob = new ResourceLocation(MODID, "dark_chick");
-    private int counter;
+	private static final ResourceLocation[] list = new ResourceLocation[]{
+			new ResourceLocation(MODID, "dark_chick"),
+			new ResourceLocation(MODID, "dark_chicken"),
+			new ResourceLocation(MODID, "dark_sheep"),
+			new ResourceLocation(MODID, "dark_cow")};
+	private int targetAmount = 1;
+	private ResourceLocation targetMob = new ResourceLocation(MODID, "dark_chick");
+	private int counter;
 
-    public QuestSlay() {
-        super(HFNPCs.MINER);
-    }
+	public QuestSlay() {
+		super(HFNPCs.MINER);
+	}
 
-    @Override
-    public int getDaysBetween() {
-        return 3;
-    }
+	@Override
+	public int getDaysBetween() {
+		return 3;
+	}
 
-    @Override
-    public void onQuestActivated() {
-        MinecraftForge.EVENT_BUS.register(this);
-    }
+	@Override
+	public void onQuestActivated() {
+		MinecraftForge.EVENT_BUS.register(this);
+	}
 
-    @SubscribeEvent
-    public void onDeath(LivingDeathEvent event) {
-        EntityPlayer player = getPlayerFromSource(event.getSource());
-        if (player != null) {
-            if (counter < targetAmount && isValidKill(event.getEntityLiving())) {
-                counter++; //Increase the counter
-                syncData(player);
-            }
-        }
-    }
+	@SubscribeEvent
+	public void onDeath(LivingDeathEvent event) {
+		EntityPlayer player = getPlayerFromSource(event.getSource());
+		if (player != null) {
+			if (counter < targetAmount && isValidKill(event.getEntityLiving())) {
+				counter++; //Increase the counter
+				syncData(player);
+			}
+		}
+	}
 
-    @Nullable
-    private EntityPlayer getPlayerFromSource(DamageSource damage) {
-        Entity source = damage.getTrueSource();
-        if (!(source instanceof EntityPlayer)) {
-            source = damage.getTrueSource();
-        }
+	@Nullable
+	private EntityPlayer getPlayerFromSource(DamageSource damage) {
+		Entity source = damage.getTrueSource();
+		if (!(source instanceof EntityPlayer)) {
+			source = damage.getTrueSource();
+		}
 
-        return source instanceof EntityPlayer ? (EntityPlayer) source : null;
-    }
+		return source instanceof EntityPlayer ? (EntityPlayer) source : null;
+	}
 
-    private boolean isValidKill(EntityLivingBase entity) {
-        return EntityList.isMatchingName(entity, targetMob);
-    }
+	private boolean isValidKill(EntityLivingBase entity) {
+		return EntityList.isMatchingName(entity, targetMob);
+	}
 
-    @Override
-    public String getDescription(World world, @Nullable EntityPlayer player) {
-        if (player != null) {
-            if (targetAmount - counter == 0) return getLocalized("talk");
-            return getLocalized("desc", targetAmount - counter, TextHelper.localize("entity." + targetMob + ".name"));
-        } else return getLocalized("task", targetAmount, TextHelper.localize("entity." + targetMob + ".name"), 1000L * targetAmount);
-    }
+	@Override
+	public String getDescription(World world, @Nullable EntityPlayer player) {
+		if (player != null) {
+			if (targetAmount - counter == 0) {
+				return getLocalized("talk");
+			}
+			return getLocalized("desc", targetAmount - counter, TextHelper.localize("entity." + targetMob + ".name"));
+		} else {
+			return getLocalized("task", targetAmount, TextHelper.localize("entity." + targetMob + ".name"), 1000L * targetAmount);
+		}
+	}
 
-    @Override
-    public void onSelectedAsDailyQuest(Town town, World world, BlockPos pos) {
-        rand.setSeed(HFApi.calendar.getDate(world).hashCode());
-        int position = rand.nextInt(list.length);
-        targetMob = list[position];
-        targetAmount = 1 + rand.nextInt(10);
-    }
+	@Override
+	public void onSelectedAsDailyQuest(Town town, World world, BlockPos pos) {
+		rand.setSeed(HFApi.calendar.getDate(world).hashCode());
+		int position = rand.nextInt(list.length);
+		targetMob = list[position];
+		targetAmount = 1 + rand.nextInt(10);
+	}
 
-    @Override
-    public boolean isNPCUsed(EntityPlayer player, NPCEntity entity) {
-        return super.isNPCUsed(player, entity) && targetAmount != 0 && counter >= targetAmount;
-    }
+	@Override
+	public boolean isNPCUsed(EntityPlayer player, NPCEntity entity) {
+		return super.isNPCUsed(player, entity) && targetAmount != 0 && counter >= targetAmount;
+	}
 
-    @Override
-    @Nullable
-    @SideOnly(Side.CLIENT)
-    public String getLocalizedScript(EntityPlayer player, NPCEntity entity) {
-        return TextHelper.getRandomSpeech(entity.getNPC(), "harvestfestival.quest.slay.complete", 32);
-    }
+	@Override
+	@Nullable
+	@SideOnly(Side.CLIENT)
+	public String getLocalizedScript(EntityPlayer player, NPCEntity entity) {
+		return TextHelper.getRandomSpeech(entity.getNPC(), "harvestfestival.quest.slay.complete", 32);
+	}
 
-    @Override
-    public void onChatClosed(EntityPlayer player, NPCEntity entity, boolean wasSneaking) {
-        complete(player);
-    }
+	@Override
+	public void onChatClosed(EntityPlayer player, NPCEntity entity, boolean wasSneaking) {
+		complete(player);
+	}
 
-    @Override
-    public void onQuestCompleted(EntityPlayer player) {
-        HFApi.player.getRelationsForPlayer(player).affectRelationship(HFNPCs.MINER, 2500);
-        rewardGold(player, 1000L * targetAmount);
-        MinecraftForge.EVENT_BUS.unregister(this);
-    }
+	@Override
+	public void onQuestCompleted(EntityPlayer player) {
+		HFApi.player.getRelationsForPlayer(player).affectRelationship(HFNPCs.MINER, 2500);
+		rewardGold(player, 1000L * targetAmount);
+		MinecraftForge.EVENT_BUS.unregister(this);
+	}
 
-    @Override
-    public void readFromNBT(NBTTagCompound nbt) {
-        super.readFromNBT(nbt);
-        counter = nbt.getByte("Counter");
-        targetAmount = nbt.getByte("TargetAmount");
-        targetMob = new ResourceLocation(nbt.getString("TargetMob"));
-    }
+	@Override
+	public void readFromNBT(NBTTagCompound nbt) {
+		super.readFromNBT(nbt);
+		counter = nbt.getByte("Counter");
+		targetAmount = nbt.getByte("TargetAmount");
+		targetMob = new ResourceLocation(nbt.getString("TargetMob"));
+	}
 
-    @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
-        nbt.setByte("Counter", (byte) counter);
-        nbt.setByte("TargetAmount", (byte) targetAmount);
-        nbt.setString("TargetMob", targetMob.toString());
-        return super.writeToNBT(nbt);
-    }
+	@Override
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+		nbt.setByte("Counter", (byte) counter);
+		nbt.setByte("TargetAmount", (byte) targetAmount);
+		nbt.setString("TargetMob", targetMob.toString());
+		return super.writeToNBT(nbt);
+	}
 }

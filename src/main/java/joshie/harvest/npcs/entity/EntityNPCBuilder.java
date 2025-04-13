@@ -7,39 +7,39 @@ import joshie.harvest.npcs.entity.ai.EntityAIBuild;
 import net.minecraft.world.World;
 
 public class EntityNPCBuilder extends EntityNPCHuman<EntityNPCBuilder> {
-    public EntityNPCBuilder(World world, NPC npc) {
-        super(world, npc);
-    }
+	public EntityNPCBuilder(World world, NPC npc) {
+		super(world, npc);
+	}
 
-    public EntityNPCBuilder(World world) {
-        super(world, HFNPCs.CARPENTER);
-    }
+	public EntityNPCBuilder(World world) {
+		super(world, HFNPCs.CARPENTER);
+	}
 
-    private EntityNPCBuilder(EntityNPCBuilder entity) {
-        super(entity);
-    }
+	private EntityNPCBuilder(EntityNPCBuilder entity) {
+		super(entity);
+	}
 
-    @Override
-    public EntityNPCBuilder getNewEntity(EntityNPCBuilder entity) {
-        return new EntityNPCBuilder(entity);
-    }
+	@Override
+	public EntityNPCBuilder getNewEntity(EntityNPCBuilder entity) {
+		return new EntityNPCBuilder(entity);
+	}
 
-    public BuildingStage getBuilding() {
-        return getTownData().getCurrentlyBuilding();
-    }
+	public BuildingStage getBuilding() {
+		return getTownData().getCurrentlyBuilding();
+	}
 
-    public void finishBuilding() {
-        stepHeight = 0.7F; //Reset Step Height
-    }
+	public void finishBuilding() {
+		stepHeight = 0.7F; //Reset Step Height
+	}
 
-    @Override
-    public boolean isBusy() {
-        return getBuilding() != null;
-    }
+	@Override
+	public boolean isBusy() {
+		return getBuilding() != null;
+	}
 
-    @Override
-    protected void initEntityAI() {
-        super.initEntityAI();
-        tasks.addTask(5, new EntityAIBuild(this));
-    }
+	@Override
+	protected void initEntityAI() {
+		super.initEntityAI();
+		tasks.addTask(5, new EntityAIBuild(this));
+	}
 }

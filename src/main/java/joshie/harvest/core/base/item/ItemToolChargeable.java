@@ -1,7 +1,11 @@
 package joshie.harvest.core.base.item;
 
+import java.util.Set;
+
 import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import joshie.harvest.core.helpers.ChatHelper;
 import joshie.harvest.core.helpers.MCClientHelper;
 import joshie.harvest.core.helpers.TextHelper;
@@ -17,93 +21,104 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.Set;
-
 public class ItemToolChargeable<I extends ItemToolChargeable> extends ItemTool<I> {
-    protected static final TIntObjectMap<ToolTier> LEVEL_TO_TIER = new TIntObjectHashMap<>();
-    static {
-        for (ToolTier tier: ToolTier.values()) {
-            if (tier == ToolTier.BLESSED) continue;
-            LEVEL_TO_TIER.put(tier.getToolLevel(), tier);
-        }
-    }
+	protected static final TIntObjectMap<ToolTier> LEVEL_TO_TIER = new TIntObjectHashMap<>();
 
-    public ItemToolChargeable(ToolTier tier, String toolClass, Set<Block> effective) {
-        super(tier, toolClass, effective);
-    }
+	static {
+		for (ToolTier tier : ToolTier.values()) {
+			if (tier == ToolTier.BLESSED) {
+				continue;
+			}
+			LEVEL_TO_TIER.put(tier.getToolLevel(), tier);
+		}
+	}
 
-    protected int getMaxCharge(@Nonnull ItemStack stack) {
-        return getTier(stack).getToolLevel();
-    }
+	public ItemToolChargeable(ToolTier tier, String toolClass, Set<Block> effective) {
+		super(tier, toolClass, effective);
+	}
 
-    protected int getCharge(ItemStack stack) {
-        NBTTagCompound compound = stack.getSubCompound("Data");
-        return compound == null ? 0 : compound.getInteger("Charge");
-    }
+	protected int getMaxCharge(@Nonnull ItemStack stack) {
+		return getTier(stack).getToolLevel();
+	}
 
-    protected void setCharge(ItemStack stack, int amount) {
-        stack.getOrCreateSubCompound("Data").setInteger("Charge", amount);
-    }
+	protected int getCharge(ItemStack stack) {
+		NBTTagCompound compound = stack.getSubCompound("Data");
+		return compound == null ? 0 : compound.getInteger("Charge");
+	}
 
-    @Override
-    @Nonnull
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer playerIn, @Nonnull EnumHand hand) {
-        ItemStack stack = playerIn.getHeldItem(hand);
-        ToolTier tier = getTier(stack);
-        if (tier != ToolTier.BASIC && canUse(stack)) {
-            if (playerIn.isSneaking()) {
-                setCharge(stack, 0);
-                if (world.isRemote && MCClientHelper.isClient(playerIn)) ChatHelper.displayChat(TextFormatting.RED + TextHelper.translate("tool.discharge"));
-            } else if (getCharge(stack) < getMaxCharge(stack)) playerIn.setActiveHand(hand);
-            else onPlayerStoppedUsing(stack, world, playerIn, 32000);
-            return new ActionResult<>(EnumActionResult.SUCCESS, stack);
-        } else if (tier == ToolTier.BASIC && canUse(stack)) {
-            onPlayerStoppedUsing(stack, world, playerIn, 32000);
-            return new ActionResult<>(EnumActionResult.SUCCESS, stack);
-        } else return new ActionResult<>(EnumActionResult.PASS, stack);
-    }
+	protected void setCharge(ItemStack stack, int amount) {
+		stack.getOrCreateSubCompound("Data").setInteger("Charge", amount);
+	}
 
-    private int getCharges(int count) {
-        int passed = 32000 - count;
-        return passed / 20;
-    }
+	@Override
+	@Nonnull
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer playerIn, @Nonnull EnumHand hand) {
+		ItemStack stack = playerIn.getHeldItem(hand);
+		ToolTier tier = getTier(stack);
+		if (tier != ToolTier.BASIC && canUse(stack)) {
+			if (playerIn.isSneaking()) {
+				setCharge(stack, 0);
+				if (world.isRemote && MCClientHelper.isClient(playerIn)) {
+					ChatHelper.displayChat(TextFormatting.RED + TextHelper.translate("tool.discharge"));
+				}
+			} else if (getCharge(stack) < getMaxCharge(stack)) {
+				playerIn.setActiveHand(hand);
+			} else {
+				onPlayerStoppedUsing(stack, world, playerIn, 32000);
+			}
+			return new ActionResult<>(EnumActionResult.SUCCESS, stack);
+		} else if (tier == ToolTier.BASIC && canUse(stack)) {
+			onPlayerStoppedUsing(stack, world, playerIn, 32000);
+			return new ActionResult<>(EnumActionResult.SUCCESS, stack);
+		} else {
+			return new ActionResult<>(EnumActionResult.PASS, stack);
+		}
+	}
 
-    protected String getLevelName(@Nonnull ItemStack stack, int charges) {
-        int maximum = getMaxCharge(stack);
-        int charge = getCharge(stack);
-        int newCharge = Math.min(maximum, charge + charges);
-        return charge == newCharge ? null : "" + newCharge;
-    }
+	private int getCharges(int count) {
+		int passed = 32000 - count;
+		return passed / 20;
+	}
 
-    @Override
-    public void onUsingTick(@Nonnull ItemStack stack, EntityLivingBase player, int count) {
-        if (count != 32000 && count % 20 == 0) {
-            if (player.world.isRemote && MCClientHelper.isClient(player)) {
-                String name =  getLevelName(stack, getCharges(count));
-                if (name != null) {
-                    ChatHelper.displayChat(TextFormatting.GREEN + TextHelper.formatHF("tool.charge", name));
-                }
-            }
-        }
-    }
+	protected String getLevelName(@Nonnull ItemStack stack, int charges) {
+		int maximum = getMaxCharge(stack);
+		int charge = getCharge(stack);
+		int newCharge = Math.min(maximum, charge + charges);
+		return charge == newCharge ? null : "" + newCharge;
+	}
 
-    protected ToolTier getChargeTier(int charge) {
-        return LEVEL_TO_TIER.get(charge);
-    }
+	@Override
+	public void onUsingTick(@Nonnull ItemStack stack, EntityLivingBase player, int count) {
+		if (count != 32000 && count % 20 == 0) {
+			if (player.world.isRemote && MCClientHelper.isClient(player)) {
+				String name = getLevelName(stack, getCharges(count));
+				if (name != null) {
+					ChatHelper.displayChat(TextFormatting.GREEN + TextHelper.formatHF("tool.charge", name));
+				}
+			}
+		}
+	}
 
-    @Override
-    public void onPlayerStoppedUsing(@Nonnull ItemStack stack, World world, EntityLivingBase entity, int timeLeft) {
-        int maximum = getMaxCharge(stack);
-        int charge = getCharge(stack);
-        int newCharge = Math.min(maximum, charge + getCharges(timeLeft));
-        if (charge < maximum) {
-            setCharge(stack, newCharge);
-        }
+	protected ToolTier getChargeTier(int charge) {
+		return LEVEL_TO_TIER.get(charge);
+	}
 
-        onFinishedCharging(world, entity, getMovingObjectPositionFromPlayer(world, entity), stack, getChargeTier(newCharge));
-    }
+	@Override
+	public void onPlayerStoppedUsing(@Nonnull ItemStack stack, World world, EntityLivingBase entity, int timeLeft) {
+		int maximum = getMaxCharge(stack);
+		int charge = getCharge(stack);
+		int newCharge = Math.min(maximum, charge + getCharges(timeLeft));
+		if (charge < maximum) {
+			setCharge(stack, newCharge);
+		}
 
-    protected void onFinishedCharging(World world, EntityLivingBase entity, @Nullable RayTraceResult result, @Nonnull ItemStack stack, ToolTier toolTier) {}
+		onFinishedCharging(world, entity, getMovingObjectPositionFromPlayer(world, entity), stack, getChargeTier(newCharge));
+	}
+
+	protected void onFinishedCharging(
+			World world,
+			EntityLivingBase entity,
+			@Nullable RayTraceResult result,
+			@Nonnull ItemStack stack,
+			ToolTier toolTier) {}
 }

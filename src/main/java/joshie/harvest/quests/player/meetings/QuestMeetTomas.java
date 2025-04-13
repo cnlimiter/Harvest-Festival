@@ -1,5 +1,6 @@
 package joshie.harvest.quests.player.meetings;
 
+import javax.annotation.Nonnull;
 import joshie.harvest.api.quests.HFQuest;
 import joshie.harvest.buildings.HFBuildings;
 import joshie.harvest.npcs.HFNPCs;
@@ -8,25 +9,27 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-import javax.annotation.Nonnull;
-
 @HFQuest("meeting.tomas")
 public class QuestMeetTomas extends QuestMeeting {
-    public QuestMeetTomas() {
-        super(HFBuildings.CHURCH, HFNPCs.PRIEST);
-    }
+	public QuestMeetTomas() {
+		super(HFBuildings.CHURCH, HFNPCs.PRIEST);
+	}
 
-    @Override
-    @SuppressWarnings("unchecked")
-    public String getDescription(World world, EntityPlayer player) {
-        if (hasBuilding(player)) return getLocalized("description");
-        else if (building.getRules().canDo(world, player, 1)) return getLocalized("build");
-        else return null;
-    }
+	@Override
+	@SuppressWarnings("unchecked")
+	public String getDescription(World world, EntityPlayer player) {
+		if (hasBuilding(player)) {
+			return getLocalized("description");
+		} else if (building.getRules().canDo(world, player, 1)) {
+			return getLocalized("build");
+		} else {
+			return null;
+		}
+	}
 
-    @Override
-    @Nonnull
-    public ItemStack getCurrentIcon(World world, EntityPlayer player) {
-        return hasBuilding(player) ? primary : buildingStack;
-    }
+	@Override
+	@Nonnull
+	public ItemStack getCurrentIcon(World world, EntityPlayer player) {
+		return hasBuilding(player) ? primary : buildingStack;
+	}
 }

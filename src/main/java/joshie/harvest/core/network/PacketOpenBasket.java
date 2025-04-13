@@ -11,18 +11,19 @@ import net.minecraft.entity.player.EntityPlayer;
 
 @Packet(Side.SERVER)
 public class PacketOpenBasket extends PenguinPacket {
-    public PacketOpenBasket() {}
-    @Override
-    public void toBytes(ByteBuf to) {}
+	public PacketOpenBasket() {}
 
-    @Override
-    public void fromBytes(ByteBuf from) {}
+	@Override
+	public void toBytes(ByteBuf to) {}
 
-    @Override
-    public void handlePacket(EntityPlayer player) {
-        EntityBasket basket = BasketHandler.getWearingBasket(player);
-        if (basket != null) {
-            player.openGui(HarvestFestival.instance, GuiHandler.BASKET_ENTITY, player.world, 0, 0, 0);
-        }
-    }
+	@Override
+	public void fromBytes(ByteBuf from) {}
+
+	@Override
+	public void handlePacket(EntityPlayer player) {
+		EntityBasket basket = BasketHandler.getWearingBasket(player);
+		if (basket != null) {
+			player.openGui(HarvestFestival.instance, GuiHandler.BASKET_ENTITY, player.world, 0, 0, 0);
+		}
+	}
 }

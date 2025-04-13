@@ -1,10 +1,20 @@
 package joshie.harvest.animals.block;
 
+import static joshie.harvest.animals.block.BlockTray.Tray.FEEDER_EMPTY;
+import static joshie.harvest.animals.block.BlockTray.Tray.NEST_EMPTY;
+
+import java.util.Locale;
+
+import javax.annotation.Nonnull;
 import joshie.harvest.animals.block.BlockTray.Tray;
 import joshie.harvest.animals.tile.TileFeeder;
 import joshie.harvest.animals.tile.TileNest;
 import joshie.harvest.api.HFApi;
-import joshie.harvest.api.animals.*;
+import joshie.harvest.api.animals.AnimalAction;
+import joshie.harvest.api.animals.AnimalFoodType;
+import joshie.harvest.api.animals.AnimalStats;
+import joshie.harvest.api.animals.IAnimalFeeder;
+import joshie.harvest.api.animals.INest;
 import joshie.harvest.api.core.Size;
 import joshie.harvest.core.base.block.BlockHFEnum;
 import joshie.harvest.core.base.tile.TileFillable;
@@ -32,180 +42,195 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 
-import javax.annotation.Nonnull;
-import java.util.Locale;
-
-import static joshie.harvest.animals.block.BlockTray.Tray.FEEDER_EMPTY;
-import static joshie.harvest.animals.block.BlockTray.Tray.NEST_EMPTY;
-
 public class BlockTray extends BlockHFEnum<BlockTray, Tray> implements IAnimalFeeder, INest {
-    private static final AxisAlignedBB NEST_COLLISION = new AxisAlignedBB(0.15D, 0D, 0.15D, 0.85D, 0.2D, 0.85D);
-    private static final AxisAlignedBB NEST_AABB = new AxisAlignedBB(0.15D, 0D, 0.15D, 0.85D, 0.35D, 0.85D);
-    private static final AxisAlignedBB FEEDER_AABB = new AxisAlignedBB(0.0D, 0D, 0.0D, 1.0D, 0.075D, 1.0D);
+	private static final AxisAlignedBB NEST_COLLISION = new AxisAlignedBB(0.15D, 0D, 0.15D, 0.85D, 0.2D, 0.85D);
+	private static final AxisAlignedBB NEST_AABB = new AxisAlignedBB(0.15D, 0D, 0.15D, 0.85D, 0.35D, 0.85D);
+	private static final AxisAlignedBB FEEDER_AABB = new AxisAlignedBB(0.0D, 0D, 0.0D, 1.0D, 0.075D, 1.0D);
 
-    public enum Tray implements IStringSerializable {
-        NEST_EMPTY, SMALL_CHICKEN, MEDIUM_CHICKEN, LARGE_CHICKEN, FEEDER_EMPTY, FEEDER_FULL;
+	public enum Tray implements IStringSerializable {
+		NEST_EMPTY, SMALL_CHICKEN, MEDIUM_CHICKEN, LARGE_CHICKEN, FEEDER_EMPTY, FEEDER_FULL;
 
-        public boolean isFeeder() {
-            return this == FEEDER_EMPTY || this == FEEDER_FULL;
-        }
+		public boolean isFeeder() {
+			return this == FEEDER_EMPTY || this == FEEDER_FULL;
+		}
 
-        @Override
-        public String getName() {
-            return toString().toLowerCase(Locale.ENGLISH);
-        }
-    }
+		@Override
+		public String getName() {
+			return toString().toLowerCase(Locale.ENGLISH);
+		}
+	}
 
-    public BlockTray() {
-        super(Material.WOOD, Tray.class);
-        setHardness(0.5F);
-        setSoundType(SoundType.WOOD);
-    }
+	public BlockTray() {
+		super(Material.WOOD, Tray.class);
+		setHardness(0.5F);
+		setSoundType(SoundType.WOOD);
+	}
 
-    @Override
-    public String getToolType(Tray wood) {
-        return "axe";
-    }
+	@Override
+	public String getToolType(Tray wood) {
+		return "axe";
+	}
 
-    @Override
-    @SuppressWarnings("deprecation, unchecked")
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
-        return getEnumFromState(state).isFeeder() ? super.getCollisionBoundingBox(state, world, pos) : NEST_COLLISION;
-    }
+	@Override
+	@SuppressWarnings("deprecation, unchecked")
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
+		return getEnumFromState(state).isFeeder() ? super.getCollisionBoundingBox(state, world, pos) : NEST_COLLISION;
+	}
 
-    @SuppressWarnings("deprecation")
-    @Override
-    @Nonnull
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
-        return getEnumFromState(state).isFeeder() ? FEEDER_AABB : NEST_AABB;
-    }
+	@SuppressWarnings("deprecation")
+	@Override
+	@Nonnull
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return getEnumFromState(state).isFeeder() ? FEEDER_AABB : NEST_AABB;
+	}
 
-    @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-        if (player.isSneaking()) return false;
-        TileEntity tile = world.getTileEntity(pos);
-        ItemStack held = player.getHeldItem(hand);
-        if (held.isEmpty() && tile instanceof TileNest) {
-            TileNest nest = (TileNest) tile;
-            if (!nest.getDrop().isEmpty()) {
-                ItemStack drop = nest.getDrop().copy();
-                int relationship = nest.getRelationship();
-                NBTTagCompound tag = drop.getOrCreateSubCompound("Data");
-                tag.setInteger("Relationship", (relationship - (relationship % 2500)));
-                nest.clear();
+	@Override
+	public boolean onBlockActivated(
+			World world,
+			BlockPos pos,
+			IBlockState state,
+			EntityPlayer player,
+			EnumHand hand,
+			EnumFacing side,
+			float hitX,
+			float hitY,
+			float hitZ) {
+		if (player.isSneaking()) {
+			return false;
+		}
+		TileEntity tile = world.getTileEntity(pos);
+		ItemStack held = player.getHeldItem(hand);
+		if (held.isEmpty() && tile instanceof TileNest) {
+			TileNest nest = (TileNest) tile;
+			if (!nest.getDrop().isEmpty()) {
+				ItemStack drop = nest.getDrop().copy();
+				int relationship = nest.getRelationship();
+				NBTTagCompound tag = drop.getOrCreateSubCompound("Data");
+				tag.setInteger("Relationship", (relationship - (relationship % 2500)));
+				nest.clear();
 
-                if (!EntityBasket.findBasketAndShip(player, NonNullList.withSize(1, drop))) {
-                    SpawnItemHelper.addToPlayerInventory(player, drop);
-                }
+				if (!EntityBasket.findBasketAndShip(player, NonNullList.withSize(1, drop))) {
+					SpawnItemHelper.addToPlayerInventory(player, drop);
+				}
 
-                if (!world.isRemote) {
-                    world.setBlockState(pos, getStateFromEnum(NEST_EMPTY));
-                }
+				if (!world.isRemote) {
+					world.setBlockState(pos, getStateFromEnum(NEST_EMPTY));
+				}
 
-                return true;
-            }
-        } else if (tile instanceof TileFillable) {
-            return ((TileFillable)tile).onActivated(held);
-        }
+				return true;
+			}
+		} else if (tile instanceof TileFillable) {
+			return ((TileFillable) tile).onActivated(held);
+		}
 
-        return false;
-    }
+		return false;
+	}
 
-    @Override
-    public boolean feedAnimal(AnimalStats stats, World world, BlockPos pos, IBlockState state, boolean simulate) {
-        if (getEnumFromState(state).isFeeder() && HFApi.animals.canAnimalEatFoodType(stats, AnimalFoodType.SEED)) {
-            TileFeeder feeder = ((TileFeeder) world.getTileEntity(pos));
-            if (feeder != null && feeder.getFillAmount() > 0) {
-                if (!simulate) {
-                    feeder.adjustFill(-1);
-                    stats.performAction(world, ItemStack.EMPTY, AnimalAction.FEED);
-                }
+	@Override
+	public boolean feedAnimal(AnimalStats stats, World world, BlockPos pos, IBlockState state, boolean simulate) {
+		if (getEnumFromState(state).isFeeder() && HFApi.animals.canAnimalEatFoodType(stats, AnimalFoodType.SEED)) {
+			TileFeeder feeder = ((TileFeeder) world.getTileEntity(pos));
+			if (feeder != null && feeder.getFillAmount() > 0) {
+				if (!simulate) {
+					feeder.adjustFill(-1);
+					stats.performAction(world, ItemStack.EMPTY, AnimalAction.FEED);
+				}
 
-                return true;
-            }
-        }
+				return true;
+			}
+		}
 
-        return false;
-    }
+		return false;
+	}
 
-    @Override
-    public boolean isNest(AnimalStats stats, World world, BlockPos pos, IBlockState state) {
-        return getEnumFromState(state.getActualState(world, pos)) == NEST_EMPTY;
-    }
+	@Override
+	public boolean isNest(AnimalStats stats, World world, BlockPos pos, IBlockState state) {
+		return getEnumFromState(state.getActualState(world, pos)) == NEST_EMPTY;
+	}
 
-    @Override
-    public void layEgg(AnimalStats stats, World world, BlockPos pos, IBlockState state) {
-        TileEntity tile = world.getTileEntity(pos);
-        if (stats.getAnimal() != null && tile instanceof TileNest) {
-            if (!world.isRemote) {
-                ((TileNest) tile).setDrop(stats.getHappiness(), stats.getType().getProduct(stats));
-                stats.setProduced(1); //Product one egg
-            }
+	@Override
+	public void layEgg(AnimalStats stats, World world, BlockPos pos, IBlockState state) {
+		TileEntity tile = world.getTileEntity(pos);
+		if (stats.getAnimal() != null && tile instanceof TileNest) {
+			if (!world.isRemote) {
+				((TileNest) tile).setDrop(stats.getHappiness(), stats.getType().getProduct(stats));
+				stats.setProduced(1); //Product one egg
+			}
 
-            EntityAnimal animal = stats.getAnimal();
-            animal.playSound(SoundEvents.ENTITY_CHICKEN_EGG, 1.0F, (animal.world.rand.nextFloat() - animal.world.rand.nextFloat()) * 0.2F + 1.0F);
-        }
-    }
+			EntityAnimal animal = stats.getAnimal();
+			animal.playSound(
+					SoundEvents.ENTITY_CHICKEN_EGG,
+					1.0F,
+					(animal.world.rand.nextFloat() - animal.world.rand.nextFloat()) * 0.2F + 1.0F);
+		}
+	}
 
-    @Override
-    public boolean hasTileEntity(IBlockState state) {
-        return true;
-    }
+	@Override
+	public boolean hasTileEntity(IBlockState state) {
+		return true;
+	}
 
-    @Override
-    @Nonnull
-    public TileEntity createTileEntity(@Nonnull World world, @Nonnull IBlockState state) {
-        return getEnumFromState(state).isFeeder() ? new TileFeeder() : new TileNest();
-    }
+	@Override
+	@Nonnull
+	public TileEntity createTileEntity(@Nonnull World world, @Nonnull IBlockState state) {
+		return getEnumFromState(state).isFeeder() ? new TileFeeder() : new TileNest();
+	}
 
-    @SuppressWarnings("deprecation")
-    @Override
-    @Nonnull
-    public IBlockState getActualState(@Nonnull IBlockState state, IBlockAccess world, BlockPos pos) {
-        TileEntity tile = world instanceof ChunkCache ? ((ChunkCache)world).getTileEntity(pos, Chunk.EnumCreateEntityType.CHECK) : world.getTileEntity(pos);
-        if (tile instanceof TileFeeder) {
-            boolean isFilled = ((TileFeeder)tile).getFillAmount() > 0;
-            if (isFilled) return getStateFromEnum(Tray.FEEDER_FULL);
-            else return getStateFromEnum(Tray.FEEDER_EMPTY);
-        } else if (tile instanceof TileNest) {
-            TileNest nest = ((TileNest)tile);
-            if (nest.getDrop().isEmpty()) return getStateFromEnum(Tray.NEST_EMPTY);
-            else {
-                Size size = nest.getSize();
-                if (size == Size.NONE || size == Size.SMALL) return getStateFromEnum(Tray.SMALL_CHICKEN);
-                else if (size == Size.MEDIUM) return getStateFromEnum(Tray.MEDIUM_CHICKEN);
-                else if (size == Size.LARGE) return getStateFromEnum(Tray.LARGE_CHICKEN);
-            }
-        }
+	@SuppressWarnings("deprecation")
+	@Override
+	@Nonnull
+	public IBlockState getActualState(@Nonnull IBlockState state, IBlockAccess world, BlockPos pos) {
+		TileEntity tile = world instanceof ChunkCache ?
+				((ChunkCache) world).getTileEntity(pos, Chunk.EnumCreateEntityType.CHECK) :
+				world.getTileEntity(pos);
+		if (tile instanceof TileFeeder) {
+			boolean isFilled = ((TileFeeder) tile).getFillAmount() > 0;
+			if (isFilled) {
+				return getStateFromEnum(Tray.FEEDER_FULL);
+			} else {
+				return getStateFromEnum(Tray.FEEDER_EMPTY);
+			}
+		} else if (tile instanceof TileNest) {
+			TileNest nest = ((TileNest) tile);
+			if (nest.getDrop().isEmpty()) {
+				return getStateFromEnum(Tray.NEST_EMPTY);
+			} else {
+				Size size = nest.getSize();
+				if (size == Size.NONE || size == Size.SMALL) {
+					return getStateFromEnum(Tray.SMALL_CHICKEN);
+				} else if (size == Size.MEDIUM) {
+					return getStateFromEnum(Tray.MEDIUM_CHICKEN);
+				} else if (size == Size.LARGE) {
+					return getStateFromEnum(Tray.LARGE_CHICKEN);
+				}
+			}
+		}
 
-        return state;
-    }
+		return state;
+	}
 
-    @Override
-    protected boolean shouldDisplayInCreative(Tray tray) {
-        return tray == NEST_EMPTY || tray == FEEDER_EMPTY;
-    }
+	@Override
+	protected boolean shouldDisplayInCreative(Tray tray) {
+		return tray == NEST_EMPTY || tray == FEEDER_EMPTY;
+	}
 
-    @Override
-    public int getSortValue(@Nonnull ItemStack stack) {
-        return CreativeSort.TROUGH;
-    }
+	@Override
+	public int getSortValue(@Nonnull ItemStack stack) {
+		return CreativeSort.TROUGH;
+	}
 
-    @Override
-    public boolean isFullBlock(IBlockState state)
-    {
-        return false;
-    }
+	@Override
+	public boolean isFullBlock(IBlockState state) {
+		return false;
+	}
 
-    @Override
-    public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos)
-    {
-        return false;
-    }
+	@Override
+	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return false;
+	}
 
-    @Override
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
-    {
-        return BlockFaceShape.UNDEFINED;
-    }
+	@Override
+	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+		return BlockFaceShape.UNDEFINED;
+	}
 }

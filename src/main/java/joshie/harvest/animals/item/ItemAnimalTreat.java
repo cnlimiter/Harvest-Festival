@@ -1,5 +1,8 @@
 package joshie.harvest.animals.item;
 
+import java.util.Locale;
+
+import javax.annotation.Nonnull;
 import joshie.harvest.animals.HFAnimals;
 import joshie.harvest.animals.item.ItemAnimalTreat.Treat;
 import joshie.harvest.api.animals.AnimalAction;
@@ -14,46 +17,45 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.IStringSerializable;
 
-import javax.annotation.Nonnull;
-import java.util.Locale;
-
 public class ItemAnimalTreat extends ItemHFEnum<ItemAnimalTreat, Treat> {
-    public enum Treat implements IStringSerializable {
-        COW(HFAnimals.COWS), SHEEP(HFAnimals.SHEEP), CHICKEN(HFAnimals.CHICKENS), GENERIC(null);
+	public enum Treat implements IStringSerializable {
+		COW(HFAnimals.COWS), SHEEP(HFAnimals.SHEEP), CHICKEN(HFAnimals.CHICKENS), GENERIC(null);
 
-        private final IAnimalType type;
+		private final IAnimalType type;
 
-        Treat(IAnimalType type) {
-            this.type = type;
-        }
+		Treat(IAnimalType type) {
+			this.type = type;
+		}
 
-        public IAnimalType getType() {
-            return type;
-        }
+		public IAnimalType getType() {
+			return type;
+		}
 
-        @Override
-        public String getName() {
-            return name().toLowerCase(Locale.ENGLISH);
-        }
-    }
+		@Override
+		public String getName() {
+			return name().toLowerCase(Locale.ENGLISH);
+		}
+	}
 
-    public ItemAnimalTreat() {
-        super(Treat.class);
-    }
+	public ItemAnimalTreat() {
+		super(Treat.class);
+	}
 
-    @Override
-    @SuppressWarnings("ConstantConditions")
-    public boolean itemInteractionForEntity(@Nonnull ItemStack stack, EntityPlayer player, EntityLivingBase target, EnumHand hand) {
-        AnimalStats stats = EntityHelper.getStats(target);
-        AnimalAction action = getEnumFromStack(stack).getType() != null ? AnimalAction.TREAT_SPECIAL : AnimalAction.TREAT_GENERIC;
-        if (stats != null && stats.performAction(player.world, stack, action)) {
-            stack.splitStack(1);
-            return true;
-        } else return false;
-    }
+	@Override
+	@SuppressWarnings("ConstantConditions")
+	public boolean itemInteractionForEntity(@Nonnull ItemStack stack, EntityPlayer player, EntityLivingBase target, EnumHand hand) {
+		AnimalStats stats = EntityHelper.getStats(target);
+		AnimalAction action = getEnumFromStack(stack).getType() != null ? AnimalAction.TREAT_SPECIAL : AnimalAction.TREAT_GENERIC;
+		if (stats != null && stats.performAction(player.world, stack, action)) {
+			stack.splitStack(1);
+			return true;
+		} else {
+			return false;
+		}
+	}
 
-    @Override
-    public int getSortValue(@Nonnull ItemStack stack) {
-        return CreativeSort.ANIMAL_TREAT;
-    }
+	@Override
+	public int getSortValue(@Nonnull ItemStack stack) {
+		return CreativeSort.ANIMAL_TREAT;
+	}
 }
