@@ -24,7 +24,7 @@ public class TileTrap extends TileSingleStack {
 	private static final DailyTickableBlock TICKABLE = new DailyTickableBlock(Phases.MAIN) {
 		@Override
 		public boolean isStateCorrect(World world, BlockPos pos, IBlockState state) {
-			return state.getBlock() == HFFishing.AQUATIC_BLOCKS && HFFishing.AQUATIC_BLOCKS.getEnumFromState(state).isTrap();
+			return state.getBlock() == HFFishing.AQUATIC_BLOCKS;
 		}
 
 		@Override
@@ -59,16 +59,16 @@ public class TileTrap extends TileSingleStack {
 
 	@Override
 	public boolean onRightClicked(EntityPlayer player, @Nonnull ItemStack place) {
-		if (FishingAPI.INSTANCE.isBait(place)) {
-			stack = place.splitStack(1);
-			baited = true;
-			saveAndRefresh();
-			return true;
-		} else if (!FishingAPI.INSTANCE.isBait(stack)) {
+		if (!stack.isEmpty() && !FishingAPI.INSTANCE.isBait(stack)) {
 			FishingHelper.track(stack, player);
 			SpawnItemHelper.spawnByEntity(player, stack);
 			baited = false;
 			stack = ItemStack.EMPTY;
+			saveAndRefresh();
+			return true;
+		} else if (stack.isEmpty() && FishingAPI.INSTANCE.isBait(place)) {
+			stack = place.splitStack(1);
+			baited = true;
 			saveAndRefresh();
 			return true;
 		}
@@ -99,5 +99,10 @@ public class TileTrap extends TileSingleStack {
 	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 		nbt.setBoolean("Baited", baited);
 		return super.writeToNBT(nbt);
+	}
+
+	@Override
+	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate) {
+		return oldState.getBlock() != newSate.getBlock();
 	}
 }

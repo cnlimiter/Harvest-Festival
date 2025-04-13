@@ -26,7 +26,7 @@ import joshie.harvest.api.core.Ore;
 import joshie.harvest.core.lib.EntityIDs;
 import joshie.harvest.core.util.annotations.HFLoader;
 import joshie.harvest.fishing.FishingHelper.WaterType;
-import joshie.harvest.fishing.block.BlockAquatic;
+import joshie.harvest.fishing.block.BlockFishTrap;
 import joshie.harvest.fishing.block.BlockFloating;
 import joshie.harvest.fishing.entity.EntityFishHookHF;
 import joshie.harvest.fishing.item.ItemFish;
@@ -59,7 +59,7 @@ public class HFFishing {
 	public static final EnumMap<ToolTier, ItemFishingRod> FISHING_RODS = new EnumMap<>(ToolTier.class);
 	public static final ItemFish FISH = new ItemFish().register("fish");
 	public static final ItemJunk JUNK = new ItemJunk().register("junk");
-	public static final BlockAquatic AQUATIC_BLOCKS = new BlockAquatic().register("aquatic");
+	public static final BlockFishTrap AQUATIC_BLOCKS = new BlockFishTrap().register("aquatic");
 	public static final BlockFloating FLOATING_BLOCKS = new BlockFloating().register("floating");
 
 	static {

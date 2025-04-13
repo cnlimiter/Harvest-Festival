@@ -2,7 +2,7 @@ package joshie.harvest.fishing.item;
 
 import javax.annotation.Nonnull;
 import joshie.harvest.core.base.item.ItemBlockHF;
-import joshie.harvest.fishing.block.BlockAquatic;
+import joshie.harvest.fishing.block.BlockFishTrap;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumActionResult;
@@ -11,8 +11,8 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class ItemBlockAquatic extends ItemBlockHF<BlockAquatic> {
-	public ItemBlockAquatic(BlockAquatic block) {
+public class ItemBlockAquatic extends ItemBlockHF<BlockFishTrap> {
+	public ItemBlockAquatic(BlockFishTrap block) {
 		super(block);
 	}
 

@@ -1,19 +1,16 @@
 package joshie.harvest.fishing.block;
 
-import static joshie.harvest.core.proxy.HFClientProxy.NO_WATER;
-import static joshie.harvest.fishing.block.BlockAquatic.Aquatic.TRAP_BAITED;
-import static net.minecraft.block.BlockLiquid.LEVEL;
-
 import java.util.Locale;
 
 import javax.annotation.Nonnull;
 import joshie.harvest.core.HFTab;
 import joshie.harvest.core.base.block.BlockHFEnum;
 import joshie.harvest.core.base.item.ItemBlockHF;
-import joshie.harvest.core.base.tile.TileSingleStack;
-import joshie.harvest.fishing.block.BlockAquatic.Aquatic;
+import joshie.harvest.core.proxy.HFClientProxy;
+import joshie.harvest.fishing.block.BlockFishTrap.Aquatic;
 import joshie.harvest.fishing.item.ItemBlockAquatic;
 import joshie.harvest.fishing.tile.TileTrap;
+import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -32,8 +29,8 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockAquatic extends BlockHFEnum<BlockAquatic, Aquatic> {
-	public BlockAquatic() {
+public class BlockFishTrap extends BlockHFEnum<BlockFishTrap, Aquatic> {
+	public BlockFishTrap() {
 		super(Material.WATER, Aquatic.class, HFTab.FISHING);
 		setHardness(0.1F);
 	}
@@ -42,9 +39,9 @@ public class BlockAquatic extends BlockHFEnum<BlockAquatic, Aquatic> {
 	@Nonnull
 	protected BlockStateContainer createBlockState() {
 		if (property == null) {
-			return new BlockStateContainer(this, LEVEL, temporary);
+			return new BlockStateContainer(this, BlockLiquid.LEVEL, temporary);
 		}
-		return new BlockStateContainer(this, LEVEL, property);
+		return new BlockStateContainer(this, BlockLiquid.LEVEL, property);
 	}
 
 	@Override
@@ -52,7 +49,6 @@ public class BlockAquatic extends BlockHFEnum<BlockAquatic, Aquatic> {
 		return new ItemBlockAquatic(this);
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public boolean isFullCube(IBlockState state) {
 		return true;
@@ -76,7 +72,7 @@ public class BlockAquatic extends BlockHFEnum<BlockAquatic, Aquatic> {
 			float hitY,
 			float hitZ) {
 		TileEntity tile = world.getTileEntity(pos);
-		return tile instanceof TileSingleStack && ((TileSingleStack) tile).onRightClicked(player, player.getHeldItem(hand));
+		return tile instanceof TileTrap && ((TileTrap) tile).onRightClicked(player, player.getHeldItem(hand));
 	}
 
 	@Override
@@ -94,7 +90,7 @@ public class BlockAquatic extends BlockHFEnum<BlockAquatic, Aquatic> {
 		if (tile instanceof TileTrap) {
 			TileTrap trap = ((TileTrap) tile);
 			if (trap.isBaited()) {
-				return getStateFromEnum(TRAP_BAITED);
+				return getStateFromEnum(Aquatic.TRAP_BAITED);
 			} else {
 				return getStateFromEnum(Aquatic.TRAP);
 			}
@@ -111,24 +107,18 @@ public class BlockAquatic extends BlockHFEnum<BlockAquatic, Aquatic> {
 	@Override
 	@Nonnull
 	public TileEntity createTileEntity(@Nonnull World world, @Nonnull IBlockState state) {
-		switch (getEnumFromState(state)) {
-			case TRAP:
-			case TRAP_BAITED:
-				return new TileTrap();
-			default:
-				return null;
-		}
+		return new TileTrap();
 	}
 
 	@Override
 	protected boolean shouldDisplayInCreative(Aquatic block) {
-		return block != TRAP_BAITED;
+		return block != Aquatic.TRAP_BAITED;
 	}
 
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void registerModels(Item item, String name) {
-		ModelLoader.setCustomStateMapper(this, NO_WATER);
+		ModelLoader.setCustomStateMapper(this, HFClientProxy.NO_WATER);
 		super.registerModels(item, name);
 	}
 
@@ -138,10 +128,6 @@ public class BlockAquatic extends BlockHFEnum<BlockAquatic, Aquatic> {
 		@Override
 		public String getName() {
 			return name().toLowerCase(Locale.ENGLISH);
-		}
-
-		public boolean isTrap() {
-			return this == TRAP || this == TRAP_BAITED;
 		}
 	}
 }
