@@ -57,7 +57,8 @@ public class QuestCollectFish extends QuestDaily {
 
 	@Override
 	public boolean isNPCUsed(EntityPlayer player, NPCEntity entity) {
-		return super.isNPCUsed(player, entity) && InventoryHelper.getHandItemIsIn(player,
+		return super.isNPCUsed(player, entity) && InventoryHelper.getHandItemIsIn(
+				player,
 				InventoryHelper.ITEM_STACK, fish, fish.getCount()) != null;
 	}
 

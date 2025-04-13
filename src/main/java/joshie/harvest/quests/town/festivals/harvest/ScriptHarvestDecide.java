@@ -1,15 +1,14 @@
 package joshie.harvest.quests.town.festivals.harvest;
 
+import joshie.harvest.HarvestFestival;
 import joshie.harvest.api.npc.NPCEntity;
 import joshie.harvest.api.npc.greeting.Script;
-import joshie.harvest.core.lib.HFModInfo;
 import joshie.harvest.quests.town.festivals.QuestHarvestFestival;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.translation.I18n;
 
 public class ScriptHarvestDecide extends Script {
 	public ScriptHarvestDecide() {
-		super(new ResourceLocation(HFModInfo.MODID, "harvest"));
+		super(HarvestFestival.id("harvest"));
 		unlocalised = "harvestfestival.quest.festival.harvest.decide.";
 	}
 

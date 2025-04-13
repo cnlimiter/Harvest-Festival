@@ -199,7 +199,8 @@ public class MiningChunk implements IChunkGenerator {
 								}
 
 								int floor = MiningHelper.getFloor(chunkX, belowY + MiningHelper.FLOOR_HEIGHT);
-								if (MiningHelper.HOLE_FLOORS.contains(floor) || (floor > MiningHelper.MYSTRIL_FLOOR && rand.nextInt(4) == 0)) {
+								if (MiningHelper.HOLE_FLOORS.contains(floor) ||
+										(floor > MiningHelper.MYSTRIL_FLOOR && rand.nextInt(4) == 0)) {
 									setBlockState(primer, i, belowY + MiningHelper.FLOOR_HEIGHT, j, LADDER_HOLE, chunkX);
 								}
 							}
@@ -303,7 +304,8 @@ public class MiningChunk implements IChunkGenerator {
 						y,
 						z + 1) == AIR)
 				|| (
-				z - 1 >= 0 && getBlockState(primer, x, y, z - 1) == AIR && getBlockState(primer, x + 1, y, z - 1) == AIR && getBlockState(primer,
+				z - 1 >= 0 && getBlockState(primer, x, y, z - 1) == AIR && getBlockState(primer, x + 1, y, z - 1) == AIR && getBlockState(
+						primer,
 						x - 1,
 						y,
 						z - 1) == AIR);
@@ -322,7 +324,8 @@ public class MiningChunk implements IChunkGenerator {
 						y,
 						z - 1) == AIR)
 				|| (
-				x - 1 >= 16 && getBlockState(primer, x - 1, y, z) == AIR && getBlockState(primer, x - 1, y, z + 1) == AIR && getBlockState(primer,
+				x - 1 >= 16 && getBlockState(primer, x - 1, y, z) == AIR && getBlockState(primer, x - 1, y, z + 1) == AIR && getBlockState(
+						primer,
 						x - 1,
 						y,
 						z - 1) == AIR);

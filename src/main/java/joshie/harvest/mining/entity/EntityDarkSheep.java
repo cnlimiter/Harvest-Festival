@@ -66,7 +66,7 @@ public class EntityDarkSheep extends EntityMob {
 		int floor = MiningHelper.getFloor((int) posX >> 4, (int) posY);
 		return floor >= MiningHelper.GOLD_FLOOR && (
 				HFMining.ANIMALS_ON_EVERY_FLOOR || (((floor + 6) % MiningHelper.SHEEP_FLOORS == 0)))
-				&& joshie.harvest.core.helpers.EntityHelper.getEntities(joshie.harvest.mining.entity.EntityDarkSheep.class, this, 24D)
+				&& EntityHelper.getEntities(EntityDarkSheep.class, this, 24D)
 				.isEmpty();
 	}
 

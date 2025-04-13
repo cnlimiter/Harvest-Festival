@@ -2,7 +2,7 @@ package joshie.harvest.npcs.gui;
 
 import gnu.trove.map.TCharObjectMap;
 import gnu.trove.map.hash.TCharObjectHashMap;
-import joshie.harvest.core.lib.HFModInfo;
+import joshie.harvest.HarvestFestival;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
@@ -64,7 +64,7 @@ public class ChatFontRenderer {
 		}
 	}
 
-	private static final ResourceLocation resource = new ResourceLocation(HFModInfo.MODID, "textures/gui/chattext.png");
+	private static final ResourceLocation resource = HarvestFestival.id("textures/gui/chattext.png");
 	private static final TCharObjectMap<ChatChar> map = new TCharObjectHashMap<>();
 
 	static {

@@ -5,9 +5,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 
 import javax.annotation.Nonnull;
-import joshie.harvest.core.lib.HFModInfo;
+import joshie.harvest.HarvestFestival;
 import net.minecraft.util.JsonUtils;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.loot.conditions.LootCondition;
 
 public class Between extends FloorCondition {
@@ -26,7 +25,7 @@ public class Between extends FloorCondition {
 
 	public static class Serializer extends LootCondition.Serializer<Between> {
 		public Serializer() {
-			super(new ResourceLocation(HFModInfo.MODID, "between"), Between.class);
+			super(HarvestFestival.id("between"), Between.class);
 		}
 
 		@Override

@@ -8,12 +8,11 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 
 import javax.annotation.Nonnull;
+import joshie.harvest.HarvestFestival;
 import joshie.harvest.api.calendar.Season;
 import joshie.harvest.core.HFTrackers;
-import joshie.harvest.core.lib.HFModInfo;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.JsonUtils;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.loot.LootContext;
 import net.minecraft.world.storage.loot.conditions.LootCondition;
 
@@ -36,7 +35,7 @@ public class Seasonal implements LootCondition {
 
 	public static class Serializer extends LootCondition.Serializer<Seasonal> {
 		public Serializer() {
-			super(new ResourceLocation(HFModInfo.MODID, "season"), Seasonal.class);
+			super(HarvestFestival.id("season"), Seasonal.class);
 		}
 
 		@Override

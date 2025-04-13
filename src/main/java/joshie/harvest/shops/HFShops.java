@@ -2,6 +2,7 @@ package joshie.harvest.shops;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import joshie.harvest.HarvestFestival;
 import joshie.harvest.animals.HFAnimals;
 import joshie.harvest.animals.block.BlockSizedStorage;
 import joshie.harvest.animals.block.BlockTray;
@@ -34,7 +35,6 @@ import joshie.harvest.cooking.item.ItemUtensil;
 import joshie.harvest.core.HFCore;
 import joshie.harvest.core.block.BlockStorage.Storage;
 import joshie.harvest.core.helpers.ConfigHelper;
-import joshie.harvest.core.lib.HFModInfo;
 import joshie.harvest.core.registry.ShippingRegistry;
 import joshie.harvest.core.util.annotations.HFLoader;
 import joshie.harvest.crops.HFCrops;
@@ -106,50 +106,50 @@ import net.minecraft.world.World;
 
 @HFLoader
 public class HFShops {
-	public static final Shop BARN = newShop(new ResourceLocation(HFModInfo.MODID, "barn"), HFNPCs.BARN_OWNER);
-	public static final Shop CAFE = newShop(new ResourceLocation(HFModInfo.MODID, "cafe"), HFNPCs.CAFE_OWNER);
-	public static final Shop CARPENTER = newShop(new ResourceLocation(HFModInfo.MODID, "carpenter"), HFNPCs.CARPENTER);
-	public static final Shop POULTRY = newShop(new ResourceLocation(HFModInfo.MODID, "poultry"), HFNPCs.POULTRY);
-	public static final Shop SUPERMARKET = newShop(new ResourceLocation(HFModInfo.MODID, "general"), HFNPCs.GS_OWNER);
-	public static final Shop MINER = newShop(new ResourceLocation(HFModInfo.MODID, "miner"), HFNPCs.MINER);
+	public static final Shop BARN = newShop(HarvestFestival.id("barn"), HFNPCs.BARN_OWNER);
+	public static final Shop CAFE = newShop(HarvestFestival.id("cafe"), HFNPCs.CAFE_OWNER);
+	public static final Shop CARPENTER = newShop(HarvestFestival.id("carpenter"), HFNPCs.CARPENTER);
+	public static final Shop POULTRY = newShop(HarvestFestival.id("poultry"), HFNPCs.POULTRY);
+	public static final Shop SUPERMARKET = newShop(HarvestFestival.id("general"), HFNPCs.GS_OWNER);
+	public static final Shop MINER = newShop(HarvestFestival.id("miner"), HFNPCs.MINER);
 	//Added in 0.6+
-	public static final Shop BAITSHOP = newShop(new ResourceLocation(HFModInfo.MODID, "baitshop"), HFNPCs.FISHERMAN);
-	public static final Shop CLOCKMAKER = newShop(new ResourceLocation(HFModInfo.MODID, "clockmaker"), HFNPCs.CLOCKMAKER);
+	public static final Shop BAITSHOP = newShop(HarvestFestival.id("baitshop"), HFNPCs.FISHERMAN);
+	public static final Shop CLOCKMAKER = newShop(HarvestFestival.id("clockmaker"), HFNPCs.CLOCKMAKER);
 	public static final Shop BLOODMAGE = newShop(
-			new ResourceLocation(HFModInfo.MODID, "bloodmage"),
+			HarvestFestival.id("bloodmage"),
 			null).setSpecialSellingRules(new SpecialRulesFriendship(HFNPCs.CLOCKMAKER, 15000)).setOpensOnHolidays();
 	public static final Shop KITCHEN = newShop(
-			new ResourceLocation(HFModInfo.MODID, "kitchen"),
+			HarvestFestival.id("kitchen"),
 			HFNPCs.CAFE_GRANNY).setSpecialSellingRules(new SpecialRulesFriendship(HFNPCs.CAFE_GRANNY, 15000));
 	public static final Shop TRADER = newShop(
-			new ResourceLocation(HFModInfo.MODID, "trader"),
+			HarvestFestival.id("trader"),
 			HFNPCs.TRADER).setSpecialSellingRules(new SpecialRulesFriendship(HFNPCs.TRADER, 15000));
 	public static final Shop COOKING_FESTIVAL_FOOD = newHolidayShop(
-			new ResourceLocation(HFModInfo.MODID, "cooking"),
+			HarvestFestival.id("cooking"),
 			HFNPCs.CAFE_GRANNY,
 			HFFestivals.COOKING_CONTEST);
 	public static final Shop COOKING_FESTIVAL_RECIPES = newHolidayShop(
-			new ResourceLocation(HFModInfo.MODID, "recipes"),
+			HarvestFestival.id("recipes"),
 			HFNPCs.CAFE_OWNER,
 			HFFestivals.COOKING_CONTEST);
 	public static final Shop COW_FESTIVAL_BARGAINS = newHolidayShop(
-			new ResourceLocation(HFModInfo.MODID, "cow"),
+			HarvestFestival.id("cow"),
 			HFNPCs.BARN_OWNER,
 			HFFestivals.COW_FESTIVAL);
 	public static final Shop COW_FESTIVAL_DAIRY_QUEEN = newHolidayShop(
-			new ResourceLocation(HFModInfo.MODID, "dairy"),
+			HarvestFestival.id("dairy"),
 			HFNPCs.CAFE_OWNER,
 			HFFestivals.COW_FESTIVAL);
 	public static final Shop SHEEP_FESTIVAL_SALE = newHolidayShop(
-			new ResourceLocation(HFModInfo.MODID, "sheep"),
+			HarvestFestival.id("sheep"),
 			HFNPCs.MILKMAID,
 			HFFestivals.SHEEP_FESTIVAL);
 	public static final Shop SHEEP_FESTIVAL_KNITTNG = newHolidayShop(
-			new ResourceLocation(HFModInfo.MODID, "knitting"),
+			HarvestFestival.id("knitting"),
 			HFNPCs.CAFE_GRANNY,
 			HFFestivals.SHEEP_FESTIVAL);
 	public static final Shop CHICKEN_FESTIVAL_MFC = newHolidayShop(
-			new ResourceLocation(HFModInfo.MODID, "mfc"),
+			HarvestFestival.id("mfc"),
 			HFNPCs.CAFE_OWNER,
 			HFFestivals.CHICKEN_FESTIVAL);
 
@@ -222,7 +222,10 @@ public class HFShops {
 		BLOODMAGE.addPurchasable(-200, new ItemStack(Items.GUNPOWDER), 4);
 		BLOODMAGE.addPurchasable(-30, new ItemStack(Items.REDSTONE), 10);
 		BLOODMAGE.addPurchasable(-50, new ItemStack(Items.GLOWSTONE_DUST), 5);
-		BLOODMAGE.addOpening(Weekday.WEDNESDAY, 19000, 24000).addOpening(Weekday.WEDNESDAY, 0, 5000).addOpening(Weekday.SATURDAY, 18000, 24000).addOpening(
+		BLOODMAGE.addOpening(Weekday.WEDNESDAY, 19000, 24000).addOpening(Weekday.WEDNESDAY, 0, 5000).addOpening(
+				Weekday.SATURDAY,
+				18000,
+				24000).addOpening(
 				Weekday.SATURDAY,
 				0,
 				3500);
@@ -230,11 +233,11 @@ public class HFShops {
 
 	private static void registerCafe() {
 		CAFE.addPurchasable(0, new ItemStack(Items.POTIONITEM));
-		CAFE.addPurchasable(new PurchasableMeal(200, new ResourceLocation(HFModInfo.MODID, "salad")).setStock(10));
-		CAFE.addPurchasable(new PurchasableMeal(100, new ResourceLocation(HFModInfo.MODID, "cookies")).setStock(3));
-		CAFE.addPurchasable(new PurchasableMeal(250, new ResourceLocation(HFModInfo.MODID, "juice_pineapple")).setStock(5));
-		CAFE.addPurchasable(new PurchasableMeal(250, new ResourceLocation(HFModInfo.MODID, "corn_baked")).setStock(5));
-		CAFE.addPurchasable(new PurchasableMeal(300, new ResourceLocation(HFModInfo.MODID, "ice_cream")).setStock(10));
+		CAFE.addPurchasable(new PurchasableMeal(200, HarvestFestival.id("salad")).setStock(10));
+		CAFE.addPurchasable(new PurchasableMeal(100, HarvestFestival.id("cookies")).setStock(3));
+		CAFE.addPurchasable(new PurchasableMeal(250, HarvestFestival.id("juice_pineapple")).setStock(5));
+		CAFE.addPurchasable(new PurchasableMeal(250, HarvestFestival.id("corn_baked")).setStock(5));
+		CAFE.addPurchasable(new PurchasableMeal(300, HarvestFestival.id("ice_cream")).setStock(10));
 		//Add three random meals
 		CAFE.addPurchasable(new PurchasableRandomMeal(5));
 		CAFE.addPurchasable(new PurchasableRandomMeal(13));
@@ -242,11 +245,14 @@ public class HFShops {
 
 		//Allow the purchasing of cookware at the weekends
 		CAFE.addPurchasable(new PurchasableWeekend(25, new ItemStack(HFCooking.COOKBOOK)).setStock(1).setNote(HFNotes.RECIPE_BOOK));
-		CAFE.addPurchasable(new PurchasableWeekend(50, HFCooking.UTENSILS.getStackFromEnum(ItemUtensil.Utensil.KNIFE)).setStock(1).setNote(HFNotes.KITCHEN_COUNTER));
+		CAFE.addPurchasable(new PurchasableWeekend(50, HFCooking.UTENSILS.getStackFromEnum(ItemUtensil.Utensil.KNIFE)).setStock(1)
+				.setNote(HFNotes.KITCHEN_COUNTER));
 		CAFE.addPurchasable(new PurchasableWeekend(250, HFCooking.COOKWARE.getStackFromEnum(Cookware.COUNTER)).setStock(5)
 				.setNote(HFNotes.KITCHEN_COUNTER));
-		CAFE.addPurchasable(new PurchasableWeekend(3000, HFCooking.COOKWARE.getStackFromEnum(Cookware.FRIDGE)).setStock(1).setNote(HFNotes.FRIDGE));
-		CAFE.addPurchasable(new PurchasableWeekend(2500, HFCooking.COOKWARE.getStackFromEnum(Cookware.OVEN_OFF)).setStock(1).setNote(HFNotes.OVEN));
+		CAFE.addPurchasable(new PurchasableWeekend(3000, HFCooking.COOKWARE.getStackFromEnum(Cookware.FRIDGE)).setStock(1)
+				.setNote(HFNotes.FRIDGE));
+		CAFE.addPurchasable(new PurchasableWeekend(2500, HFCooking.COOKWARE.getStackFromEnum(Cookware.OVEN_OFF)).setStock(1)
+				.setNote(HFNotes.OVEN));
 		CAFE.addPurchasable(new PurchasableWeekend(
 				1500,
 				HFCooking.COOKWARE.getStackFromEnum(Cookware.FRYING_PAN),
@@ -255,48 +261,52 @@ public class HFShops {
 				1000,
 				HFCooking.COOKWARE.getStackFromEnum(Cookware.POT),
 				HFCooking.COOKWARE.getStackFromEnum(Cookware.OVEN_OFF)).setStock(1).setNote(HFNotes.POTPAN));
-		CAFE.addPurchasable(new PurchasableWeekend(1200, HFCooking.COOKWARE.getStackFromEnum(Cookware.MIXER)).setStock(1).setNote(HFNotes.MIXER));
+		CAFE.addPurchasable(new PurchasableWeekend(1200, HFCooking.COOKWARE.getStackFromEnum(Cookware.MIXER)).setStock(1)
+				.setNote(HFNotes.MIXER));
 
 		//Add recipes for purchase
-		CAFE.addPurchasable(new PurchasableRecipe(Season.SPRING, Weekday.MONDAY, new ResourceLocation(HFModInfo.MODID, "juice_vegetable")));
-		CAFE.addPurchasable(new PurchasableRecipe(Season.SPRING, Weekday.TUESDAY, new ResourceLocation(HFModInfo.MODID, "sushi")));
-		CAFE.addPurchasable(new PurchasableRecipe(Season.SPRING, Weekday.WEDNESDAY, new ResourceLocation(HFModInfo.MODID, "sashimi")));
-		CAFE.addPurchasable(new PurchasableRecipe(Season.SPRING, Weekday.THURSDAY, new ResourceLocation(HFModInfo.MODID, "sashimi_chirashi")));
-		CAFE.addPurchasable(new PurchasableRecipe(Season.SPRING, Weekday.FRIDAY, new ResourceLocation(HFModInfo.MODID, "cucumber_pickled")));
-		CAFE.addPurchasable(new PurchasableRecipe(Season.SUMMER, Weekday.SATURDAY, new ResourceLocation(HFModInfo.MODID, "juice_tomato")));
-		CAFE.addPurchasable(new PurchasableRecipe(Season.SUMMER, Weekday.SUNDAY, new ResourceLocation(HFModInfo.MODID, "cornflakes")));
-		CAFE.addPurchasable(new PurchasableRecipe(Season.SUMMER, Weekday.MONDAY, new ResourceLocation(HFModInfo.MODID, "ketchup")));
-		CAFE.addPurchasable(new PurchasableRecipe(Season.SUMMER, Weekday.TUESDAY, new ResourceLocation(HFModInfo.MODID, "stew_pumpkin")));
-		CAFE.addPurchasable(new PurchasableRecipe(Season.SUMMER, Weekday.WEDNESDAY, new ResourceLocation(HFModInfo.MODID, "rice_fried")));
-		CAFE.addPurchasable(new PurchasableRecipe(Season.SUMMER, Weekday.THURSDAY, new ResourceLocation(HFModInfo.MODID, "doria")));
-		CAFE.addPurchasable(new PurchasableRecipe(Season.SUMMER, Weekday.FRIDAY, new ResourceLocation(HFModInfo.MODID, "juice_fruit")));
-		CAFE.addPurchasable(new PurchasableRecipe(Season.SUMMER, Weekday.SATURDAY, new ResourceLocation(HFModInfo.MODID, "salad_herb")));
-		CAFE.addPurchasable(new PurchasableRecipe(Season.SUMMER, Weekday.SUNDAY, new ResourceLocation(HFModInfo.MODID, "soup_herb")));
-		CAFE.addPurchasable(new PurchasableRecipe(Season.SUMMER, Weekday.SUNDAY, new ResourceLocation(HFModInfo.MODID, "sandwich_herb")));
-		CAFE.addPurchasable(new PurchasableRecipe(Season.AUTUMN, Weekday.MONDAY, new ResourceLocation(HFModInfo.MODID, "sweet_potatoes")));
-		CAFE.addPurchasable(new PurchasableRecipe(Season.AUTUMN, Weekday.TUESDAY, new ResourceLocation(HFModInfo.MODID, "eggplant_happy")));
-		CAFE.addPurchasable(new PurchasableRecipe(Season.AUTUMN, Weekday.WEDNESDAY, new ResourceLocation(HFModInfo.MODID, "sandwich")));
-		CAFE.addPurchasable(new PurchasableRecipe(Season.AUTUMN, Weekday.THURSDAY, new ResourceLocation(HFModInfo.MODID, "sandwich_fruit")));
-		CAFE.addPurchasable(new PurchasableRecipe(Season.AUTUMN, Weekday.FRIDAY, new ResourceLocation(HFModInfo.MODID, "latte_fruit")));
-		CAFE.addPurchasable(new PurchasableRecipe(Season.AUTUMN, Weekday.SATURDAY, new ResourceLocation(HFModInfo.MODID, "spinach_boiled")));
-		CAFE.addPurchasable(new PurchasableRecipe(Season.AUTUMN, Weekday.SUNDAY, new ResourceLocation(HFModInfo.MODID, "riceballs_toasted")));
-		CAFE.addPurchasable(new PurchasableRecipe(Season.WINTER, Weekday.MONDAY, new ResourceLocation(HFModInfo.MODID, "omelet")));
-		CAFE.addPurchasable(new PurchasableRecipe(Season.WINTER, Weekday.TUESDAY, new ResourceLocation(HFModInfo.MODID, "egg_boiled")));
-		CAFE.addPurchasable(new PurchasableRecipe(Season.WINTER, Weekday.WEDNESDAY, new ResourceLocation(HFModInfo.MODID, "egg_overrice")));
-		CAFE.addPurchasable(new PurchasableRecipe(Season.WINTER, Weekday.THURSDAY, new ResourceLocation(HFModInfo.MODID, "juice_mix")));
-		CAFE.addPurchasable(new PurchasableRecipe(Season.WINTER, Weekday.FRIDAY, new ResourceLocation(HFModInfo.MODID, "pancake")));
-		CAFE.addPurchasable(new PurchasableRecipe(Season.WINTER, Weekday.SATURDAY, new ResourceLocation(HFModInfo.MODID, "rice_matsutake")));
-		CAFE.addPurchasable(new PurchasableRecipe(Season.WINTER, Weekday.SUNDAY, new ResourceLocation(HFModInfo.MODID, "rice_mushroom")));
-		CAFE.addPurchasable(new PurchasableRecipeShipped(new ResourceLocation(HFModInfo.MODID, "juice_grape"), HFCrops.GRAPE));
-		CAFE.addPurchasable(new PurchasableRecipeShipped(new ResourceLocation(HFModInfo.MODID, "juice_apple"), HFCrops.APPLE));
-		CAFE.addPurchasable(new PurchasableRecipeShipped(new ResourceLocation(HFModInfo.MODID, "juice_orange"), HFCrops.ORANGE));
-		CAFE.addPurchasable(new PurchasableRecipeShipped(new ResourceLocation(HFModInfo.MODID, "juice_banana"), HFCrops.BANANA));
-		CAFE.addPurchasable(new PurchasableRecipeShipped(new ResourceLocation(HFModInfo.MODID, "juice_peach"), HFCrops.PEACH));
+		CAFE.addPurchasable(new PurchasableRecipe(Season.SPRING, Weekday.MONDAY, HarvestFestival.id("juice_vegetable")));
+		CAFE.addPurchasable(new PurchasableRecipe(Season.SPRING, Weekday.TUESDAY, HarvestFestival.id("sushi")));
+		CAFE.addPurchasable(new PurchasableRecipe(Season.SPRING, Weekday.WEDNESDAY, HarvestFestival.id("sashimi")));
+		CAFE.addPurchasable(new PurchasableRecipe(Season.SPRING, Weekday.THURSDAY, HarvestFestival.id("sashimi_chirashi")));
+		CAFE.addPurchasable(new PurchasableRecipe(Season.SPRING, Weekday.FRIDAY, HarvestFestival.id("cucumber_pickled")));
+		CAFE.addPurchasable(new PurchasableRecipe(Season.SUMMER, Weekday.SATURDAY, HarvestFestival.id("juice_tomato")));
+		CAFE.addPurchasable(new PurchasableRecipe(Season.SUMMER, Weekday.SUNDAY, HarvestFestival.id("cornflakes")));
+		CAFE.addPurchasable(new PurchasableRecipe(Season.SUMMER, Weekday.MONDAY, HarvestFestival.id("ketchup")));
+		CAFE.addPurchasable(new PurchasableRecipe(Season.SUMMER, Weekday.TUESDAY, HarvestFestival.id("stew_pumpkin")));
+		CAFE.addPurchasable(new PurchasableRecipe(Season.SUMMER, Weekday.WEDNESDAY, HarvestFestival.id("rice_fried")));
+		CAFE.addPurchasable(new PurchasableRecipe(Season.SUMMER, Weekday.THURSDAY, HarvestFestival.id("doria")));
+		CAFE.addPurchasable(new PurchasableRecipe(Season.SUMMER, Weekday.FRIDAY, HarvestFestival.id("juice_fruit")));
+		CAFE.addPurchasable(new PurchasableRecipe(Season.SUMMER, Weekday.SATURDAY, HarvestFestival.id("salad_herb")));
+		CAFE.addPurchasable(new PurchasableRecipe(Season.SUMMER, Weekday.SUNDAY, HarvestFestival.id("soup_herb")));
+		CAFE.addPurchasable(new PurchasableRecipe(Season.SUMMER, Weekday.SUNDAY, HarvestFestival.id("sandwich_herb")));
+		CAFE.addPurchasable(new PurchasableRecipe(Season.AUTUMN, Weekday.MONDAY, HarvestFestival.id("sweet_potatoes")));
+		CAFE.addPurchasable(new PurchasableRecipe(Season.AUTUMN, Weekday.TUESDAY, HarvestFestival.id("eggplant_happy")));
+		CAFE.addPurchasable(new PurchasableRecipe(Season.AUTUMN, Weekday.WEDNESDAY, HarvestFestival.id("sandwich")));
+		CAFE.addPurchasable(new PurchasableRecipe(Season.AUTUMN, Weekday.THURSDAY, HarvestFestival.id("sandwich_fruit")));
+		CAFE.addPurchasable(new PurchasableRecipe(Season.AUTUMN, Weekday.FRIDAY, HarvestFestival.id("latte_fruit")));
+		CAFE.addPurchasable(new PurchasableRecipe(Season.AUTUMN, Weekday.SATURDAY, HarvestFestival.id("spinach_boiled")));
+		CAFE.addPurchasable(new PurchasableRecipe(Season.AUTUMN, Weekday.SUNDAY, HarvestFestival.id("riceballs_toasted")));
+		CAFE.addPurchasable(new PurchasableRecipe(Season.WINTER, Weekday.MONDAY, HarvestFestival.id("omelet")));
+		CAFE.addPurchasable(new PurchasableRecipe(Season.WINTER, Weekday.TUESDAY, HarvestFestival.id("egg_boiled")));
+		CAFE.addPurchasable(new PurchasableRecipe(Season.WINTER, Weekday.WEDNESDAY, HarvestFestival.id("egg_overrice")));
+		CAFE.addPurchasable(new PurchasableRecipe(Season.WINTER, Weekday.THURSDAY, HarvestFestival.id("juice_mix")));
+		CAFE.addPurchasable(new PurchasableRecipe(Season.WINTER, Weekday.FRIDAY, HarvestFestival.id("pancake")));
+		CAFE.addPurchasable(new PurchasableRecipe(Season.WINTER, Weekday.SATURDAY, HarvestFestival.id("rice_matsutake")));
+		CAFE.addPurchasable(new PurchasableRecipe(Season.WINTER, Weekday.SUNDAY, HarvestFestival.id("rice_mushroom")));
+		CAFE.addPurchasable(new PurchasableRecipeShipped(HarvestFestival.id("juice_grape"), HFCrops.GRAPE));
+		CAFE.addPurchasable(new PurchasableRecipeShipped(HarvestFestival.id("juice_apple"), HFCrops.APPLE));
+		CAFE.addPurchasable(new PurchasableRecipeShipped(HarvestFestival.id("juice_orange"), HFCrops.ORANGE));
+		CAFE.addPurchasable(new PurchasableRecipeShipped(HarvestFestival.id("juice_banana"), HFCrops.BANANA));
+		CAFE.addPurchasable(new PurchasableRecipeShipped(HarvestFestival.id("juice_peach"), HFCrops.PEACH));
 		CAFE.setSpecialRules(new SpecialRulesQuest(Quests.LIARA_MEET));
-		CAFE.addOpening(Weekday.MONDAY, 9500, 17000).addOpening(Weekday.TUESDAY, 9500, 17000).addOpening(Weekday.WEDNESDAY, 9500, 17000).addOpening(
-				Weekday.THURSDAY,
-				9500,
-				17000);
+		CAFE.addOpening(Weekday.MONDAY, 9500, 17000)
+				.addOpening(Weekday.TUESDAY, 9500, 17000)
+				.addOpening(Weekday.WEDNESDAY, 9500, 17000)
+				.addOpening(
+						Weekday.THURSDAY,
+						9500,
+						17000);
 		CAFE.addOpening(Weekday.FRIDAY, 9500, 17000).addOpening(Weekday.SATURDAY, 9500, 17000).addOpening(Weekday.SUNDAY, 9500, 17000);
 	}
 
@@ -425,7 +435,10 @@ public class HFShops {
 		}
 
 		CARPENTER.setSpecialRules(new SpecialRulesQuest(Quests.YULIF_MEET));
-		CARPENTER.addOpening(Weekday.MONDAY, 9000, 17500).addOpening(Weekday.TUESDAY, 9000, 17500).addOpening(Weekday.WEDNESDAY, 9000, 17500);
+		CARPENTER.addOpening(Weekday.MONDAY, 9000, 17500).addOpening(Weekday.TUESDAY, 9000, 17500).addOpening(
+				Weekday.WEDNESDAY,
+				9000,
+				17500);
 		CARPENTER.addOpening(Weekday.THURSDAY, 9000, 17500).addOpening(Weekday.FRIDAY, 9000, 17500).addOpening(Weekday.SUNDAY, 9000, 17500);
 	}
 
@@ -434,7 +447,10 @@ public class HFShops {
 		CLOCKMAKER.addPurchasable(150, new ItemStack(Items.COMPASS));
 		CLOCKMAKER.addPurchasable(100, new ItemStack(Items.MAP));
 		CLOCKMAKER.addPurchasable(750, HFKnowledge.BOOK.getStackFromEnum(Book.CALENDAR));
-		CLOCKMAKER.addOpening(Weekday.MONDAY, 8000, 15000).addOpening(Weekday.TUESDAY, 8000, 15000).addOpening(Weekday.WEDNESDAY, 8000, 15000)
+		CLOCKMAKER.addOpening(Weekday.MONDAY, 8000, 15000).addOpening(Weekday.TUESDAY, 8000, 15000).addOpening(
+						Weekday.WEDNESDAY,
+						8000,
+						15000)
 				.addOpening(Weekday.THURSDAY, 8000, 15000).addOpening(Weekday.FRIDAY, 8000, 15000);
 	}
 
@@ -466,15 +482,24 @@ public class HFShops {
 		MINER.addPurchasable(-40, new ItemStack(Items.IRON_INGOT), 8);
 		MINER.addPurchasable(-60, new ItemStack(Items.GOLD_INGOT), 5);
 		MINER.setSpecialRules(new SpecialRulesQuest(Quests.BRANDON_MEET));
-		MINER.addOpening(Weekday.MONDAY, 11000, 16000).addOpening(Weekday.TUESDAY, 11000, 16000).addOpening(Weekday.WEDNESDAY, 11000, 16000);
-		MINER.addOpening(Weekday.THURSDAY, 11000, 16000).addOpening(Weekday.FRIDAY, 11000, 16000).addOpening(Weekday.SATURDAY, 11000, 16000);
+		MINER.addOpening(Weekday.MONDAY, 11000, 16000).addOpening(Weekday.TUESDAY, 11000, 16000).addOpening(
+				Weekday.WEDNESDAY,
+				11000,
+				16000);
+		MINER.addOpening(Weekday.THURSDAY, 11000, 16000).addOpening(Weekday.FRIDAY, 11000, 16000).addOpening(
+				Weekday.SATURDAY,
+				11000,
+				16000);
 	}
 
 	private static void registerPoultry() {
 		POULTRY.addPurchasable(new Purchasable(50, HFAnimals.TOOLS.getStackFromEnum(Tool.CHICKEN_FEED)).addTooltip("tool.chicken.feed"));
 		POULTRY.addPurchasable(10, HFAnimals.TREATS.getStackFromEnum(Treat.GENERIC));
 		POULTRY.addPurchasable(30, HFAnimals.TREATS.getStackFromEnum(Treat.CHICKEN));
-		POULTRY.addPurchasable(new PurchasableEntity(EntityHarvestChicken.class, 1500, HFAnimals.ANIMAL.getStackFromEnum(ItemAnimalSpawner.Spawner.CHICKEN)).setNote(
+		POULTRY.addPurchasable(new PurchasableEntity(
+				EntityHarvestChicken.class,
+				1500,
+				HFAnimals.ANIMAL.getStackFromEnum(ItemAnimalSpawner.Spawner.CHICKEN)).setNote(
 				HFNotes.CHICKEN_CARE));
 		POULTRY.addPurchasable(1000, HFAnimals.TOOLS.getStackFromEnum(Tool.MEDICINE));
 		POULTRY.addPurchasable(250, new ItemStack(Items.NAME_TAG));
@@ -499,17 +524,34 @@ public class HFShops {
 
 		//TODO: Reenable in 1.0 when I readd marriage
 		//SUPERMARKET.addPurchasable(new PurchasableBlueFeather(1000, HFNPCs.TOOLS.getStackFromEnum(BLUE_FEATHER)));
-		SUPERMARKET.addPurchasable(ItemIngredients.Ingredient.RICEBALL.getCost(), HFCooking.INGREDIENTS.getStackFromEnum(ItemIngredients.Ingredient.RICEBALL));
-		SUPERMARKET.addPurchasable(ItemIngredients.Ingredient.OIL.getCost(), HFCooking.INGREDIENTS.getStackFromEnum(ItemIngredients.Ingredient.OIL));
-		SUPERMARKET.addPurchasable(ItemIngredients.Ingredient.FLOUR.getCost(), HFCooking.INGREDIENTS.getStackFromEnum(ItemIngredients.Ingredient.FLOUR));
-		SUPERMARKET.addPurchasable(ItemIngredients.Ingredient.CURRY_POWDER.getCost(), HFCooking.INGREDIENTS.getStackFromEnum(ItemIngredients.Ingredient.CURRY_POWDER));
+		SUPERMARKET.addPurchasable(
+				ItemIngredients.Ingredient.RICEBALL.getCost(),
+				HFCooking.INGREDIENTS.getStackFromEnum(ItemIngredients.Ingredient.RICEBALL));
+		SUPERMARKET.addPurchasable(
+				ItemIngredients.Ingredient.OIL.getCost(),
+				HFCooking.INGREDIENTS.getStackFromEnum(ItemIngredients.Ingredient.OIL));
+		SUPERMARKET.addPurchasable(
+				ItemIngredients.Ingredient.FLOUR.getCost(),
+				HFCooking.INGREDIENTS.getStackFromEnum(ItemIngredients.Ingredient.FLOUR));
+		SUPERMARKET.addPurchasable(
+				ItemIngredients.Ingredient.CURRY_POWDER.getCost(),
+				HFCooking.INGREDIENTS.getStackFromEnum(ItemIngredients.Ingredient.CURRY_POWDER));
 		//SUPERMARKET.addPurchasable(DUMPLING_POWDER.getCost(), HFCooking.INGREDIENTS.getStackFromEnum(DUMPLING_POWDER));
-		SUPERMARKET.addPurchasable(ItemIngredients.Ingredient.CHOCOLATE.getCost(), HFCooking.INGREDIENTS.getStackFromEnum(ItemIngredients.Ingredient.CHOCOLATE));
-		SUPERMARKET.addPurchasable(ItemIngredients.Ingredient.WINE.getCost(), HFCooking.INGREDIENTS.getStackFromEnum(ItemIngredients.Ingredient.WINE));
-		SUPERMARKET.addPurchasable(ItemIngredients.Ingredient.SALT.getCost(), HFCooking.INGREDIENTS.getStackFromEnum(ItemIngredients.Ingredient.SALT));
+		SUPERMARKET.addPurchasable(
+				ItemIngredients.Ingredient.CHOCOLATE.getCost(),
+				HFCooking.INGREDIENTS.getStackFromEnum(ItemIngredients.Ingredient.CHOCOLATE));
+		SUPERMARKET.addPurchasable(
+				ItemIngredients.Ingredient.WINE.getCost(),
+				HFCooking.INGREDIENTS.getStackFromEnum(ItemIngredients.Ingredient.WINE));
+		SUPERMARKET.addPurchasable(
+				ItemIngredients.Ingredient.SALT.getCost(),
+				HFCooking.INGREDIENTS.getStackFromEnum(ItemIngredients.Ingredient.SALT));
 		SUPERMARKET.addPurchasable(ItemIngredients.Ingredient.SALT.getCost(), new ItemStack(Items.SUGAR));
 		SUPERMARKET.setSpecialRules(new SpecialRulesQuest(Quests.JENNI_MEET));
-		SUPERMARKET.addOpening(Weekday.MONDAY, 9000, 17000).addOpening(Weekday.TUESDAY, 9000, 17000).addOpening(Weekday.THURSDAY, 9000, 17000);
+		SUPERMARKET.addOpening(Weekday.MONDAY, 9000, 17000).addOpening(Weekday.TUESDAY, 9000, 17000).addOpening(
+				Weekday.THURSDAY,
+				9000,
+				17000);
 		SUPERMARKET.addOpening(Weekday.FRIDAY, 9000, 17000).addOpening(Weekday.SATURDAY, 11000, 15000);
 		SUPERMARKET.addConditionalOpening(
 				(w, e, i) -> TownHelper.getClosestTownToEntity(e, false)
@@ -543,13 +585,17 @@ public class HFShops {
 		BAITSHOP.addPurchasable(-50, new ItemStack(Items.FISH, 1, 2), 10);
 		BAITSHOP.addPurchasable(-100, new ItemStack(Items.FISH, 1, 3), 5);
 		for (Fish fish : Fish.values()) {
-			long sell = (fish.getSellValue(fish.getLengthFromSizeOfFish(ItemFish.MEDIUM_FISH))) - fish.getSellValue(fish.getLengthFromSizeOfFish(
-					ItemFish.MEDIUM_FISH)) % 10;
+			long sell = (fish.getSellValue(fish.getLengthFromSizeOfFish(ItemFish.MEDIUM_FISH))) -
+					fish.getSellValue(fish.getLengthFromSizeOfFish(
+							ItemFish.MEDIUM_FISH)) % 10;
 			BAITSHOP.addPurchasable(new PurchasableObtained(-sell, HFFishing.FISH.getStackFromEnum(fish)).setStock(100));
 		}
 
 		BAITSHOP.setSpecialRules(new SpecialRulesQuest(Quests.JACOB_MEET));
-		BAITSHOP.addOpening(Weekday.TUESDAY, 13000, 19000).addOpening(Weekday.WEDNESDAY, 13000, 19000).addOpening(Weekday.THURSDAY, 13000, 19000).addOpening(
+		BAITSHOP.addOpening(Weekday.TUESDAY, 13000, 19000).addOpening(Weekday.WEDNESDAY, 13000, 19000).addOpening(
+				Weekday.THURSDAY,
+				13000,
+				19000).addOpening(
 				Weekday.FRIDAY,
 				13000,
 				19000);
@@ -573,10 +619,13 @@ public class HFShops {
 			TRADER.addPurchasable(-150, new ItemStack(Blocks.WOOL, 1, 0), 3);
 		}
 
-		TRADER.addOpening(Weekday.MONDAY, 6000, 10000).addOpening(Weekday.TUESDAY, 6000, 10000).addOpening(Weekday.WEDNESDAY, 6000, 10000).addOpening(
-				Weekday.THURSDAY,
-				6000,
-				10000);
+		TRADER.addOpening(Weekday.MONDAY, 6000, 10000)
+				.addOpening(Weekday.TUESDAY, 6000, 10000)
+				.addOpening(Weekday.WEDNESDAY, 6000, 10000)
+				.addOpening(
+						Weekday.THURSDAY,
+						6000,
+						10000);
 		TRADER.addOpening(Weekday.FRIDAY, 6000, 10000).addOpening(Weekday.SATURDAY, 6000, 10000).addOpening(Weekday.SUNDAY, 6000, 10000);
 	}
 
@@ -603,41 +652,41 @@ public class HFShops {
 	}
 
 	private static void registerRecipes() {
-		COOKING_FESTIVAL_RECIPES.addPurchasable(new PurchasableRecipe(new ResourceLocation(HFModInfo.MODID, "juice_vegetable")));
-		COOKING_FESTIVAL_RECIPES.addPurchasable(new PurchasableRecipe(new ResourceLocation(HFModInfo.MODID, "sushi")));
-		COOKING_FESTIVAL_RECIPES.addPurchasable(new PurchasableRecipe(new ResourceLocation(HFModInfo.MODID, "sashimi")));
-		COOKING_FESTIVAL_RECIPES.addPurchasable(new PurchasableRecipe(new ResourceLocation(HFModInfo.MODID, "sashimi_chirashi")));
-		COOKING_FESTIVAL_RECIPES.addPurchasable(new PurchasableRecipe(new ResourceLocation(HFModInfo.MODID, "cucumber_pickled")));
-		COOKING_FESTIVAL_RECIPES.addPurchasable(new PurchasableRecipe(new ResourceLocation(HFModInfo.MODID, "juice_tomato")));
-		COOKING_FESTIVAL_RECIPES.addPurchasable(new PurchasableRecipe(new ResourceLocation(HFModInfo.MODID, "cornflakes")));
-		COOKING_FESTIVAL_RECIPES.addPurchasable(new PurchasableRecipe(new ResourceLocation(HFModInfo.MODID, "ketchup")));
-		COOKING_FESTIVAL_RECIPES.addPurchasable(new PurchasableRecipe(new ResourceLocation(HFModInfo.MODID, "stew_pumpkin")));
-		COOKING_FESTIVAL_RECIPES.addPurchasable(new PurchasableRecipe(new ResourceLocation(HFModInfo.MODID, "rice_fried")));
-		COOKING_FESTIVAL_RECIPES.addPurchasable(new PurchasableRecipe(new ResourceLocation(HFModInfo.MODID, "doria")));
-		COOKING_FESTIVAL_RECIPES.addPurchasable(new PurchasableRecipe(new ResourceLocation(HFModInfo.MODID, "juice_fruit")));
-		COOKING_FESTIVAL_RECIPES.addPurchasable(new PurchasableRecipe(new ResourceLocation(HFModInfo.MODID, "salad_herb")));
-		COOKING_FESTIVAL_RECIPES.addPurchasable(new PurchasableRecipe(new ResourceLocation(HFModInfo.MODID, "soup_herb")));
-		COOKING_FESTIVAL_RECIPES.addPurchasable(new PurchasableRecipe(new ResourceLocation(HFModInfo.MODID, "sandwich_herb")));
-		COOKING_FESTIVAL_RECIPES.addPurchasable(new PurchasableRecipe(new ResourceLocation(HFModInfo.MODID, "sweet_potatoes")));
-		COOKING_FESTIVAL_RECIPES.addPurchasable(new PurchasableRecipe(new ResourceLocation(HFModInfo.MODID, "eggplant_happy")));
-		COOKING_FESTIVAL_RECIPES.addPurchasable(new PurchasableRecipe(new ResourceLocation(HFModInfo.MODID, "sandwich")));
-		COOKING_FESTIVAL_RECIPES.addPurchasable(new PurchasableRecipe(new ResourceLocation(HFModInfo.MODID, "sandwich_fruit")));
-		COOKING_FESTIVAL_RECIPES.addPurchasable(new PurchasableRecipe(new ResourceLocation(HFModInfo.MODID, "latte_fruit")));
-		COOKING_FESTIVAL_RECIPES.addPurchasable(new PurchasableRecipe(new ResourceLocation(HFModInfo.MODID, "spinach_boiled")));
-		COOKING_FESTIVAL_RECIPES.addPurchasable(new PurchasableRecipe(new ResourceLocation(HFModInfo.MODID, "riceballs_toasted")));
-		COOKING_FESTIVAL_RECIPES.addPurchasable(new PurchasableRecipe(new ResourceLocation(HFModInfo.MODID, "omelet")));
-		COOKING_FESTIVAL_RECIPES.addPurchasable(new PurchasableRecipe(new ResourceLocation(HFModInfo.MODID, "egg_boiled")));
-		COOKING_FESTIVAL_RECIPES.addPurchasable(new PurchasableRecipe(new ResourceLocation(HFModInfo.MODID, "egg_overrice")));
-		COOKING_FESTIVAL_RECIPES.addPurchasable(new PurchasableRecipe(new ResourceLocation(HFModInfo.MODID, "juice_mix")));
-		COOKING_FESTIVAL_RECIPES.addPurchasable(new PurchasableRecipe(new ResourceLocation(HFModInfo.MODID, "pancake")));
-		COOKING_FESTIVAL_RECIPES.addPurchasable(new PurchasableRecipe(new ResourceLocation(HFModInfo.MODID, "rice_matsutake")));
-		COOKING_FESTIVAL_RECIPES.addPurchasable(new PurchasableRecipe(new ResourceLocation(HFModInfo.MODID, "rice_mushroom")));
+		COOKING_FESTIVAL_RECIPES.addPurchasable(new PurchasableRecipe(HarvestFestival.id("juice_vegetable")));
+		COOKING_FESTIVAL_RECIPES.addPurchasable(new PurchasableRecipe(HarvestFestival.id("sushi")));
+		COOKING_FESTIVAL_RECIPES.addPurchasable(new PurchasableRecipe(HarvestFestival.id("sashimi")));
+		COOKING_FESTIVAL_RECIPES.addPurchasable(new PurchasableRecipe(HarvestFestival.id("sashimi_chirashi")));
+		COOKING_FESTIVAL_RECIPES.addPurchasable(new PurchasableRecipe(HarvestFestival.id("cucumber_pickled")));
+		COOKING_FESTIVAL_RECIPES.addPurchasable(new PurchasableRecipe(HarvestFestival.id("juice_tomato")));
+		COOKING_FESTIVAL_RECIPES.addPurchasable(new PurchasableRecipe(HarvestFestival.id("cornflakes")));
+		COOKING_FESTIVAL_RECIPES.addPurchasable(new PurchasableRecipe(HarvestFestival.id("ketchup")));
+		COOKING_FESTIVAL_RECIPES.addPurchasable(new PurchasableRecipe(HarvestFestival.id("stew_pumpkin")));
+		COOKING_FESTIVAL_RECIPES.addPurchasable(new PurchasableRecipe(HarvestFestival.id("rice_fried")));
+		COOKING_FESTIVAL_RECIPES.addPurchasable(new PurchasableRecipe(HarvestFestival.id("doria")));
+		COOKING_FESTIVAL_RECIPES.addPurchasable(new PurchasableRecipe(HarvestFestival.id("juice_fruit")));
+		COOKING_FESTIVAL_RECIPES.addPurchasable(new PurchasableRecipe(HarvestFestival.id("salad_herb")));
+		COOKING_FESTIVAL_RECIPES.addPurchasable(new PurchasableRecipe(HarvestFestival.id("soup_herb")));
+		COOKING_FESTIVAL_RECIPES.addPurchasable(new PurchasableRecipe(HarvestFestival.id("sandwich_herb")));
+		COOKING_FESTIVAL_RECIPES.addPurchasable(new PurchasableRecipe(HarvestFestival.id("sweet_potatoes")));
+		COOKING_FESTIVAL_RECIPES.addPurchasable(new PurchasableRecipe(HarvestFestival.id("eggplant_happy")));
+		COOKING_FESTIVAL_RECIPES.addPurchasable(new PurchasableRecipe(HarvestFestival.id("sandwich")));
+		COOKING_FESTIVAL_RECIPES.addPurchasable(new PurchasableRecipe(HarvestFestival.id("sandwich_fruit")));
+		COOKING_FESTIVAL_RECIPES.addPurchasable(new PurchasableRecipe(HarvestFestival.id("latte_fruit")));
+		COOKING_FESTIVAL_RECIPES.addPurchasable(new PurchasableRecipe(HarvestFestival.id("spinach_boiled")));
+		COOKING_FESTIVAL_RECIPES.addPurchasable(new PurchasableRecipe(HarvestFestival.id("riceballs_toasted")));
+		COOKING_FESTIVAL_RECIPES.addPurchasable(new PurchasableRecipe(HarvestFestival.id("omelet")));
+		COOKING_FESTIVAL_RECIPES.addPurchasable(new PurchasableRecipe(HarvestFestival.id("egg_boiled")));
+		COOKING_FESTIVAL_RECIPES.addPurchasable(new PurchasableRecipe(HarvestFestival.id("egg_overrice")));
+		COOKING_FESTIVAL_RECIPES.addPurchasable(new PurchasableRecipe(HarvestFestival.id("juice_mix")));
+		COOKING_FESTIVAL_RECIPES.addPurchasable(new PurchasableRecipe(HarvestFestival.id("pancake")));
+		COOKING_FESTIVAL_RECIPES.addPurchasable(new PurchasableRecipe(HarvestFestival.id("rice_matsutake")));
+		COOKING_FESTIVAL_RECIPES.addPurchasable(new PurchasableRecipe(HarvestFestival.id("rice_mushroom")));
 
 		//Add all the recipes the player has learnt from friendship to the list
 		for (Quest quest : Quest.REGISTRY) {
 			if (quest instanceof QuestRecipe) {
 				for (java.lang.String recipe : ((QuestRecipe) quest).recipe) {
-					COOKING_FESTIVAL_RECIPES.addPurchasable(new PurchasableRecipe(new ResourceLocation(HFModInfo.MODID, recipe)) {
+					COOKING_FESTIVAL_RECIPES.addPurchasable(new PurchasableRecipe(HarvestFestival.id(recipe)) {
 						@Override
 						public boolean canList(@Nonnull World world, @Nonnull EntityPlayer player) {
 							return HFApi.quests.hasCompleted(quest, player);
@@ -660,14 +709,14 @@ public class HFShops {
 	}
 
 	private static void registerDairyQueen() {
-		COW_FESTIVAL_DAIRY_QUEEN.addPurchasable(new PurchasableMeal(150, new ResourceLocation(HFModInfo.MODID, "ice_cream")).setStock(20));
-		COW_FESTIVAL_DAIRY_QUEEN.addPurchasable(new PurchasableMeal(100, new ResourceLocation(HFModInfo.MODID, "milk_hot")).setStock(20));
-		COW_FESTIVAL_DAIRY_QUEEN.addPurchasable(new PurchasableMeal(120, new ResourceLocation(HFModInfo.MODID, "chocolate_hot")).setStock(10));
-		COW_FESTIVAL_DAIRY_QUEEN.addPurchasable(new PurchasableMeal(50, new ResourceLocation(HFModInfo.MODID, "cornflakes")).setStock(10));
-		COW_FESTIVAL_DAIRY_QUEEN.addPurchasable(new PurchasableMeal(200, new ResourceLocation(HFModInfo.MODID, "dinnerroll")).setStock(5));
-		COW_FESTIVAL_DAIRY_QUEEN.addPurchasable(new PurchasableMeal(150, new ResourceLocation(HFModInfo.MODID, "bun_jam")).setStock(5));
-		COW_FESTIVAL_DAIRY_QUEEN.addPurchasable(new PurchasableMeal(300, new ResourceLocation(HFModInfo.MODID, "doughnut")).setStock(5));
-		COW_FESTIVAL_DAIRY_QUEEN.addPurchasable(new PurchasableMeal(140, new ResourceLocation(HFModInfo.MODID, "milk_strawberry")).setStock(8));
+		COW_FESTIVAL_DAIRY_QUEEN.addPurchasable(new PurchasableMeal(150, HarvestFestival.id("ice_cream")).setStock(20));
+		COW_FESTIVAL_DAIRY_QUEEN.addPurchasable(new PurchasableMeal(100, HarvestFestival.id("milk_hot")).setStock(20));
+		COW_FESTIVAL_DAIRY_QUEEN.addPurchasable(new PurchasableMeal(120, HarvestFestival.id("chocolate_hot")).setStock(10));
+		COW_FESTIVAL_DAIRY_QUEEN.addPurchasable(new PurchasableMeal(50, HarvestFestival.id("cornflakes")).setStock(10));
+		COW_FESTIVAL_DAIRY_QUEEN.addPurchasable(new PurchasableMeal(200, HarvestFestival.id("dinnerroll")).setStock(5));
+		COW_FESTIVAL_DAIRY_QUEEN.addPurchasable(new PurchasableMeal(150, HarvestFestival.id("bun_jam")).setStock(5));
+		COW_FESTIVAL_DAIRY_QUEEN.addPurchasable(new PurchasableMeal(300, HarvestFestival.id("doughnut")).setStock(5));
+		COW_FESTIVAL_DAIRY_QUEEN.addPurchasable(new PurchasableMeal(140, HarvestFestival.id("milk_strawberry")).setStock(8));
 	}
 
 	private static void registerSaleSheep() {
@@ -701,12 +750,12 @@ public class HFShops {
 
 	private static void registerMinecraftFriedChicken() {
 		CHICKEN_FESTIVAL_MFC.addPurchasable(250, new ItemStack(Items.COOKED_CHICKEN), 20);
-		CHICKEN_FESTIVAL_MFC.addPurchasable(new PurchasableMeal(150, new ResourceLocation(HFModInfo.MODID, "fries_french")).setStock(20));
-		CHICKEN_FESTIVAL_MFC.addPurchasable(new PurchasableMeal(0, new ResourceLocation(HFModInfo.MODID, "ketchup")).setStock(20));
-		CHICKEN_FESTIVAL_MFC.addPurchasable(new PurchasableMeal(50, new ResourceLocation(HFModInfo.MODID, "egg_boiled")).setStock(5));
-		CHICKEN_FESTIVAL_MFC.addPurchasable(new PurchasableMeal(100, new ResourceLocation(HFModInfo.MODID, "egg_scrambled")).setStock(5));
-		CHICKEN_FESTIVAL_MFC.addPurchasable(new PurchasableMeal(200, new ResourceLocation(HFModInfo.MODID, "juice_orange")).setStock(8));
-		CHICKEN_FESTIVAL_MFC.addPurchasable(new PurchasableMeal(100, new ResourceLocation(HFModInfo.MODID, "juice_apple")).setStock(8));
+		CHICKEN_FESTIVAL_MFC.addPurchasable(new PurchasableMeal(150, HarvestFestival.id("fries_french")).setStock(20));
+		CHICKEN_FESTIVAL_MFC.addPurchasable(new PurchasableMeal(0, HarvestFestival.id("ketchup")).setStock(20));
+		CHICKEN_FESTIVAL_MFC.addPurchasable(new PurchasableMeal(50, HarvestFestival.id("egg_boiled")).setStock(5));
+		CHICKEN_FESTIVAL_MFC.addPurchasable(new PurchasableMeal(100, HarvestFestival.id("egg_scrambled")).setStock(5));
+		CHICKEN_FESTIVAL_MFC.addPurchasable(new PurchasableMeal(200, HarvestFestival.id("juice_orange")).setStock(8));
+		CHICKEN_FESTIVAL_MFC.addPurchasable(new PurchasableMeal(100, HarvestFestival.id("juice_apple")).setStock(8));
 	}
 
 	private static Shop newHolidayShop(ResourceLocation resource, @Nullable NPC npc, Festival festival) {
@@ -719,10 +768,16 @@ public class HFShops {
 			}
 		}
 
-		return shop.addOpening(Weekday.MONDAY, 6000, 18000).addOpening(Weekday.TUESDAY, 6000, 18000).addOpening(Weekday.WEDNESDAY, 6000, 18000).addOpening(
+		return shop.addOpening(Weekday.MONDAY, 6000, 18000).addOpening(Weekday.TUESDAY, 6000, 18000).addOpening(
+				Weekday.WEDNESDAY,
+				6000,
+				18000).addOpening(
 				Weekday.THURSDAY,
 				6000,
-				18000).addOpening(Weekday.FRIDAY, 6000, 18000).addOpening(Weekday.SATURDAY, 6000, 18000).addOpening(Weekday.SUNDAY, 6000, 18000);
+				18000).addOpening(Weekday.FRIDAY, 6000, 18000).addOpening(Weekday.SATURDAY, 6000, 18000).addOpening(
+				Weekday.SUNDAY,
+				6000,
+				18000);
 	}
 
 	private static Shop newShop(ResourceLocation resource, @Nullable NPC npc) {

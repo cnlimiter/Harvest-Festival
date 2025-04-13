@@ -193,7 +193,8 @@ public class QuestBlacksmithing extends QuestTrade {
 				}
 
 				ItemStack material = new ItemStack(HFMining.MATERIALS, getRequired(holding), getMaterial(holding));
-				boolean hasMaterial = InventoryHelper.hasInInventory(player,
+				boolean hasMaterial = InventoryHelper.hasInInventory(
+						player,
 						InventoryHelper.ITEM_STACK, material, getRequired(holding));
 				if (!hasMaterial) {
 					return getLocalized("material", material.getCount(), material.getDisplayName());

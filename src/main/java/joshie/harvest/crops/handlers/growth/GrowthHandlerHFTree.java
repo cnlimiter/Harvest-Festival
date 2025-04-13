@@ -2,12 +2,12 @@ package joshie.harvest.crops.handlers.growth;
 
 import java.util.List;
 
+import joshie.harvest.HarvestFestival;
 import joshie.harvest.api.calendar.Season;
 import joshie.harvest.api.trees.GrowthHandlerTree;
 import joshie.harvest.api.trees.Tree;
 import joshie.harvest.buildings.HFBuildings;
 import joshie.harvest.core.helpers.TextHelper;
-import joshie.harvest.core.lib.HFModInfo;
 import joshie.harvest.core.util.HFTemplate;
 import joshie.harvest.core.util.HFTemplate.Replaceable;
 import joshie.harvest.core.util.ResourceLoader;
@@ -16,7 +16,6 @@ import joshie.harvest.crops.block.BlockFruit.Fruit;
 import joshie.harvest.crops.block.BlockHFCrops.CropType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
@@ -48,7 +47,7 @@ public abstract class GrowthHandlerHFTree extends GrowthHandlerTree {
 		this.radius = radius;
 		this.number = (radius * 2) + 1;
 		this.template = HFBuildings.getGson().fromJson(
-				ResourceLoader.getJSONResource(new ResourceLocation(HFModInfo.MODID, fruit.getName()), "trees"),
+				ResourceLoader.getJSONResource(HarvestFestival.id(fruit.getName()), "trees"),
 				HFTemplate.class);
 	}
 

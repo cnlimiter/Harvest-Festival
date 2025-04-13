@@ -1,14 +1,13 @@
 package joshie.harvest.cooking.recipe;
 
+import joshie.harvest.HarvestFestival;
 import joshie.harvest.api.cooking.Ingredient;
 import joshie.harvest.api.cooking.IngredientStack;
 import joshie.harvest.api.cooking.Recipe;
 import joshie.harvest.api.cooking.Utensil;
 import joshie.harvest.cooking.HFCooking;
 import joshie.harvest.cooking.item.ItemMeal.Meal;
-import joshie.harvest.core.lib.HFModInfo;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 
 public class RecipeHelper {
 	private static Recipe addRecipe(
@@ -45,7 +44,7 @@ public class RecipeHelper {
 
 		//Add the recipe
 		return new RecipeHF(
-				new ResourceLocation(HFModInfo.MODID, mealname),
+				HarvestFestival.id(mealname),
 				utensil,
 				hunger,
 				saturation,
@@ -53,7 +52,7 @@ public class RecipeHelper {
 	}
 
 	private static Recipe addRecipe(String name, ItemStack result, Utensil utensil, Ingredient... ingredients) {
-		return new RecipeVanilla(new ResourceLocation(HFModInfo.MODID, name), result, utensil, toIngredientStacks(ingredients));
+		return new RecipeVanilla(HarvestFestival.id(name), result, utensil, toIngredientStacks(ingredients));
 	}
 
 	public static IngredientStack[] toIngredientStacks(Ingredient[] ingredients) {

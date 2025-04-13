@@ -1,6 +1,7 @@
 package joshie.harvest.core.base.item;
 
 import javax.annotation.Nonnull;
+import joshie.harvest.HarvestFestival;
 import joshie.harvest.core.HFTab;
 import joshie.harvest.core.helpers.TextHelper;
 import joshie.harvest.core.lib.HFModInfo;
@@ -9,7 +10,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
@@ -40,7 +40,7 @@ public abstract class ItemHFBase<I extends ItemHFBase> extends Item {
 	@SuppressWarnings("unchecked")
 	public I register(String name) {
 		setUnlocalizedName(name.replace("_", "."));
-		setRegistryName(new ResourceLocation(HFModInfo.MODID, name));
+		setRegistryName(HarvestFestival.id(name));
 		GameData.register_impl(this);
 		if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) {
 			registerModels(this, name);
@@ -63,13 +63,13 @@ public abstract class ItemHFBase<I extends ItemHFBase> extends Item {
 				ModelLoader.setCustomModelResourceLocation(
 						item,
 						item.getDamage(stack),
-						new ModelResourceLocation(new ResourceLocation(HFModInfo.MODID, subItemName), "inventory"));
+						new ModelResourceLocation(HarvestFestival.id(subItemName), "inventory"));
 			}
 		} else {
 			ModelLoader.setCustomModelResourceLocation(
 					item,
 					0,
-					new ModelResourceLocation(new ResourceLocation(HFModInfo.MODID, name), "inventory"));
+					new ModelResourceLocation(HarvestFestival.id(name), "inventory"));
 		}
 	}
 }

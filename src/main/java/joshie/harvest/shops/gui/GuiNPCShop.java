@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import joshie.harvest.HarvestFestival;
 import joshie.harvest.api.shops.IPurchasable;
 import joshie.harvest.api.shops.IPurchaseableMaterials;
 import joshie.harvest.api.shops.IRequirement;
@@ -36,8 +37,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 public class GuiNPCShop extends GuiNPCBase {
-	static final ResourceLocation SHOP_BACKGROUND = new ResourceLocation(HFModInfo.MODID, "textures/gui/shop.png");
-	public static final ResourceLocation SHOP_EXTRA = new ResourceLocation(HFModInfo.MODID, "textures/gui/shop_extra.png");
+	static final ResourceLocation SHOP_BACKGROUND = HarvestFestival.id("textures/gui/shop.png");
+	public static final ResourceLocation SHOP_EXTRA = HarvestFestival.id("textures/gui/shop_extra.png");
 	private final List<IPurchasable> contents = new ArrayList<>();
 	protected final StatsClient stats;
 	protected final EntityPlayer client;

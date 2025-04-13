@@ -53,11 +53,13 @@ public class ContainerNPCChat extends ContainerBase {
 					quest.onChatClosed(player, npc, sneaking);
 				}
 			} else if (nextGui == GuiHandler.SHOP_OPTIONS) {
-				player.openGui(HarvestFestival.instance,
+				player.openGui(
+						HarvestFestival.instance,
 						GuiHandler.SHOP_OPTIONS, player.world, npc.getEntityId(), 0,
 						GuiHandler.NEXT_NONE);
 			} else if (quest != null) {
-				player.openGui(HarvestFestival.instance,
+				player.openGui(
+						HarvestFestival.instance,
 						GuiHandler.SELECTION, player.world, npc.getEntityId(), 0, Quest.REGISTRY.getID(quest));
 			}
 

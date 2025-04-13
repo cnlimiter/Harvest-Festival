@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+import joshie.harvest.HarvestFestival;
 import joshie.harvest.api.npc.NPC;
 import joshie.harvest.buildings.BuildingRegistry;
 import joshie.harvest.buildings.HFBuildings;
@@ -13,7 +14,6 @@ import joshie.harvest.buildings.placeable.PlaceableHelper;
 import joshie.harvest.buildings.placeable.blocks.PlaceableBlock;
 import joshie.harvest.buildings.placeable.blocks.PlaceableChest;
 import joshie.harvest.buildings.placeable.entities.PlaceableNPC;
-import joshie.harvest.core.lib.HFModInfo;
 import joshie.harvest.core.util.HFTemplate;
 import joshie.harvest.npcs.entity.EntityNPCBuilder;
 import joshie.harvest.npcs.entity.EntityNPCVillager;
@@ -27,7 +27,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.tileentity.TileEntitySign;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
@@ -70,7 +69,7 @@ public class CodeGeneratorBuildings {
 				String name = chest.getName();
 				if (name.startsWith("npc.")) {
 					name = name.replace("npc.", "");
-					NPC npc = NPC.REGISTRY.get(new ResourceLocation(HFModInfo.MODID, name));
+					NPC npc = NPC.REGISTRY.get(HarvestFestival.id(name));
 					String npcField = npc == null ? "" : npc.getResource().toString();
 					ret.add(new PlaceableNPC(name, npcField, x, y, z));
 					ret.add(new PlaceableBlock(Blocks.AIR.getDefaultState(), x, y, z));

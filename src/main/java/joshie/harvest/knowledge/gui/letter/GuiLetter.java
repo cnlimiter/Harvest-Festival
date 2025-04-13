@@ -1,15 +1,15 @@
 package joshie.harvest.knowledge.gui.letter;
 
+import joshie.harvest.HarvestFestival;
 import joshie.harvest.api.core.Letter;
 import joshie.harvest.core.base.gui.ContainerNull;
 import joshie.harvest.core.base.gui.GuiBase;
-import joshie.harvest.core.lib.HFModInfo;
 import joshie.harvest.knowledge.letter.LetterHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 
 public class GuiLetter extends GuiBase {
-	static final ResourceLocation LETTER_TEXTURE = new ResourceLocation(HFModInfo.MODID, "textures/gui/letter.png");
+	static final ResourceLocation LETTER_TEXTURE = HarvestFestival.id("textures/gui/letter.png");
 	private final Letter letter;
 
 	public GuiLetter(EntityPlayer player) {

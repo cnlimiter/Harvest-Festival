@@ -3,6 +3,7 @@ package joshie.harvest.calendar;
 import java.util.HashMap;
 import java.util.Map;
 
+import joshie.harvest.HarvestFestival;
 import joshie.harvest.animals.HFAnimals;
 import joshie.harvest.animals.item.ItemAnimalSpawner.Spawner;
 import joshie.harvest.api.HFApi;
@@ -14,7 +15,6 @@ import joshie.harvest.cooking.HFCooking;
 import joshie.harvest.cooking.block.BlockCookware.Cookware;
 import joshie.harvest.cooking.item.ItemIngredients.Ingredient;
 import joshie.harvest.cooking.item.ItemMeal.Meal;
-import joshie.harvest.core.lib.HFModInfo;
 import joshie.harvest.core.lib.LoadOrder;
 import joshie.harvest.core.util.annotations.HFLoader;
 import joshie.harvest.knowledge.HFNotes;
@@ -42,10 +42,12 @@ public class HFFestivals {
 	public static void init() {
 		for (Festival festival : TEMP_REGISTRY.keySet()) {
 			String name = "festival." + festival.getResource().getResourcePath().replace("_", ".");
-			festival.setQuest(QuestHelper.getQuest(name)).setNote(HFNotes.registerNote(Category.TOWNSHIP, name)).setLetter(new LetterFestival(
-					festival,
-					TEMP_REGISTRY.get(festival),
-					festival.getResource()));
+			festival.setQuest(QuestHelper.getQuest(name))
+					.setNote(HFNotes.registerNote(Category.TOWNSHIP, name))
+					.setLetter(new LetterFestival(
+							festival,
+							TEMP_REGISTRY.get(festival),
+							festival.getResource()));
 		}
 
 		NEW_YEARS.setIcon(HFCooking.INGREDIENTS.getStackFromEnum(Ingredient.RICEBALL));
@@ -60,7 +62,7 @@ public class HFFestivals {
 	}
 
 	private static Festival registerFestival(String name, int day, Season season) {
-		ResourceLocation resource = new ResourceLocation(HFModInfo.MODID, name);
+		ResourceLocation resource = HarvestFestival.id(name);
 		Festival festival = new Festival(resource);
 		HFApi.calendar.registerFestival(festival, day, season);
 		TEMP_REGISTRY.put(festival, season);

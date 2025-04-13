@@ -1,5 +1,6 @@
 package joshie.harvest.cooking;
 
+import joshie.harvest.HarvestFestival;
 import joshie.harvest.animals.item.ItemAnimalProduct.Sizeable;
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.cooking.Utensil;
@@ -28,13 +29,11 @@ import joshie.harvest.cooking.tile.TilePot;
 import joshie.harvest.core.base.render.MeshIdentical;
 import joshie.harvest.core.helpers.ConfigHelper;
 import joshie.harvest.core.helpers.RegistryHelper;
-import joshie.harvest.core.lib.HFModInfo;
 import joshie.harvest.core.lib.LoadOrder;
 import joshie.harvest.core.util.annotations.HFLoader;
 import joshie.harvest.crops.HFCrops;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -44,11 +43,11 @@ import net.minecraftforge.oredict.OreDictionary;
 @HFLoader(priority = LoadOrder.HFCOOKING)
 public class HFCooking {
 	//Utensils
-	public static final Utensil COUNTER = new Utensil(new ResourceLocation(HFModInfo.MODID, "counter"));
-	public static final Utensil POT = new Utensil(new ResourceLocation(HFModInfo.MODID, "pot"));
-	public static final Utensil FRYING_PAN = new Utensil(new ResourceLocation(HFModInfo.MODID, "frying_pan"));
-	public static final Utensil MIXER = new Utensil(new ResourceLocation(HFModInfo.MODID, "mixer"));
-	public static final Utensil OVEN = new Utensil(new ResourceLocation(HFModInfo.MODID, "oven"));
+	public static final Utensil COUNTER = new Utensil(HarvestFestival.id("counter"));
+	public static final Utensil POT = new Utensil(HarvestFestival.id("pot"));
+	public static final Utensil FRYING_PAN = new Utensil(HarvestFestival.id("frying_pan"));
+	public static final Utensil MIXER = new Utensil(HarvestFestival.id("mixer"));
+	public static final Utensil OVEN = new Utensil(HarvestFestival.id("oven"));
 
 	//Cooking
 	public static final BlockCookware COOKWARE = new BlockCookware().register("cookware");
@@ -106,7 +105,13 @@ public class HFCooking {
 		OreDictionary.registerOre("foodButter", MEAL.getStackFromEnum(Meal.BUTTER));
 		OreDictionary.registerOre("foodScrambledegg", MEAL.getStackFromEnum(Meal.EGG_SCRAMBLED));
 		RegistryHelper.registerSounds("counter", "fridge", "frying_pan", "mixer", "oven", "oven_done", "oven_door", "pot", "recipe");
-		RegistryHelper.registerTiles(TileFridge.class, TileFryingPan.class, TileCounter.class, TileMixer.class, TileOven.class, TilePot.class);
+		RegistryHelper.registerTiles(
+				TileFridge.class,
+				TileFryingPan.class,
+				TileCounter.class,
+				TileMixer.class,
+				TileOven.class,
+				TilePot.class);
 		COUNTER.setBurntItem(MEAL.getStackFromEnum(Meal.BURNT_COUNTER));
 		POT.setBurntItem(MEAL.getStackFromEnum(Meal.BURNT_POT));
 		FRYING_PAN.setBurntItem(MEAL.getStackFromEnum(Meal.BURNT_FRYING_PAN));

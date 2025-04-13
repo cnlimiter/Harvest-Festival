@@ -6,25 +6,24 @@ import java.util.List;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
+import joshie.harvest.HarvestFestival;
 import joshie.harvest.api.cooking.IFridge;
 import joshie.harvest.api.cooking.Ingredient;
 import joshie.harvest.api.cooking.IngredientStack;
 import joshie.harvest.api.cooking.Recipe;
 import joshie.harvest.cooking.recipe.RecipeMaker;
 import joshie.harvest.cooking.tile.TileCooking;
-import joshie.harvest.core.lib.HFModInfo;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class CookingHelper {
 	@Nonnull
 	public static ItemStack getRecipe(String name) {
-		return HFCooking.RECIPE.getStackFromObject(Recipe.REGISTRY.get(new ResourceLocation(HFModInfo.MODID, name)));
+		return HFCooking.RECIPE.getStackFromObject(Recipe.REGISTRY.get(HarvestFestival.id(name)));
 	}
 
 	private static void addIngredientsToSet(Set<IngredientStack> ingredients, IInventory inventory) {

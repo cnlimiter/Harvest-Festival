@@ -6,13 +6,13 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import joshie.harvest.HarvestFestival;
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.quests.IQuestHelper;
 import joshie.harvest.api.quests.Quest;
 import joshie.harvest.api.quests.TargetType;
 import joshie.harvest.core.HFTrackers;
 import joshie.harvest.core.helpers.SpawnItemHelper;
-import joshie.harvest.core.lib.HFModInfo;
 import joshie.harvest.core.network.PacketHandler;
 import joshie.harvest.core.util.annotations.HFApiImplementation;
 import joshie.harvest.npcs.entity.EntityNPC;
@@ -117,7 +117,7 @@ public class QuestHelper implements IQuestHelper {
 	@Override
 	public void rewardEntity(Quest quest, EntityPlayer player, String entity) {
 		if (!player.world.isRemote) {
-			ResourceLocation resource = entity.contains(":") ? new ResourceLocation(entity) : new ResourceLocation(HFModInfo.MODID, entity);
+			ResourceLocation resource = entity.contains(":") ? new ResourceLocation(entity) : HarvestFestival.id(entity);
 			Entity theEntity = EntityList.createEntityByIDFromName(resource, player.world);
 			if (theEntity != null) {
 				theEntity.setPosition(player.posX, player.posY, player.posZ);
@@ -147,7 +147,7 @@ public class QuestHelper implements IQuestHelper {
 
 	public static Quest getQuest(String name) {
 		try {
-			return Quest.REGISTRY.getValue(new ResourceLocation(HFModInfo.MODID, name));
+			return Quest.REGISTRY.getValue(HarvestFestival.id(name));
 		} catch (Exception e) {
 			return null;
 		}

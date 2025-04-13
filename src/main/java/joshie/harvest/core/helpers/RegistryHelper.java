@@ -5,6 +5,7 @@ import java.util.Locale;
 import org.apache.commons.lang3.text.WordUtils;
 
 import javax.annotation.Nonnull;
+import joshie.harvest.HarvestFestival;
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.core.ISpecialRules;
 import joshie.harvest.api.crops.Crop;
@@ -40,7 +41,7 @@ import net.minecraftforge.registries.GameData;
 public class RegistryHelper {
 	public static void registerSounds(String... sounds) {
 		for (String sound : sounds) {
-			ResourceLocation resource = new ResourceLocation(HFModInfo.MODID, sound);
+			ResourceLocation resource = HarvestFestival.id(sound);
 			GameData.register_impl(new SoundEvent(resource).setRegistryName(resource));
 		}
 	}
@@ -50,13 +51,13 @@ public class RegistryHelper {
 		for (Class<? extends TileEntity> tile : tiles) {
 			GameRegistry.registerTileEntity(
 					tile,
-					new ResourceLocation(HFModInfo.MODID, tile.getSimpleName().replace("Tile", "").toLowerCase(Locale.ENGLISH)));
+					HarvestFestival.id(tile.getSimpleName().replace("Tile", "").toLowerCase(Locale.ENGLISH)));
 		}
 	}
 
 	@SideOnly(Side.CLIENT)
 	public static void registerFluidBlockRendering(Block block, String name) {
-		final ModelResourceLocation fluidLocation = new ModelResourceLocation(HFModInfo.MODID + ":fluids", name);
+		final ModelResourceLocation fluidLocation = new ModelResourceLocation(HarvestFestival.id("fluids"), name);
 		ModelLoader.setCustomStateMapper(
 				block, new StateMapperBase() {
 					@Override
@@ -74,11 +75,11 @@ public class RegistryHelper {
 	}
 
 	public static Crop registerCrop(String name) {
-		return addHandlersToCrop(name, new Crop(new ResourceLocation(HFModInfo.MODID, name)));
+		return addHandlersToCrop(name, new Crop(HarvestFestival.id(name)));
 	}
 
 	public static Tree registerTree(String name) {
-		return addHandlersToCrop(name, (Tree) new Tree(new ResourceLocation(HFModInfo.MODID, name)).setDropHandler(new DropHandlerTree()));
+		return addHandlersToCrop(name, (Tree) new Tree(HarvestFestival.id(name)).setDropHandler(new DropHandlerTree()));
 	}
 
 	private static <C extends Crop> C addHandlersToCrop(String name, C crop) {

@@ -3,10 +3,10 @@ package joshie.harvest.core.render;
 import java.util.Random;
 
 import javax.annotation.Nonnull;
+import joshie.harvest.HarvestFestival;
 import joshie.harvest.core.HFCore;
 import joshie.harvest.core.block.BlockStorage.Storage;
 import joshie.harvest.core.entity.EntityBasket;
-import joshie.harvest.core.lib.HFModInfo;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
@@ -42,7 +42,7 @@ public class RenderBasket extends Render<EntityBasket> {
 	public RenderBasket(RenderManager manager) {
 		super(manager);
 		shadowSize = 1F;
-		texture = new ResourceLocation(HFModInfo.MODID, "textures/models/basket.png");
+		texture = HarvestFestival.id("textures/models/basket.png");
 		itemRenderer = Minecraft.getMinecraft().getRenderItem();
 	}
 

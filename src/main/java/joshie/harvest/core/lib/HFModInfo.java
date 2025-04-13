@@ -1,5 +1,6 @@
 package joshie.harvest.core.lib;
 
+import joshie.harvest.HarvestFestival;
 import net.minecraft.util.ResourceLocation;
 
 public class HFModInfo {
@@ -19,7 +20,7 @@ public class HFModInfo {
 	public static final String RULES = "joshie.harvest.crops.handlers.rules.SpecialRules";
 
 	//Textures
-	public static final ResourceLocation ELEMENTS = new ResourceLocation(MODID, "textures/gui/gui_elements.png");
-	public static final ResourceLocation TOOLELEMENTS = new ResourceLocation(MODID, "textures/gui/gui_toolelements.png");
-	public static final ResourceLocation ICONS = new ResourceLocation(MODID, "textures/gui/icons.png");
+	public static final ResourceLocation ELEMENTS = HarvestFestival.id("textures/gui/gui_elements.png");
+	public static final ResourceLocation TOOLELEMENTS = HarvestFestival.id("textures/gui/gui_toolelements.png");
+	public static final ResourceLocation ICONS = HarvestFestival.id("textures/gui/icons.png");
 }

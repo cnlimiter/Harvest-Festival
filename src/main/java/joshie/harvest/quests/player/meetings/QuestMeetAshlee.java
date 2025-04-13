@@ -155,7 +155,8 @@ public class QuestMeetAshlee extends QuestMeetingTutorial {
             She explains this is a valuable egg from the best of chickens, you'll have to take care
             Of yours properly if you wish to look after it. She also heard that yulif had a spare cow
             And that you should go talk to him if you want it */
-			if (InventoryHelper.getHandItemIsIn(player,
+			if (InventoryHelper.getHandItemIsIn(
+					player,
 					InventoryHelper.ITEM_STACK, HFAnimals.ANIMAL_PRODUCT.getStack(Sizeable.EGG, Size.SMALL)) != null) {
 				return getLocalized("complete");
 			}
@@ -178,7 +179,8 @@ public class QuestMeetAshlee extends QuestMeetingTutorial {
 			increaseStage(player);
 			rewardItem(player, HFAnimals.TRAY.getStackFromEnum(BlockTray.Tray.NEST_EMPTY));
 		} else if (quest_stage == FINAL) {
-			if (InventoryHelper.getHandItemIsIn(player,
+			if (InventoryHelper.getHandItemIsIn(
+					player,
 					InventoryHelper.ITEM_STACK, HFAnimals.ANIMAL_PRODUCT.getStack(Sizeable.EGG, Size.SMALL)) != null) {
 				complete(player);
 				rewardItem(player, HFAnimals.ANIMAL_PRODUCT.getStack(Sizeable.EGG, Size.LARGE));

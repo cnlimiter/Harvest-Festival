@@ -44,7 +44,9 @@ public class TownHelper implements ITownHelper {
 		} else if (world.provider.getDimension() != 0) {
 			//If the world isn't the overworld, take the spawn coordinates instead
 			BlockPos default_ = getDefaultCoordinates(entity);
-			return default_ == null ? (T) HFTrackers.getTowns(world).getNullTown() : (T) HFTrackers.getTowns(world).getClosestTownToBlockPos(default_, create);
+			return default_ == null ?
+					(T) HFTrackers.getTowns(world).getNullTown() :
+					(T) HFTrackers.getTowns(world).getClosestTownToBlockPos(default_, create);
 		}
 
 		return (T) HFTrackers.getTowns(world).getClosestTownToBlockPos(pos, create);

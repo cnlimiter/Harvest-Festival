@@ -109,7 +109,10 @@ public class AnimalEvents {
 		}
 
 		private boolean isHolding(@Nonnull ItemStack stack) {
-			return InventoryHelper.ITEM_STACK.matchesAny(stack, getStacks()) || InventoryHelper.ITEM.matchesAny(stack, HFAnimals.TREATS, Items.NAME_TAG);
+			return InventoryHelper.ITEM_STACK.matchesAny(stack, getStacks()) || InventoryHelper.ITEM.matchesAny(
+					stack,
+					HFAnimals.TREATS,
+					Items.NAME_TAG);
 		}
 
 		boolean blocksPickup(EntityPlayer player) {

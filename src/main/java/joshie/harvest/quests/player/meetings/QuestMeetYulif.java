@@ -112,7 +112,11 @@ public class QuestMeetYulif extends Quest {
                 /*The Goddess reminds the player that she has asked you to deliver a flower to jaded, and to do so
                   You must get the carpenter house built, she says that if you lost the blueprint, then bring the goddess
                   Another 64 logs of wood, and she will happily give you a blueprint again */
-				if (attempted && InventoryHelper.getHandItemIsIn(player, InventoryHelper.ORE_DICTIONARY, "logWood", HFQuests.LOGS_CARPENTER) != null) {
+				if (attempted && InventoryHelper.getHandItemIsIn(
+						player,
+						InventoryHelper.ORE_DICTIONARY,
+						"logWood",
+						HFQuests.LOGS_CARPENTER) != null) {
 					return getLocalized("reminder.give");
 				} else {
 					attempted = true;
@@ -123,7 +127,8 @@ public class QuestMeetYulif extends Quest {
                   She then informs you that the goddess would like to see you again
                   She has a reward, She says to come back to see her after you have
                   revisited the goddess, as she has something to show you */
-				if (InventoryHelper.getHandItemIsIn(player,
+				if (InventoryHelper.getHandItemIsIn(
+						player,
 						InventoryHelper.SPECIAL, InventoryHelper.SearchType.FLOWER, 1) != null) {
 					return getLocalized("thanks.flowers");
 				}
@@ -163,13 +168,18 @@ public class QuestMeetYulif extends Quest {
 			}
 		} else if (quest_stage == SEED_CHAT) {
 			if (npc == HFNPCs.GODDESS) {
-				if (attempted && InventoryHelper.takeItemsIfHeld(player, InventoryHelper.ORE_DICTIONARY, "logWood", HFQuests.LOGS_CARPENTER) != null) {
+				if (attempted && InventoryHelper.takeItemsIfHeld(
+						player,
+						InventoryHelper.ORE_DICTIONARY,
+						"logWood",
+						HFQuests.LOGS_CARPENTER) != null) {
 					rewardItem(player, HFBuildings.CARPENTER.getBlueprint());
 				} else {
 					attempted = true;
 				}
 			} else if (npc == HFNPCs.FLOWER_GIRL) {
-				if (InventoryHelper.takeItemsIfHeld(player,
+				if (InventoryHelper.takeItemsIfHeld(
+						player,
 						InventoryHelper.SPECIAL, InventoryHelper.SearchType.FLOWER, 1) != null) {
 					increaseStage(player);
 				}

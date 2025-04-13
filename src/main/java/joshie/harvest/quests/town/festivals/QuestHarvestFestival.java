@@ -10,6 +10,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import javax.annotation.Nullable;
+import joshie.harvest.HarvestFestival;
 import joshie.harvest.api.npc.NPC;
 import joshie.harvest.api.npc.NPCEntity;
 import joshie.harvest.api.npc.greeting.Script;
@@ -24,7 +25,6 @@ import joshie.harvest.buildings.HFBuildings;
 import joshie.harvest.calendar.HFFestivals;
 import joshie.harvest.core.HFTrackers;
 import joshie.harvest.core.helpers.EntityHelper;
-import joshie.harvest.core.lib.HFModInfo;
 import joshie.harvest.core.tile.TileFestivalPot;
 import joshie.harvest.npcs.HFNPCs;
 import joshie.harvest.npcs.entity.EntityNPC;
@@ -37,7 +37,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 
 @HFQuest("festival.harvest")
@@ -51,7 +50,7 @@ public class QuestHarvestFestival extends QuestFestivalTimed {
 			new BlockPos(1, 2, 12),
 			new BlockPos(2, 2, 13),
 			new BlockPos(0, 2, 13)};
-	private static final Script TASTE = new Script(new ResourceLocation(HFModInfo.MODID, "taste"));
+	private static final Script TASTE = new Script(HarvestFestival.id("taste"));
 	private static final Script DECIDE = new ScriptHarvestDecide();
 	private final Map<UUID, HarvestSelection> data = new HashMap<>();
 

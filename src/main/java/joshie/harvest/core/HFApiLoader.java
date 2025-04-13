@@ -12,6 +12,7 @@ import java.util.Set;
 import com.google.common.collect.Lists;
 
 import javax.annotation.Nonnull;
+import joshie.harvest.HarvestFestival;
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.npc.task.HFTask;
 import joshie.harvest.api.npc.task.TaskElement;
@@ -20,7 +21,6 @@ import joshie.harvest.api.quests.Quest;
 import joshie.harvest.core.commands.CommandManager;
 import joshie.harvest.core.commands.HFCommand;
 import joshie.harvest.core.commands.HFDebugCommand;
-import joshie.harvest.core.lib.HFModInfo;
 import joshie.harvest.core.network.Packet;
 import joshie.harvest.core.network.PacketHandler;
 import joshie.harvest.core.util.annotations.HFApiImplementation;
@@ -104,7 +104,9 @@ public class HFApiLoader {
 				Class clazz = Class.forName(asmData.getClassName());
 				String value = data.get("value") != null ? (String) data.get("value") : "";
 				if (!value.equals("")) {
-					ResourceLocation resource = value.contains(":") ? new ResourceLocation(value) : new ResourceLocation(HFModInfo.MODID, value);
+					ResourceLocation resource = value.contains(":") ?
+							new ResourceLocation(value) :
+							HarvestFestival.id(value);
 					TaskElement.REGISTRY.put(resource, clazz);
 				}
 			} catch (Exception e) {

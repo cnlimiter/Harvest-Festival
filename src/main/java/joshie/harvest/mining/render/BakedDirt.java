@@ -7,8 +7,8 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import joshie.harvest.HarvestFestival;
 import joshie.harvest.core.base.render.BakedHF;
-import joshie.harvest.core.lib.HFModInfo;
 import joshie.harvest.core.util.annotations.HFEvents;
 import joshie.harvest.mining.HFMining;
 import joshie.harvest.mining.block.BlockDirt;
@@ -24,7 +24,6 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.DefaultStateMapper;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.WeightedRandom;
 import net.minecraft.util.registry.IRegistry;
 import net.minecraftforge.client.event.ModelBakeEvent;
@@ -152,9 +151,7 @@ public class BakedDirt extends BakedHF {
 		@SubscribeEvent
 		public void onStitch(TextureStitchEvent event) {
 			for (TextureType type : TextureType.values()) {
-				event.getMap().registerSprite(new ResourceLocation(
-						HFModInfo.MODID,
-						"blocks/mine/overlays/" + type.name().toLowerCase(Locale.ENGLISH)));
+				event.getMap().registerSprite(HarvestFestival.id("blocks/mine/overlays/" + type.name().toLowerCase(Locale.ENGLISH)));
 			}
 		}
 

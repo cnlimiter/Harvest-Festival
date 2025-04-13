@@ -80,9 +80,12 @@ public class MiningHelper {
 		MiningProvider provider = ((MiningProvider) worldServer.provider);
 		if (!provider.areCoordinatesGenerated(mineID, floor)) {
 			int xStart = (int) Math.floor((floor - 1) / MAX_FLOORS);
-			for (int x = xStart * MineManager.CHUNK_BOUNDARY; x < (xStart * MineManager.CHUNK_BOUNDARY) +
+			for (
+					int x = xStart * MineManager.CHUNK_BOUNDARY; x < (xStart * MineManager.CHUNK_BOUNDARY) +
 					MineManager.CHUNK_BOUNDARY; x++) {
-				for (int z = mineID * MineManager.CHUNK_BOUNDARY; z < (mineID * MineManager.CHUNK_BOUNDARY) + MineManager.CHUNK_BOUNDARY; z++) {
+				for (
+						int z = mineID * MineManager.CHUNK_BOUNDARY;
+						z < (mineID * MineManager.CHUNK_BOUNDARY) + MineManager.CHUNK_BOUNDARY; z++) {
 					worldServer.getChunkProvider().provideChunk(x, z);
 				}
 			}

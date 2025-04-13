@@ -10,6 +10,7 @@ import joshie.harvest.core.lib.HFModInfo;
 import joshie.harvest.core.proxy.HFCommonProxy;
 import net.minecraft.command.ICommandManager;
 import net.minecraft.command.ServerCommandManager;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -23,7 +24,12 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerAboutToStartEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
-@Mod(modid = HFModInfo.MODID, name = HFModInfo.MODNAME, version = HFModInfo.VERSION, dependencies = HFModInfo.DEPENDENCIES, guiFactory = HFModInfo.GUI_FACTORY)
+@Mod(
+		modid = HFModInfo.MODID,
+		name = HFModInfo.MODNAME,
+		version = HFModInfo.VERSION,
+		dependencies = HFModInfo.DEPENDENCIES,
+		guiFactory = HFModInfo.GUI_FACTORY)
 public class HarvestFestival {
 	@SidedProxy(clientSide = HFModInfo.JAVAPATH + "core.proxy.HFClientProxy", serverSide = HFModInfo.JAVAPATH + "core.proxy.HFCommonProxy")
 	public static HFCommonProxy proxy;
@@ -32,6 +38,10 @@ public class HarvestFestival {
 
 	@Instance(HFModInfo.MODID)
 	public static HarvestFestival instance;
+
+	public static ResourceLocation id(String path) {
+		return new ResourceLocation(HFModInfo.MODID, path);
+	}
 
 	@EventHandler
 	public void onConstruction(FMLConstructionEvent event) {

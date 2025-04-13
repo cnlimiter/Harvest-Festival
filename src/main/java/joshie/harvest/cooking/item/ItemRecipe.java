@@ -1,6 +1,7 @@
 package joshie.harvest.cooking.item;
 
 import javax.annotation.Nonnull;
+import joshie.harvest.HarvestFestival;
 import joshie.harvest.api.cooking.Recipe;
 import joshie.harvest.core.HFTab;
 import joshie.harvest.core.HFTrackers;
@@ -15,7 +16,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
@@ -52,7 +52,7 @@ public class ItemRecipe extends ItemHFRegistry<ItemRecipe, Recipe> implements IC
 
 	@Override
 	public Recipe getDefaultValue() {
-		return Recipe.REGISTRY.get(new ResourceLocation(HFModInfo.MODID, "pancake_savoury"));
+		return Recipe.REGISTRY.get(HarvestFestival.id("pancake_savoury"));
 	}
 
 	@Override

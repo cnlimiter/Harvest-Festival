@@ -5,9 +5,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 
 import javax.annotation.Nonnull;
-import joshie.harvest.core.lib.HFModInfo;
+import joshie.harvest.HarvestFestival;
 import net.minecraft.util.JsonUtils;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.loot.conditions.LootCondition;
 
 public class EndsIn extends FloorCondition {
@@ -24,7 +23,7 @@ public class EndsIn extends FloorCondition {
 
 	public static class Serializer extends LootCondition.Serializer<EndsIn> {
 		public Serializer() {
-			super(new ResourceLocation(HFModInfo.MODID, "ends"), EndsIn.class);
+			super(HarvestFestival.id("ends"), EndsIn.class);
 		}
 
 		@Override

@@ -1,7 +1,7 @@
 package joshie.harvest.animals.render;
 
 import javax.annotation.Nonnull;
-import joshie.harvest.core.lib.HFModInfo;
+import joshie.harvest.HarvestFestival;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -19,8 +19,8 @@ public class RenderHarvestAnimal<T extends EntityLiving> extends RenderLiving<T>
 	public RenderHarvestAnimal(RenderManager manager, ModelBase model, String animal) {
 		super(manager, model, 1F);
 
-		texture_child = new ResourceLocation(HFModInfo.MODID, "textures/entity/" + animal + "_child.png");
-		texture_adult = new ResourceLocation(HFModInfo.MODID, "textures/entity/" + animal + "_adult.png");
+		texture_child = HarvestFestival.id("textures/entity/" + animal + "_child.png");
+		texture_adult = HarvestFestival.id("textures/entity/" + animal + "_adult.png");
 	}
 
 	@Override

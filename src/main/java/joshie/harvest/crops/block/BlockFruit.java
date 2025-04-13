@@ -3,9 +3,9 @@ package joshie.harvest.crops.block;
 import java.util.Locale;
 
 import javax.annotation.Nonnull;
+import joshie.harvest.HarvestFestival;
 import joshie.harvest.api.crops.Crop;
 import joshie.harvest.core.base.block.BlockHFEnum;
-import joshie.harvest.core.lib.HFModInfo;
 import joshie.harvest.crops.block.BlockFruit.Fruit;
 import joshie.harvest.crops.tile.TileFruit;
 import net.minecraft.block.SoundType;
@@ -39,7 +39,7 @@ public class BlockFruit extends BlockHFEnum<BlockFruit, Fruit> {
 		private Crop crop;
 
 		Fruit() {
-			this.cropLocation = new ResourceLocation(HFModInfo.MODID, getName());
+			this.cropLocation = HarvestFestival.id(getName());
 		}
 
 		public Crop getCrop() {

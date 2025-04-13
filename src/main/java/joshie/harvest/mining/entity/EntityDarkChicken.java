@@ -72,9 +72,11 @@ public class EntityDarkChicken extends EntityMob {
 	protected boolean isValidLightLevel() {
 		int floor = MiningHelper.getFloor((int) posX >> 4, (int) posY);
 		return floor >= MiningHelper.SILVER_FLOOR && (
-				HFMining.ANIMALS_ON_EVERY_FLOOR || (((floor + 1) %
-				MiningHelper.CHICKEN_FLOORS == 0)))
-				&& joshie.harvest.core.helpers.EntityHelper.getEntities(joshie.harvest.mining.entity.EntityDarkChicken.class, this, 16D)
+				HFMining.ANIMALS_ON_EVERY_FLOOR || (
+						(
+								(floor + 1) %
+										MiningHelper.CHICKEN_FLOORS == 0)))
+				&& EntityHelper.getEntities(EntityDarkChicken.class, this, 16D)
 				.isEmpty();
 	}
 

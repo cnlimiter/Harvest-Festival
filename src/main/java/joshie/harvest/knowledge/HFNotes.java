@@ -1,5 +1,6 @@
 package joshie.harvest.knowledge;
 
+import joshie.harvest.HarvestFestival;
 import joshie.harvest.animals.HFAnimals;
 import joshie.harvest.animals.item.ItemAnimalSpawner.Spawner;
 import joshie.harvest.animals.item.ItemAnimalTreat.Treat;
@@ -25,7 +26,6 @@ import joshie.harvest.tools.HFTools;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -107,6 +107,6 @@ public class HFNotes {
 	}
 
 	public static Note registerNote(Category category, String name) {
-		return new Note(category, new ResourceLocation(HFModInfo.MODID, name));
+		return new Note(category, HarvestFestival.id(name));
 	}
 }

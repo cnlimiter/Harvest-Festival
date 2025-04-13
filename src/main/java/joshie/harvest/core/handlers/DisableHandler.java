@@ -89,7 +89,8 @@ public class DisableHandler {
 
 		@SubscribeEvent
 		public void onUseHoe(UseHoeEvent event) {
-			if (HFCrops.DISABLE_VANILLA_HOE && (event.getCurrent().getItem() instanceof ItemHoe || HOE_BLACKLIST.contains(event.getCurrent()))) {
+			if (HFCrops.DISABLE_VANILLA_HOE &&
+					(event.getCurrent().getItem() instanceof ItemHoe || HOE_BLACKLIST.contains(event.getCurrent()))) {
 				event.setCanceled(true);
 			}
 		}

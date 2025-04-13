@@ -1,6 +1,7 @@
 package joshie.harvest.core.base.block;
 
 import javax.annotation.Nonnull;
+import joshie.harvest.HarvestFestival;
 import joshie.harvest.core.base.item.ItemBlockHF;
 import joshie.harvest.core.helpers.TextHelper;
 import joshie.harvest.core.lib.HFModInfo;
@@ -11,7 +12,6 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
@@ -31,7 +31,7 @@ public abstract class BlockHFBase<B extends BlockHFBase> extends Block {
 	public B register(String name) {
 		this.unlocalizedName = HFModInfo.MODID + "." + name.replace("_", ".");
 		setUnlocalizedName(name.replace("_", "."));
-		setRegistryName(new ResourceLocation(HFModInfo.MODID, name));
+		setRegistryName(HarvestFestival.id(name));
 		GameData.register_impl(this);
 		ItemBlockHF item = getItemBlock();
 		if (item != null) {
@@ -96,6 +96,9 @@ public abstract class BlockHFBase<B extends BlockHFBase> extends Block {
 
 	@SideOnly(Side.CLIENT)
 	public void registerModels(Item item, String name) {
-		ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(new ResourceLocation(HFModInfo.MODID, name), "inventory"));
+		ModelLoader.setCustomModelResourceLocation(
+				item,
+				0,
+				new ModelResourceLocation(HarvestFestival.id(name), "inventory"));
 	}
 }

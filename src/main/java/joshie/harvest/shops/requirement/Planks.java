@@ -19,7 +19,8 @@ public class Planks extends AbstractRequirement {
 
 	@Override
 	public boolean isFulfilled(World world, EntityPlayer player, int amount) {
-		return InventoryHelper.hasInInventory(player,
+		return InventoryHelper.hasInInventory(
+				player,
 				InventoryHelper.ORE_DICTIONARY, "plankWood", (cost * amount));
 	}
 

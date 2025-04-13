@@ -94,7 +94,10 @@ public class EntityHarvestSheep extends EntitySheep implements IEntityAdditional
 			return false;
 		}
 		ItemStack stack = player.getHeldItem(hand);
-		boolean special = InventoryHelper.ITEM_STACK.matchesAny(stack, getStacks()) || InventoryHelper.ITEM.matchesAny(stack, HFAnimals.TREATS, Items.SHEARS);
+		boolean special = InventoryHelper.ITEM_STACK.matchesAny(stack, getStacks()) || InventoryHelper.ITEM.matchesAny(
+				stack,
+				HFAnimals.TREATS,
+				Items.SHEARS);
 		if (stack.isEmpty() || !special) {
 			if (!stats.performTest(AnimalTest.BEEN_LOVED)) {
 				stats.performAction(world, ItemStack.EMPTY, AnimalAction.PETTED); //Love <3

@@ -5,6 +5,7 @@ import java.util.Locale;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import joshie.harvest.HarvestFestival;
 import joshie.harvest.animals.HFAnimals;
 import joshie.harvest.animals.entity.EntityHarvestChicken;
 import joshie.harvest.animals.entity.EntityHarvestCow;
@@ -15,7 +16,6 @@ import joshie.harvest.calendar.HFCalendar;
 import joshie.harvest.core.base.item.ItemHFEnum;
 import joshie.harvest.core.helpers.EntityHelper;
 import joshie.harvest.core.helpers.TextHelper;
-import joshie.harvest.core.lib.HFModInfo;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityAgeable;
@@ -26,7 +26,6 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
@@ -105,8 +104,7 @@ public class ItemAnimalSpawner extends ItemHFEnum<ItemAnimalSpawner, Spawner> {
 					item,
 					i,
 					new ModelResourceLocation(
-							new ResourceLocation(
-									HFModInfo.MODID,
+							HarvestFestival.id(
 									getPrefix(values[i]) + "_" + values[i].name().toLowerCase(Locale.ENGLISH)), "inventory"));
 		}
 	}

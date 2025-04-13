@@ -19,7 +19,6 @@ import joshie.harvest.core.helpers.ConfigHelper;
 import joshie.harvest.core.helpers.InventoryHelper;
 import joshie.harvest.core.helpers.RegistryHelper;
 import joshie.harvest.core.lib.EntityIDs;
-import joshie.harvest.core.lib.HFModInfo;
 import joshie.harvest.core.lib.LoadOrder;
 import joshie.harvest.core.loot.SetEnum;
 import joshie.harvest.core.loot.SetSizeable;
@@ -44,7 +43,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.ColorizerFoliage;
 import net.minecraft.world.biome.Biome;
@@ -70,8 +68,8 @@ import net.minecraftforge.oredict.OreDictionary;
 public class HFCore {
 	public static final Fluid GODDESS = registerFluid(new Fluid(
 			"goddess_water",
-			new ResourceLocation(HFModInfo.MODID, "blocks/goddess_still"),
-			new ResourceLocation(HFModInfo.MODID, "blocks/goddess_flow")).setRarity(EnumRarity.RARE));
+			HarvestFestival.id("blocks/goddess_still"),
+			HarvestFestival.id("blocks/goddess_flow")).setRarity(EnumRarity.RARE));
 	public static final BlockGoddessWater GODDESS_WATER = new BlockGoddessWater(GODDESS).register("goddess_water");
 	public static final BlockFlower FLOWERS = new BlockFlower().register("flowers");
 	public static final BlockStorage STORAGE = new BlockStorage().register("storage");
@@ -86,7 +84,7 @@ public class HFCore {
 		LootFunctionManager.registerFunction(new SetSizeable.Serializer());
 		RegistryHelper.registerTiles(TileShipping.class, TileMailbox.class, TilePlate.class, TileBasket.class, TileFestivalPot.class);
 		EntityRegistry.registerModEntity(
-				new ResourceLocation(HFModInfo.MODID, "basket"),
+				HarvestFestival.id("basket"),
 				EntityBasket.class,
 				"basket",
 				EntityIDs.BASKET,
@@ -103,7 +101,9 @@ public class HFCore {
 		registerIfNotRegistered("flowerMagicBlue", FLOWERS.getStackFromEnum(FlowerType.BLUE_MAGICGRASS));
 		registerIfNotRegistered("flowerMagicRed", FLOWERS.getStackFromEnum(FlowerType.RED_MAGICGRASS));
 		registerIfNotRegistered("flowerMoondrop", FLOWERS.getStackFromEnum(FlowerType.MOONDROP));
-		registerIfNotRegistered("flowerSunflower", new ItemStack(Blocks.DOUBLE_PLANT, 1, BlockDoublePlant.EnumPlantType.SUNFLOWER.getMeta()));
+		registerIfNotRegistered(
+				"flowerSunflower",
+				new ItemStack(Blocks.DOUBLE_PLANT, 1, BlockDoublePlant.EnumPlantType.SUNFLOWER.getMeta()));
 		registerIfNotRegistered("flowerLilac", new ItemStack(Blocks.DOUBLE_PLANT, 1, BlockDoublePlant.EnumPlantType.SYRINGA.getMeta()));
 		registerIfNotRegistered("flowerRose", new ItemStack(Blocks.DOUBLE_PLANT, 1, BlockDoublePlant.EnumPlantType.ROSE.getMeta()));
 		registerIfNotRegistered("flowerPeony", new ItemStack(Blocks.DOUBLE_PLANT, 1, BlockDoublePlant.EnumPlantType.PAEONIA.getMeta()));
@@ -218,7 +218,10 @@ public class HFCore {
 	public static int MOBS_ONLY_SPAWN_UNDERGROUND_IN_OVERWORLD;
 
 	public static void configure() {
-		DEBUG_MODE = ConfigHelper.getBoolean("Debug Mode", false, "Enabling this adds extra information to items, when you have f3 debug mode on");
+		DEBUG_MODE = ConfigHelper.getBoolean(
+				"Debug Mode",
+				false,
+				"Enabling this adds extra information to items, when you have f3 debug mode on");
 		SLEEP_ANYTIME = ConfigHelper.getBoolean("Sleep any time of day", true);
 		SLEEP_ONLY_AT_NIGHT = ConfigHelper.getBoolean("Disable sleep between 6am and sunset", false);
 		NO_TICK_OFFLINE = ConfigHelper.getBoolean("Server doesn't update time when no players online", false);

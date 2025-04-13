@@ -87,7 +87,10 @@ public class Aquaculture {
 		HFApi.shipping.registerSellable(new ItemStack(loot, 1, 2), 0);
 		HFApi.shipping.registerSellable(new ItemStack(loot, 1, 2), 1);
 
-		HFShops.BAITSHOP.addPurchasable(new PurchasableMaterials(1000L, new ItemStack(fishing_rod), new RequirementOreWrapper("stickWood", 1)));
+		HFShops.BAITSHOP.addPurchasable(new PurchasableMaterials(
+				1000L,
+				new ItemStack(fishing_rod),
+				new RequirementOreWrapper("stickWood", 1)));
 		HFShops.BAITSHOP.addPurchasable(new PurchasableMaterials(
 				1000L,
 				new ItemStack(gold_fishing_rod),

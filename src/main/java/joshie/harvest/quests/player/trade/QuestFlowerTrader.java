@@ -34,7 +34,8 @@ public class QuestFlowerTrader extends QuestTrade {
 
 	@Override
 	public boolean isNPCUsed(EntityPlayer player, NPCEntity entity) {
-		return entity.getNPC() == HFNPCs.FLOWER_GIRL && InventoryHelper.getHandItemIsIn(player,
+		return entity.getNPC() == HFNPCs.FLOWER_GIRL && InventoryHelper.getHandItemIsIn(
+				player,
 				InventoryHelper.SPECIAL, SearchType.FLOWER, 5) != null;
 	}
 

@@ -1,6 +1,7 @@
 package joshie.harvest.quests.town.festivals;
 
 import javax.annotation.Nullable;
+import joshie.harvest.HarvestFestival;
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.calendar.CalendarDate;
 import joshie.harvest.api.calendar.Season;
@@ -21,7 +22,6 @@ import joshie.harvest.calendar.CalendarHelper;
 import joshie.harvest.calendar.data.CalendarServer;
 import joshie.harvest.core.HFTrackers;
 import joshie.harvest.core.helpers.EntityHelper;
-import joshie.harvest.core.lib.HFModInfo;
 import joshie.harvest.npcs.HFNPCs;
 import joshie.harvest.quests.base.QuestFestival;
 import joshie.harvest.quests.town.festivals.contest.cooking.TaskEat;
@@ -29,7 +29,6 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
@@ -38,13 +37,13 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @HFQuest("festival.new.years.eve")
 public class QuestNewYearsEve extends QuestFestival {
-	private static final Script scriptIntro = new Script(new ResourceLocation(HFModInfo.MODID, "new_years_eve_intro"));
-	private static final Script scriptCountdown5 = new Script(new ResourceLocation(HFModInfo.MODID, "new_years_eve_5"));
-	private static final Script scriptCountdown4 = new Script(new ResourceLocation(HFModInfo.MODID, "new_years_eve_4"));
-	private static final Script scriptCountdown3 = new Script(new ResourceLocation(HFModInfo.MODID, "new_years_eve_3"));
-	private static final Script scriptCountdown2 = new Script(new ResourceLocation(HFModInfo.MODID, "new_years_eve_2"));
-	private static final Script scriptCountdown1 = new Script(new ResourceLocation(HFModInfo.MODID, "new_years_eve_1"));
-	private static final Script scriptCountdown0 = new Script(new ResourceLocation(HFModInfo.MODID, "new_years_eve_0"));
+	private static final Script scriptIntro = new Script(HarvestFestival.id("new_years_eve_intro"));
+	private static final Script scriptCountdown5 = new Script(HarvestFestival.id("new_years_eve_5"));
+	private static final Script scriptCountdown4 = new Script(HarvestFestival.id("new_years_eve_4"));
+	private static final Script scriptCountdown3 = new Script(HarvestFestival.id("new_years_eve_3"));
+	private static final Script scriptCountdown2 = new Script(HarvestFestival.id("new_years_eve_2"));
+	private static final Script scriptCountdown1 = new Script(HarvestFestival.id("new_years_eve_1"));
+	private static final Script scriptCountdown0 = new Script(HarvestFestival.id("new_years_eve_0"));
 	private final Selection start = new Selection(
 			"harvestfestival.quest.festival.new.years.eve.question",
 			"harvestfestival.quest.festival.new.years.eve.option1",

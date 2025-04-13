@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
+import joshie.harvest.HarvestFestival;
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.calendar.CalendarDate;
 import joshie.harvest.api.calendar.CalendarEntry;
@@ -18,7 +19,6 @@ import joshie.harvest.calendar.CalendarAPI;
 import joshie.harvest.calendar.CalendarHelper;
 import joshie.harvest.core.base.gui.ContainerNull;
 import joshie.harvest.core.base.gui.GuiBase;
-import joshie.harvest.core.lib.HFModInfo;
 import joshie.harvest.knowledge.gui.calendar.button.ButtonDate;
 import joshie.harvest.knowledge.gui.calendar.button.ButtonNext;
 import joshie.harvest.knowledge.gui.calendar.button.ButtonPrevious;
@@ -30,7 +30,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 
 public class GuiCalendar extends GuiBase {
-	public static final ResourceLocation CALENDAR_TEXTURE = new ResourceLocation(HFModInfo.MODID, "textures/gui/calendar.png");
+	public static final ResourceLocation CALENDAR_TEXTURE = HarvestFestival.id("textures/gui/calendar.png");
 	private final Multimap<CalendarDate, CalendarEntry> entries = HashMultimap.create();
 	public static CalendarDate date;
 	public static Season season;

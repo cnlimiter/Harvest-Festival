@@ -98,7 +98,8 @@ public class Purchasable implements IPurchasable {
 	@Override
 	public void onPurchased(EntityPlayer player) {
 		if (getCost() < 0) {
-			InventoryHelper.takeItemsInInventory(player,
+			InventoryHelper.takeItemsInInventory(
+					player,
 					InventoryHelper.ITEM_STACK, getPurchasedStack(), getPurchasedStack().getCount());
 		} else {
 			SpawnItemHelper.addToPlayerInventory(player, getPurchasedStack().copy());

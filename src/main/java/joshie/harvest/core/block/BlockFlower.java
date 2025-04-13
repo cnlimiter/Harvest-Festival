@@ -5,13 +5,13 @@ import java.util.Locale;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import joshie.harvest.HarvestFestival;
 import joshie.harvest.core.HFTab;
 import joshie.harvest.core.base.block.BlockHFEnum;
 import joshie.harvest.core.block.BlockFlower.FlowerType;
 import joshie.harvest.core.entity.EntityBasket;
 import joshie.harvest.core.helpers.TextHelper;
 import joshie.harvest.core.lib.CreativeSort;
-import joshie.harvest.core.lib.HFModInfo;
 import joshie.harvest.core.util.interfaces.ISellable;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -26,7 +26,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
@@ -176,8 +175,7 @@ public class BlockFlower extends BlockHFEnum<BlockFlower, FlowerType> implements
 					item,
 					i,
 					new ModelResourceLocation(
-							new ResourceLocation(
-									HFModInfo.MODID,
+							HarvestFestival.id(
 									property.getName() + "_" + getEnumFromMeta(i).getName()), "inventory"));
 		}
 	}

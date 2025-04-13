@@ -7,9 +7,8 @@ import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 
 import javax.annotation.Nonnull;
-import joshie.harvest.core.lib.HFModInfo;
+import joshie.harvest.HarvestFestival;
 import net.minecraft.util.JsonUtils;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.loot.conditions.LootCondition;
 
 public class Exact extends FloorCondition {
@@ -32,7 +31,7 @@ public class Exact extends FloorCondition {
 
 	public static class Serializer extends LootCondition.Serializer<Exact> {
 		public Serializer() {
-			super(new ResourceLocation(HFModInfo.MODID, "exact"), Exact.class);
+			super(HarvestFestival.id("exact"), Exact.class);
 		}
 
 		@Override

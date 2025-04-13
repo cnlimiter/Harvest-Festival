@@ -1,13 +1,12 @@
 package joshie.harvest.core.base.item;
 
 import javax.annotation.Nonnull;
+import joshie.harvest.HarvestFestival;
 import joshie.harvest.core.base.block.BlockHFBase;
 import joshie.harvest.core.base.block.BlockHFEnum;
-import joshie.harvest.core.lib.HFModInfo;
 import joshie.harvest.core.util.interfaces.ICreativeSorted;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
@@ -60,7 +59,7 @@ public class ItemBlockHF<B extends BlockHFBase> extends ItemBlock implements ICr
 
 	public void register(String name) {
 		setUnlocalizedName(name.replace("_", "."));
-		setRegistryName(new ResourceLocation(HFModInfo.MODID, name));
+		setRegistryName(HarvestFestival.id(name));
 		GameData.register_impl(this);
 		if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) {
 			block.registerModels(this, name);

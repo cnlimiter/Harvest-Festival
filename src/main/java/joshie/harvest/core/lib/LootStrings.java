@@ -1,5 +1,6 @@
 package joshie.harvest.core.lib;
 
+import joshie.harvest.HarvestFestival;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.loot.LootTableList;
 
@@ -41,6 +42,6 @@ public class LootStrings {
 	public static final ResourceLocation DARK_COW = register("gameplay/entities/dark_cow");
 
 	private static ResourceLocation register(String id) {
-		return LootTableList.register(new ResourceLocation(HFModInfo.MODID, id));
+		return LootTableList.register(HarvestFestival.id(id));
 	}
 }

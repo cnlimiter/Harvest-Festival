@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import joshie.harvest.HarvestFestival;
 import joshie.harvest.api.player.RelationshipType;
 import joshie.harvest.api.quests.Quest;
 import joshie.harvest.core.base.gui.ContainerBase;
@@ -31,7 +32,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.config.GuiUtils;
 
 public abstract class GuiNPCBase extends GuiBase {
-	private static final ResourceLocation chatbox = new ResourceLocation(HFModInfo.MODID, "textures/gui/chatbox.png");
+	private static final ResourceLocation chatbox = HarvestFestival.id("textures/gui/chatbox.png");
 	protected final EntityNPC npc;
 	protected final EntityPlayer player;
 	protected final Quest quest;

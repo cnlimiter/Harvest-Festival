@@ -84,7 +84,18 @@ public class QuestContestCow extends QuestAnimalContest<EntityHarvestCow> {
 	@Override
 	public void execute(Town town, EntityPlayer player, NPCEntity npc) {
 		npc.setPath(
-				move(STAND1), speech(JUDGE_1), move(STAND2), speech(JUDGE_2), move(STAND3), speech(JUDGE_3), move(STAND4), speech(JUDGE_4),
-				wait(1), speech(FINISH), move(BuildingLocations.PARK_COW_JUDGE), speech(WINNER), new ContestTaskWinner(HFFestivals.COW_FESTIVAL));
+				move(STAND1),
+				speech(JUDGE_1),
+				move(STAND2),
+				speech(JUDGE_2),
+				move(STAND3),
+				speech(JUDGE_3),
+				move(STAND4),
+				speech(JUDGE_4),
+				wait(1),
+				speech(FINISH),
+				move(BuildingLocations.PARK_COW_JUDGE),
+				speech(WINNER),
+				new ContestTaskWinner(HFFestivals.COW_FESTIVAL));
 	}
 }

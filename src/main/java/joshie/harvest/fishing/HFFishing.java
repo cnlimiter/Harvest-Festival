@@ -13,7 +13,6 @@ import joshie.harvest.api.core.Ore;
 import joshie.harvest.cooking.HFCooking;
 import joshie.harvest.core.helpers.RegistryHelper;
 import joshie.harvest.core.lib.EntityIDs;
-import joshie.harvest.core.lib.HFModInfo;
 import joshie.harvest.core.util.annotations.HFLoader;
 import joshie.harvest.fishing.FishingHelper.WaterType;
 import joshie.harvest.fishing.block.BlockFishTrap;
@@ -34,7 +33,6 @@ import joshie.harvest.fishing.tile.TileTrap;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemFishFood.FishType;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraft.world.storage.loot.conditions.LootConditionManager;
 import net.minecraft.world.storage.loot.functions.LootFunctionManager;
@@ -64,7 +62,7 @@ public class HFFishing {
 		LootConditionManager.registerCondition(new ConditionTime.Serializer());
 		LootConditionManager.registerCondition(new ConditionTier.Serializer());
 		EntityRegistry.registerModEntity(
-				new ResourceLocation(HFModInfo.MODID, "hook"),
+				HarvestFestival.id("hook"),
 				EntityFishHookHF.class,
 				"hook",
 				EntityIDs.FISHING,
@@ -126,6 +124,6 @@ public class HFFishing {
 	private static void registerLootTable(String id, WaterType type, Season season) {
 		FishingHelper.FISHING_LOOT.put(
 				Pair.of(season, type),
-				LootTableList.register(new ResourceLocation(HFModInfo.MODID, "gameplay/fishing/" + id)));
+				LootTableList.register(HarvestFestival.id("gameplay/fishing/" + id)));
 	}
 }

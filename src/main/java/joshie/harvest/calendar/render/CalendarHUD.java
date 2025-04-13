@@ -5,6 +5,7 @@ import java.util.Locale;
 
 import org.lwjgl.input.Keyboard;
 
+import joshie.harvest.HarvestFestival;
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.calendar.CalendarDate;
 import joshie.harvest.api.calendar.Season;
@@ -35,7 +36,7 @@ import net.minecraftforge.fml.relauncher.Side;
 
 @HFEvents(Side.CLIENT)
 public class CalendarHUD {
-	private static final ResourceLocation MINE_HUD = new ResourceLocation(HFModInfo.MODID, "textures/gui/mine.png");
+	private static final ResourceLocation MINE_HUD = HarvestFestival.id("textures/gui/mine.png");
 	public static boolean editingCalendar;
 	public static boolean editingGold;
 

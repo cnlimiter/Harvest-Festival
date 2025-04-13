@@ -6,8 +6,8 @@ import java.util.List;
 
 import org.lwjgl.input.Mouse;
 
+import joshie.harvest.HarvestFestival;
 import joshie.harvest.core.helpers.MCClientHelper;
-import joshie.harvest.core.lib.HFModInfo;
 import joshie.harvest.npcs.gui.ContainerNPCChat;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
@@ -36,7 +36,7 @@ public abstract class GuiBase extends GuiScreen {
 
 	public GuiBase(ContainerBase container, String texture, int yOffset) {
 		this.container = container;
-		TEXTURE = new ResourceLocation(HFModInfo.MODID, "textures/gui/" + texture + ".png");
+		TEXTURE = HarvestFestival.id("textures/gui/" + texture + ".png");
 		ySize += yOffset;
 		xSize = 201;
 		name = "";

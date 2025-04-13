@@ -26,8 +26,12 @@ public class BloodMagic {
 		HFShops.BLOODMAGE.addPurchasable(500, new ItemStack(Items.BONE));
 		HFShops.BLOODMAGE.addPurchasable(300, new ItemStack(Items.SPIDER_EYE));
 		HFShops.BLOODMAGE.addPurchasable(3000, PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.REGENERATION));
-		HFShops.BLOODMAGE.addPurchasable(4000, PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.LONG_REGENERATION));
-		HFShops.BLOODMAGE.addPurchasable(5000, PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.STRONG_REGENERATION));
+		HFShops.BLOODMAGE.addPurchasable(
+				4000,
+				PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.LONG_REGENERATION));
+		HFShops.BLOODMAGE.addPurchasable(
+				5000,
+				PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.STRONG_REGENERATION));
 		HFShops.BLOODMAGE.addPurchasable(1200, getSoulGem(32));
 		HFShops.BLOODMAGE.addPurchasable(2000, getSoulGem(64));
 

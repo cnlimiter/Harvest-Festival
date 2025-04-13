@@ -12,7 +12,7 @@ public interface IGiftRegistry {
 	 *               Acceptable values are
 	 * @see net.minecraft.block.Block
 	 * @see net.minecraft.item.Item
-	 * @see net.minecraft.item.ItemStack
+	 * @see ItemStack
 	 * @see joshie.harvest.api.core.Mod
 	 * @see joshie.harvest.api.core.Ore
 	 **/
@@ -24,7 +24,7 @@ public interface IGiftRegistry {
 	 *
 	 * @see net.minecraft.block.Block
 	 * @see net.minecraft.item.Item
-	 * @see net.minecraft.item.ItemStack
+	 * @see ItemStack
 	 * @see joshie.harvest.api.core.Mod
 	 * @see joshie.harvest.api.core.Ore
 	 **/

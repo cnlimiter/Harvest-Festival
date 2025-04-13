@@ -13,7 +13,6 @@ import joshie.harvest.core.block.BlockFlower;
 import joshie.harvest.core.helpers.ConfigHelper;
 import joshie.harvest.core.helpers.RegistryHelper;
 import joshie.harvest.core.lib.EntityIDs;
-import joshie.harvest.core.lib.HFModInfo;
 import joshie.harvest.core.util.annotations.HFLoader;
 import joshie.harvest.mining.block.BlockDirt;
 import joshie.harvest.mining.block.BlockElevator;
@@ -52,7 +51,6 @@ import joshie.harvest.mining.tile.TileElevator;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.storage.loot.conditions.LootConditionManager;
 import net.minecraftforge.client.model.ModelLoader;
@@ -83,7 +81,7 @@ public class HFMining {
 		MINE_WORLD = DimensionType.register("The Mine", "_hf_mine", MINING_ID, MiningProvider.class, false);
 		DimensionManager.registerDimension(MINING_ID, MINE_WORLD);
 		EntityRegistry.registerModEntity(
-				new ResourceLocation(HFModInfo.MODID, "dark_cow"),
+				HarvestFestival.id("dark_cow"),
 				EntityDarkCow.class,
 				"dark_cow",
 				EntityIDs.DARK_COW,
@@ -92,7 +90,7 @@ public class HFMining {
 				3,
 				true);
 		EntityRegistry.registerModEntity(
-				new ResourceLocation(HFModInfo.MODID, "dark_sheep"),
+				HarvestFestival.id("dark_sheep"),
 				EntityDarkSheep.class,
 				"dark_sheep",
 				EntityIDs.DARK_SHEEP,
@@ -101,7 +99,7 @@ public class HFMining {
 				3,
 				true);
 		EntityRegistry.registerModEntity(
-				new ResourceLocation(HFModInfo.MODID, "dark_chicken"),
+				HarvestFestival.id("dark_chicken"),
 				EntityDarkChicken.class,
 				"dark_chicken",
 				EntityIDs.DARK_CHICKEN,
@@ -110,7 +108,7 @@ public class HFMining {
 				3,
 				true);
 		EntityRegistry.registerModEntity(
-				new ResourceLocation(HFModInfo.MODID, "dark_chick"),
+				HarvestFestival.id("dark_chick"),
 				EntityDarkChick.class,
 				"dark_chick",
 				EntityIDs.DARK_CHICK,
@@ -160,31 +158,43 @@ public class HFMining {
 		MiningContext silver = new MiningContext(MiningHelper.SILVER_FLOOR);
 		MiningContext gold = new MiningContext(MiningHelper.GOLD_FLOOR);
 		MiningContext mystril = new MiningContext(MiningHelper.MYSTRIL_FLOOR);
-		HFApi.mining.registerOre(copper, HFCore.FLOWERS.getStateFromEnum(BlockFlower.FlowerType.WEED), 40D,
+		HFApi.mining.registerOre(
+				copper, HFCore.FLOWERS.getStateFromEnum(BlockFlower.FlowerType.WEED), 40D,
 				Season.SPRING,
 				Season.SUMMER,
 				Season.AUTUMN);
-		HFApi.mining.registerOre(copper, ORE.getStateFromEnum(Ore.ROCK), 100D,
+		HFApi.mining.registerOre(
+				copper, ORE.getStateFromEnum(Ore.ROCK), 100D,
 				Season.SPRING, Season.SUMMER, Season.AUTUMN);
-		HFApi.mining.registerOre(copper, ORE.getStateFromEnum(Ore.COPPER), 6D,
+		HFApi.mining.registerOre(
+				copper, ORE.getStateFromEnum(Ore.COPPER), 6D,
 				Season.SPRING, Season.SUMMER, Season.AUTUMN);
-		HFApi.mining.registerOre(copper, ORE.getStateFromEnum(Ore.AMETHYST), 6D,
+		HFApi.mining.registerOre(
+				copper, ORE.getStateFromEnum(Ore.AMETHYST), 6D,
 				Season.SPRING, Season.SUMMER, Season.AUTUMN);
-		HFApi.mining.registerOre(silver, ORE.getStateFromEnum(Ore.SILVER), 7D,
+		HFApi.mining.registerOre(
+				silver, ORE.getStateFromEnum(Ore.SILVER), 7D,
 				Season.SPRING, Season.SUMMER, Season.AUTUMN);
-		HFApi.mining.registerOre(silver, ORE.getStateFromEnum(Ore.TOPAZ), 5D,
+		HFApi.mining.registerOre(
+				silver, ORE.getStateFromEnum(Ore.TOPAZ), 5D,
 				Season.SPRING, Season.SUMMER, Season.AUTUMN);
-		HFApi.mining.registerOre(gold, ORE.getStateFromEnum(Ore.GOLD), 8D,
+		HFApi.mining.registerOre(
+				gold, ORE.getStateFromEnum(Ore.GOLD), 8D,
 				Season.SPRING, Season.SUMMER, Season.AUTUMN);
-		HFApi.mining.registerOre(gold, ORE.getStateFromEnum(Ore.RUBY), 6D,
+		HFApi.mining.registerOre(
+				gold, ORE.getStateFromEnum(Ore.RUBY), 6D,
 				Season.SPRING, Season.SUMMER, Season.AUTUMN);
-		HFApi.mining.registerOre(gold, ORE.getStateFromEnum(Ore.JADE), 5D,
+		HFApi.mining.registerOre(
+				gold, ORE.getStateFromEnum(Ore.JADE), 5D,
 				Season.SPRING, Season.SUMMER, Season.AUTUMN);
-		HFApi.mining.registerOre(mystril, ORE.getStateFromEnum(Ore.EMERALD), 4D,
+		HFApi.mining.registerOre(
+				mystril, ORE.getStateFromEnum(Ore.EMERALD), 4D,
 				Season.SPRING, Season.SUMMER, Season.AUTUMN);
-		HFApi.mining.registerOre(mystril, ORE.getStateFromEnum(Ore.MYSTRIL), 5D,
+		HFApi.mining.registerOre(
+				mystril, ORE.getStateFromEnum(Ore.MYSTRIL), 5D,
 				Season.SPRING, Season.SUMMER, Season.AUTUMN);
-		HFApi.mining.registerOre(mystril, ORE.getStateFromEnum(Ore.DIAMOND), 3D,
+		HFApi.mining.registerOre(
+				mystril, ORE.getStateFromEnum(Ore.DIAMOND), 3D,
 				Season.SPRING, Season.SUMMER, Season.AUTUMN);
 
 		//Winter values

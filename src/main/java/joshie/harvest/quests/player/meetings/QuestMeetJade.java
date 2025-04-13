@@ -119,7 +119,8 @@ public class QuestMeetJade extends QuestQuestion {
                She however also explains that her variety is limited, and suggests that you build a supermarket
                She also informs the player that the harvest goddess has heard of your great work
                And that she would really like to hear from you, in fact she would love to see a turnip!*/
-			if (InventoryHelper.getHandItemIsIn(player,
+			if (InventoryHelper.getHandItemIsIn(
+					player,
 					InventoryHelper.ITEM_STACK, HFCrops.TUTORIAL.getCropStack(9), 9) != null) {
 				return getLocalized("complete");
 			}
@@ -148,7 +149,8 @@ public class QuestMeetJade extends QuestQuestion {
 			rewardItem(player, HFCrops.TUTORIAL.getSeedStack(3));
 			increaseStage(player);
 		} else if (quest_stage == TURNIPS) {
-			if (InventoryHelper.getHandItemIsIn(player,
+			if (InventoryHelper.getHandItemIsIn(
+					player,
 					InventoryHelper.ITEM_STACK, HFCrops.TUTORIAL.getCropStack(9), 9) != null) {
 				complete(player);
 			}

@@ -1,12 +1,12 @@
 package joshie.harvest.quests.town.tasks;
 
 import javax.annotation.Nullable;
+import joshie.harvest.HarvestFestival;
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.npc.NPCEntity;
 import joshie.harvest.api.quests.HFQuest;
 import joshie.harvest.api.town.Town;
 import joshie.harvest.core.helpers.TextHelper;
-import joshie.harvest.core.lib.HFModInfo;
 import joshie.harvest.npcs.HFNPCs;
 import joshie.harvest.quests.base.QuestDaily;
 import net.minecraft.entity.Entity;
@@ -27,12 +27,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @HFQuest("slay")
 public class QuestSlay extends QuestDaily {
 	private static final ResourceLocation[] list = new ResourceLocation[]{
-			new ResourceLocation(HFModInfo.MODID, "dark_chick"),
-			new ResourceLocation(HFModInfo.MODID, "dark_chicken"),
-			new ResourceLocation(HFModInfo.MODID, "dark_sheep"),
-			new ResourceLocation(HFModInfo.MODID, "dark_cow")};
+			HarvestFestival.id("dark_chick"),
+			HarvestFestival.id("dark_chicken"),
+			HarvestFestival.id("dark_sheep"),
+			HarvestFestival.id("dark_cow")};
 	private int targetAmount = 1;
-	private ResourceLocation targetMob = new ResourceLocation(HFModInfo.MODID, "dark_chick");
+	private ResourceLocation targetMob = HarvestFestival.id("dark_chick");
 	private int counter;
 
 	public QuestSlay() {

@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.lwjgl.input.Mouse;
 
-import joshie.harvest.core.lib.HFModInfo;
+import joshie.harvest.HarvestFestival;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
@@ -26,7 +26,7 @@ public abstract class GuiBaseContainer extends GuiContainer {
 
 	public GuiBaseContainer(ContainerBase container, String texture, int yOffset) {
 		super(container);
-		TEXTURE = new ResourceLocation(HFModInfo.MODID, "textures/gui/" + texture + ".png");
+		TEXTURE = HarvestFestival.id("textures/gui/" + texture + ".png");
 		ySize += yOffset;
 		xSize = 201;
 		name = "";

@@ -9,13 +9,13 @@ import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import joshie.harvest.HarvestFestival;
 import joshie.harvest.api.calendar.Weekday;
 import joshie.harvest.api.npc.IInfoButton;
 import joshie.harvest.api.npc.NPC;
 import joshie.harvest.api.shops.IPurchasable;
 import joshie.harvest.api.shops.IRequirement;
 import joshie.harvest.api.shops.Shop;
-import joshie.harvest.core.lib.HFModInfo;
 import joshie.harvest.plugins.crafttweaker.CraftTweaker;
 import joshie.harvest.plugins.crafttweaker.wrappers.GreetingShopWrapper;
 import joshie.harvest.plugins.crafttweaker.wrappers.PurchasableWrapper;
@@ -39,7 +39,7 @@ public class Shops {
 	@ZenMethod
 	@SuppressWarnings("unused")
 	public static void addShopToNPC(String npc, String shop, String greeting, String openinghours, @Optional String hoursText) {
-		NPC theNPC = NPC.REGISTRY.get(new ResourceLocation(HFModInfo.MODID, npc));
+		NPC theNPC = NPC.REGISTRY.get(HarvestFestival.id(npc));
 		if (theNPC == null) {
 			CraftTweaker.logError(String.format("No NPC with the id %s could be found. Use /hf npclist for a list of ids", npc));
 		} else if (theNPC.isShopkeeper()) {

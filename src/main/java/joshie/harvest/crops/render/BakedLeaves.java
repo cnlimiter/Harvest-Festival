@@ -9,11 +9,11 @@ import com.google.common.collect.Maps;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import joshie.harvest.HarvestFestival;
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.calendar.Season;
 import joshie.harvest.core.base.render.BakedHF;
 import joshie.harvest.core.helpers.MCClientHelper;
-import joshie.harvest.core.lib.HFModInfo;
 import joshie.harvest.core.util.annotations.HFEvents;
 import joshie.harvest.crops.HFCrops;
 import joshie.harvest.crops.block.BlockLeavesFruit.LeavesFruit;
@@ -30,7 +30,6 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.DefaultStateMapper;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.IRegistry;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.ModelBakeEvent;
@@ -86,8 +85,8 @@ public class BakedLeaves extends BakedHF {
 
 		@SubscribeEvent
 		public void onStitch(TextureStitchEvent event) {
-			event.getMap().registerSprite(new ResourceLocation(HFModInfo.MODID, "blocks/leaves_oak_black"));
-			event.getMap().registerSprite(new ResourceLocation(HFModInfo.MODID, "blocks/leaves_jungle_black"));
+			event.getMap().registerSprite(HarvestFestival.id("blocks/leaves_oak_black"));
+			event.getMap().registerSprite(HarvestFestival.id("blocks/leaves_jungle_black"));
 		}
 
 		@SubscribeEvent

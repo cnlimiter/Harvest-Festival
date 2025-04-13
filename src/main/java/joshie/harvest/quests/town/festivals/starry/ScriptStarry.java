@@ -1,14 +1,13 @@
 package joshie.harvest.quests.town.festivals.starry;
 
+import joshie.harvest.HarvestFestival;
 import joshie.harvest.api.npc.NPCEntity;
 import joshie.harvest.api.npc.greeting.Script;
-import joshie.harvest.core.lib.HFModInfo;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.translation.I18n;
 
 public class ScriptStarry extends Script {
 	public ScriptStarry(String name) {
-		super(new ResourceLocation(HFModInfo.MODID, "starry_" + name));
+		super(HarvestFestival.id("starry_" + name));
 		unlocalised = "%s.npc.%s..festival.starry.night." + name;
 	}
 

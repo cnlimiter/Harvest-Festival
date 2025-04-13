@@ -1,7 +1,7 @@
 package joshie.harvest.cooking.render;
 
+import joshie.harvest.HarvestFestival;
 import joshie.harvest.cooking.tile.TileOven;
-import joshie.harvest.core.lib.HFModInfo;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
@@ -10,7 +10,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class SpecialRendererOven extends SpecialRendererCookware<TileOven> {
-	private static final ResourceLocation TEXTURE = new ResourceLocation(HFModInfo.MODID, "textures/models/oven_door.png");
+	private static final ResourceLocation TEXTURE = HarvestFestival.id("textures/models/oven_door.png");
 	private final ModelOvenDoor ovenModel = new ModelOvenDoor();
 
 	@Override

@@ -99,7 +99,10 @@ public class BlockInternalAir extends BlockHFBase<BlockInternalAir> {
 		@SubscribeEvent
 		public void onPlayerTick(PlayerTickEvent event) {
 			if (event.player == player && event.phase == Phase.END) {
-				if (InventoryHelper.getHandItemIsIn(event.player, InventoryHelper.ITEM_STACK, HFBuildings.CHEAT.getStackFromEnum(Cheat.AIR_REMOVER)) !=
+				if (InventoryHelper.getHandItemIsIn(
+						event.player,
+						InventoryHelper.ITEM_STACK,
+						HFBuildings.CHEAT.getStackFromEnum(Cheat.AIR_REMOVER)) !=
 						null) {
 					world.setBlockToAir(pos);
 					try {

@@ -10,8 +10,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 
 import javax.annotation.Nonnull;
+import joshie.harvest.HarvestFestival;
 import joshie.harvest.api.crops.Crop;
-import joshie.harvest.core.lib.HFModInfo;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.loot.LootContext;
@@ -38,7 +38,7 @@ public class SetCropType extends LootFunction {
 		if (crop.equals("randomSeed")) {
 			return random(false);
 		}
-		ResourceLocation resource = crop.contains(":") ? new ResourceLocation(crop) : new ResourceLocation(HFModInfo.MODID, crop);
+		ResourceLocation resource = crop.contains(":") ? new ResourceLocation(crop) : HarvestFestival.id(crop);
 		Crop theCrop = Crop.REGISTRY.get(resource);
 		return theCrop.getCropStack(stack.getCount());
 	}

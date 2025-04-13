@@ -3,9 +3,9 @@ package joshie.harvest.mining.item;
 import java.util.Locale;
 
 import javax.annotation.Nonnull;
+import joshie.harvest.HarvestFestival;
 import joshie.harvest.core.HFTab;
 import joshie.harvest.core.base.item.ItemHFEnum;
-import joshie.harvest.core.lib.HFModInfo;
 import joshie.harvest.mining.entity.EntityDarkChick;
 import joshie.harvest.mining.entity.EntityDarkChicken;
 import joshie.harvest.mining.entity.EntityDarkCow;
@@ -20,7 +20,6 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
@@ -88,7 +87,7 @@ public class ItemDarkSpawner extends ItemHFEnum<ItemDarkSpawner, DarkSpawner> {
 					item,
 					i,
 					new ModelResourceLocation(
-							new ResourceLocation(HFModInfo.MODID, "dark_spawner_" + values[i].name().toLowerCase(Locale.ENGLISH)),
+							HarvestFestival.id("dark_spawner_" + values[i].name().toLowerCase(Locale.ENGLISH)),
 							"inventory"));
 		}
 	}

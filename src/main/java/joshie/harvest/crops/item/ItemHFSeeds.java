@@ -5,13 +5,13 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import joshie.harvest.HarvestFestival;
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.crops.Crop;
 import joshie.harvest.api.trees.Tree;
 import joshie.harvest.core.HFTab;
 import joshie.harvest.core.helpers.TextHelper;
 import joshie.harvest.core.lib.CreativeSort;
-import joshie.harvest.core.lib.HFModInfo;
 import joshie.harvest.core.util.interfaces.ICreativeSorted;
 import joshie.harvest.crops.HFCrops;
 import net.minecraft.block.state.IBlockState;
@@ -163,7 +163,7 @@ public class ItemHFSeeds extends ItemSeeds implements ICreativeSorted {
 
 	public ItemHFSeeds register(String name) {
 		setUnlocalizedName(name.replace("_", "."));
-		setRegistryName(new ResourceLocation(HFModInfo.MODID, name));
+		setRegistryName(HarvestFestival.id(name));
 		GameData.register_impl(this);
 		return this;
 	}

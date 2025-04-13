@@ -142,7 +142,8 @@ public class QuestMeetJim extends QuestMeetingTutorial {
         You can autofeed larger animals with a trough, just simply place some fodder in it
         He then mentions that the animal ranch
         Is a great place to buy larger animals, and other things, so he suggests you build one */
-			if (InventoryHelper.getHandItemIsIn(player,
+			if (InventoryHelper.getHandItemIsIn(
+					player,
 					InventoryHelper.ITEM_STACK, HFAnimals.ANIMAL_PRODUCT.getStack(Sizeable.MILK, Size.SMALL)) != null) {
 				return getLocalized("complete");
 			}
@@ -167,7 +168,8 @@ public class QuestMeetJim extends QuestMeetingTutorial {
 			increaseStage(player);
 			rewardItem(player, HFAnimals.TOOLS.getStackFromEnum(Tool.MILKER));
 		} else if (quest_stage == MILKING) {
-			if (InventoryHelper.getHandItemIsIn(player,
+			if (InventoryHelper.getHandItemIsIn(
+					player,
 					InventoryHelper.ITEM_STACK, HFAnimals.ANIMAL_PRODUCT.getStack(Sizeable.MILK, Size.SMALL)) != null) {
 				complete(player);
 			}

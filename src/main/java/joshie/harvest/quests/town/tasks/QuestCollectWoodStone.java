@@ -70,7 +70,8 @@ public class QuestCollectWoodStone extends QuestDaily {
 
 	@Override
 	public void onChatClosed(EntityPlayer player, NPCEntity entity, boolean wasSneaking) {
-		if (InventoryHelper.takeItemsIfHeld(player,
+		if (InventoryHelper.takeItemsIfHeld(
+				player,
 				InventoryHelper.ORE_DICTIONARY, (wood ? "logWood" : "stone"), amount) != null) {
 			complete(player);
 		}

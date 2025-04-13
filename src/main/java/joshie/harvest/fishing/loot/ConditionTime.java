@@ -7,10 +7,9 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 
 import javax.annotation.Nonnull;
+import joshie.harvest.HarvestFestival;
 import joshie.harvest.calendar.CalendarHelper;
-import joshie.harvest.core.lib.HFModInfo;
 import net.minecraft.util.JsonUtils;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.loot.LootContext;
 import net.minecraft.world.storage.loot.conditions.LootCondition;
 
@@ -30,7 +29,7 @@ public class ConditionTime implements LootCondition {
 
 	public static class Serializer extends LootCondition.Serializer<ConditionTime> {
 		public Serializer() {
-			super(new ResourceLocation(HFModInfo.MODID, "time"), ConditionTime.class);
+			super(HarvestFestival.id("time"), ConditionTime.class);
 		}
 
 		@Override

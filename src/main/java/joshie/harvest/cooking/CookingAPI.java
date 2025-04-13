@@ -7,6 +7,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
+import joshie.harvest.HarvestFestival;
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.cooking.CookingHandler;
 import joshie.harvest.api.cooking.CookingManager;
@@ -15,7 +16,6 @@ import joshie.harvest.api.cooking.IngredientStack;
 import joshie.harvest.api.cooking.Recipe;
 import joshie.harvest.api.cooking.Utensil;
 import joshie.harvest.cooking.recipe.RecipeMaker;
-import joshie.harvest.core.lib.HFModInfo;
 import joshie.harvest.core.util.annotations.HFApiImplementation;
 import joshie.harvest.core.util.holders.HolderRegistryMulti;
 import joshie.harvest.core.util.holders.ItemStackHolder;
@@ -83,7 +83,7 @@ public class CookingAPI implements CookingManager {
 	@Override
 	@Nonnull
 	public ItemStack getBestMeal(String string) {
-		ResourceLocation location = string.contains(":") ? new ResourceLocation(string) : new ResourceLocation(HFModInfo.MODID, string);
+		ResourceLocation location = string.contains(":") ? new ResourceLocation(string) : HarvestFestival.id(string);
 		for (Recipe recipe : Recipe.REGISTRY.values()) {
 			if (recipe.getResource().equals(location)) {
 				ArrayList<IngredientStack> stacks = new ArrayList<>();
@@ -101,7 +101,7 @@ public class CookingAPI implements CookingManager {
 	@Override
 	@Nonnull
 	public ItemStack getMeal(String string) {
-		ResourceLocation location = string.contains(":") ? new ResourceLocation(string) : new ResourceLocation(HFModInfo.MODID, string);
+		ResourceLocation location = string.contains(":") ? new ResourceLocation(string) : HarvestFestival.id(string);
 		for (Recipe recipe : Recipe.REGISTRY.values()) {
 			if (recipe.getResource().equals(location)) {
 				return CookingHelper.makeRecipe(recipe);

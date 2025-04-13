@@ -86,7 +86,9 @@ public class EntityHarvestCow extends EntityCow implements IEntityAdditionalSpaw
 			return false;
 		}
 		ItemStack stack = player.getHeldItem(hand);
-		boolean special = InventoryHelper.ITEM_STACK.matchesAny(stack, getStacks()) || InventoryHelper.ITEM.matchesAny(stack, HFAnimals.TREATS);
+		boolean special = InventoryHelper.ITEM_STACK.matchesAny(stack, getStacks()) || InventoryHelper.ITEM.matchesAny(
+				stack,
+				HFAnimals.TREATS);
 		if (stack.isEmpty() || !special) {
 			if (!stats.performTest(AnimalTest.BEEN_LOVED)) {
 				stats.performAction(world, ItemStack.EMPTY, AnimalAction.PETTED); //Love <3

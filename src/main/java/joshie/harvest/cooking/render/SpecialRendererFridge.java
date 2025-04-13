@@ -1,8 +1,8 @@
 package joshie.harvest.cooking.render;
 
 import javax.annotation.Nonnull;
+import joshie.harvest.HarvestFestival;
 import joshie.harvest.cooking.tile.TileFridge;
-import joshie.harvest.core.lib.HFModInfo;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.util.EnumFacing;
@@ -12,7 +12,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class SpecialRendererFridge extends TileEntitySpecialRenderer<TileFridge> {
-	private static final ResourceLocation TEXTURE = new ResourceLocation(HFModInfo.MODID, "textures/models/fridge_door.png");
+	private static final ResourceLocation TEXTURE = HarvestFestival.id("textures/models/fridge_door.png");
 	private final ModelFridgeDoor ovenModel = new ModelFridgeDoor();
 
 	@Override

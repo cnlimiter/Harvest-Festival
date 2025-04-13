@@ -25,7 +25,6 @@ import joshie.harvest.core.HFTab;
 import joshie.harvest.core.base.item.ItemHFEnum;
 import joshie.harvest.core.helpers.ChatHelper;
 import joshie.harvest.core.lib.CreativeSort;
-import joshie.harvest.core.lib.HFModInfo;
 import joshie.harvest.core.util.HFTemplate;
 import joshie.harvest.mining.MiningHelper;
 import joshie.harvest.mining.gen.MineManager;
@@ -39,7 +38,6 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -269,7 +267,7 @@ public class ItemCheat extends ItemHFEnum<ItemCheat, Cheat> {
 				ModelLoader.setCustomModelResourceLocation(
 						item,
 						cheat.ordinal(),
-						new ModelResourceLocation(new ResourceLocation(HFModInfo.MODID, "debug"), "inventory"));
+						new ModelResourceLocation(HarvestFestival.id("debug"), "inventory"));
 			}
 		}
 	}

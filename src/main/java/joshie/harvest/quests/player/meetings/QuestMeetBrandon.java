@@ -61,7 +61,8 @@ public class QuestMeetBrandon extends QuestMeetingTutorial {
 			//Brandon explains mining, and asks the player to bring him 3 junk rocks
 			return getLocalized("explain");
 		} else if (quest_stage == ORE) {
-			if (InventoryHelper.getHandItemIsIn(player,
+			if (InventoryHelper.getHandItemIsIn(
+					player,
 					InventoryHelper.ITEM_STACK, HFMining.MATERIALS.getStackFromEnum(Material.JUNK), 3) != null) {
 				return getLocalized("complete");
 			} else {

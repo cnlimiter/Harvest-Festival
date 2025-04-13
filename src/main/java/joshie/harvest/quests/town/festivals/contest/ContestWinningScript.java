@@ -2,19 +2,18 @@ package joshie.harvest.quests.town.festivals.contest;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 
+import joshie.harvest.HarvestFestival;
 import joshie.harvest.api.npc.NPCEntity;
 import joshie.harvest.api.npc.greeting.Script;
-import joshie.harvest.core.lib.HFModInfo;
 import joshie.harvest.quests.town.festivals.Place;
 import joshie.harvest.town.TownHelper;
 import joshie.harvest.town.data.TownData;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 
 public class ContestWinningScript extends Script {
 	public ContestWinningScript(String name) {
-		super(new ResourceLocation(HFModInfo.MODID, name + "_winner"));
+		super(HarvestFestival.id(name + "_winner"));
 	}
 
 	@SuppressWarnings("deprecation")

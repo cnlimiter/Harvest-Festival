@@ -65,11 +65,13 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @HFLoader(priority = LoadOrder.HFNPCS)
 @SuppressWarnings("unchecked, unused")
 public class HFNPCs {
-	public static final NPC GODDESS = register("goddess",
+	public static final NPC GODDESS = register(
+			"goddess",
 			INPCHelper.Gender.FEMALE, Age.ADULT, 8, Season.SPRING, 0x8CEED3, 0x4EC485).setHeight(1.2F, 0.6F)
 			.setUninvitable()
 			.setNoRespawn();
-	public static final NPCSpecialSeller CARPENTER = register("yulif",
+	public static final NPCSpecialSeller CARPENTER = register(
+			"yulif",
 			INPCHelper.Gender.MALE, Age.ADULT, 19, Season.SUMMER, 0x313857, 0x121421, NPCSpecialSeller.class);
 	public static final NPCSpecialSeller FLOWER_GIRL = register(
 			"jade", INPCHelper.Gender.FEMALE,
@@ -87,18 +89,24 @@ public class HFNPCs {
 			0xDDD0AD,
 			0xE79043,
 			NPCSpecialOpener.class).setNPC(GODDESS);
-	public static final NPC MILKMAID = register("candice",
+	public static final NPC MILKMAID = register(
+			"candice",
 			INPCHelper.Gender.FEMALE, Age.ADULT, 5, Season.AUTUMN, 0xF65FAB, 0xF21985, NPCHolidayStore.class);
-	public static final NPC BARN_OWNER = register("jim",
+	public static final NPC BARN_OWNER = register(
+			"jim",
 			INPCHelper.Gender.MALE, Age.ADULT, 26, Season.SPRING, 0xDE7245, 0x722B19, NPCHolidayStore.class);
-	public static final NPC POULTRY = register("ashlee",
+	public static final NPC POULTRY = register(
+			"ashlee",
 			INPCHelper.Gender.FEMALE, INPCHelper.Age.ADULT, 16,
 			Season.AUTUMN, 0xC62D2D, 0x571111);
-	public static final NPC TRADER = register("girafi", INPCHelper.Gender.MALE,
+	public static final NPC TRADER = register(
+			"girafi", INPCHelper.Gender.MALE,
 			Age.ADULT, 2, Season.AUTUMN, 0xFFFFFF, 0xC60C30).setUninvitable();
-	public static final NPCSpecialSeller FISHERMAN = register("jacob",
+	public static final NPCSpecialSeller FISHERMAN = register(
+			"jacob",
 			INPCHelper.Gender.MALE, Age.ADULT, 28, Season.AUTUMN, 0x7396FF, 0x0036D9, NPCSpecialSeller.class);
-	public static final NPCSpecialSeller MINER = register("brandon",
+	public static final NPCSpecialSeller MINER = register(
+			"brandon",
 			INPCHelper.Gender.MALE, Age.ADULT, 13, Season.AUTUMN, 0xC28D48, 0x5F5247, NPCSpecialSeller.class);
 	public static final NPCSpecialSeller CAFE_OWNER = register(
 			"liara", INPCHelper.Gender.FEMALE,
@@ -108,23 +116,31 @@ public class HFNPCs {
 			0xBEC8EE,
 			0x8091D0,
 			NPCHolidayStoreSpecial.class);
-	public static final NPC CAFE_GRANNY = register("katlin",
+	public static final NPC CAFE_GRANNY = register(
+			"katlin",
 			INPCHelper.Gender.FEMALE,
 			INPCHelper.Age.ELDER, 12, Season.SUMMER, 0xDDDDDD, 0x777777, NPCHolidayStore.class);
-	public static final NPC BLACKSMITH = register("daniel",
+	public static final NPC BLACKSMITH = register(
+			"daniel",
 			INPCHelper.Gender.MALE, Age.ADULT, 1, Season.WINTER, 0x613827, 0x23150E);
-	public static final NPC CLOCKMAKER = register("tiberius",
+	public static final NPC CLOCKMAKER = register(
+			"tiberius",
 			INPCHelper.Gender.MALE, Age.ADULT, 15, Season.WINTER, 0x305A2E, 0x142419, NPCClockmaker.class);
-	public static final NPC CLOCKMAKER_CHILD = register("fenn",
+	public static final NPC CLOCKMAKER_CHILD = register(
+			"fenn",
 			INPCHelper.Gender.MALE, INPCHelper.Age.CHILD, 25,
 			Season.SUMMER, 0x228C00, 0x003F00);
-	public static final NPC PRIEST = register("thomas", INPCHelper.Gender.MALE,
+	public static final NPC PRIEST = register(
+			"thomas", INPCHelper.Gender.MALE,
 			INPCHelper.Age.ELDER, 9, Season.SUMMER, 0x006666, 0x00B2B20);
-	public static final NPC MAYOR = register("jamie", INPCHelper.Gender.FEMALE,
+	public static final NPC MAYOR = register(
+			"jamie", INPCHelper.Gender.FEMALE,
 			INPCHelper.Age.ELDER, 8, Season.SUMMER, 0xA8AC9A, 0x3B636D);
-	public static final NPC DAUGHTER_ADULT = register("cloe",
+	public static final NPC DAUGHTER_ADULT = register(
+			"cloe",
 			INPCHelper.Gender.FEMALE, Age.ADULT, 3, Season.SPRING, 0xFFFF99, 0xB2B200);
-	public static final NPC DAUGHTER_CHILD = register("abi",
+	public static final NPC DAUGHTER_CHILD = register(
+			"abi",
 			INPCHelper.Gender.FEMALE, INPCHelper.Age.CHILD, 27,
 			Season.WINTER, 0xFF99FF, 0xFF20FF);
 
@@ -147,7 +163,7 @@ public class HFNPCs {
 		BLACKSMITH.addFamily(GS_OWNER, CARPENTER);
 		DAUGHTER_ADULT.addFamily(MAYOR, DAUGHTER_CHILD);
 		EntityRegistry.registerModEntity(
-				new ResourceLocation(HFModInfo.MODID, "villager"),
+				HarvestFestival.id("villager"),
 				EntityNPCVillager.class,
 				"villager",
 				EntityIDs.VILLAGER,
@@ -156,7 +172,7 @@ public class HFNPCs {
 				3,
 				true);
 		EntityRegistry.registerModEntity(
-				new ResourceLocation(HFModInfo.MODID, "builder"),
+				HarvestFestival.id("builder"),
 				EntityNPCBuilder.class,
 				"builder",
 				EntityIDs.BUILDER,
@@ -165,7 +181,7 @@ public class HFNPCs {
 				3,
 				true);
 		EntityRegistry.registerModEntity(
-				new ResourceLocation(HFModInfo.MODID, "goddess"),
+				HarvestFestival.id("goddess"),
 				EntityNPCGoddess.class,
 				"goddess",
 				EntityIDs.GODDESS,
@@ -174,7 +190,7 @@ public class HFNPCs {
 				3,
 				true);
 		EntityRegistry.registerModEntity(
-				new ResourceLocation(HFModInfo.MODID, "miner"),
+				HarvestFestival.id("miner"),
 				EntityNPCMiner.class,
 				"miner",
 				EntityIDs.MINER,
@@ -287,7 +303,7 @@ public class HFNPCs {
 		} catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException ex) { /**/}
 
 		return npc != null ? (N) npc : (N) new NPC(
-				new ResourceLocation(HFModInfo.MODID, name),
+				HarvestFestival.id(name),
 				gender,
 				age,
 				new CalendarDate(dayOfBirth, seasonOfBirth, 1),

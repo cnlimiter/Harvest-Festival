@@ -88,23 +88,36 @@ public class HFCrops {
 			.setValue(350, 80)
 			.setStages(Blocks.POTATOES, 1, 2, 3, 4, 5, 6, 7, 8)
 			.setSeedColours(0xBE8D2B);
-	public static final Crop CUCUMBER = RegistryHelper.registerCrop("cucumber").setItem(getCropStack(Crops.CUCUMBER)).setValue(400, 40).setStages(
+	public static final Crop CUCUMBER = RegistryHelper.registerCrop("cucumber")
+			.setItem(getCropStack(Crops.CUCUMBER))
+			.setValue(400, 40)
+			.setStages(
 					3,
 					6,
 					9,
-					10).setRegrow(7).setMaxHarvests(8)
-			.setSeedColours(0x36B313).setAnimalFoodType(AnimalFoodType.FRUIT).setPurchaseRules(YEAR2);
-	public static final Crop STRAWBERRY = RegistryHelper.registerCrop("strawberry").setItem(getCropStack(Crops.STRAWBERRY)).setValue(800, 50).setStages(
+					10)
+			.setRegrow(7)
+			.setMaxHarvests(8)
+			.setSeedColours(0x36B313)
+			.setAnimalFoodType(AnimalFoodType.FRUIT)
+			.setPurchaseRules(YEAR2);
+	public static final Crop STRAWBERRY = RegistryHelper.registerCrop("strawberry").setItem(getCropStack(Crops.STRAWBERRY)).setValue(
+					800,
+					50).setStages(
 					3,
 					6,
 					8,
 					9).setRegrow(7).setMaxHarvests(12)
 			.setSeedColours(0xFF7BEA).setAnimalFoodType(AnimalFoodType.FRUIT).setPurchaseRules(YEAR3);
-	public static final Crop CABBAGE = RegistryHelper.registerCrop("cabbage").setItem(getCropStack(Crops.CABBAGE)).setValue(1500, 450).setStages(
+	public static final Crop CABBAGE = RegistryHelper.registerCrop("cabbage")
+			.setItem(getCropStack(Crops.CABBAGE))
+			.setValue(1500, 450)
+			.setStages(
 					4,
 					9,
 					14,
-					15).setSeedColours(0x8FFF40)
+					15)
+			.setSeedColours(0x8FFF40)
 			.setPurchaseRules(new SpecialRulesQuest("cabbage"));
 
 	private static final SpecialRulesQuest TOWN_PROGRESS = new SpecialRulesQuest("progress");
@@ -130,13 +143,21 @@ public class HFCrops {
 			.setSeedColours(0XE09A39)
 			.setSeasons(Season.SUMMER)
 			.setIngredient(2, 0.3F);
-	public static final Crop PINEAPPLE = RegistryHelper.registerCrop("pineapple").setItem(getCropStack(Crops.PINEAPPLE)).setValue(2000, 420).setStages(
+	public static final Crop PINEAPPLE = RegistryHelper.registerCrop("pineapple")
+			.setItem(getCropStack(Crops.PINEAPPLE))
+			.setValue(2000, 420)
+			.setStages(
 					5,
 					10,
 					15,
 					20,
-					21).setRegrow(16).setMaxHarvests(3)
-			.setSeedColours(0XD7CF00).setSeasons(Season.SUMMER).setAnimalFoodType(AnimalFoodType.FRUIT).setPurchaseRules(new SpecialRulesQuest("pineapple"));
+					21)
+			.setRegrow(16)
+			.setMaxHarvests(3)
+			.setSeedColours(0XD7CF00)
+			.setSeasons(Season.SUMMER)
+			.setAnimalFoodType(AnimalFoodType.FRUIT)
+			.setPurchaseRules(new SpecialRulesQuest("pineapple"));
 	public static final Crop WATERMELON = RegistryHelper.registerCrop("watermelon").setItem(Items.MELON)
 			.setSkipRender()
 			.setValue(250, 20)
@@ -159,10 +180,16 @@ public class HFCrops {
 					.withProperty(BlockOldLog.VARIANT, EnumType.JUNGLE)).setStageLength(15, 15, 25).setFruitRegrow(4)
 			.setItem(getCropStack(Crops.BANANA)).setValue(2500, 300).setSeedColours(0xFFEF6A)
 			.setSeasons(Season.SUMMER).setPurchaseRules(YEAR3).setAnimalFoodType(AnimalFoodType.FRUIT);
-	public static final Crop ORANGE = RegistryHelper.registerTree("orange").setStageLength(12, 22, 15).setItem(getCropStack(Crops.ORANGE)).setValue(
+	public static final Crop ORANGE = RegistryHelper.registerTree("orange")
+			.setStageLength(12, 22, 15)
+			.setItem(getCropStack(Crops.ORANGE))
+			.setValue(
 					2800,
-					200).setSeedColours(0xEDB325)
-			.setSeasons(Season.SUMMER).setPurchaseRules(YEAR2).setAnimalFoodType(AnimalFoodType.FRUIT);
+					200)
+			.setSeedColours(0xEDB325)
+			.setSeasons(Season.SUMMER)
+			.setPurchaseRules(YEAR2)
+			.setAnimalFoodType(AnimalFoodType.FRUIT);
 	public static final Crop PEACH = RegistryHelper.registerTree("peach").setStageLength(6, 15, 15)
 			.setItem(getCropStack(Crops.PEACH))
 			.setValue(3000, 250)
@@ -171,12 +198,19 @@ public class HFCrops {
 			.setPurchaseRules(YEAR3)
 			.setAnimalFoodType(AnimalFoodType.FRUIT);
 	//Autumn Crops
-	public static final Crop EGGPLANT = RegistryHelper.registerCrop("eggplant").setItem(getCropStack(Crops.EGGPLANT)).setValue(600, 80).setStages(
+	public static final Crop EGGPLANT = RegistryHelper.registerCrop("eggplant")
+			.setItem(getCropStack(Crops.EGGPLANT))
+			.setValue(600, 80)
+			.setStages(
 					3,
 					6,
 					9,
-					10).setRegrow(7).setMaxHarvests(8)
-			.setSeedColours(0XA25CC4).setSeasons(Season.AUTUMN).setPurchaseRules(YEAR2);
+					10)
+			.setRegrow(7)
+			.setMaxHarvests(8)
+			.setSeedColours(0XA25CC4)
+			.setSeasons(Season.AUTUMN)
+			.setPurchaseRules(YEAR2);
 	public static final Crop SPINACH = RegistryHelper.registerCrop("spinach").setItem(getCropStack(Crops.SPINACH))
 			.setValue(350, 100)
 			.setStages(2, 5, 6)
@@ -336,9 +370,17 @@ public class HFCrops {
 		RegistryHelper.registerVanillaCrop(Blocks.WHEAT, new ItemStack(Items.WHEAT), new ItemStack(Items.WHEAT_SEEDS, 9), WHEAT);
 		RegistryHelper.registerVanillaCrop(Blocks.CARROTS, new ItemStack(Items.CARROT), new ItemStack(Items.CARROT), CARROT);
 		RegistryHelper.registerVanillaCrop(Blocks.POTATOES, new ItemStack(Items.POTATO), new ItemStack(Items.POTATO), POTATO);
-		RegistryHelper.registerVanillaCrop(Blocks.BEETROOTS, new ItemStack(Items.BEETROOT), new ItemStack(Items.BEETROOT_SEEDS, 9), BEETROOT);
+		RegistryHelper.registerVanillaCrop(
+				Blocks.BEETROOTS,
+				new ItemStack(Items.BEETROOT),
+				new ItemStack(Items.BEETROOT_SEEDS, 9),
+				BEETROOT);
 		RegistryHelper.registerVanillaCrop(Blocks.MELON_STEM, new ItemStack(Items.MELON), new ItemStack(Items.MELON_SEEDS, 9), WATERMELON);
-		RegistryHelper.registerVanillaCrop(Blocks.PUMPKIN_STEM, new ItemStack(Blocks.PUMPKIN), new ItemStack(Items.PUMPKIN_SEEDS, 9), PUMPKIN);
+		RegistryHelper.registerVanillaCrop(
+				Blocks.PUMPKIN_STEM,
+				new ItemStack(Blocks.PUMPKIN),
+				new ItemStack(Items.PUMPKIN_SEEDS, 9),
+				PUMPKIN);
 		HFApi.npc.getGifts().addToBlacklist(SEEDS);
 	}
 
@@ -420,15 +462,27 @@ public class HFCrops {
 				"Crops grow daily",
 				true,
 				"This setting when set to true, will make crops grow based on day by day instead of based on random ticks");
-		ENABLE_BONEMEAL = ConfigHelper.getBoolean("Enable bonemeal", false, "Enabling this will allow you to use bonemeal on plants to grow them.");
+		ENABLE_BONEMEAL = ConfigHelper.getBoolean(
+				"Enable bonemeal",
+				false,
+				"Enabling this will allow you to use bonemeal on plants to grow them.");
 		SEASONAL_BONEMEAL = ConfigHelper.getBoolean(
 				"Seasonal bonemeal",
 				true,
 				"If you have bonemeal enabled, with this setting active, bonemeal will only work when the crop is in season");
-		DISABLE_VANILLA_SEEDS = ConfigHelper.getBoolean("Disable vanilla seeds", true, "If this is true, vanilla seeds will not plant their crops");
+		DISABLE_VANILLA_SEEDS = ConfigHelper.getBoolean(
+				"Disable vanilla seeds",
+				true,
+				"If this is true, vanilla seeds will not plant their crops");
 		DISABLE_VANILLA_GROWTH = ConfigHelper.getBoolean("Disable vanilla growth", true, "If this is true, vanilla crops will not grow");
-		DISABLE_VANILLA_DROPS = ConfigHelper.getBoolean("Disable vanilla drops", true, "If this is true, vanilla crops will not drop their items");
-		DISABLE_VANILLA_WHEAT_SEEDS = ConfigHelper.getBoolean("Disable seed drops from grass", true, "If this is true, grass will not drop wheat seeds");
+		DISABLE_VANILLA_DROPS = ConfigHelper.getBoolean(
+				"Disable vanilla drops",
+				true,
+				"If this is true, vanilla crops will not drop their items");
+		DISABLE_VANILLA_WHEAT_SEEDS = ConfigHelper.getBoolean(
+				"Disable seed drops from grass",
+				true,
+				"If this is true, grass will not drop wheat seeds");
 		DISABLE_VANILLA_HOE = ConfigHelper.getBoolean("Disable vanilla hoes", false, "If this is true, vanilla hoes will not till dirt");
 		DISABLE_VANILLA_MOISTURE = ConfigHelper.getBoolean(
 				"Disable vanilla moisture",

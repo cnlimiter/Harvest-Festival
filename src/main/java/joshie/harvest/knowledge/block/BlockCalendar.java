@@ -8,7 +8,6 @@ import javax.annotation.Nullable;
 import joshie.harvest.HarvestFestival;
 import joshie.harvest.core.base.block.BlockHFBase;
 import joshie.harvest.core.handlers.GuiHandler;
-import joshie.harvest.core.lib.HFModInfo;
 import joshie.harvest.knowledge.HFKnowledge;
 import joshie.harvest.knowledge.item.ItemBook;
 import net.minecraft.block.Block;
@@ -24,7 +23,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -153,7 +151,7 @@ public class BlockCalendar extends BlockHFBase<BlockCalendar> {
 	@Override
 	public BlockCalendar register(String name) {
 		setUnlocalizedName(name.replace("_", "."));
-		setRegistryName(new ResourceLocation(HFModInfo.MODID, name));
+		setRegistryName(HarvestFestival.id(name));
 		GameData.register_impl(this);
 		return this;
 	}

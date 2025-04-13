@@ -7,11 +7,11 @@ import com.mojang.realmsclient.gui.ChatFormatting;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import joshie.harvest.HarvestFestival;
 import joshie.harvest.core.HFTab;
 import joshie.harvest.core.base.block.BlockHFEnumCube;
 import joshie.harvest.core.helpers.ChatHelper;
 import joshie.harvest.core.helpers.TextHelper;
-import joshie.harvest.core.lib.HFModInfo;
 import joshie.harvest.mining.HFMining;
 import joshie.harvest.mining.block.BlockStone.Type;
 import net.minecraft.block.SoundType;
@@ -28,7 +28,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.Explosion;
@@ -163,7 +162,7 @@ public class BlockStone extends BlockHFEnumCube<BlockStone, Type> {
 					item,
 					i,
 					new ModelResourceLocation(
-							new ResourceLocation(HFModInfo.MODID, "mine/mine_wall_" + getEnumFromMeta(i).getName()),
+							HarvestFestival.id("mine/mine_wall_" + getEnumFromMeta(i).getName()),
 							"inventory"));
 		}
 	}

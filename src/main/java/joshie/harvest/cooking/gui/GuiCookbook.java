@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
+import joshie.harvest.HarvestFestival;
 import joshie.harvest.api.cooking.Ingredient;
 import joshie.harvest.api.cooking.IngredientStack;
 import joshie.harvest.api.cooking.Utensil;
@@ -14,7 +15,6 @@ import joshie.harvest.cooking.CookingAPI;
 import joshie.harvest.cooking.CookingHelper;
 import joshie.harvest.core.helpers.MCClientHelper;
 import joshie.harvest.core.helpers.StackRenderHelper;
-import joshie.harvest.core.lib.HFModInfo;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
@@ -26,8 +26,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class GuiCookbook extends GuiScreen {
-	public static final ResourceLocation LEFT_GUI = new ResourceLocation(HFModInfo.MODID, "textures/gui/book_cooking_left.png");
-	public static final ResourceLocation RIGHT_GUI = new ResourceLocation(HFModInfo.MODID, "textures/gui/book_cooking_right.png");
+	public static final ResourceLocation LEFT_GUI = HarvestFestival.id("textures/gui/book_cooking_left.png");
+	public static final ResourceLocation RIGHT_GUI = HarvestFestival.id("textures/gui/book_cooking_right.png");
 	public static final PageUtensilList MASTER = new PageUtensilList();
 	public static final Set<IngredientStack> ingredients = new HashSet<>();
 	private final ArrayList<Runnable> runnables = new ArrayList<>();

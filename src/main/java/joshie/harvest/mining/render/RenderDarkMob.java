@@ -1,7 +1,7 @@
 package joshie.harvest.mining.render;
 
 import javax.annotation.Nonnull;
-import joshie.harvest.core.lib.HFModInfo;
+import joshie.harvest.HarvestFestival;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -13,7 +13,7 @@ public class RenderDarkMob<T extends EntityLiving> extends RenderLiving<T> {
 
 	public RenderDarkMob(RenderManager manager, ModelBase model, String animal) {
 		super(manager, model, 1F);
-		texture = new ResourceLocation(HFModInfo.MODID, "textures/entity/" + animal + ".png");
+		texture = HarvestFestival.id("textures/entity/" + animal + ".png");
 	}
 
 	@Override

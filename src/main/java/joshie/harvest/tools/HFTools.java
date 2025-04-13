@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.google.common.collect.Maps;
 
+import joshie.harvest.HarvestFestival;
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.core.ITiered.ToolTier;
 import joshie.harvest.core.base.item.ItemTool;
@@ -59,12 +60,28 @@ public class HFTools {
 			-0.10000000596046448D,
 			2);
 	public static final Potion EXHAUSTION = registerPotion("exhaustion", 0xBBBBBB, 1, 0)
-			.registerPotionAttributeModifier(SharedMonsterAttributes.MOVEMENT_SPEED, "8107BC5D-5CF8-4030-440C-314C1E160890", -0.50000000596046448D, 2)
-			.registerPotionAttributeModifier(SharedMonsterAttributes.ATTACK_SPEED, "8107BC5D-5CF8-4030-440C-314C1E160891", -0.50000000596046448D, 2);
+			.registerPotionAttributeModifier(
+					SharedMonsterAttributes.MOVEMENT_SPEED,
+					"8107BC5D-5CF8-4030-440C-314C1E160890",
+					-0.50000000596046448D,
+					2)
+			.registerPotionAttributeModifier(
+					SharedMonsterAttributes.ATTACK_SPEED,
+					"8107BC5D-5CF8-4030-440C-314C1E160891",
+					-0.50000000596046448D,
+					2);
 	public static final Potion CURSED = registerPotion("cursed", 0x660000, 2, 0)
 			.registerPotionAttributeModifier(SharedMonsterAttributes.MAX_HEALTH, "FB353E1C-4180-4865-B01B-BCCE9785ACA3", -0.33D, 2)
-			.registerPotionAttributeModifier(SharedMonsterAttributes.MOVEMENT_SPEED, "8107BD5E-7CF8-4030-441C-514C1F160890", -0.03000000596046448D, 2)
-			.registerPotionAttributeModifier(SharedMonsterAttributes.ATTACK_DAMAGE, "8107BD5F-4CF8-4030-441D-534C1F140890", -0.20000000596046448D, 2);
+			.registerPotionAttributeModifier(
+					SharedMonsterAttributes.MOVEMENT_SPEED,
+					"8107BD5E-7CF8-4030-441C-514C1F160890",
+					-0.03000000596046448D,
+					2)
+			.registerPotionAttributeModifier(
+					SharedMonsterAttributes.ATTACK_DAMAGE,
+					"8107BD5F-4CF8-4030-441D-534C1F140890",
+					-0.20000000596046448D,
+					2);
 
 	public static void preInit() {
 		RegistryHelper.registerSounds("smash_rock", "smash_wood", "tree_chop", "tree_fall");
@@ -86,7 +103,7 @@ public class HFTools {
 	}
 
 	private static Potion registerPotion(String name, int color, int x, int y) {
-		ResourceLocation location = new ResourceLocation(HFModInfo.MODID, name);
+		ResourceLocation location = HarvestFestival.id(name);
 		Potion potion = new HFPotion(HFModInfo.MODID + ".effect." + name, color, x, y).setRegistryName(location);
 		return GameData.register_impl(potion);
 	}
@@ -109,7 +126,9 @@ public class HFTools {
 		EXHAUSTION_AMOUNT = 4F / ConfigHelper.getInteger("Actions per half haunch", 27);
 		RESTORE_HUNGER_ON_SLEEP = ConfigHelper.getBoolean("Restore hunger on sleep", true);
 		if (MORPHEUS_LOADED) {
-			RESTORE_HUNGER_FOR_SLEEPERS_ONLY = ConfigHelper.getBoolean("Restore hunger on sleep for sleeping players only (Morpheus)", true);
+			RESTORE_HUNGER_FOR_SLEEPERS_ONLY = ConfigHelper.getBoolean(
+					"Restore hunger on sleep for sleeping players only (Morpheus)",
+					true);
 		}
 		RESTORE_HUNGER_ON_FAINTING = ConfigHelper.getBoolean("Restore hunger on fainting", true);
 		HF_CONSUME_HUNGER = ConfigHelper.getBoolean("Performing Harvest Festival actions consumes hunger", true);

@@ -7,13 +7,12 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 
 import javax.annotation.Nonnull;
+import joshie.harvest.HarvestFestival;
 import joshie.harvest.core.HFTrackers;
-import joshie.harvest.core.lib.HFModInfo;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.JsonUtils;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.loot.LootContext;
 import net.minecraft.world.storage.loot.conditions.LootCondition;
 
@@ -33,7 +32,7 @@ public class Obtained implements LootCondition {
 
 	public static class Serializer extends LootCondition.Serializer<Obtained> {
 		public Serializer() {
-			super(new ResourceLocation(HFModInfo.MODID, "obtained"), Obtained.class);
+			super(HarvestFestival.id("obtained"), Obtained.class);
 		}
 
 		@Override

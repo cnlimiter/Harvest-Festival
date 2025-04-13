@@ -1,6 +1,7 @@
 package joshie.harvest.core.base.item;
 
 import javax.annotation.Nonnull;
+import joshie.harvest.HarvestFestival;
 import joshie.harvest.core.HFTab;
 import joshie.harvest.core.helpers.TextHelper;
 import joshie.harvest.core.lib.HFModInfo;
@@ -17,7 +18,6 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
@@ -96,7 +96,7 @@ public class ItemHFFood<I extends ItemHFFood> extends ItemFood {
 	@SuppressWarnings("unchecked")
 	public I register(String name) {
 		setUnlocalizedName(name.replace("_", "."));
-		setRegistryName(new ResourceLocation(HFModInfo.MODID, name));
+		setRegistryName(HarvestFestival.id(name));
 		GameData.register_impl(this);
 		if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) {
 			registerModels(this, name);
@@ -119,13 +119,13 @@ public class ItemHFFood<I extends ItemHFFood> extends ItemFood {
 				ModelLoader.setCustomModelResourceLocation(
 						item,
 						item.getDamage(stack),
-						new ModelResourceLocation(new ResourceLocation(HFModInfo.MODID, subItemName), "inventory"));
+						new ModelResourceLocation(HarvestFestival.id(subItemName), "inventory"));
 			}
 		} else {
 			ModelLoader.setCustomModelResourceLocation(
 					item,
 					0,
-					new ModelResourceLocation(new ResourceLocation(HFModInfo.MODID, name), "inventory"));
+					new ModelResourceLocation(HarvestFestival.id(name), "inventory"));
 		}
 	}
 }

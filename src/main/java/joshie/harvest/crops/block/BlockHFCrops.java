@@ -5,6 +5,7 @@ import java.util.Random;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import joshie.harvest.HarvestFestival;
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.animals.AnimalFoodType;
 import joshie.harvest.api.animals.AnimalStats;
@@ -17,7 +18,6 @@ import joshie.harvest.core.base.item.ItemBlockHF;
 import joshie.harvest.core.entity.EntityBasket;
 import joshie.harvest.core.helpers.EntityHelper;
 import joshie.harvest.core.helpers.MCServerHelper;
-import joshie.harvest.core.lib.HFModInfo;
 import joshie.harvest.crops.CropData;
 import joshie.harvest.crops.CropHelper;
 import joshie.harvest.crops.HFCrops;
@@ -45,7 +45,6 @@ import net.minecraft.util.EnumFacing.Axis;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -565,8 +564,7 @@ public class BlockHFCrops extends BlockHFEnum<BlockHFCrops, CropType> implements
 					item,
 					i,
 					new ModelResourceLocation(
-							new ResourceLocation(
-									HFModInfo.MODID,
+							HarvestFestival.id(
 									property.getName() + "_" + getEnumFromMeta(i).getName()), "inventory"));
 		}
 	}

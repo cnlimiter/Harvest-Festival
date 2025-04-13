@@ -13,6 +13,7 @@ import com.google.common.collect.Maps;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import joshie.harvest.HarvestFestival;
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.buildings.BuildingLocation;
 import joshie.harvest.api.calendar.CalendarDate;
@@ -26,7 +27,6 @@ import joshie.harvest.api.npc.gift.IGiftHandler.Quality;
 import joshie.harvest.api.npc.greeting.GreetingShop;
 import joshie.harvest.api.npc.greeting.IConditionalGreeting;
 import joshie.harvest.api.shops.Shop;
-import joshie.harvest.core.lib.HFModInfo;
 import joshie.harvest.npcs.HFNPCs;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.EntityAgeable;
@@ -68,7 +68,7 @@ public class NPC extends HFRegistry<NPC> implements CalendarEntry {
 
 	private NPC() {
 		this(
-				new ResourceLocation(HFModInfo.MODID, "null"),
+				HarvestFestival.id("null"),
 				INPCHelper.Gender.MALE,
 				INPCHelper.Age.ADULT,
 				new CalendarDate(1, Season.SPRING, 1),

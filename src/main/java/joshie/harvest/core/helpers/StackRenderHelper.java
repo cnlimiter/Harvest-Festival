@@ -2,7 +2,7 @@ package joshie.harvest.core.helpers;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import joshie.harvest.core.lib.HFModInfo;
+import joshie.harvest.HarvestFestival;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
@@ -25,7 +25,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class StackRenderHelper {
 	public static final TextureManager textureManager = MCClientHelper.getMinecraft().getTextureManager();
-	private static final ResourceLocation RES_ITEM_GLINT = new ResourceLocation(HFModInfo.MODID, "textures/gui/shadow.png");
+	private static final ResourceLocation RES_ITEM_GLINT = HarvestFestival.id("textures/gui/shadow.png");
 	public static boolean renderShadow;
 
 	@SideOnly(Side.CLIENT)

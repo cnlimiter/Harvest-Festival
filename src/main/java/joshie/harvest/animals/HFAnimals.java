@@ -39,7 +39,6 @@ import joshie.harvest.api.crops.Crop;
 import joshie.harvest.core.helpers.ConfigHelper;
 import joshie.harvest.core.helpers.RegistryHelper;
 import joshie.harvest.core.lib.EntityIDs;
-import joshie.harvest.core.lib.HFModInfo;
 import joshie.harvest.core.util.annotations.HFLoader;
 import net.minecraft.client.model.ModelChicken;
 import net.minecraft.client.model.ModelCow;
@@ -85,7 +84,7 @@ public class HFAnimals {
 		HFApi.shipping.registerSellable(new ItemStack(Items.FEATHER), 30);
 		HFApi.shipping.registerSellable(new ItemStack(Items.LEATHER), 80);
 		EntityRegistry.registerModEntity(
-				new ResourceLocation(HFModInfo.MODID, "cow"),
+				HarvestFestival.id("cow"),
 				EntityHarvestCow.class,
 				"Cow",
 				EntityIDs.COW,
@@ -94,7 +93,7 @@ public class HFAnimals {
 				3,
 				true);
 		EntityRegistry.registerModEntity(
-				new ResourceLocation(HFModInfo.MODID, "sheep"),
+				HarvestFestival.id("sheep"),
 				EntityHarvestSheep.class,
 				"Sheep",
 				EntityIDs.SHEEP,
@@ -103,7 +102,7 @@ public class HFAnimals {
 				3,
 				true);
 		EntityRegistry.registerModEntity(
-				new ResourceLocation(HFModInfo.MODID, "chicken"),
+				HarvestFestival.id("chicken"),
 				EntityHarvestChicken.class,
 				"Chicken",
 				EntityIDs.CHICKEN,

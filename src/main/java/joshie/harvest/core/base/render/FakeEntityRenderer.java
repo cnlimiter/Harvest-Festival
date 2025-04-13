@@ -4,12 +4,12 @@ import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import joshie.harvest.HarvestFestival;
 import joshie.harvest.animals.render.ModelHarvestChicken;
 import joshie.harvest.animals.render.ModelHarvestCow;
 import joshie.harvest.animals.render.ModelHarvestSheep;
 import joshie.harvest.core.base.render.FakeEntityRenderer.EntityItemRenderer;
 import joshie.harvest.core.helpers.StackRenderHelper;
-import joshie.harvest.core.lib.HFModInfo;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntityItemStackRenderer;
@@ -19,7 +19,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
 public class FakeEntityRenderer extends TileEntitySpecialRenderer<EntityItemRenderer> {
-	public static final ResourceLocation SHADOW = new ResourceLocation(HFModInfo.MODID, "textures/entity/shadow.png");
+	public static final ResourceLocation SHADOW = HarvestFestival.id("textures/entity/shadow.png");
 	public static final FakeEntityRenderer INSTANCE = new FakeEntityRenderer();
 
 	@Override
@@ -82,7 +82,7 @@ public class FakeEntityRenderer extends TileEntitySpecialRenderer<EntityItemRend
 		public RenderPair(String name, ModelBase model) {
 			this.model = model;
 			this.model.isChild = false;
-			this.texture = new ResourceLocation(HFModInfo.MODID, "textures/entity/" + name + ".png");
+			this.texture = HarvestFestival.id("textures/entity/" + name + ".png");
 			//Modded
 			if (model instanceof ModelHarvestChicken.Child) {
 				this.translation = 0.5F;

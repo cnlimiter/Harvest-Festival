@@ -49,8 +49,9 @@ public class MealDefinition implements ItemMeshDefinition {
 		if (stack.hasTagCompound()) {
 			Meal meal = HFCooking.MEAL.getEnumFromStack(stack);
 			if (meal.hasAltTexture()) {
-				return stack.getTagCompound().hasKey(TileCooking.IN_UTENSIL) ? alts.get(getMealMetaFromStack(stack)) : meals.get(getMealMetaFromStack(
-						stack));
+				return stack.getTagCompound().hasKey(TileCooking.IN_UTENSIL) ? alts.get(getMealMetaFromStack(stack)) : meals.get(
+						getMealMetaFromStack(
+								stack));
 			}
 		}
 

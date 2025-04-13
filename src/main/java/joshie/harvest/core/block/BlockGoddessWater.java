@@ -2,11 +2,11 @@ package joshie.harvest.core.block;
 
 import java.util.List;
 
+import joshie.harvest.HarvestFestival;
 import joshie.harvest.api.npc.RelationStatus;
 import joshie.harvest.core.HFTrackers;
 import joshie.harvest.core.handlers.GoddessHandler;
 import joshie.harvest.core.helpers.FakePlayerHelper;
-import joshie.harvest.core.lib.HFModInfo;
 import joshie.harvest.core.network.PacketHandler;
 import joshie.harvest.npcs.HFNPCs;
 import joshie.harvest.npcs.NPCHelper;
@@ -19,7 +19,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -78,7 +77,7 @@ public class BlockGoddessWater extends BlockFluidClassic {
 
 	public BlockGoddessWater register(String name) {
 		setUnlocalizedName(name.replace("_", "."));
-		setRegistryName(new ResourceLocation(HFModInfo.MODID, name));
+		setRegistryName(HarvestFestival.id(name));
 		GameData.register_impl(this);
 		return this;
 	}

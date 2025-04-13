@@ -5,15 +5,14 @@ import java.util.List;
 import java.util.Random;
 
 import javax.annotation.Nonnull;
+import joshie.harvest.HarvestFestival;
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.cooking.Recipe;
 import joshie.harvest.cooking.CookingHelper;
-import joshie.harvest.core.lib.HFModInfo;
 import joshie.harvest.core.registry.ShippingRegistry;
 import joshie.harvest.quests.Quests;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 public class PurchasableRandomMeal extends PurchasableMeal {
@@ -23,7 +22,7 @@ public class PurchasableRandomMeal extends PurchasableMeal {
 	private ItemStack stack = ItemStack.EMPTY;
 
 	public PurchasableRandomMeal(int seedAdjustment) {
-		super(0, new ResourceLocation(HFModInfo.MODID, "ice_cream"));
+		super(0, HarvestFestival.id("ice_cream"));
 		this.seedAdjustment = seedAdjustment;
 		this.setStock(10);
 	}

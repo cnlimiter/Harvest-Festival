@@ -1,6 +1,6 @@
 package joshie.harvest.core.lib;
 
-import net.minecraft.util.ResourceLocation;
+import joshie.harvest.HarvestFestival;
 import net.minecraft.util.SoundEvent;
 
 public class HFSounds {
@@ -23,6 +23,6 @@ public class HFSounds {
 	public static final SoundEvent SHIPPED = getSoundEvent("kerching");
 
 	private static SoundEvent getSoundEvent(String name) {
-		return SoundEvent.REGISTRY.getObject(new ResourceLocation(HFModInfo.MODID, name));
+		return SoundEvent.REGISTRY.getObject(HarvestFestival.id(name));
 	}
 }
