@@ -37,12 +37,10 @@ import joshie.harvest.fishing.item.ItemJunk.Junk;
 import joshie.harvest.fishing.loot.ConditionTier;
 import joshie.harvest.fishing.loot.ConditionTime;
 import joshie.harvest.fishing.loot.SetWeight;
-import joshie.harvest.fishing.render.RenderFishHook;
 import joshie.harvest.fishing.render.SpecialRendererHatchery;
 import joshie.harvest.fishing.render.SpecialRendererTrap;
 import joshie.harvest.fishing.tile.TileHatchery;
 import joshie.harvest.fishing.tile.TileTrap;
-import net.minecraft.entity.projectile.EntityFishHook;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemFishFood.FishType;
 import net.minecraft.item.ItemStack;
@@ -51,8 +49,6 @@ import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraft.world.storage.loot.conditions.LootConditionManager;
 import net.minecraft.world.storage.loot.functions.LootFunctionManager;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
-import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -72,7 +68,7 @@ public class HFFishing {
 		}
 	}
 
-	@SuppressWarnings("unchecked, ConstantConditions")
+	@SuppressWarnings("ConstantConditions")
 	public static void preInit() {
 		LootFunctionManager.registerFunction(new SetWeight.Serializer());
 		LootConditionManager.registerCondition(new ConditionTime.Serializer());
@@ -86,7 +82,6 @@ public class HFFishing {
 				64,
 				5,
 				true);
-		EntityEntryBuilder.create().build();
 		EntityRegistry.instance().lookupModSpawn(EntityFishHookHF.class, false).setCustomSpawning(null, true);
 		HFApi.shipping.registerSellable(new ItemStack(Items.FISH, 1, 0), 10L);
 		HFApi.shipping.registerSellable(new ItemStack(Items.FISH, 1, 1), 30L);
@@ -107,11 +102,6 @@ public class HFFishing {
 		for (Fish fish : Fish.values()) {
 			registerOreIfNotExists("fish", FISH.getStackFromEnum(fish));
 		}
-	}
-
-	@SideOnly(Side.CLIENT)
-	public static void preInitClient() throws Exception {
-		RenderingRegistry.registerEntityRenderingHandler(EntityFishHook.class, RenderFishHook::new);
 	}
 
 	public static void init() {

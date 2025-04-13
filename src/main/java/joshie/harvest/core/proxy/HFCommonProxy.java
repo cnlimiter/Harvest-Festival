@@ -27,10 +27,9 @@ import net.minecraftforge.fml.common.discovery.ASMDataTable;
 import net.minecraftforge.fml.common.discovery.ASMDataTable.ASMData;
 
 public class HFCommonProxy {
-	private static final List<Class> LIST = new ArrayList<>();
-	private static final boolean ENABLE_LOGGING = false;
+	private static final List<Class<?>> LIST = new ArrayList<>();
 
-	public List<Class> getList() {
+	public List<Class<?>> getList() {
 		return LIST;
 	}
 
@@ -42,7 +41,7 @@ public class HFCommonProxy {
 				String clazz = data.getClassName();
 				Map<String, Object> map = data.getAnnotationInfo();
 				String mods = map.get("mods") != null ? (String) map.get("mods") : "";
-				int value = mods.equals("") ? map.get("priority") != null ? (int) map.get("priority") : 1 : -5000;
+				int value = mods.isEmpty() ? map.get("priority") != null ? (int) map.get("priority") : 1 : -5000;
 				unsorted.add(Triple.of(value, mods, clazz));
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -50,16 +49,14 @@ public class HFCommonProxy {
 		}
 
 		//Now that we have gathered all the classes, let's sort them by priority
-		Comparator<Triple<Integer, String, String>> priority = (str1, str2) -> str1.getLeft() < str2.getLeft() ?
-				1 :
-				str1.getLeft() > str2.getLeft() ? -1 : 0;
+		Comparator<Triple<Integer, String, String>> priority = (str1, str2) -> str2.getLeft().compareTo(str1.getLeft());
 		unsorted.sort(priority);
 
 		//Add Everything to the real LIST
 		triple:
 		for (Triple<Integer, String, String> entry : unsorted) {
 			try {
-				if (!entry.getMiddle().equals("")) {
+				if (!entry.getMiddle().isEmpty()) {
 					String[] mods = entry.getMiddle().replace(" ", "").split(",");
 					for (String mod : mods) {
 						if (!isModLoaded(mod)) {
@@ -86,10 +83,9 @@ public class HFCommonProxy {
 		ConfigHelper.setConfig(new Configuration(file));
 	}
 
-	@SuppressWarnings("unchecked")
 	public void configure() {
 		Configuration config = ConfigHelper.getConfig();
-		for (Class c : LIST) {
+		for (Class<?> c : LIST) {
 			try {
 				Method configure = c.getMethod("configure");
 				try {
@@ -107,17 +103,15 @@ public class HFCommonProxy {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	public void load(String stage) {
 		//Continue
-		for (Class c : LIST) {
+		for (Class<?> c : LIST) {
 			try { //Attempt to load default
 				c.getMethod(stage).invoke(null);
 			} catch (NoClassDefFoundError | NoSuchMethodException ignored) {
 			} catch (Exception e) {
-				if (ENABLE_LOGGING) {
-					e.printStackTrace();
-				}
+				HarvestFestival.LOGGER.error("Harvest Festival failed to load the following class: " + c.getSimpleName());
+				throw new RuntimeException(e);
 			}
 
 			//Attempt to load client side only
@@ -126,9 +120,8 @@ public class HFCommonProxy {
 					c.getMethod(stage + "Client").invoke(null);
 				} catch (NoClassDefFoundError | NoSuchMethodException ignored) {
 				} catch (Exception e) {
-					if (ENABLE_LOGGING) {
-						e.printStackTrace();
-					}
+					HarvestFestival.LOGGER.error("Harvest Festival failed to load the following class: " + c.getSimpleName());
+					throw new RuntimeException(e);
 				}
 			}
 		}

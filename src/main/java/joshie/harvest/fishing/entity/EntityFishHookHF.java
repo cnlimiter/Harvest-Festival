@@ -2,7 +2,6 @@ package joshie.harvest.fishing.entity;
 
 import java.util.List;
 
-import io.netty.buffer.ByteBuf;
 import joshie.harvest.fishing.FishingHelper;
 import joshie.harvest.fishing.item.ItemFish;
 import joshie.harvest.fishing.item.ItemFishingRod;
@@ -20,9 +19,13 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.storage.loot.LootContext;
-import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 
-public class EntityFishHookHF extends EntityFishHook implements IEntityAdditionalSpawnData {
+public class EntityFishHookHF extends EntityFishHook {
+	public EntityFishHookHF(World world) {
+		super(world, null);
+		throw new IllegalStateException("This constructor should never be called");
+	}
+
 	public EntityFishHookHF(World world, EntityPlayer player) {
 		super(world, player);
 	}
@@ -117,15 +120,5 @@ public class EntityFishHookHF extends EntityFishHook implements IEntityAdditiona
 			return;
 		}
 		ticksCaughtDelay = 120 - MathHelper.clamp(-ticksCaughtDelay, 1, 100);
-	}
-
-	@Override
-	public void writeSpawnData(ByteBuf buffer) {
-
-	}
-
-	@Override
-	public void readSpawnData(ByteBuf additionalData) {
-
 	}
 }
