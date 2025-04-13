@@ -1,7 +1,5 @@
 package joshie.harvest.mining.loot;
 
-import static joshie.harvest.core.lib.HFModInfo.MODID;
-
 import java.util.Random;
 
 import com.google.gson.JsonDeserializationContext;
@@ -10,6 +8,7 @@ import com.google.gson.JsonSerializationContext;
 
 import javax.annotation.Nonnull;
 import joshie.harvest.core.HFTrackers;
+import joshie.harvest.core.lib.HFModInfo;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -34,7 +33,7 @@ public class Obtained implements LootCondition {
 
 	public static class Serializer extends LootCondition.Serializer<Obtained> {
 		public Serializer() {
-			super(new ResourceLocation(MODID, "obtained"), Obtained.class);
+			super(new ResourceLocation(HFModInfo.MODID, "obtained"), Obtained.class);
 		}
 
 		@Override

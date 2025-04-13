@@ -1,12 +1,5 @@
 package joshie.harvest.gathering.block;
 
-import static joshie.harvest.api.core.ITiered.ToolTier.BASIC;
-import static joshie.harvest.api.core.ITiered.ToolTier.COPPER;
-import static joshie.harvest.api.core.ITiered.ToolTier.GOLD;
-import static joshie.harvest.api.core.ITiered.ToolTier.MYSTRIL;
-import static joshie.harvest.api.core.ITiered.ToolTier.SILVER;
-import static joshie.harvest.api.gathering.ISmashable.ToolType.AXE;
-
 import java.util.Locale;
 
 import javax.annotation.Nonnull;
@@ -94,7 +87,7 @@ public class BlockWood extends BlockHFSmashable<BlockWood, Wood> {
 
 	@Override
 	public ToolType getToolType() {
-		return AXE;
+		return ToolType.AXE;
 	}
 
 	@Override
@@ -131,17 +124,17 @@ public class BlockWood extends BlockHFSmashable<BlockWood, Wood> {
 	public ToolTier getRequiredTier(IBlockState state) {
 		switch (getEnumFromState(state)) {
 			case BRANCH_SMALL:
-				return BASIC;
+				return ToolTier.BASIC;
 			case BRANCH_MEDIUM:
-				return COPPER;
+				return ToolTier.COPPER;
 			case BRANCH_LARGE:
-				return GOLD;
+				return ToolTier.GOLD;
 			case STUMP_SMALL:
-				return SILVER;
+				return ToolTier.SILVER;
 			case STUMP_MEDIUM:
-				return GOLD;
+				return ToolTier.GOLD;
 			case STUMP_LARGE:
-				return MYSTRIL;
+				return ToolTier.MYSTRIL;
 			default:
 				return null;
 		}

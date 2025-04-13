@@ -1,21 +1,18 @@
 package joshie.harvest.cooking.recipe;
 
-import static joshie.harvest.animals.HFAnimals.ANIMAL_PRODUCT;
-import static joshie.harvest.cooking.HFCooking.INGREDIENTS;
-import static joshie.harvest.cooking.HFCooking.MEAL;
-import static joshie.harvest.core.lib.LoadOrder.HFINGREDIENTS;
-import static joshie.harvest.gathering.HFGathering.NATURE;
-
 import javax.annotation.Nonnull;
+import joshie.harvest.animals.HFAnimals;
 import joshie.harvest.animals.item.ItemAnimalProduct.Sizeable;
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.cooking.Ingredient;
 import joshie.harvest.api.core.Size;
 import joshie.harvest.api.crops.Crop;
+import joshie.harvest.cooking.HFCooking;
 import joshie.harvest.cooking.item.ItemIngredients;
 import joshie.harvest.cooking.item.ItemMeal.Meal;
 import joshie.harvest.cooking.render.IngredientMappingEvent;
 import joshie.harvest.core.helpers.InventoryHelper;
+import joshie.harvest.core.lib.LoadOrder;
 import joshie.harvest.core.util.annotations.HFLoader;
 import joshie.harvest.crops.HFCrops;
 import joshie.harvest.fishing.HFFishing;
@@ -28,7 +25,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
-@HFLoader(priority = HFINGREDIENTS)
+@HFLoader(priority = LoadOrder.HFINGREDIENTS)
 @SuppressWarnings("WeakerAccess")
 public class HFIngredients {
 	//Categories
@@ -166,15 +163,15 @@ public class HFIngredients {
 	@SuppressWarnings("unused")
 	public static void postInit() {
 		//Animal Products
-		HFApi.cooking.register(ANIMAL_PRODUCT.getStack(Sizeable.EGG, Size.SMALL), SMALL_EGG);
-		HFApi.cooking.register(ANIMAL_PRODUCT.getStack(Sizeable.EGG, Size.MEDIUM), MEDIUM_EGG);
-		HFApi.cooking.register(ANIMAL_PRODUCT.getStack(Sizeable.EGG, Size.LARGE), LARGE_EGG);
-		HFApi.cooking.register(ANIMAL_PRODUCT.getStack(Sizeable.MILK, Size.SMALL), MILK);
-		HFApi.cooking.register(ANIMAL_PRODUCT.getStack(Sizeable.MILK, Size.MEDIUM), MILK);
-		HFApi.cooking.register(ANIMAL_PRODUCT.getStack(Sizeable.MILK, Size.LARGE), MILK);
-		HFApi.cooking.register(ANIMAL_PRODUCT.getStack(Sizeable.MAYONNAISE, Size.SMALL), MAYONNAISE);
-		HFApi.cooking.register(ANIMAL_PRODUCT.getStack(Sizeable.MAYONNAISE, Size.MEDIUM), MAYONNAISE);
-		HFApi.cooking.register(ANIMAL_PRODUCT.getStack(Sizeable.MAYONNAISE, Size.LARGE), MAYONNAISE);
+		HFApi.cooking.register(HFAnimals.ANIMAL_PRODUCT.getStack(Sizeable.EGG, Size.SMALL), SMALL_EGG);
+		HFApi.cooking.register(HFAnimals.ANIMAL_PRODUCT.getStack(Sizeable.EGG, Size.MEDIUM), MEDIUM_EGG);
+		HFApi.cooking.register(HFAnimals.ANIMAL_PRODUCT.getStack(Sizeable.EGG, Size.LARGE), LARGE_EGG);
+		HFApi.cooking.register(HFAnimals.ANIMAL_PRODUCT.getStack(Sizeable.MILK, Size.SMALL), MILK);
+		HFApi.cooking.register(HFAnimals.ANIMAL_PRODUCT.getStack(Sizeable.MILK, Size.MEDIUM), MILK);
+		HFApi.cooking.register(HFAnimals.ANIMAL_PRODUCT.getStack(Sizeable.MILK, Size.LARGE), MILK);
+		HFApi.cooking.register(HFAnimals.ANIMAL_PRODUCT.getStack(Sizeable.MAYONNAISE, Size.SMALL), MAYONNAISE);
+		HFApi.cooking.register(HFAnimals.ANIMAL_PRODUCT.getStack(Sizeable.MAYONNAISE, Size.MEDIUM), MAYONNAISE);
+		HFApi.cooking.register(HFAnimals.ANIMAL_PRODUCT.getStack(Sizeable.MAYONNAISE, Size.LARGE), MAYONNAISE);
 		HFApi.cooking.register(new ItemStack(Items.EGG), SMALL_EGG);
 		HFApi.cooking.register(new ItemStack(Items.MILK_BUCKET), MILK);
 
@@ -195,10 +192,10 @@ public class HFIngredients {
 		//Fungus
 		HFApi.cooking.register(new ItemStack(Blocks.BROWN_MUSHROOM), BROWN_MUSHROOM);
 		HFApi.cooking.register(new ItemStack(Blocks.RED_MUSHROOM), RED_MUSHROOM);
-		HFApi.cooking.register(NATURE.getStackFromEnum(NaturalBlock.MATSUTAKE), MATSUTAKE);
+		HFApi.cooking.register(HFGathering.NATURE.getStackFromEnum(NaturalBlock.MATSUTAKE), MATSUTAKE);
 
 		//Other Plants
-		HFApi.cooking.register(NATURE.getStackFromEnum(NaturalBlock.BAMBOO), BAMBOO);
+		HFApi.cooking.register(HFGathering.NATURE.getStackFromEnum(NaturalBlock.BAMBOO), BAMBOO);
 		HFApi.cooking.register(HFGathering.NATURE.getStackFromEnum(NaturalBlock.CHAMOMILE), CHAMOMILE);
 		HFApi.cooking.register(HFGathering.NATURE.getStackFromEnum(NaturalBlock.MINT), MINT);
 		HFApi.cooking.register(HFGathering.NATURE.getStackFromEnum(NaturalBlock.LAVENDER), LAVENDER);
@@ -207,21 +204,21 @@ public class HFIngredients {
 		registerForOre("foodChocolatebar", CHOCOLATE);
 		registerForOre("foodFlour", FLOUR);
 		registerForOre("foodOliveoil", OIL);
-		HFApi.cooking.register(INGREDIENTS.getStackFromEnum(ItemIngredients.Ingredient.RICEBALL), RICEBALL);
-		HFApi.cooking.register(INGREDIENTS.getStackFromEnum(ItemIngredients.Ingredient.CURRY_POWDER), CURRY_POWDER);
+		HFApi.cooking.register(HFCooking.INGREDIENTS.getStackFromEnum(ItemIngredients.Ingredient.RICEBALL), RICEBALL);
+		HFApi.cooking.register(HFCooking.INGREDIENTS.getStackFromEnum(ItemIngredients.Ingredient.CURRY_POWDER), CURRY_POWDER);
 		//HFApi.cooking.register(INGREDIENTS.getStackFromEnum(ItemIngredients.Ingredient.DUMPLING_POWDER), DUMPLING_POWDER);
-		HFApi.cooking.register(INGREDIENTS.getStackFromEnum(ItemIngredients.Ingredient.WINE), WINE);
+		HFApi.cooking.register(HFCooking.INGREDIENTS.getStackFromEnum(ItemIngredients.Ingredient.WINE), WINE);
 
 		//Meals - Real
-		HFApi.cooking.register(MEAL.getStackFromEnum(Meal.EGG_BOILED), BOILED_EGG);
-		HFApi.cooking.register(MEAL.getStackFromEnum(Meal.SASHIMI), SASHIMI);
-		HFApi.cooking.register(MEAL.getStackFromEnum(Meal.COOKIES), COOKIES);
-		HFApi.cooking.register(MEAL.getStackFromEnum(Meal.NOODLES), NOODLES);
-		HFApi.cooking.register(MEAL.getStackFromEnum(Meal.JAM_STRAWBERRY), JAM);
-		HFApi.cooking.register(MEAL.getStackFromEnum(Meal.JAM_APPLE), JAM);
-		HFApi.cooking.register(MEAL.getStackFromEnum(Meal.JAM_GRAPE), JAM);
-		HFApi.cooking.register(MEAL.getStackFromEnum(Meal.MARMALADE), JAM);
-		HFApi.cooking.register(MEAL.getStackFromEnum(Meal.TEMPURA), TEMPURA);
+		HFApi.cooking.register(HFCooking.MEAL.getStackFromEnum(Meal.EGG_BOILED), BOILED_EGG);
+		HFApi.cooking.register(HFCooking.MEAL.getStackFromEnum(Meal.SASHIMI), SASHIMI);
+		HFApi.cooking.register(HFCooking.MEAL.getStackFromEnum(Meal.COOKIES), COOKIES);
+		HFApi.cooking.register(HFCooking.MEAL.getStackFromEnum(Meal.NOODLES), NOODLES);
+		HFApi.cooking.register(HFCooking.MEAL.getStackFromEnum(Meal.JAM_STRAWBERRY), JAM);
+		HFApi.cooking.register(HFCooking.MEAL.getStackFromEnum(Meal.JAM_APPLE), JAM);
+		HFApi.cooking.register(HFCooking.MEAL.getStackFromEnum(Meal.JAM_GRAPE), JAM);
+		HFApi.cooking.register(HFCooking.MEAL.getStackFromEnum(Meal.MARMALADE), JAM);
+		HFApi.cooking.register(HFCooking.MEAL.getStackFromEnum(Meal.TEMPURA), TEMPURA);
 
 		//Meals that are registed as ores
 		registerForOre("foodButter", BUTTER);

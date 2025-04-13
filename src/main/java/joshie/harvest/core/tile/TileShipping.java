@@ -1,10 +1,9 @@
 package joshie.harvest.core.tile;
 
-import static joshie.harvest.api.HFApi.shipping;
-
 import java.util.UUID;
 
 import javax.annotation.Nonnull;
+import joshie.harvest.api.HFApi;
 import joshie.harvest.core.HFTrackers;
 import joshie.harvest.core.base.tile.TileFaceable;
 import joshie.harvest.core.helpers.StackHelper;
@@ -63,7 +62,7 @@ public class TileShipping extends TileFaceable {
 			if (stack.isEmpty() || stack.getItem() == null || owner == null) {
 				return stack;
 			}
-			long sell = shipping.getSellValue(stack);
+			long sell = HFApi.shipping.getSellValue(stack);
 			if (sell > 0) {
 				if (!simulate && !getWorld().isRemote) {
 					PlayerTrackerServer tracker = HFTrackers.getPlayerTracker(getWorld(), owner);

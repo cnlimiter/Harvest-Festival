@@ -1,14 +1,12 @@
 package joshie.harvest.api.core;
 
-import static joshie.harvest.api.core.MatchType.FULL;
-
 public class Ore {
 	private final String string;
 	private MatchType type;
 
 	private Ore(String string) {
 		this.string = string;
-		this.type = FULL;
+		this.type = MatchType.FULL;
 	}
 
 	public String getOre() {

@@ -1,7 +1,5 @@
 package joshie.harvest.quests.base;
 
-import java.util.Set;
-
 import javax.annotation.Nonnull;
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.npc.NPC;
@@ -25,11 +23,6 @@ public abstract class QuestFriendship extends Quest {
 	public boolean isNPCUsed(EntityPlayer player, NPCEntity entity) {
 		return super.isNPCUsed(player, entity) &&
 				HFApi.player.getRelationsForPlayer(player).getRelationship(entity.getNPC()) >= relationship;
-	}
-
-	@Override
-	public boolean canStartQuest(Set<Quest> active, Set<Quest> finished) {
-		return true;
 	}
 
 	@Override

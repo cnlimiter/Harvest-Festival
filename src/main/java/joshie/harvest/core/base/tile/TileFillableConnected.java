@@ -1,10 +1,5 @@
 package joshie.harvest.core.base.tile;
 
-import static net.minecraft.util.EnumFacing.EAST;
-import static net.minecraft.util.EnumFacing.NORTH;
-import static net.minecraft.util.EnumFacing.SOUTH;
-import static net.minecraft.util.EnumFacing.WEST;
-
 import javax.annotation.Nonnull;
 import joshie.harvest.animals.packet.PacketClearNeighbours;
 import joshie.harvest.api.animals.AnimalFoodType;
@@ -80,16 +75,16 @@ public abstract class TileFillableConnected<T extends TileFillableConnected> ext
 	}
 
 	private void updateMaster() {
-		if (updateMasterInDirection(NORTH)) {
+		if (updateMasterInDirection(EnumFacing.NORTH)) {
 			return;
 		}
-		if (updateMasterInDirection(SOUTH)) {
+		if (updateMasterInDirection(EnumFacing.SOUTH)) {
 			return;
 		}
-		if (updateMasterInDirection(EAST)) {
+		if (updateMasterInDirection(EnumFacing.EAST)) {
 			return;
 		}
-		if (!updateMasterInDirection(WEST)) {
+		if (!updateMasterInDirection(EnumFacing.WEST)) {
 			//Make this block it's own master
 			offsetX = 0;
 			offsetZ = 0;

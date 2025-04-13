@@ -1,8 +1,5 @@
 package joshie.harvest.quests.town.tasks;
 
-import static joshie.harvest.api.calendar.Season.WINTER;
-import static joshie.harvest.core.helpers.InventoryHelper.ORE_DICTIONARY;
-
 import java.util.Collection;
 import java.util.List;
 
@@ -49,7 +46,8 @@ public class QuestCollectCrops extends QuestDaily {
 
 	@Override
 	public boolean canStartDailyQuest(Town town, World world, BlockPos pos) {
-		return super.canStartDailyQuest(town, world, pos) && HFApi.calendar.getDate(world).getSeason() != WINTER;
+		return super.canStartDailyQuest(town, world, pos) && HFApi.calendar.getDate(world).getSeason() !=
+				Season.WINTER;
 	}
 
 	@Override
@@ -70,7 +68,7 @@ public class QuestCollectCrops extends QuestDaily {
 	}
 
 	private Collection<Crop> getCrops(Season season) {
-		if (CROPS.get(season).size() > 0) {
+		if (!CROPS.get(season).isEmpty()) {
 			return CROPS.get(season);
 		} else {
 			Crop.REGISTRY.values().stream().filter(crop -> crop.getSeedCost() != 0 && crop.getFoodType() != AnimalFoodType.GRASS &&
@@ -86,7 +84,7 @@ public class QuestCollectCrops extends QuestDaily {
 			return false;
 		}
 		String name = "crop" + WordUtils.capitalizeFully(crop.getResource().getResourcePath(), '_').replace("_", "");
-		return InventoryHelper.getHandItemIsIn(player, ORE_DICTIONARY, name, amount) != null;
+		return InventoryHelper.getHandItemIsIn(player, InventoryHelper.ORE_DICTIONARY, name, amount) != null;
 	}
 
 	@Override
@@ -99,7 +97,7 @@ public class QuestCollectCrops extends QuestDaily {
 	@Override
 	public void onChatClosed(EntityPlayer player, NPCEntity entity, boolean wasSneaking) {
 		String name = "crop" + WordUtils.capitalizeFully(crop.getResource().getResourcePath(), '_').replace("_", "");
-		if (InventoryHelper.takeItemsIfHeld(player, ORE_DICTIONARY, name, amount) != null) {
+		if (InventoryHelper.takeItemsIfHeld(player, InventoryHelper.ORE_DICTIONARY, name, amount) != null) {
 			complete(player);
 		}
 	}

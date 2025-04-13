@@ -88,7 +88,7 @@ public class TrackingServer extends Tracking {
 
 	public long newDay() {
 		//Sync the information to the client
-		if (HFCore.DISPLAY_SHIPPED_LIST && toBeShipped.size() > 0) {
+		if (HFCore.DISPLAY_SHIPPED_LIST && !toBeShipped.isEmpty()) {
 			EntityPlayerMP player = master.getAndCreatePlayer();
 			if (player != null) {
 				PacketHandler.sendToClient(new PacketRenderSold(toBeShipped), player);

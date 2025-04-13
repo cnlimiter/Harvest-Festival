@@ -1,8 +1,5 @@
 package joshie.harvest.plugins.crafttweaker.handlers;
 
-import static joshie.harvest.plugins.crafttweaker.CraftTweaker.asBlock;
-import static joshie.harvest.plugins.crafttweaker.CraftTweaker.asStack;
-
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.stream.Stream;
@@ -97,7 +94,7 @@ public class Crops {
 	@ZenMethod
 	@SuppressWarnings("unused")
 	public static void setDrop(String name, IItemStack drop) {
-		ItemStack stack = asStack(drop);
+		ItemStack stack = CraftTweaker.asStack(drop);
 		if (stack.isEmpty()) {
 			CraftTweaker.logError(String.format("Could not set the drop for %s as the stack item was null", name));
 		} else {
@@ -137,7 +134,7 @@ public class Crops {
 		} else {
 			ItemStack[] theDrops = new ItemStack[drops.length];
 			for (int i = 0; i < drops.length; i++) {
-				theDrops[i] = asStack(drops[i]);
+				theDrops[i] = CraftTweaker.asStack(drops[i]);
 				if (theDrops[i] == null) {
 					CraftTweaker.logError(String.format("Could not set the drop for %s as the stack item was null", name));
 					return;
@@ -217,30 +214,30 @@ public class Crops {
 	@ZenMethod
 	public static void setStages(String name, IItemStack block, int[] stages, int[] meta) {
 		Block[] blocks = new Block[meta.length];
-		Arrays.fill(blocks, asBlock(block));
+		Arrays.fill(blocks, CraftTweaker.asBlock(block));
 		setStages(name, stages, null, blocks, meta);
 	}
 
 	@ZenMethod
 	public static void setStagesAsString(String name, String block, int[] stages, int[] meta) {
 		Block[] blocks = new Block[meta.length];
-		Arrays.fill(blocks, asBlock(block));
+		Arrays.fill(blocks, CraftTweaker.asBlock(block));
 		setStages(name, stages, null, blocks, meta);
 	}
 
 	@ZenMethod
 	public static void setStages(String name, IItemStack block, int[] stages, IItemStack[] blocks, int[] meta) {
-		setStages(name, stages, asBlock(block), Stream.of(blocks).map(CraftTweaker::asBlock).toArray(Block[]::new), meta);
+		setStages(name, stages, CraftTweaker.asBlock(block), Stream.of(blocks).map(CraftTweaker::asBlock).toArray(Block[]::new), meta);
 	}
 
 	@ZenMethod
 	public static void setStages(String name, IItemStack block, int[] stages) {
-		setStages(name, stages, asBlock(block), null, null);
+		setStages(name, stages, CraftTweaker.asBlock(block), null, null);
 	}
 
 	@ZenMethod
 	public static void setStagesAsString(String name, String block, int[] stages) {
-		setStages(name, stages, asBlock(block), null, null);
+		setStages(name, stages, CraftTweaker.asBlock(block), null, null);
 	}
 
 	@ZenMethod

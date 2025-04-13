@@ -1,9 +1,8 @@
 package joshie.harvest.mining.gen;
 
-import static joshie.harvest.mining.HFMining.MINE_WORLD;
-
 import javax.annotation.Nonnull;
 import joshie.harvest.core.HFTrackers;
+import joshie.harvest.mining.HFMining;
 import net.minecraft.init.Biomes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DimensionType;
@@ -63,6 +62,6 @@ public class MiningProvider extends WorldProvider {
 	@Override
 	@Nonnull
 	public DimensionType getDimensionType() {
-		return MINE_WORLD;
+		return HFMining.MINE_WORLD;
 	}
 }

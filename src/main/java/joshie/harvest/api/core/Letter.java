@@ -1,7 +1,5 @@
 package joshie.harvest.api.core;
 
-import static joshie.harvest.api.calendar.CalendarDate.DAYS_PER_SEASON;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -93,7 +91,7 @@ public class Letter {
 	 * Number of days it takes for the letter to expire
 	 **/
 	protected int getExpiry() {
-		return (expiry / 30) * DAYS_PER_SEASON;
+		return (expiry / 30) * CalendarDate.DAYS_PER_SEASON;
 	}
 
 	/**
@@ -160,7 +158,7 @@ public class Letter {
 		if (this == o) {
 			return true;
 		}
-		if (o == null || !(o instanceof Letter)) {
+		if (!(o instanceof Letter)) {
 			return false;
 		}
 		Letter letter = (Letter) o;

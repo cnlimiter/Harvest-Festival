@@ -1,13 +1,8 @@
 package joshie.harvest.npcs.gift;
 
-import static joshie.harvest.api.npc.gift.GiftCategory.FLOWER;
-import static joshie.harvest.api.npc.gift.GiftCategory.HERB;
-import static joshie.harvest.api.npc.gift.GiftCategory.KNOWLEDGE;
-import static joshie.harvest.api.npc.gift.GiftCategory.MONSTER;
-import static joshie.harvest.api.npc.gift.GiftCategory.MUSHROOM;
-import static joshie.harvest.cooking.HFCooking.MEAL;
-
 import joshie.harvest.api.core.Ore;
+import joshie.harvest.api.npc.gift.GiftCategory;
+import joshie.harvest.cooking.HFCooking;
 import joshie.harvest.cooking.item.ItemMeal.Meal;
 import net.minecraft.init.Items;
 
@@ -18,18 +13,18 @@ public class GiftsCloe extends Gifts {
 		stackRegistry.register(Items.ENCHANTED_BOOK, Quality.AWESOME);
 		stackRegistry.register(Items.WRITABLE_BOOK, Quality.AWESOME);
 		stackRegistry.register(Items.WRITTEN_BOOK, Quality.AWESOME);
-		categoryRegistry.put(MONSTER, Quality.GOOD);
-		categoryRegistry.put(KNOWLEDGE, Quality.GOOD);
+		categoryRegistry.put(GiftCategory.MONSTER, Quality.GOOD);
+		categoryRegistry.put(GiftCategory.KNOWLEDGE, Quality.GOOD);
 		stackRegistry.register(Ore.of("cropCarrot"), Quality.GOOD);
 		stackRegistry.register(Ore.of("cropPotato"), Quality.GOOD);
-		categoryRegistry.put(HERB, Quality.DISLIKE);
-		categoryRegistry.put(FLOWER, Quality.DISLIKE);
-		stackRegistry.register(MEAL.getStackFromEnum(Meal.SALAD_HERB), Quality.DISLIKE);
-		stackRegistry.register(MEAL.getStackFromEnum(Meal.SANDWICH_HERB), Quality.DISLIKE);
-		stackRegistry.register(MEAL.getStackFromEnum(Meal.SOUP_HERB), Quality.DISLIKE);
-		stackRegistry.register(MEAL.getStackFromEnum(Meal.RICE_MATSUTAKE), Quality.BAD);
-		stackRegistry.register(MEAL.getStackFromEnum(Meal.RICE_MUSHROOM), Quality.BAD);
-		categoryRegistry.put(MUSHROOM, Quality.BAD);
+		categoryRegistry.put(GiftCategory.HERB, Quality.DISLIKE);
+		categoryRegistry.put(GiftCategory.FLOWER, Quality.DISLIKE);
+		stackRegistry.register(HFCooking.MEAL.getStackFromEnum(Meal.SALAD_HERB), Quality.DISLIKE);
+		stackRegistry.register(HFCooking.MEAL.getStackFromEnum(Meal.SANDWICH_HERB), Quality.DISLIKE);
+		stackRegistry.register(HFCooking.MEAL.getStackFromEnum(Meal.SOUP_HERB), Quality.DISLIKE);
+		stackRegistry.register(HFCooking.MEAL.getStackFromEnum(Meal.RICE_MATSUTAKE), Quality.BAD);
+		stackRegistry.register(HFCooking.MEAL.getStackFromEnum(Meal.RICE_MUSHROOM), Quality.BAD);
+		categoryRegistry.put(GiftCategory.MUSHROOM, Quality.BAD);
 		stackRegistry.register(Ore.of("cropStrawberry"), Quality.BAD);
 		stackRegistry.register(Ore.of("cropSweetPotato"), Quality.BAD);
 		stackRegistry.register(Ore.of("cropTomato"), Quality.BAD);

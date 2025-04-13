@@ -1,16 +1,12 @@
 package joshie.harvest.core.entity;
 
-import static joshie.harvest.core.tile.TileBasket.BASKET_INVENTORY;
-
-import java.util.Iterator;
-
 import javax.annotation.Nonnull;
 import joshie.harvest.api.HFApi;
 import joshie.harvest.core.HFCore;
 import joshie.harvest.core.block.BlockStorage.Storage;
 import joshie.harvest.core.handlers.BasketHandler;
+import joshie.harvest.core.tile.TileBasket;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
@@ -25,8 +21,8 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 
 public class EntityBasket extends Entity {
-	public static final DataParameter<ItemStack> ITEM = EntityDataManager.createKey(EntityItem.class, DataSerializers.ITEM_STACK);
-	public final ItemStackHandler handler = new ItemStackHandler(BASKET_INVENTORY) {
+	public static final DataParameter<ItemStack> ITEM = EntityDataManager.createKey(EntityBasket.class, DataSerializers.ITEM_STACK);
+	public final ItemStackHandler handler = new ItemStackHandler(TileBasket.BASKET_INVENTORY) {
 		@Override
 		protected void onContentsChanged(int slot) {
 			if (!getStackInSlot(slot).isEmpty()) {
@@ -41,8 +37,6 @@ public class EntityBasket extends Entity {
 			}
 			getDataManager().set(ITEM, ItemStack.EMPTY);
 		}
-
-		;
 	};
 
 	public EntityBasket(World worldIn) {
@@ -120,9 +114,7 @@ public class EntityBasket extends Entity {
 	/* Autoshipping some items **/
 	private boolean autoship(NonNullList<ItemStack> list) {
 		boolean empty = true;
-		Iterator<ItemStack> it = list.iterator();
-		while (it.hasNext()) {
-			ItemStack stack = it.next();
+		for (ItemStack stack : list) {
 			if (HFApi.shipping.getSellValue(stack) > 0) {
 				ItemStack remainder = ItemHandlerHelper.insertItemStacked(handler, stack.copy(), false);
 				stack.setCount(remainder.getCount());
@@ -140,7 +132,7 @@ public class EntityBasket extends Entity {
 		for (Entity entity : player.getPassengers()) {
 			if (entity instanceof EntityBasket) {
 				EntityBasket basket = (EntityBasket) entity;
-				if (list.size() > 0) {
+				if (!list.isEmpty()) {
 					basket.getDataManager().set(ITEM, list.get(list.size() - 1).copy());
 				}
 

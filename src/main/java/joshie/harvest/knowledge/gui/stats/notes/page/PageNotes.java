@@ -55,7 +55,7 @@ public class PageNotes extends BookPage<GuiStats> {
 				PageNotes.split = split;
 				pages = split.length / 18;
 			}
-		} catch (Exception e) {
+		} catch (Exception ignored) {
 		}
 
 		MCClientHelper.initGui();

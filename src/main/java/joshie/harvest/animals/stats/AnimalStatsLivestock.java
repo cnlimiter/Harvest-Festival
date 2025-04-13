@@ -1,13 +1,12 @@
 package joshie.harvest.animals.stats;
 
-import static joshie.harvest.calendar.HFCalendar.TICKS_PER_DAY;
-
 import javax.annotation.Nonnull;
 import joshie.harvest.animals.HFAnimals;
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.animals.AnimalAction;
 import joshie.harvest.api.animals.AnimalStats;
 import joshie.harvest.api.animals.AnimalTest;
+import joshie.harvest.calendar.HFCalendar;
 import joshie.harvest.core.helpers.EntityHelper;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.item.ItemStack;
@@ -127,7 +126,7 @@ public class AnimalStatsLivestock extends AnimalStatsHF {
 		//Lay that litter!
 		for (int i = 0; i < count; i++) {
 			EntityAgeable baby = animal.createChild(animal);
-			baby.setGrowingAge(-(int) (TICKS_PER_DAY * HFAnimals.AGING_TIMER));
+			baby.setGrowingAge(-(int) (HFCalendar.TICKS_PER_DAY * HFAnimals.AGING_TIMER));
 			baby.setLocationAndAngles(animal.posX, animal.posY, animal.posZ, 0.0F, 0.0F);
 			AnimalStats stats = EntityHelper.getStats(baby);
 			if (stats != null) {

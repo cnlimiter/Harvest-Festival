@@ -1,7 +1,5 @@
 package joshie.harvest.quests.player.trade;
 
-import static joshie.harvest.core.helpers.InventoryHelper.ORE_DICTIONARY;
-
 import java.util.Set;
 
 import joshie.harvest.api.npc.NPCEntity;
@@ -27,8 +25,7 @@ public class QuestGoddessCarpenter extends QuestTrade {
 	@Override
 	public boolean isNPCUsed(EntityPlayer player, NPCEntity entity) {
 		return entity.getNPC() == HFNPCs.GODDESS && InventoryHelper.getHandItemIsIn(
-				player,
-				ORE_DICTIONARY,
+				player, InventoryHelper.ORE_DICTIONARY,
 				"logWood",
 				HFQuests.LOGS_CARPENTER) != null;
 	}
@@ -41,7 +38,7 @@ public class QuestGoddessCarpenter extends QuestTrade {
 
 	@Override
 	public void onChatClosed(EntityPlayer player, NPCEntity entity, boolean wasSneaking) {
-		if (InventoryHelper.takeItemsIfHeld(player, ORE_DICTIONARY, "logWood", HFQuests.LOGS_CARPENTER) != null) {
+		if (InventoryHelper.takeItemsIfHeld(player, InventoryHelper.ORE_DICTIONARY, "logWood", HFQuests.LOGS_CARPENTER) != null) {
 			if (HFBuildings.CHEAT_BUILDINGS) {
 				rewardItem(player, HFBuildings.CARPENTER.getSpawner());
 			} else {

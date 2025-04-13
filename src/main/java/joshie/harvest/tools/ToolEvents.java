@@ -1,8 +1,5 @@
 package joshie.harvest.tools;
 
-import static joshie.harvest.tools.HFTools.EXHAUSTION;
-import static joshie.harvest.tools.HFTools.FATIGUE;
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -99,7 +96,7 @@ public class ToolEvents {
 	@SubscribeEvent
 	public void onPlayerTick(PlayerTickEvent event) {
 		if (event.phase == Phase.END || event.player.world.getTotalWorldTime() % 20 == 0) {
-			if (event.player.isPotionActive(EXHAUSTION)) {
+			if (event.player.isPotionActive(HFTools.EXHAUSTION)) {
 				if (event.player.world.rand.nextInt(256) == 0) {
 					event.player.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, 300, 0, true, false));
 				}
@@ -112,11 +109,11 @@ public class ToolEvents {
 		if (event.getEntityLiving() instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer) event.getEntityLiving();
 			int level = player.getFoodStats().getFoodLevel();
-			if (level > 2 && player.isPotionActive(EXHAUSTION)) {
-				player.removePotionEffect(EXHAUSTION);
+			if (level > 2 && player.isPotionActive(HFTools.EXHAUSTION)) {
+				player.removePotionEffect(HFTools.EXHAUSTION);
 			}
-			if (level > 6 && player.isPotionActive(FATIGUE)) {
-				player.removePotionEffect(FATIGUE);
+			if (level > 6 && player.isPotionActive(HFTools.FATIGUE)) {
+				player.removePotionEffect(HFTools.FATIGUE);
 			}
 		}
 	}

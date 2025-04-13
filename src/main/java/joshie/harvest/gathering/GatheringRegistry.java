@@ -1,10 +1,5 @@
 package joshie.harvest.gathering;
 
-import static joshie.harvest.api.calendar.Season.AUTUMN;
-import static joshie.harvest.api.calendar.Season.SPRING;
-import static joshie.harvest.api.calendar.Season.SUMMER;
-import static joshie.harvest.api.calendar.Season.WINTER;
-
 import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.NavigableMap;
@@ -35,7 +30,9 @@ public class GatheringRegistry implements IGatheringRegistry {
 	@Override
 	public void registerGathering(IBlockState state, double weight, Season... seasons) {
 		if (seasons == null || seasons.length == 0) {
-			seasons = new Season[]{SPRING, SUMMER, AUTUMN, WINTER};
+			seasons = new Season[]{
+					Season.SPRING, Season.SUMMER,
+					Season.AUTUMN, Season.WINTER};
 		}
 		for (Season season : seasons) {
 			WeightedState weightedState = gatherings.computeIfAbsent(season, k -> new WeightedState());

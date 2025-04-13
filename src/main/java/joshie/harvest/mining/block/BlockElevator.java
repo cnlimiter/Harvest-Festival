@@ -1,8 +1,5 @@
 package joshie.harvest.mining.block;
 
-import static joshie.harvest.mining.TeleportPlayer.isTeleportTargetSetTo;
-import static joshie.harvest.mining.TeleportPlayer.setTeleportTargetTo;
-
 import java.util.Locale;
 
 import javax.annotation.Nonnull;
@@ -13,6 +10,7 @@ import joshie.harvest.core.helpers.ChatHelper;
 import joshie.harvest.core.helpers.TextHelper;
 import joshie.harvest.mining.HFMining;
 import joshie.harvest.mining.MiningHelper;
+import joshie.harvest.mining.TeleportPlayer;
 import joshie.harvest.mining.block.BlockElevator.Elevator;
 import joshie.harvest.mining.item.ItemBlockElevator;
 import joshie.harvest.mining.tile.TileElevator;
@@ -84,8 +82,8 @@ public class BlockElevator extends BlockHFEnumRotatableTile<BlockElevator, Eleva
 			} else {
 				EntityPlayer player = (EntityPlayer) entity;
 				TileEntity target = world.getTileEntity(twin);
-				if (!isTeleportTargetSetTo(player, twin)) {
-					setTeleportTargetTo(player, twin, target, pos);
+				if (!TeleportPlayer.isTeleportTargetSetTo(player, twin)) {
+					TeleportPlayer.setTeleportTargetTo(player, twin, target, pos);
 				}
 			}
 		}

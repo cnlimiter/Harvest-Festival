@@ -1,8 +1,5 @@
 package joshie.harvest.quests.town.festivals;
 
-import static joshie.harvest.npcs.HFNPCs.GS_OWNER;
-import static joshie.harvest.town.BuildingLocations.PARK_COW_JUDGE;
-
 import java.util.Collections;
 import java.util.List;
 
@@ -30,6 +27,7 @@ import joshie.harvest.quests.town.festivals.contest.QuestContest;
 import joshie.harvest.quests.town.festivals.contest.cooking.CookingContestEntries;
 import joshie.harvest.quests.town.festivals.contest.cooking.CookingContestEntry;
 import joshie.harvest.quests.town.festivals.contest.cooking.TaskEat;
+import joshie.harvest.town.BuildingLocations;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -61,11 +59,11 @@ public class QuestContestCooking extends QuestContest<CookingContestEntries> {
 			HFNPCs.PRIEST,
 			HFNPCs.BARN_OWNER};
 	private static final Script FINISH = new HFScript(PREFIX + "_finish");
-	private static final Script JUDGE_1 = new ContestJudgingScript(PREFIX, 1).setNPC(GS_OWNER);
-	private static final Script JUDGE_2 = new ContestJudgingScript(PREFIX, 2).setNPC(GS_OWNER);
-	private static final Script JUDGE_3 = new ContestJudgingScript(PREFIX, 3).setNPC(GS_OWNER);
-	private static final Script JUDGE_4 = new ContestJudgingScript(PREFIX, 4).setNPC(GS_OWNER);
-	private static final Script WINNER = new ContestWinningScript(PREFIX).setNPC(GS_OWNER);
+	private static final Script JUDGE_1 = new ContestJudgingScript(PREFIX, 1).setNPC(HFNPCs.GS_OWNER);
+	private static final Script JUDGE_2 = new ContestJudgingScript(PREFIX, 2).setNPC(HFNPCs.GS_OWNER);
+	private static final Script JUDGE_3 = new ContestJudgingScript(PREFIX, 3).setNPC(HFNPCs.GS_OWNER);
+	private static final Script JUDGE_4 = new ContestJudgingScript(PREFIX, 4).setNPC(HFNPCs.GS_OWNER);
+	private static final Script WINNER = new ContestWinningScript(PREFIX).setNPC(HFNPCs.GS_OWNER);
 	private static final BlockPos STAND1 = new BlockPos(8, 2, 21);
 	private static final BlockPos STAND2 = new BlockPos(9, 2, 21);
 	private static final BlockPos STAND3 = new BlockPos(10, 2, 21);
@@ -73,7 +71,7 @@ public class QuestContestCooking extends QuestContest<CookingContestEntries> {
 	private static Utensil category;
 
 	public QuestContestCooking() {
-		super(GS_OWNER, PREFIX);
+		super(HFNPCs.GS_OWNER, PREFIX);
 		List<Utensil> utensils = Lists.newArrayList(Utensil.REGISTRY.values());
 		Collections.shuffle(utensils);
 		category = utensils.get(0);
@@ -103,7 +101,7 @@ public class QuestContestCooking extends QuestContest<CookingContestEntries> {
 				return getLocalized("explain");
 			}
 			if (entries.isSelecting(player)) {
-				return entries.getNames().size() > 0 ? getLocalized("select") : getLocalized("none");
+				return !entries.getNames().isEmpty() ? getLocalized("select") : getLocalized("none");
 			}
 
 			if (!entries.isEntered(player)) {
@@ -168,7 +166,7 @@ public class QuestContestCooking extends QuestContest<CookingContestEntries> {
 				speech(JUDGE_4),
 				wait(1),
 				speech(FINISH),
-				move(PARK_COW_JUDGE),
+				move(BuildingLocations.PARK_COW_JUDGE),
 				speech(WINNER),
 				new ContestTaskWinner(HFFestivals.COOKING_CONTEST));
 	}

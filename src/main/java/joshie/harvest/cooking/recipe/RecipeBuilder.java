@@ -1,8 +1,5 @@
 package joshie.harvest.cooking.recipe;
 
-import static joshie.harvest.cooking.HFCooking.COOKING_SELL_MODIFIER;
-import static joshie.harvest.core.registry.ShippingRegistry.SELL_VALUE;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -16,7 +13,9 @@ import javax.annotation.Nonnull;
 import joshie.harvest.api.cooking.Ingredient;
 import joshie.harvest.api.cooking.IngredientStack;
 import joshie.harvest.api.cooking.Recipe;
+import joshie.harvest.cooking.HFCooking;
 import joshie.harvest.core.helpers.StackHelper;
+import joshie.harvest.core.registry.ShippingRegistry;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
@@ -57,7 +56,7 @@ public class RecipeBuilder {
 		//We now know exactly what the stack size will be, as well as exactly how many items we have left!
 		//We know this, as it will be the items remaining in the required
 		//If we have stuff to calculate then do so, otherwise return everything as is
-		if (required.size() == 0 || !recipe.supportsNBTData()) {
+		if (required.isEmpty() || !recipe.supportsNBTData()) {
 			return build(recipe.getStack(), recipe.supportsNBTData());
 		} else {
 			//Now we need to work out the additional stats for the last bit of food
@@ -96,7 +95,7 @@ public class RecipeBuilder {
 		NBTTagCompound tag = stack.getTagCompound();
 		tag.setInteger(FOOD_LEVEL, hunger);
 		tag.setFloat(SATURATION_LEVEL, saturation);
-		tag.setLong(SELL_VALUE, cost);
+		tag.setLong(ShippingRegistry.SELL_VALUE, cost);
 		return stack;
 	}
 
@@ -121,12 +120,12 @@ public class RecipeBuilder {
 			}
 		}
 
-		this.cost = (long) (sell * COOKING_SELL_MODIFIER);
+		this.cost = (long) (sell * HFCooking.COOKING_SELL_MODIFIER);
 	}
 
 	private void calculateActualHungerAndSaturationValues(Recipe recipe) {
 		//Add the leftover required ingredients
-		if (required.size() > 0) {
+		if (!required.isEmpty()) {
 			TObjectIntMap<Ingredient> added = new TObjectIntHashMap<>();
 			for (IngredientStack stack : required) {
 				Ingredient main = stack.getIngredient();

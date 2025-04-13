@@ -1,10 +1,9 @@
 package joshie.harvest.shops.gui;
 
-import static joshie.harvest.core.lib.HFModInfo.MODID;
-
 import gnu.trove.set.TCharSet;
 import gnu.trove.set.hash.TCharHashSet;
 import joshie.harvest.core.base.gui.GuiBase;
+import joshie.harvest.core.lib.HFModInfo;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -18,7 +17,7 @@ public class ShopFontRenderer {
 
 	static {
 		Minecraft mc = Minecraft.getMinecraft();
-		INSTANCE = new FontRenderer(mc.gameSettings, new ResourceLocation(MODID, "textures/font/ascii.png"), mc.renderEngine, false) {
+		INSTANCE = new FontRenderer(mc.gameSettings, new ResourceLocation(HFModInfo.MODID, "textures/font/ascii.png"), mc.renderEngine, false) {
 			@Override
 			protected void setColor(float r, float g, float b, float a) {}
 		};
@@ -95,7 +94,7 @@ public class ShopFontRenderer {
 				' ',
 				',',
 				'.',
-				"é".charAt(0),
+				'é',
 				'\''
 		});
 	}

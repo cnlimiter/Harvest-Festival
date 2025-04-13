@@ -1,18 +1,12 @@
 package joshie.harvest;
 
-import static joshie.harvest.core.lib.HFModInfo.DEPENDENCIES;
-import static joshie.harvest.core.lib.HFModInfo.GUI_FACTORY;
-import static joshie.harvest.core.lib.HFModInfo.JAVAPATH;
-import static joshie.harvest.core.lib.HFModInfo.MODID;
-import static joshie.harvest.core.lib.HFModInfo.MODNAME;
-import static joshie.harvest.core.lib.HFModInfo.VERSION;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import joshie.harvest.core.HFApiLoader;
 import joshie.harvest.core.HFTrackers;
 import joshie.harvest.core.commands.CommandManager;
+import joshie.harvest.core.lib.HFModInfo;
 import joshie.harvest.core.proxy.HFCommonProxy;
 import net.minecraft.command.ICommandManager;
 import net.minecraft.command.ServerCommandManager;
@@ -29,14 +23,14 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerAboutToStartEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
-@Mod(modid = MODID, name = MODNAME, version = VERSION, dependencies = DEPENDENCIES, guiFactory = GUI_FACTORY)
+@Mod(modid = HFModInfo.MODID, name = HFModInfo.MODNAME, version = HFModInfo.VERSION, dependencies = HFModInfo.DEPENDENCIES, guiFactory = HFModInfo.GUI_FACTORY)
 public class HarvestFestival {
-	@SidedProxy(clientSide = JAVAPATH + "core.proxy.HFClientProxy", serverSide = JAVAPATH + "core.proxy.HFCommonProxy")
+	@SidedProxy(clientSide = HFModInfo.JAVAPATH + "core.proxy.HFClientProxy", serverSide = HFModInfo.JAVAPATH + "core.proxy.HFCommonProxy")
 	public static HFCommonProxy proxy;
 
-	public static final Logger LOGGER = LogManager.getLogger(MODNAME);
+	public static final Logger LOGGER = LogManager.getLogger(HFModInfo.MODNAME);
 
-	@Instance(MODID)
+	@Instance(HFModInfo.MODID)
 	public static HarvestFestival instance;
 
 	@EventHandler

@@ -1,8 +1,7 @@
 package joshie.harvest.knowledge.gui.stats.collection.button;
 
-import static joshie.harvest.api.HFApi.shipping;
-
 import javax.annotation.Nonnull;
+import joshie.harvest.api.HFApi;
 import joshie.harvest.core.base.gui.ButtonBook;
 import joshie.harvest.knowledge.gui.stats.GuiStats;
 import joshie.harvest.knowledge.gui.stats.collection.page.PageCollection;
@@ -46,31 +45,31 @@ public class ButtonSearch extends ButtonBook<GuiStats> {
 
 	public static boolean matchesFilter(@Nonnull ItemStack stack, String search) {
 		if (search.startsWith("=")) {
-			long value = shipping.getSellValue(stack);
+			long value = HFApi.shipping.getSellValue(stack);
 			try {
 				return value == Long.valueOf(search.substring(1).trim());
 			} catch (Exception ignored) {
 			}
 		} else if (search.startsWith("<=")) {
-			long value = shipping.getSellValue(stack);
+			long value = HFApi.shipping.getSellValue(stack);
 			try {
 				return value <= Long.valueOf(search.substring(2).trim());
 			} catch (Exception ignored) {
 			}
 		} else if (search.startsWith("<")) {
-			long value = shipping.getSellValue(stack);
+			long value = HFApi.shipping.getSellValue(stack);
 			try {
 				return value < Long.valueOf(search.substring(1).trim());
 			} catch (Exception ignored) {
 			}
 		} else if (search.startsWith(">=")) {
-			long value = shipping.getSellValue(stack);
+			long value = HFApi.shipping.getSellValue(stack);
 			try {
 				return value >= Long.valueOf(search.substring(2).trim());
 			} catch (Exception ignored) {
 			}
 		} else if (search.startsWith(">")) {
-			long value = shipping.getSellValue(stack);
+			long value = HFApi.shipping.getSellValue(stack);
 			try {
 				return value > Long.valueOf(search.substring(1).trim());
 			} catch (Exception ignored) {

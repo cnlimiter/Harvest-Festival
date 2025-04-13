@@ -1,10 +1,5 @@
 package joshie.harvest.gathering;
 
-import static joshie.harvest.gathering.HFGathering.GATHERING_ATTEMPTS;
-import static joshie.harvest.gathering.HFGathering.GATHERING_MAXIMUM;
-import static joshie.harvest.gathering.HFGathering.GATHERING_MAX_HALF;
-import static joshie.harvest.gathering.HFGathering.GATHERING_MINIMUM;
-
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Random;
@@ -45,11 +40,11 @@ public class GatheringData {
 		Season season = HFApi.calendar.getDate(world).getSeason();
 		int placed = 0;
 
-		for (int i = 0; i < 2048 && placed < GATHERING_ATTEMPTS; i++) {
+		for (int i = 0; i < 2048 && placed < HFGathering.GATHERING_ATTEMPTS; i++) {
 			BlockPos original = townCentre.add(
-					GATHERING_MAX_HALF - random.nextInt(GATHERING_MAXIMUM),
+					HFGathering.GATHERING_MAX_HALF - random.nextInt(HFGathering.GATHERING_MAXIMUM),
 					64,
-					GATHERING_MAX_HALF - random.nextInt(GATHERING_MAXIMUM));
+					HFGathering.GATHERING_MAX_HALF - random.nextInt(HFGathering.GATHERING_MAXIMUM));
 			if (world.isBlockLoaded(original)) {
 				BlockPos pos = world.getTopSolidOrLiquidBlock(original);
 				if (GatheringRegistry.INSTANCE.isValidGatheringSpawn(world.getBlockState(pos.down()).getBlock()) &&
@@ -69,7 +64,8 @@ public class GatheringData {
 			return isFar.get(
 					pos, () -> {
 						for (TownBuilding building : buildings) {
-							if (building.pos.getDistance(pos.getX(), pos.getY(), pos.getZ()) < GATHERING_MINIMUM) {
+							if (building.pos.getDistance(pos.getX(), pos.getY(), pos.getZ()) <
+									HFGathering.GATHERING_MINIMUM) {
 								return false;
 							}
 						}

@@ -1,7 +1,5 @@
 package joshie.harvest.cooking.gui;
 
-import static joshie.harvest.cooking.gui.GuiCookbook.LEFT_GUI;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,7 +50,7 @@ public class PageUtensilList extends Page {
 			boolean hoverY = mouseY >= 21 + 31 * i && mouseY <= 21 + 31 * i + 30;
 			if (hoverX && hoverY) {
 				GlStateManager.color(1F, 1F, 1F);
-				gui.mc.getTextureManager().bindTexture(LEFT_GUI);
+				gui.mc.getTextureManager().bindTexture(GuiCookbook.LEFT_GUI);
 				gui.drawTexture(163, 23 + i * 31, 131, 222, 125, 34);
 				gui.drawString(202, 37 + i * 31, TextFormatting.ITALIC + stack.getDisplayName());
 			} else {

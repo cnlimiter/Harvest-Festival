@@ -1,7 +1,5 @@
 package joshie.harvest.mining.render;
 
-import static joshie.harvest.core.lib.HFModInfo.MODID;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -10,6 +8,7 @@ import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import joshie.harvest.core.base.render.BakedHF;
+import joshie.harvest.core.lib.HFModInfo;
 import joshie.harvest.core.util.annotations.HFEvents;
 import joshie.harvest.mining.HFMining;
 import joshie.harvest.mining.block.BlockDirt;
@@ -154,7 +153,7 @@ public class BakedDirt extends BakedHF {
 		public void onStitch(TextureStitchEvent event) {
 			for (TextureType type : TextureType.values()) {
 				event.getMap().registerSprite(new ResourceLocation(
-						MODID,
+						HFModInfo.MODID,
 						"blocks/mine/overlays/" + type.name().toLowerCase(Locale.ENGLISH)));
 			}
 		}
@@ -198,7 +197,7 @@ public class BakedDirt extends BakedHF {
 		}
 	}
 
-	private static class WeightedTexture extends WeightedRandom.Item {
+	public static class WeightedTexture extends WeightedRandom.Item {
 		public final TextureAtlasSprite sprite;
 
 		public WeightedTexture(TextureAtlasSprite sprite, int weight) {

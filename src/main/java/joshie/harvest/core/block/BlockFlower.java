@@ -1,8 +1,5 @@
 package joshie.harvest.core.block;
 
-import static net.minecraft.util.text.TextFormatting.AQUA;
-import static net.minecraftforge.common.EnumPlantType.Plains;
-
 import java.util.List;
 import java.util.Locale;
 
@@ -32,6 +29,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
@@ -113,7 +111,7 @@ public class BlockFlower extends BlockHFEnum<BlockFlower, FlowerType> implements
 	private boolean canBlockStay(World world, BlockPos pos, IBlockState state) {
 		if (state.getBlock() == this) {
 			IBlockState soil = world.getBlockState(pos.down());
-			return soil.getBlock().canSustainPlant(soil, world, pos.down(), net.minecraft.util.EnumFacing.UP, this);
+			return soil.getBlock().canSustainPlant(soil, world, pos.down(), EnumFacing.UP, this);
 		}
 
 		return canSustainBush(world.getBlockState(pos.down()));
@@ -134,7 +132,7 @@ public class BlockFlower extends BlockHFEnum<BlockFlower, FlowerType> implements
 
 	@Override
 	public EnumPlantType getPlantType(IBlockAccess world, BlockPos pos) {
-		return Plains;
+		return EnumPlantType.Plains;
 	}
 
 	@Override
@@ -150,7 +148,7 @@ public class BlockFlower extends BlockHFEnum<BlockFlower, FlowerType> implements
 	@Override
 	public String getItemStackDisplayName(@Nonnull ItemStack stack) {
 		return getEnumFromMeta(stack.getItemDamage()) == FlowerType.GODDESS ?
-				AQUA + super.getItemStackDisplayName(stack) :
+				TextFormatting.AQUA + super.getItemStackDisplayName(stack) :
 				super.getItemStackDisplayName(stack);
 	}
 

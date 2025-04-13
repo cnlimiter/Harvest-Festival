@@ -1,7 +1,5 @@
 package joshie.harvest.shops.requirement;
 
-import static joshie.harvest.core.helpers.InventoryHelper.ORE_DICTIONARY;
-
 import joshie.harvest.core.helpers.InventoryHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -21,11 +19,11 @@ public class Bricks extends AbstractRequirement {
 
 	@Override
 	public boolean isFulfilled(World world, EntityPlayer player, int amount) {
-		return InventoryHelper.hasInInventory(player, ORE_DICTIONARY, "ingotBrick", (cost * amount));
+		return InventoryHelper.hasInInventory(player, InventoryHelper.ORE_DICTIONARY, "ingotBrick", (cost * amount));
 	}
 
 	@Override
 	public void onPurchased(EntityPlayer player) {
-		InventoryHelper.takeItemsInInventory(player, ORE_DICTIONARY, "ingotBrick", cost);
+		InventoryHelper.takeItemsInInventory(player, InventoryHelper.ORE_DICTIONARY, "ingotBrick", cost);
 	}
 }

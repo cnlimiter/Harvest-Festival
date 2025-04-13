@@ -1,8 +1,5 @@
 package joshie.harvest.quests.player.meetings;
 
-import static joshie.harvest.npcs.HFNPCs.GODDESS;
-import static joshie.harvest.quests.Quests.YULIF_MEET;
-
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.npc.NPC;
 import joshie.harvest.api.quests.HFQuest;
@@ -10,6 +7,8 @@ import joshie.harvest.api.quests.QuestQuestion;
 import joshie.harvest.core.HFCore;
 import joshie.harvest.knowledge.HFKnowledge;
 import joshie.harvest.knowledge.item.ItemBook.Book;
+import joshie.harvest.npcs.HFNPCs;
+import joshie.harvest.quests.Quests;
 import joshie.harvest.quests.selection.TutorialSelection;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -24,7 +23,7 @@ public class QuestMeetGoddess extends QuestQuestion {
 
 	public QuestMeetGoddess() {
 		super(new TutorialSelection("intro"));
-		setNPCs(GODDESS);
+		setNPCs(HFNPCs.GODDESS);
 	}
 
 	@Override
@@ -60,7 +59,7 @@ public class QuestMeetGoddess extends QuestQuestion {
 	@Override
 	public void onQuestCompleted(EntityPlayer player) {
 		if (isCompletedEarly()) {
-			HFApi.quests.completeQuest(YULIF_MEET, player);
+			HFApi.quests.completeQuest(Quests.YULIF_MEET, player);
 		}
 
 		rewardItem(player, HFKnowledge.BOOK.getStackFromEnum(Book.STATISTICS));

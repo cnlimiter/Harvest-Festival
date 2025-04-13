@@ -1,8 +1,7 @@
 package joshie.harvest.api.trees;
 
-import static net.minecraft.block.Block.FULL_BLOCK_AABB;
-
 import joshie.harvest.api.crops.StateHandlerDefault;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -62,7 +61,7 @@ public class StateHandlerTree extends StateHandlerDefault<Tree> {
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockAccess world, BlockPos pos, PlantSection section, Tree tree, int stage, boolean withered) {
 		if (section == PlantSection.TOP) {
-			return stage < stage3 ? JUVENILE_UPPER_AABB : FULL_BLOCK_AABB;
+			return stage < stage3 ? JUVENILE_UPPER_AABB : Block.FULL_BLOCK_AABB;
 		} else if (stage < stage1) {
 			return CROP_AABB;
 		} else if (stage < stage2) {
@@ -70,7 +69,7 @@ public class StateHandlerTree extends StateHandlerDefault<Tree> {
 		} else if (stage < stage3) {
 			return JUVENILE_LOWER_AABB;
 		} else {
-			return FULL_BLOCK_AABB;
+			return Block.FULL_BLOCK_AABB;
 		}
 	}
 
@@ -83,7 +82,7 @@ public class StateHandlerTree extends StateHandlerDefault<Tree> {
 			int stage,
 			boolean withered) {
 		if (section == PlantSection.TOP) {
-			return stage < stage3 ? JUVENILE_UPPER_AABB : FULL_BLOCK_AABB;
+			return stage < stage3 ? JUVENILE_UPPER_AABB : Block.FULL_BLOCK_AABB;
 		} else if (stage < stage1) {
 			return CROP_AABB;
 		} else if (stage < stage2) {
@@ -91,7 +90,7 @@ public class StateHandlerTree extends StateHandlerDefault<Tree> {
 		} else if (stage < stage3) {
 			return JUVENILE_LOWER_AABB;
 		} else {
-			return FULL_BLOCK_AABB;
+			return Block.FULL_BLOCK_AABB;
 		}
 	}
 }

@@ -1,10 +1,5 @@
 package joshie.harvest.fishing.item;
 
-import static joshie.harvest.fishing.item.ItemFish.GIANT_FISH;
-import static joshie.harvest.fishing.item.ItemFish.LARGE_FISH;
-import static joshie.harvest.fishing.item.ItemFish.MEDIUM_FISH;
-import static joshie.harvest.fishing.item.ItemFish.SMALL_FISH;
-
 import java.util.HashSet;
 
 import javax.annotation.Nonnull;
@@ -146,31 +141,31 @@ public class ItemFishingRod extends ItemTool<ItemFishingRod> {
 	public int getMinimumFishSize(@Nonnull ItemStack held) {
 		switch (getTier(held)) {
 			case MYSTRIL:
-				return MEDIUM_FISH;
+				return ItemFish.MEDIUM_FISH;
 			case CURSED:
 			case BLESSED:
-				return LARGE_FISH;
+				return ItemFish.LARGE_FISH;
 			case MYTHIC:
-				return GIANT_FISH;
+				return ItemFish.GIANT_FISH;
 			default:
-				return SMALL_FISH;
+				return ItemFish.SMALL_FISH;
 		}
 	}
 
 	public int getMaximumFishSize(@Nonnull ItemStack held) {
 		switch (getTier(held)) {
 			case COPPER:
-				return MEDIUM_FISH;
+				return ItemFish.MEDIUM_FISH;
 			case SILVER:
-				return LARGE_FISH;
+				return ItemFish.LARGE_FISH;
 			case GOLD:
 			case MYSTRIL:
 			case CURSED:
 			case BLESSED:
 			case MYTHIC:
-				return GIANT_FISH;
+				return ItemFish.GIANT_FISH;
 			default:
-				return SMALL_FISH;
+				return ItemFish.SMALL_FISH;
 		}
 	}
 }

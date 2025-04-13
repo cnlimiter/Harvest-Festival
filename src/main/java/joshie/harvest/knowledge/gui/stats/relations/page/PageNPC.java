@@ -36,7 +36,7 @@ public class PageNPC extends PageRelationship {
 			}
 		}
 
-		if (start < (NPC.REGISTRY.values().size() - 1) / 14) {
+		if (start < (NPC.REGISTRY.size() - 1) / 14) {
 			buttonList.add(new ButtonNext(gui, buttonList.size(), 273, 172));
 		}
 		if (start != 0) {

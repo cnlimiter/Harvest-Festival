@@ -1,13 +1,12 @@
 package joshie.harvest.core.helpers;
 
-import static joshie.harvest.api.animals.IAnimalHandler.ANIMAL_STATS_CAPABILITY;
-
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import javax.annotation.Nullable;
 import joshie.harvest.api.animals.AnimalStats;
+import joshie.harvest.api.animals.IAnimalHandler;
 import joshie.harvest.core.util.HFTeleporter;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -192,8 +191,8 @@ public class EntityHelper {
 	@SuppressWarnings("ConstantConditions, unchecked")
 	@Nullable
 	public static <A extends AnimalStats> A getStats(Entity target) {
-		if (target != null && target.hasCapability(ANIMAL_STATS_CAPABILITY, EnumFacing.DOWN)) {
-			return (A) target.getCapability(ANIMAL_STATS_CAPABILITY, EnumFacing.DOWN);
+		if (target != null && target.hasCapability(IAnimalHandler.ANIMAL_STATS_CAPABILITY, EnumFacing.DOWN)) {
+			return (A) target.getCapability(IAnimalHandler.ANIMAL_STATS_CAPABILITY, EnumFacing.DOWN);
 		}
 
 		return null;

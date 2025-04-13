@@ -1,7 +1,5 @@
 package joshie.harvest.core.base.item;
 
-import static joshie.harvest.core.lib.HFModInfo.MODID;
-
 import javax.annotation.Nonnull;
 import joshie.harvest.core.HFTab;
 import joshie.harvest.core.helpers.TextHelper;
@@ -98,7 +96,7 @@ public class ItemHFFood<I extends ItemHFFood> extends ItemFood {
 	@SuppressWarnings("unchecked")
 	public I register(String name) {
 		setUnlocalizedName(name.replace("_", "."));
-		setRegistryName(new ResourceLocation(MODID, name));
+		setRegistryName(new ResourceLocation(HFModInfo.MODID, name));
 		GameData.register_impl(this);
 		if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) {
 			registerModels(this, name);
@@ -111,10 +109,9 @@ public class ItemHFFood<I extends ItemHFFood> extends ItemFood {
 	public void registerModels(Item item, String name) {
 		if (item.getHasSubtypes()) {
 			NonNullList<ItemStack> subItems = NonNullList.create();
-			if (item.getCreativeTabs().length > 0) {
-				for (CreativeTabs tab : item.getCreativeTabs()) {
-					item.getSubItems(tab, subItems);
-				}
+			item.getCreativeTabs();
+			for (CreativeTabs tab : item.getCreativeTabs()) {
+				item.getSubItems(tab, subItems);
 			}
 
 			for (ItemStack stack : subItems) {
@@ -122,10 +119,13 @@ public class ItemHFFood<I extends ItemHFFood> extends ItemFood {
 				ModelLoader.setCustomModelResourceLocation(
 						item,
 						item.getDamage(stack),
-						new ModelResourceLocation(new ResourceLocation(MODID, subItemName), "inventory"));
+						new ModelResourceLocation(new ResourceLocation(HFModInfo.MODID, subItemName), "inventory"));
 			}
 		} else {
-			ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(new ResourceLocation(MODID, name), "inventory"));
+			ModelLoader.setCustomModelResourceLocation(
+					item,
+					0,
+					new ModelResourceLocation(new ResourceLocation(HFModInfo.MODID, name), "inventory"));
 		}
 	}
 }

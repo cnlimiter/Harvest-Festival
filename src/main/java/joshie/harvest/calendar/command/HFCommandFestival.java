@@ -1,13 +1,12 @@
 package joshie.harvest.calendar.command;
 
-import static joshie.harvest.calendar.HFCalendar.TICKS_PER_DAY;
-import static joshie.harvest.core.lib.HFModInfo.MODID;
-
 import javax.annotation.Nonnull;
 import joshie.harvest.api.calendar.Festival;
 import joshie.harvest.calendar.CalendarHelper;
+import joshie.harvest.calendar.HFCalendar;
 import joshie.harvest.core.commands.CommandManager.CommandLevel;
 import joshie.harvest.core.commands.HFCommand;
+import joshie.harvest.core.lib.HFModInfo;
 import joshie.harvest.town.TownHelper;
 import joshie.harvest.town.data.TownDataServer;
 import net.minecraft.command.CommandBase;
@@ -47,11 +46,11 @@ public class HFCommandFestival extends CommandBase {
 			try {
 				Festival newFestival = parameters[0].contains(":") ?
 						Festival.REGISTRY.get(new ResourceLocation(parameters[0])) :
-						Festival.REGISTRY.get(new ResourceLocation(MODID, parameters[0]));
+						Festival.REGISTRY.get(new ResourceLocation(HFModInfo.MODID, parameters[0]));
 				TownDataServer town = TownHelper.getClosestTownToEntity(((Entity) sender), false);
 				town.startFestival(newFestival); //Update the building right away
-				long i = sender.getEntityWorld().getWorldTime() + TICKS_PER_DAY;
-				CalendarHelper.setWorldTime(server, (i - i % TICKS_PER_DAY) - 1);
+				long i = sender.getEntityWorld().getWorldTime() + HFCalendar.TICKS_PER_DAY;
+				CalendarHelper.setWorldTime(server, (i - i % HFCalendar.TICKS_PER_DAY) - 1);
 			} catch (NumberFormatException ignored) {
 			}
 		} else {

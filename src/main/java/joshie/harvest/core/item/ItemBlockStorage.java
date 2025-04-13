@@ -1,8 +1,5 @@
 package joshie.harvest.core.item;
 
-import static joshie.harvest.core.block.BlockStorage.Storage.MAILBOX;
-import static joshie.harvest.core.tile.TileBasket.BASKET_INVENTORY;
-
 import javax.annotation.Nonnull;
 import joshie.harvest.HarvestFestival;
 import joshie.harvest.core.HFTrackers;
@@ -65,7 +62,7 @@ public class ItemBlockStorage extends ItemBlockHF<BlockStorage> {
 				IBlockState state = world.getBlockState(pos);
 				if (state.getBlock() == getBlock() && getBlock().getEnumFromState(state) == Storage.SHIPPING) {
 					if (stack.hasTagCompound() && stack.getTagCompound().hasKey("inventory")) {
-						ItemStackHandler handler = new ItemStackHandler(BASKET_INVENTORY);
+						ItemStackHandler handler = new ItemStackHandler(TileBasket.BASKET_INVENTORY);
 						handler.deserializeNBT(stack.getTagCompound().getCompoundTag("inventory")); //Load from the nbt the inventory
 						stack.getTagCompound().removeTag("inventory");
 						stack.getTagCompound().removeTag("item");
@@ -83,7 +80,7 @@ public class ItemBlockStorage extends ItemBlockHF<BlockStorage> {
 					return EnumActionResult.SUCCESS;
 				}
 			}
-		} else if (storage == MAILBOX) {
+		} else if (storage == BlockStorage.Storage.MAILBOX) {
 			if (facing.getAxis() == EnumFacing.Axis.Y || !(world.getBlockState(pos).getBlock() instanceof BlockFence)) {
 				return EnumActionResult.FAIL;
 			}

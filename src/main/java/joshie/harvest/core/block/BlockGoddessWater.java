@@ -1,13 +1,12 @@
 package joshie.harvest.core.block;
 
-import static joshie.harvest.core.lib.HFModInfo.MODID;
-
 import java.util.List;
 
 import joshie.harvest.api.npc.RelationStatus;
 import joshie.harvest.core.HFTrackers;
 import joshie.harvest.core.handlers.GoddessHandler;
 import joshie.harvest.core.helpers.FakePlayerHelper;
+import joshie.harvest.core.lib.HFModInfo;
 import joshie.harvest.core.network.PacketHandler;
 import joshie.harvest.npcs.HFNPCs;
 import joshie.harvest.npcs.NPCHelper;
@@ -65,7 +64,7 @@ public class BlockGoddessWater extends BlockFluidClassic {
 							List<EntityNPCGoddess> npcs = world.getEntitiesWithinAABB(
 									EntityNPCGoddess.class,
 									new AxisAlignedBB(x - 0.5F, y - 0.5F, z - 0.5F, x + 0.5F, y + 0.5F, z + 0.5F).expand(32D, 32D, 32D));
-							if (npcs.size() >= 1) {
+							if (!npcs.isEmpty()) {
 								PacketHandler.sendToClient(new PacketGoddessGift(npcs.get(0), stack), player);
 							}
 						}
@@ -79,7 +78,7 @@ public class BlockGoddessWater extends BlockFluidClassic {
 
 	public BlockGoddessWater register(String name) {
 		setUnlocalizedName(name.replace("_", "."));
-		setRegistryName(new ResourceLocation(MODID, name));
+		setRegistryName(new ResourceLocation(HFModInfo.MODID, name));
 		GameData.register_impl(this);
 		return this;
 	}

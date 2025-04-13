@@ -48,7 +48,7 @@ public class GoddessHandler {
 		List<EntityNPCGoddess> npcs = world.getEntitiesWithinAABB(
 				EntityNPCGoddess.class,
 				new AxisAlignedBB(x - 0.5F, y - 0.5F, z - 0.5F, x + 0.5F, y + 0.5F, z + 0.5F).expand(32D, 32D, 32D));
-		boolean newGoddess = npcs.size() < 1;
+		boolean newGoddess = npcs.isEmpty();
 		EntityNPCGoddess goddess = !newGoddess ? npcs.get(0) : NPCHelper.getEntityForNPC(world, HFNPCs.GODDESS);
 		if (flower) {
 			goddess.setFlower();

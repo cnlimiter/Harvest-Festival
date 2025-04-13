@@ -1,12 +1,11 @@
 package joshie.harvest.quests.player.recipes;
 
-import static joshie.harvest.quests.Quests.CLOE_MEET;
-
 import java.util.Set;
 
 import joshie.harvest.api.quests.HFQuest;
 import joshie.harvest.api.quests.Quest;
 import joshie.harvest.npcs.HFNPCs;
+import joshie.harvest.quests.Quests;
 import joshie.harvest.quests.base.QuestRecipe;
 
 @HFQuest("recipe.noodles")
@@ -17,6 +16,6 @@ public class QuestCloe5KNoodles extends QuestRecipe {
 
 	@Override
 	public boolean canStartQuest(Set<Quest> active, Set<Quest> finished) {
-		return finished.contains(CLOE_MEET);
+		return finished.contains(Quests.CLOE_MEET);
 	}
 }

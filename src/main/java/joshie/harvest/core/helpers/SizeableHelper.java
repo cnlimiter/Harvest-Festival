@@ -93,7 +93,7 @@ public class SizeableHelper {
 
 		@Nullable
 		public Size get(EntityAnimal animal) {
-			if (map.size() == 0) {
+			if (map.isEmpty()) {
 				return Size.SMALL;
 			}
 			return map.ceilingEntry((animal.world.rand.nextDouble() * total)).getValue();

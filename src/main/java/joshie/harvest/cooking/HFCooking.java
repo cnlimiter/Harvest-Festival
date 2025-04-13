@@ -1,14 +1,5 @@
 package joshie.harvest.cooking;
 
-import static joshie.harvest.cooking.item.ItemUtensil.Utensil.BLADE;
-import static joshie.harvest.cooking.item.ItemUtensil.Utensil.KNIFE;
-import static joshie.harvest.cooking.tile.TileMixer.BLADE_STACK;
-import static joshie.harvest.core.helpers.ConfigHelper.getDouble;
-import static joshie.harvest.core.helpers.RegistryHelper.registerSounds;
-import static joshie.harvest.core.helpers.RegistryHelper.registerTiles;
-import static joshie.harvest.core.lib.HFModInfo.MODID;
-import static joshie.harvest.core.lib.LoadOrder.HFCOOKING;
-
 import joshie.harvest.animals.item.ItemAnimalProduct.Sizeable;
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.cooking.Utensil;
@@ -35,6 +26,10 @@ import joshie.harvest.cooking.tile.TileMixer;
 import joshie.harvest.cooking.tile.TileOven;
 import joshie.harvest.cooking.tile.TilePot;
 import joshie.harvest.core.base.render.MeshIdentical;
+import joshie.harvest.core.helpers.ConfigHelper;
+import joshie.harvest.core.helpers.RegistryHelper;
+import joshie.harvest.core.lib.HFModInfo;
+import joshie.harvest.core.lib.LoadOrder;
 import joshie.harvest.core.util.annotations.HFLoader;
 import joshie.harvest.crops.HFCrops;
 import net.minecraft.init.Items;
@@ -46,14 +41,14 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 
-@HFLoader(priority = HFCOOKING)
+@HFLoader(priority = LoadOrder.HFCOOKING)
 public class HFCooking {
 	//Utensils
-	public static final Utensil COUNTER = new Utensil(new ResourceLocation(MODID, "counter"));
-	public static final Utensil POT = new Utensil(new ResourceLocation(MODID, "pot"));
-	public static final Utensil FRYING_PAN = new Utensil(new ResourceLocation(MODID, "frying_pan"));
-	public static final Utensil MIXER = new Utensil(new ResourceLocation(MODID, "mixer"));
-	public static final Utensil OVEN = new Utensil(new ResourceLocation(MODID, "oven"));
+	public static final Utensil COUNTER = new Utensil(new ResourceLocation(HFModInfo.MODID, "counter"));
+	public static final Utensil POT = new Utensil(new ResourceLocation(HFModInfo.MODID, "pot"));
+	public static final Utensil FRYING_PAN = new Utensil(new ResourceLocation(HFModInfo.MODID, "frying_pan"));
+	public static final Utensil MIXER = new Utensil(new ResourceLocation(HFModInfo.MODID, "mixer"));
+	public static final Utensil OVEN = new Utensil(new ResourceLocation(HFModInfo.MODID, "oven"));
 
 	//Cooking
 	public static final BlockCookware COOKWARE = new BlockCookware().register("cookware");
@@ -65,9 +60,9 @@ public class HFCooking {
 
 	@SuppressWarnings("unchecked")
 	public static void preInit() {
-		BLADE_STACK = UTENSILS.getStackFromEnum(BLADE);
+		TileMixer.BLADE_STACK = UTENSILS.getStackFromEnum(ItemUtensil.Utensil.BLADE);
 		HFApi.cooking.registerCookingHandler(new RecipeMaker());
-		HFApi.cooking.registerKnife(new ItemStack(UTENSILS, 1, KNIFE.ordinal()));
+		HFApi.cooking.registerKnife(new ItemStack(UTENSILS, 1, ItemUtensil.Utensil.KNIFE.ordinal()));
 		long bakedPotato = (long) (HFCrops.POTATO.getSellValue() * COOKING_SELL_MODIFIER);
 		long cookedRabbit = (long) (40 * COOKING_SELL_MODIFIER);
 		long brownMushroom = 30L;
@@ -110,8 +105,8 @@ public class HFCooking {
 		OreDictionary.registerOre("foodKetchup", MEAL.getStackFromEnum(Meal.KETCHUP));
 		OreDictionary.registerOre("foodButter", MEAL.getStackFromEnum(Meal.BUTTER));
 		OreDictionary.registerOre("foodScrambledegg", MEAL.getStackFromEnum(Meal.EGG_SCRAMBLED));
-		registerSounds("counter", "fridge", "frying_pan", "mixer", "oven", "oven_done", "oven_door", "pot", "recipe");
-		registerTiles(TileFridge.class, TileFryingPan.class, TileCounter.class, TileMixer.class, TileOven.class, TilePot.class);
+		RegistryHelper.registerSounds("counter", "fridge", "frying_pan", "mixer", "oven", "oven_done", "oven_door", "pot", "recipe");
+		RegistryHelper.registerTiles(TileFridge.class, TileFryingPan.class, TileCounter.class, TileMixer.class, TileOven.class, TilePot.class);
 		COUNTER.setBurntItem(MEAL.getStackFromEnum(Meal.BURNT_COUNTER));
 		POT.setBurntItem(MEAL.getStackFromEnum(Meal.BURNT_POT));
 		FRYING_PAN.setBurntItem(MEAL.getStackFromEnum(Meal.BURNT_FRYING_PAN));
@@ -138,6 +133,6 @@ public class HFCooking {
 	public static double COOKING_SELL_MODIFIER;
 
 	public static void configure() {
-		COOKING_SELL_MODIFIER = getDouble("Cooked Meals Sell Multiplier", 1.12D);
+		COOKING_SELL_MODIFIER = ConfigHelper.getDouble("Cooked Meals Sell Multiplier", 1.12D);
 	}
 }

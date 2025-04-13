@@ -1,12 +1,11 @@
 package joshie.harvest.crops.handlers.state;
 
-import static joshie.harvest.api.crops.IStateHandler.PlantSection.BOTTOM;
-
 import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
 import javax.annotation.Nullable;
 import joshie.harvest.api.calendar.Season;
 import joshie.harvest.api.crops.Crop;
+import joshie.harvest.api.crops.IStateHandler;
 import joshie.harvest.api.crops.StateHandlerDefault;
 import joshie.harvest.crops.block.BlockHFCrops;
 import net.minecraft.block.state.IBlockState;
@@ -39,7 +38,7 @@ public class StateHandlerGrass extends StateHandlerDefault {
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockAccess world, BlockPos pos, PlantSection section, Crop crop, int stage, boolean withered) {
 		AxisAlignedBB ret;
-		if (section == BOTTOM) {
+		if (section == IStateHandler.PlantSection.BOTTOM) {
 			ret = CROP_AABB.get(stage);
 		} else {
 			ret = CROP_AABB.get((stage + 6));
@@ -50,7 +49,7 @@ public class StateHandlerGrass extends StateHandlerDefault {
 
 	@Override
 	public IBlockState getState(IBlockAccess world, BlockPos pos, PlantSection section, Crop crop, int stage, boolean withered) {
-		if (section == BOTTOM) {
+		if (section == IStateHandler.PlantSection.BOTTOM) {
 			return getState(stage);
 		} else {
 			return getState(stage + 6);

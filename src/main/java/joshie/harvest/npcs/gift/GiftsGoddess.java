@@ -1,18 +1,7 @@
 package joshie.harvest.npcs.gift;
 
-import static joshie.harvest.api.npc.gift.GiftCategory.ART;
-import static joshie.harvest.api.npc.gift.GiftCategory.COOKING;
-import static joshie.harvest.api.npc.gift.GiftCategory.FISH;
-import static joshie.harvest.api.npc.gift.GiftCategory.FLOWER;
-import static joshie.harvest.api.npc.gift.GiftCategory.GEM;
-import static joshie.harvest.api.npc.gift.GiftCategory.KNOWLEDGE;
-import static joshie.harvest.api.npc.gift.GiftCategory.MEAT;
-import static joshie.harvest.api.npc.gift.GiftCategory.MINERAL;
-import static joshie.harvest.api.npc.gift.GiftCategory.MONEY;
-import static joshie.harvest.api.npc.gift.GiftCategory.MUSHROOM;
-import static joshie.harvest.api.npc.gift.GiftCategory.PLANT;
-
 import joshie.harvest.api.core.Ore;
+import joshie.harvest.api.npc.gift.GiftCategory;
 import joshie.harvest.cooking.HFCooking;
 import joshie.harvest.cooking.item.ItemIngredients.Ingredient;
 import joshie.harvest.cooking.item.ItemMeal.Meal;
@@ -27,17 +16,17 @@ public class GiftsGoddess extends Gifts {
 		stackRegistry.register(Ore.of("cropPineapple"), Quality.GOOD);
 		stackRegistry.register(HFCooking.MEAL.getStackFromEnum(Meal.JAM_STRAWBERRY), Quality.DECENT);
 		stackRegistry.register(HFCooking.MEAL.getStackFromEnum(Meal.MILK_STRAWBERRY), Quality.DECENT);
-		categoryRegistry.put(FLOWER, Quality.DECENT);
-		categoryRegistry.put(PLANT, Quality.DECENT);
-		categoryRegistry.put(MUSHROOM, Quality.DISLIKE);
-		categoryRegistry.put(COOKING, Quality.DISLIKE);
-		categoryRegistry.put(KNOWLEDGE, Quality.DISLIKE);
-		categoryRegistry.put(GEM, Quality.DISLIKE);
-		categoryRegistry.put(MINERAL, Quality.BAD);
-		categoryRegistry.put(MEAT, Quality.BAD);
-		categoryRegistry.put(FISH, Quality.BAD);
-		categoryRegistry.put(ART, Quality.BAD);
-		categoryRegistry.put(MONEY, Quality.BAD);
+		categoryRegistry.put(GiftCategory.FLOWER, Quality.DECENT);
+		categoryRegistry.put(GiftCategory.PLANT, Quality.DECENT);
+		categoryRegistry.put(GiftCategory.MUSHROOM, Quality.DISLIKE);
+		categoryRegistry.put(GiftCategory.COOKING, Quality.DISLIKE);
+		categoryRegistry.put(GiftCategory.KNOWLEDGE, Quality.DISLIKE);
+		categoryRegistry.put(GiftCategory.GEM, Quality.DISLIKE);
+		categoryRegistry.put(GiftCategory.MINERAL, Quality.BAD);
+		categoryRegistry.put(GiftCategory.MEAT, Quality.BAD);
+		categoryRegistry.put(GiftCategory.FISH, Quality.BAD);
+		categoryRegistry.put(GiftCategory.ART, Quality.BAD);
+		categoryRegistry.put(GiftCategory.MONEY, Quality.BAD);
 		stackRegistry.register(Items.RABBIT_FOOT, Quality.BAD);
 		stackRegistry.register(HFCooking.INGREDIENTS.getStackFromEnum(Ingredient.WINE), Quality.BAD);
 		stackRegistry.register(HFFishing.JUNK.getStackFromEnum(Junk.BONES), Quality.TERRIBLE);

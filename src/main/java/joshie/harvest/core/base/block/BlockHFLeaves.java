@@ -1,8 +1,5 @@
 package joshie.harvest.core.base.block;
 
-import static net.minecraft.block.BlockLeaves.CHECK_DECAY;
-import static net.minecraft.block.BlockLeaves.DECAYABLE;
-
 import java.util.List;
 import java.util.Random;
 
@@ -12,6 +9,7 @@ import javax.annotation.Nonnull;
 import joshie.harvest.core.HFTab;
 import joshie.harvest.core.helpers.MCClientHelper;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
@@ -54,9 +52,9 @@ public abstract class BlockHFLeaves<B extends BlockHFLeaves, E extends Enum<E> &
 	@Nonnull
 	protected BlockStateContainer createBlockState() {
 		if (property == null) {
-			return new BlockStateContainer(this, temporary, CHECK_DECAY, DECAYABLE);
+			return new BlockStateContainer(this, temporary, BlockLeaves.CHECK_DECAY, BlockLeaves.DECAYABLE);
 		}
-		return new BlockStateContainer(this, property, CHECK_DECAY, DECAYABLE);
+		return new BlockStateContainer(this, property, BlockLeaves.CHECK_DECAY, BlockLeaves.DECAYABLE);
 	}
 
 	@Override
@@ -83,7 +81,7 @@ public abstract class BlockHFLeaves<B extends BlockHFLeaves, E extends Enum<E> &
 	@Override
 	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
 		if (!worldIn.isRemote) {
-			if (state.getValue(CHECK_DECAY) && state.getValue(DECAYABLE)) {
+			if (state.getValue(BlockLeaves.CHECK_DECAY) && state.getValue(BlockLeaves.DECAYABLE)) {
 				int k = pos.getX();
 				int l = pos.getY();
 				int i1 = pos.getZ();
@@ -152,7 +150,7 @@ public abstract class BlockHFLeaves<B extends BlockHFLeaves, E extends Enum<E> &
 				int l2 = surroundings[16912];
 
 				if (l2 >= 0) {
-					worldIn.setBlockState(pos, state.withProperty(CHECK_DECAY, false), 4);
+					worldIn.setBlockState(pos, state.withProperty(BlockLeaves.CHECK_DECAY, false), 4);
 				} else {
 					destroy(worldIn, pos);
 				}
@@ -174,14 +172,11 @@ public abstract class BlockHFLeaves<B extends BlockHFLeaves, E extends Enum<E> &
 	@Override
 	@Nonnull
 	public IBlockState getStateFromMeta(int meta) {
-		return this.getDefaultState().withProperty(property, getEnumFromMeta(meta)).withProperty(DECAYABLE, (meta & 4) == 0).withProperty(
-				CHECK_DECAY,
+		return this.getDefaultState().withProperty(property, getEnumFromMeta(meta)).withProperty(
+				BlockLeaves.DECAYABLE,
+				(meta & 4) == 0).withProperty(
+				BlockLeaves.CHECK_DECAY,
 				(meta & 8) > 0);
-	}
-
-	@Override
-	public int damageDropped(IBlockState state) {
-		return super.getMetaFromState(state);
 	}
 
 	@Override
@@ -189,11 +184,11 @@ public abstract class BlockHFLeaves<B extends BlockHFLeaves, E extends Enum<E> &
 		int i = 0;
 		i = i | super.getMetaFromState(state);
 
-		if (!(state.getValue(DECAYABLE))) {
+		if (!(state.getValue(BlockLeaves.DECAYABLE))) {
 			i |= 4;
 		}
 
-		if (state.getValue(CHECK_DECAY)) {
+		if (state.getValue(BlockLeaves.CHECK_DECAY)) {
 			i |= 8;
 		}
 
@@ -224,8 +219,8 @@ public abstract class BlockHFLeaves<B extends BlockHFLeaves, E extends Enum<E> &
 	}
 
 	@Override
-	public boolean isOpaqueCube(IBlockState state) {
-		return false;
+	public boolean isOpaqueCube(IBlockState blockState) {
+		return super.isOpaqueCube(blockState);
 	}
 
 	@Override
@@ -253,8 +248,8 @@ public abstract class BlockHFLeaves<B extends BlockHFLeaves, E extends Enum<E> &
 
 	@Override
 	public void beginLeavesDecay(IBlockState state, World world, BlockPos pos) {
-		if (!state.getValue(CHECK_DECAY)) {
-			world.setBlockState(pos, state.withProperty(CHECK_DECAY, true), 4);
+		if (!state.getValue(BlockLeaves.CHECK_DECAY)) {
+			world.setBlockState(pos, state.withProperty(BlockLeaves.CHECK_DECAY, true), 4);
 		}
 	}
 
@@ -279,7 +274,9 @@ public abstract class BlockHFLeaves<B extends BlockHFLeaves, E extends Enum<E> &
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void registerModels(Item item, String name) {
-		ModelLoader.setCustomStateMapper(this, new StateMap.Builder().ignore(CHECK_DECAY, DECAYABLE).build());
+		ModelLoader.setCustomStateMapper(
+				this,
+				new StateMap.Builder().ignore(BlockLeaves.CHECK_DECAY, BlockLeaves.DECAYABLE).build());
 		super.registerModels(item, name);
 	}
 }

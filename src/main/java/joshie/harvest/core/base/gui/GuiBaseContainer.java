@@ -51,7 +51,6 @@ public abstract class GuiBaseContainer extends GuiContainer {
 		int x = (width - xSize) / 2;
 		int y = (height - ySize) / 2;
 		drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
-		drawBackground(x, y);
 		drawTooltip(tooltip, i, j);
 	}
 
@@ -66,8 +65,6 @@ public abstract class GuiBaseContainer extends GuiContainer {
 	public void drawForeground(int x, int y) {
 		this.renderHoveredToolTip(mouseX, mouseY);
 	}
-
-	public void drawBackground(int x, int y) {}
 
 	public void addTooltip(List<String> list) {
 		tooltip.addAll(list);
@@ -148,12 +145,4 @@ public abstract class GuiBaseContainer extends GuiContainer {
 		mouseWheel = Mouse.getDWheel();
 		super.handleMouseInput();
 	}
-
-	@Override
-	protected void mouseClicked(int x, int y, int mouseButton) throws IOException {
-		super.mouseClicked(x, y, mouseButton);
-		onMouseClick(mouseX, mouseY);
-	}
-
-	protected void onMouseClick(int mouseX, int mouseY) {}
 }

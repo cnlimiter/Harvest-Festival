@@ -46,7 +46,7 @@ public class PageQuests extends BookPage<GuiStats> {
 			}
 		}
 
-		if (buttonList.size() == 0) {
+		if (buttonList.isEmpty()) {
 			buttonList.add(new ButtonQuestNull(gui, buttonList.size(), 16 + x * 144, 26 + y * 25));
 		}
 		if (start < list.size() / 12) {

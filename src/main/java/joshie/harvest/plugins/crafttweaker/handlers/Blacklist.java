@@ -1,7 +1,5 @@
 package joshie.harvest.plugins.crafttweaker.handlers;
 
-import static joshie.harvest.plugins.crafttweaker.CraftTweaker.asStack;
-
 import crafttweaker.CraftTweakerAPI;
 import crafttweaker.IAction;
 import crafttweaker.annotations.ZenRegister;
@@ -20,7 +18,7 @@ public class Blacklist {
 	@ZenMethod
 	@SuppressWarnings("unused")
 	public static void blacklistSeeds(IItemStack drop) {
-		ItemStack stack = asStack(drop);
+		ItemStack stack = CraftTweaker.asStack(drop);
 		if (stack.isEmpty()) {
 			CraftTweaker.logError("Could not blacklist seeds as the item was null");
 		} else {
@@ -53,7 +51,7 @@ public class Blacklist {
 	@ZenMethod
 	@SuppressWarnings("unused")
 	public static void blacklistHoe(IItemStack drop) {
-		ItemStack stack = asStack(drop);
+		ItemStack stack = CraftTweaker.asStack(drop);
 		if (stack.isEmpty()) {
 			CraftTweaker.logError("Could not blacklist the hoe as the item was null");
 		} else {
@@ -85,7 +83,7 @@ public class Blacklist {
 	@ZenMethod
 	@SuppressWarnings("unused")
 	public static void blacklistGiftable(IItemStack drop) {
-		ItemStack stack = asStack(drop);
+		ItemStack stack = CraftTweaker.asStack(drop);
 		if (stack.isEmpty()) {
 			CraftTweaker.logError("Could not prevent an item from being gifted as it was null");
 		} else {

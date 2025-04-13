@@ -1,7 +1,5 @@
 package joshie.harvest.animals.entity;
 
-import static joshie.harvest.api.animals.IAnimalHandler.ANIMAL_STATS_CAPABILITY;
-
 import java.util.Set;
 
 import com.google.common.collect.Sets;
@@ -16,6 +14,7 @@ import joshie.harvest.api.HFApi;
 import joshie.harvest.api.animals.AnimalAction;
 import joshie.harvest.api.animals.AnimalStats;
 import joshie.harvest.api.animals.AnimalTest;
+import joshie.harvest.api.animals.IAnimalHandler;
 import joshie.harvest.api.animals.IAnimalHandler.AnimalType;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -109,14 +108,14 @@ public class EntityHarvestChicken extends EntityChicken implements IEntityAdditi
 	@Override
 	@SuppressWarnings("ConstantConditions")
 	public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
-		return capability == ANIMAL_STATS_CAPABILITY || super.hasCapability(capability, facing);
+		return capability == IAnimalHandler.ANIMAL_STATS_CAPABILITY || super.hasCapability(capability, facing);
 	}
 
 	@Override
 	@SuppressWarnings("ConstantConditions, unchecked")
 	@Nonnull
 	public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
-		return capability == ANIMAL_STATS_CAPABILITY ? (T) stats : super.getCapability(capability, facing);
+		return capability == IAnimalHandler.ANIMAL_STATS_CAPABILITY ? (T) stats : super.getCapability(capability, facing);
 	}
 
 	@Override

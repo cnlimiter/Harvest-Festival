@@ -1,7 +1,5 @@
 package joshie.harvest.animals.stats;
 
-import static joshie.harvest.core.network.PacketHandler.sendToEveryone;
-
 import java.lang.reflect.InvocationTargetException;
 import java.util.Random;
 
@@ -207,7 +205,7 @@ public class AnimalStatsHF implements AnimalStats<NBTTagCompound> {
 			}
 
 			updatePregnancy();
-			sendToEveryone(new PacketSyncAnimal(animal.getEntityId(), this));
+			PacketHandler.sendToEveryone(new PacketSyncAnimal(animal.getEntityId(), this));
 			return true;
 		} else {
 			return false;

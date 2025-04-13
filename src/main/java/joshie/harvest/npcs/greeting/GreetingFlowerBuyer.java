@@ -1,13 +1,12 @@
 package joshie.harvest.npcs.greeting;
 
-import static joshie.harvest.core.lib.HFModInfo.ICONS;
-
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.npc.IInfoButton;
 import joshie.harvest.api.npc.NPC;
 import joshie.harvest.api.quests.Quest;
 import joshie.harvest.core.helpers.InventoryHelper;
 import joshie.harvest.core.helpers.TextHelper;
+import joshie.harvest.core.lib.HFModInfo;
 import joshie.harvest.quests.QuestHelper;
 import joshie.harvest.quests.Quests;
 import net.minecraft.client.gui.GuiScreen;
@@ -51,7 +50,7 @@ public class GreetingFlowerBuyer implements IInfoButton {
 
 	@Override
 	public void drawIcon(GuiScreen gui, int x, int y) {
-		gui.mc.renderEngine.bindTexture(ICONS);
+		gui.mc.renderEngine.bindTexture(HFModInfo.ICONS);
 		gui.drawTexturedModalRect(x, y, 80, 0, 16, 16);
 	}
 

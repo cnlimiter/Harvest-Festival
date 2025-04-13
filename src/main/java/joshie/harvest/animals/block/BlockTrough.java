@@ -1,10 +1,5 @@
 package joshie.harvest.animals.block;
 
-import static joshie.harvest.animals.block.BlockTrough.Trough.WOOD;
-import static net.minecraft.util.EnumFacing.EAST;
-import static net.minecraft.util.EnumFacing.NORTH;
-import static net.minecraft.util.EnumFacing.SOUTH;
-import static net.minecraft.util.EnumFacing.WEST;
 
 import java.util.List;
 import java.util.Locale;
@@ -163,28 +158,28 @@ public class BlockTrough extends BlockHFEnumRotatableMeta<BlockTrough, Trough> i
 				((ChunkCache) world).getTileEntity(pos, Chunk.EnumCreateEntityType.CHECK) :
 				world.getTileEntity(pos);
 		if (tile instanceof TileTrough) {
-			boolean north = isTrough(NORTH, world, pos);
-			boolean south = isTrough(SOUTH, world, pos);
+			boolean north = isTrough(EnumFacing.NORTH, world, pos);
+			boolean south = isTrough(EnumFacing.SOUTH, world, pos);
 			if (north && !south) {
-				return state.withProperty(SECTION, Section.END).withProperty(FACING, EAST);
+				return state.withProperty(SECTION, Section.END).withProperty(FACING, EnumFacing.EAST);
 			}
 			if (south && !north) {
-				return state.withProperty(SECTION, Section.END).withProperty(FACING, WEST);
+				return state.withProperty(SECTION, Section.END).withProperty(FACING, EnumFacing.WEST);
 			}
 			if (south) {
-				return state.withProperty(SECTION, Section.MIDDLE).withProperty(FACING, EAST);
+				return state.withProperty(SECTION, Section.MIDDLE).withProperty(FACING, EnumFacing.EAST);
 			}
 
-			boolean east = isTrough(EAST, world, pos);
-			boolean west = isTrough(WEST, world, pos);
+			boolean east = isTrough(EnumFacing.EAST, world, pos);
+			boolean west = isTrough(EnumFacing.WEST, world, pos);
 			if (west && east) {
-				return state.withProperty(SECTION, Section.MIDDLE).withProperty(FACING, SOUTH);
+				return state.withProperty(SECTION, Section.MIDDLE).withProperty(FACING, EnumFacing.SOUTH);
 			}
 			if (east) {
-				return state.withProperty(SECTION, Section.END).withProperty(FACING, SOUTH);
+				return state.withProperty(SECTION, Section.END).withProperty(FACING, EnumFacing.SOUTH);
 			}
 			if (west) {
-				return state.withProperty(SECTION, Section.END).withProperty(FACING, NORTH);
+				return state.withProperty(SECTION, Section.END).withProperty(FACING, EnumFacing.NORTH);
 			}
 
 			return state.withProperty(SECTION, Section.SINGLE);
@@ -197,7 +192,7 @@ public class BlockTrough extends BlockHFEnumRotatableMeta<BlockTrough, Trough> i
 	private boolean isTrough(EnumFacing facing, IBlockAccess world, BlockPos pos) {
 		IBlockState state = world.getBlockState(pos.offset(facing));
 		if (state.getBlock() == this) {
-			if (getEnumFromState(state) == WOOD) {
+			if (getEnumFromState(state) == Trough.WOOD) {
 				return (
 						((TileTrough) world.getTileEntity(pos)).getMaster() ==
 								((TileTrough) world.getTileEntity(pos.offset(facing))).getMaster());
@@ -230,7 +225,7 @@ public class BlockTrough extends BlockHFEnumRotatableMeta<BlockTrough, Trough> i
 	@SuppressWarnings("ConstantConditions")
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, @Nonnull ItemStack stack) {
 		super.onBlockPlacedBy(world, pos, state, placer, stack);
-		if (getEnumFromState(state) == WOOD) {
+		if (getEnumFromState(state) == Trough.WOOD) {
 			((TileTrough) world.getTileEntity(pos)).onPlaced();
 		}
 	}
@@ -238,7 +233,7 @@ public class BlockTrough extends BlockHFEnumRotatableMeta<BlockTrough, Trough> i
 	@Override
 	@SuppressWarnings("ConstantConditions")
 	public void breakBlock(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state) {
-		if (getEnumFromState(state) == WOOD) {
+		if (getEnumFromState(state) == Trough.WOOD) {
 			((TileTrough) world.getTileEntity(pos)).onRemoved();
 		}
 

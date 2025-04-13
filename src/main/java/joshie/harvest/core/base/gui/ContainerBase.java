@@ -4,7 +4,6 @@ import javax.annotation.Nonnull;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
@@ -42,11 +41,6 @@ public class ContainerBase extends Container {
 
 	protected int getInventorySize() {
 		return 0;
-	}
-
-	@Override
-	public void onCraftMatrixChanged(IInventory par1IInventory) {
-		detectAndSendChanges();
 	}
 
 	@Override

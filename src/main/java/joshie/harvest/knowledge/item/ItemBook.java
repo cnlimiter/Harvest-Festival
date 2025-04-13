@@ -1,13 +1,11 @@
 package joshie.harvest.knowledge.item;
 
-import static joshie.harvest.core.handlers.GuiHandler.CALENDAR_GUI;
-import static joshie.harvest.core.handlers.GuiHandler.STATS_BOOK;
-
 import java.util.Locale;
 
 import javax.annotation.Nonnull;
 import joshie.harvest.HarvestFestival;
 import joshie.harvest.core.base.item.ItemHFEnum;
+import joshie.harvest.core.handlers.GuiHandler;
 import joshie.harvest.core.util.interfaces.ICreativeSorted;
 import joshie.harvest.knowledge.HFKnowledge;
 import joshie.harvest.knowledge.item.ItemBook.Book;
@@ -25,7 +23,7 @@ import net.minecraft.world.World;
 
 public class ItemBook extends ItemHFEnum<ItemBook, Book> implements ICreativeSorted {
 	public enum Book implements IStringSerializable {
-		STATISTICS(STATS_BOOK), CALENDAR(CALENDAR_GUI);
+		STATISTICS(GuiHandler.STATS_BOOK), CALENDAR(GuiHandler.CALENDAR_GUI);
 
 		private final int guiID;
 

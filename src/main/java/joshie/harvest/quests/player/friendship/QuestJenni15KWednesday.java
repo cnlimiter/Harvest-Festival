@@ -1,8 +1,5 @@
 package joshie.harvest.quests.player.friendship;
 
-import static joshie.harvest.api.calendar.Season.AUTUMN;
-import static joshie.harvest.api.calendar.Season.SUMMER;
-
 import java.util.List;
 import java.util.Set;
 
@@ -48,9 +45,9 @@ public class QuestJenni15KWednesday extends QuestFriendshipStore {
 	@Override
 	protected NonNullList<ItemStack> getRewardStacks(EntityPlayer player) {
 		Season season = HFApi.calendar.getDate(player.world).getSeason();
-		if (season == SUMMER) {
+		if (season == Season.SUMMER) {
 			return NonNullList.withSize(1, HFCrops.PINEAPPLE.getSeedStack(2));
-		} else if (season == AUTUMN) {
+		} else if (season == Season.AUTUMN) {
 			return NonNullList.withSize(1, HFCrops.GREEN_PEPPER.getSeedStack(2));
 		} else {
 			return NonNullList.withSize(1, HFCrops.CABBAGE.getSeedStack(2));

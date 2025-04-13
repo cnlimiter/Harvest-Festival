@@ -1,10 +1,9 @@
 package joshie.harvest.calendar.command;
 
-import static joshie.harvest.calendar.HFCalendar.TICKS_PER_DAY;
-
 import javax.annotation.Nonnull;
 import joshie.harvest.api.calendar.CalendarDate;
 import joshie.harvest.calendar.CalendarHelper;
+import joshie.harvest.calendar.HFCalendar;
 import joshie.harvest.calendar.data.CalendarServer;
 import joshie.harvest.core.HFTrackers;
 import joshie.harvest.core.commands.CommandManager.CommandLevel;
@@ -39,8 +38,8 @@ public class HFCommandNewDay extends CommandBase {
 			@Nonnull MinecraftServer server,
 			@Nonnull ICommandSender sender,
 			@Nonnull String[] parameters) throws CommandException {
-		long i = sender.getEntityWorld().getWorldTime() + TICKS_PER_DAY;
-		CalendarHelper.setWorldTime(server, (i - i % TICKS_PER_DAY) - 1);
+		long i = sender.getEntityWorld().getWorldTime() + HFCalendar.TICKS_PER_DAY;
+		CalendarHelper.setWorldTime(server, (i - i % HFCalendar.TICKS_PER_DAY) - 1);
 		CalendarServer calendar = HFTrackers.getCalendar(sender.getEntityWorld());
 		CalendarDate date = calendar.getDate();
 		notifyCommandListener(sender, this, "Year: " + date.getYear());

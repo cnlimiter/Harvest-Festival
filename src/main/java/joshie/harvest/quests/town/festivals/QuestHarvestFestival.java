@@ -1,7 +1,5 @@
 package joshie.harvest.quests.town.festivals;
 
-import static joshie.harvest.core.lib.HFModInfo.MODID;
-
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -26,6 +24,7 @@ import joshie.harvest.buildings.HFBuildings;
 import joshie.harvest.calendar.HFFestivals;
 import joshie.harvest.core.HFTrackers;
 import joshie.harvest.core.helpers.EntityHelper;
+import joshie.harvest.core.lib.HFModInfo;
 import joshie.harvest.core.tile.TileFestivalPot;
 import joshie.harvest.npcs.HFNPCs;
 import joshie.harvest.npcs.entity.EntityNPC;
@@ -52,7 +51,7 @@ public class QuestHarvestFestival extends QuestFestivalTimed {
 			new BlockPos(1, 2, 12),
 			new BlockPos(2, 2, 13),
 			new BlockPos(0, 2, 13)};
-	private static final Script TASTE = new Script(new ResourceLocation(MODID, "taste"));
+	private static final Script TASTE = new Script(new ResourceLocation(HFModInfo.MODID, "taste"));
 	private static final Script DECIDE = new ScriptHarvestDecide();
 	private final Map<UUID, HarvestSelection> data = new HashMap<>();
 

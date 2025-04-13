@@ -1,8 +1,5 @@
 package joshie.harvest.calendar;
 
-import static joshie.harvest.api.calendar.CalendarDate.DAYS_PER_SEASON;
-import static joshie.harvest.calendar.HFCalendar.TICKS_PER_DAY;
-
 import gnu.trove.map.TIntIntMap;
 import javax.annotation.Nonnull;
 import joshie.harvest.api.calendar.CalendarDate;
@@ -63,38 +60,38 @@ public class CalendarHelper {
 	}
 
 	private static int getYear(long totalTime) {
-		return (int) Math.floor((double) getElapsedDays(totalTime) / 4 / DAYS_PER_SEASON);
+		return (int) Math.floor((double) getElapsedDays(totalTime) / 4 / CalendarDate.DAYS_PER_SEASON);
 	}
 
 	public static Season getSeason(long totalTime) {
-		return SEASONS[Math.max(0, (int) Math.floor((getElapsedDays(totalTime) / DAYS_PER_SEASON) % 4))];
+		return SEASONS[Math.max(0, (int) Math.floor((getElapsedDays(totalTime) / CalendarDate.DAYS_PER_SEASON) % 4))];
 	}
 
 	private static int getDay(long totalTime) {
-		return getElapsedDays(totalTime) % DAYS_PER_SEASON;
+		return getElapsedDays(totalTime) % CalendarDate.DAYS_PER_SEASON;
 	}
 
 	public static int getElapsedDays(long totalTime) {
-		return (int) (totalTime / TICKS_PER_DAY);
+		return (int) (totalTime / HFCalendar.TICKS_PER_DAY);
 	}
 
 	private static int getTotalDays(int day, Season season, int year) {
-		int season_days = DAYS_PER_SEASON * season.ordinal();
-		int year_days = (year - 1) * (DAYS_PER_SEASON * 4);
+		int season_days = CalendarDate.DAYS_PER_SEASON * season.ordinal();
+		int year_days = (year - 1) * (CalendarDate.DAYS_PER_SEASON * 4);
 		return day + season_days + year_days;
 	}
 
 	public static int getTotalDays(CalendarDate date) {
 		int current_days = date.getDay();
 		int season_days = CalendarDate.DAYS_PER_SEASON * date.getSeason().ordinal();
-		int year_days = (date.getYear() - 1) * (DAYS_PER_SEASON * 4);
+		int year_days = (date.getYear() - 1) * (CalendarDate.DAYS_PER_SEASON * 4);
 		return current_days + season_days + year_days;
 	}
 
 	public static int getYearsPassed(@Nonnull CalendarDate birthday, @Nonnull CalendarDate date) {
 		double current_total_days = getTotalDays(date);
 		double birthday_total_days = getTotalDays(birthday);
-		int one_year = DAYS_PER_SEASON * 4;
+		int one_year = CalendarDate.DAYS_PER_SEASON * 4;
 
 		int years_passed = (int) Math.floor(current_total_days / one_year);
 		int birthday_years = (int) Math.floor(birthday_total_days / one_year);
@@ -103,15 +100,15 @@ public class CalendarHelper {
 	}
 
 	public static long getTime(int day, Season season, int year) {
-		return (getTotalDays(day, season, year)) * TICKS_PER_DAY;
+		return (getTotalDays(day, season, year)) * HFCalendar.TICKS_PER_DAY;
 	}
 
 	public static long getTime(World world) {
-		return (world.getWorldTime() + 6000) % TICKS_PER_DAY;
+		return (world.getWorldTime() + 6000) % HFCalendar.TICKS_PER_DAY;
 	}
 
 	public static int getScaledTime(int time) {
-		return (int) (((double) time / TICKS_PER_DAY) * 24000D);
+		return (int) (((double) time / HFCalendar.TICKS_PER_DAY) * 24000D);
 	}
 
 	public static void setWorldTime(MinecraftServer server, long worldTime) {
@@ -121,7 +118,7 @@ public class CalendarHelper {
 			worldserver.setWorldTime(worldTime);
 		}
 
-		if (worldTime % TICKS_PER_DAY != 23999) {
+		if (worldTime % HFCalendar.TICKS_PER_DAY != 23999) {
 			CalendarServer calendar = HFTrackers.getCalendar(server.worlds[0]);
 			calendar.recalculateAndUpdate(server.worlds[0]);
 		}

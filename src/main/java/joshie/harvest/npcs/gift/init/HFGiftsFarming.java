@@ -1,18 +1,8 @@
 package joshie.harvest.npcs.gift.init;
 
-import static joshie.harvest.animals.HFAnimals.ANIMAL_PRODUCT;
-import static joshie.harvest.animals.HFAnimals.TREATS;
-import static joshie.harvest.api.npc.gift.GiftCategory.COOKING;
-import static joshie.harvest.api.npc.gift.GiftCategory.EGG;
-import static joshie.harvest.api.npc.gift.GiftCategory.FRUIT;
-import static joshie.harvest.api.npc.gift.GiftCategory.JUNK;
-import static joshie.harvest.api.npc.gift.GiftCategory.MILK;
-import static joshie.harvest.api.npc.gift.GiftCategory.PLANT;
-import static joshie.harvest.api.npc.gift.GiftCategory.VEGETABLE;
-import static joshie.harvest.api.npc.gift.GiftCategory.WOOL;
-
 import org.apache.commons.lang3.text.WordUtils;
 
+import joshie.harvest.animals.HFAnimals;
 import joshie.harvest.animals.item.ItemAnimalProduct.Sizeable;
 import joshie.harvest.api.animals.AnimalFoodType;
 import joshie.harvest.api.core.Ore;
@@ -25,24 +15,25 @@ import joshie.harvest.core.util.annotations.HFLoader;
 @SuppressWarnings("unused")
 public class HFGiftsFarming extends HFGiftsAbstract {
 	public static void init() {
-		assignGeneric(TREATS, JUNK);
-		registerAllSizes(Sizeable.EGG, EGG);
-		registerAllSizes(Sizeable.WOOL, WOOL);
-		registerAllSizes(Sizeable.MILK, MILK);
-		registerAllSizes(Sizeable.MAYONNAISE, COOKING);
+		assignGeneric(HFAnimals.TREATS, GiftCategory.JUNK);
+		registerAllSizes(Sizeable.EGG, GiftCategory.EGG);
+		registerAllSizes(Sizeable.WOOL, GiftCategory.WOOL);
+		registerAllSizes(Sizeable.MILK, GiftCategory.MILK);
+		registerAllSizes(Sizeable.MAYONNAISE, GiftCategory.COOKING);
 	}
 
 	private static void registerAllSizes(Sizeable sizeable, GiftCategory category) {
-		assignGeneric(ANIMAL_PRODUCT.getStack(sizeable, Size.SMALL), category);
-		assignGeneric(ANIMAL_PRODUCT.getStack(sizeable, Size.MEDIUM), category);
-		assignGeneric(ANIMAL_PRODUCT.getStack(sizeable, Size.LARGE), category);
+		assignGeneric(HFAnimals.ANIMAL_PRODUCT.getStack(sizeable, Size.SMALL), category);
+		assignGeneric(HFAnimals.ANIMAL_PRODUCT.getStack(sizeable, Size.MEDIUM), category);
+		assignGeneric(HFAnimals.ANIMAL_PRODUCT.getStack(sizeable, Size.LARGE), category);
 	}
 
 	public static void postInit() {
 		Crop.REGISTRY.values().stream().filter(crop -> crop != Crop.NULL_CROP)
 				.forEachOrdered(crop -> assignGeneric(
 						Ore.of("crop" + WordUtils.capitalizeFully(crop.getResource().getResourcePath(), '_').replace("_", "")),
-						crop.getFoodType() == AnimalFoodType.FRUIT ? FRUIT :
-								crop.getFoodType() == AnimalFoodType.VEGETABLE ? VEGETABLE : PLANT));
+						crop.getFoodType() == AnimalFoodType.FRUIT ? GiftCategory.FRUIT :
+								crop.getFoodType() == AnimalFoodType.VEGETABLE ? GiftCategory.VEGETABLE :
+										GiftCategory.PLANT));
 	}
 }

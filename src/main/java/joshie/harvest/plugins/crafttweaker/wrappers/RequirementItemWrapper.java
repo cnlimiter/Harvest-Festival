@@ -1,7 +1,5 @@
 package joshie.harvest.plugins.crafttweaker.wrappers;
 
-import static joshie.harvest.core.helpers.InventoryHelper.ITEM_STACK;
-
 import javax.annotation.Nonnull;
 import joshie.harvest.core.helpers.InventoryHelper;
 import joshie.harvest.shops.requirement.AbstractRequirement;
@@ -16,11 +14,11 @@ public class RequirementItemWrapper extends AbstractRequirement {
 
 	@Override
 	public boolean isFulfilled(World world, EntityPlayer player, int amount) {
-		return InventoryHelper.hasInInventory(player, ITEM_STACK, getIcon(), (cost * amount));
+		return InventoryHelper.hasInInventory(player, InventoryHelper.ITEM_STACK, getIcon(), (cost * amount));
 	}
 
 	@Override
 	public void onPurchased(EntityPlayer player) {
-		InventoryHelper.takeItemsInInventory(player, ITEM_STACK, getIcon(), cost);
+		InventoryHelper.takeItemsInInventory(player, InventoryHelper.ITEM_STACK, getIcon(), cost);
 	}
 }

@@ -84,7 +84,7 @@ public abstract class TownData<Q extends QuestData, L extends LetterData> implem
 	 * Building currently being worked on
 	 **/
 	public BuildingStage getCurrentlyBuilding() {
-		return buildingQueue.size() > 0 ? buildingQueue.getFirst() : null;
+		return !buildingQueue.isEmpty() ? buildingQueue.getFirst() : null;
 	}
 
 	/**
@@ -92,7 +92,7 @@ public abstract class TownData<Q extends QuestData, L extends LetterData> implem
 	 **/
 	public boolean isBuilding(Building building) {
 		if (building == null) {
-			return buildingQueue.size() > 0;
+			return !buildingQueue.isEmpty();
 		}
 		return buildingQueue.contains(new BuildingStage(building, BlockPos.ORIGIN, Rotation.NONE));
 	}

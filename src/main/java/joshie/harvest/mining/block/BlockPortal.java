@@ -1,9 +1,5 @@
 package joshie.harvest.mining.block;
 
-import static joshie.harvest.mining.block.BlockPortal.Portal.*;
-import static joshie.harvest.mining.block.BlockPortal.Type.MINE;
-import static joshie.harvest.mining.block.BlockPortal.Type.OVERWORLD;
-
 import java.util.Locale;
 
 import javax.annotation.Nonnull;
@@ -41,19 +37,22 @@ public class BlockPortal extends BlockHFEnum<BlockPortal, Portal> {
 		STONE_TL_EW, STONE_TM_EW, STONE_TR_EW, STONE_BL_EW, STONE_BM_EW, STONE_BR_EW;
 
 		public boolean isCentre() {
-			return this == MINE_BM || this == MINE_BM_EW || this == INTERNAL_BM || this == INTERNAL_BM_EW;
+			return this == BlockPortal.Portal.MINE_BM || this ==
+					BlockPortal.Portal.MINE_BM_EW || this ==
+					BlockPortal.Portal.INTERNAL_BM || this ==
+					BlockPortal.Portal.INTERNAL_BM_EW;
 		}
 
 		public boolean isMine() {
-			return ordinal() <= MINE_BR_EW.ordinal();
+			return ordinal() <= BlockPortal.Portal.MINE_BR_EW.ordinal();
 		}
 
 		public boolean isInternal() {
-			return ordinal() >= INTERNAL_TL.ordinal() && ordinal() <= INTERNAL_BR_EW.ordinal();
+			return ordinal() >= BlockPortal.Portal.INTERNAL_TL.ordinal() && ordinal() <= BlockPortal.Portal.INTERNAL_BR_EW.ordinal();
 		}
 
 		public boolean isStone() {
-			return ordinal() >= STONE_TL.ordinal();
+			return ordinal() >= BlockPortal.Portal.STONE_TL.ordinal();
 		}
 
 		public boolean isEW() {
@@ -160,8 +159,9 @@ public class BlockPortal extends BlockHFEnum<BlockPortal, Portal> {
 	@Override
 	@Nonnull
 	public IBlockState getActualState(@Nonnull IBlockState state, IBlockAccess world, BlockPos pos) {
-		Type type = getDimension(world) == 0 ? OVERWORLD : MINE;
-		boolean internal = type == MINE && MiningHelper.getFloor(pos.getX() >> 4, pos.getY()) != 1;
+		Type type = getDimension(world) == 0 ? BlockPortal.Type.OVERWORLD :
+				BlockPortal.Type.MINE;
+		boolean internal = type == BlockPortal.Type.MINE && MiningHelper.getFloor(pos.getX() >> 4, pos.getY()) != 1;
 		boolean connectedUp = isSameBlock(world, pos.up());
 		boolean connectedDown = isSameBlock(world, pos.down());
 		boolean connectedEast = isSameBlock(world, pos.east());
@@ -170,41 +170,47 @@ public class BlockPortal extends BlockHFEnum<BlockPortal, Portal> {
 		boolean connectedNorth = isSameBlock(world, pos.north());
 		if (connectedDown && ((!connectedEast && connectedWest) || (connectedNorth && !connectedSouth))) {
 			if (connectedWest) {
-				return type == MINE ? internal ? getStateFromEnum(INTERNAL_TL_EW) : getStateFromEnum(MINE_TL_EW) : getStateFromEnum(
-						STONE_TL_EW);
+				return type == BlockPortal.Type.MINE ? internal ? getStateFromEnum(BlockPortal.Portal.INTERNAL_TL_EW) : getStateFromEnum(
+						BlockPortal.Portal.MINE_TL_EW) : getStateFromEnum(BlockPortal.Portal.STONE_TL_EW);
 			} else {
-				return type == MINE ? internal ? getStateFromEnum(INTERNAL_TL) : getStateFromEnum(MINE_TL) : getStateFromEnum(STONE_TL);
+				return type == BlockPortal.Type.MINE ? internal ? getStateFromEnum(BlockPortal.Portal.INTERNAL_TL) : getStateFromEnum(
+						BlockPortal.Portal.MINE_TL) : getStateFromEnum(BlockPortal.Portal.STONE_TL);
 			}
 		} else if (connectedDown && ((connectedEast && !connectedWest) || (!connectedNorth && connectedSouth))) {
 			if (connectedEast) {
-				return type == MINE ? internal ? getStateFromEnum(INTERNAL_TR_EW) : getStateFromEnum(MINE_TR_EW) : getStateFromEnum(
-						STONE_TR_EW);
+				return type == BlockPortal.Type.MINE ? internal ? getStateFromEnum(BlockPortal.Portal.INTERNAL_TR_EW) : getStateFromEnum(
+						BlockPortal.Portal.MINE_TR_EW) : getStateFromEnum(BlockPortal.Portal.STONE_TR_EW);
 			}
-			return type == MINE ? internal ? getStateFromEnum(INTERNAL_TR) : getStateFromEnum(MINE_TR) : getStateFromEnum(STONE_TR);
+			return type == BlockPortal.Type.MINE ? internal ? getStateFromEnum(BlockPortal.Portal.INTERNAL_TR) : getStateFromEnum(
+					BlockPortal.Portal.MINE_TR) : getStateFromEnum(BlockPortal.Portal.STONE_TR);
 		} else if (connectedDown && (connectedEast || connectedNorth)) {
 			if (connectedWest) {
-				return type == MINE ? internal ? getStateFromEnum(INTERNAL_TM_EW) : getStateFromEnum(MINE_TM_EW) : getStateFromEnum(
-						STONE_TM_EW);
+				return type == BlockPortal.Type.MINE ? internal ? getStateFromEnum(BlockPortal.Portal.INTERNAL_TM_EW) : getStateFromEnum(
+						BlockPortal.Portal.MINE_TM_EW) : getStateFromEnum(BlockPortal.Portal.STONE_TM_EW);
 			}
-			return type == MINE ? internal ? getStateFromEnum(INTERNAL_TM) : getStateFromEnum(MINE_TM) : getStateFromEnum(STONE_TM);
+			return type == BlockPortal.Type.MINE ? internal ? getStateFromEnum(BlockPortal.Portal.INTERNAL_TM) : getStateFromEnum(
+					BlockPortal.Portal.MINE_TM) : getStateFromEnum(BlockPortal.Portal.STONE_TM);
 		} else if (connectedUp && ((!connectedEast && connectedWest) || (connectedNorth && !connectedSouth))) {
 			if (connectedWest) {
-				return type == MINE ? internal ? getStateFromEnum(INTERNAL_BL_EW) : getStateFromEnum(MINE_BL_EW) : getStateFromEnum(
-						STONE_BL_EW);
+				return type == BlockPortal.Type.MINE ? internal ? getStateFromEnum(BlockPortal.Portal.INTERNAL_BL_EW) : getStateFromEnum(
+						BlockPortal.Portal.MINE_BL_EW) : getStateFromEnum(BlockPortal.Portal.STONE_BL_EW);
 			}
-			return type == MINE ? internal ? getStateFromEnum(INTERNAL_BL) : getStateFromEnum(MINE_BL) : getStateFromEnum(STONE_BL);
+			return type == BlockPortal.Type.MINE ? internal ? getStateFromEnum(BlockPortal.Portal.INTERNAL_BL) : getStateFromEnum(
+					BlockPortal.Portal.MINE_BL) : getStateFromEnum(BlockPortal.Portal.STONE_BL);
 		} else if (connectedUp && ((connectedEast && !connectedWest) || (!connectedNorth && connectedSouth))) {
 			if (connectedEast) {
-				return type == MINE ? internal ? getStateFromEnum(INTERNAL_BR_EW) : getStateFromEnum(MINE_BR_EW) : getStateFromEnum(
-						STONE_BR_EW);
+				return type == BlockPortal.Type.MINE ? internal ? getStateFromEnum(BlockPortal.Portal.INTERNAL_BR_EW) : getStateFromEnum(
+						BlockPortal.Portal.MINE_BR_EW) : getStateFromEnum(BlockPortal.Portal.STONE_BR_EW);
 			}
-			return type == MINE ? internal ? getStateFromEnum(INTERNAL_BR) : getStateFromEnum(MINE_BR) : getStateFromEnum(STONE_BR);
+			return type == BlockPortal.Type.MINE ? internal ? getStateFromEnum(BlockPortal.Portal.INTERNAL_BR) : getStateFromEnum(
+					BlockPortal.Portal.MINE_BR) : getStateFromEnum(BlockPortal.Portal.STONE_BR);
 		} else if (connectedUp && (connectedEast || connectedNorth)) {
 			if (connectedEast) {
-				return type == MINE ? internal ? getStateFromEnum(INTERNAL_BM_EW) : getStateFromEnum(MINE_BM_EW) : getStateFromEnum(
-						STONE_BM_EW);
+				return type == BlockPortal.Type.MINE ? internal ? getStateFromEnum(BlockPortal.Portal.INTERNAL_BM_EW) : getStateFromEnum(
+						BlockPortal.Portal.MINE_BM_EW) : getStateFromEnum(BlockPortal.Portal.STONE_BM_EW);
 			}
-			return type == MINE ? internal ? getStateFromEnum(INTERNAL_BM) : getStateFromEnum(MINE_BM) : getStateFromEnum(STONE_BM);
+			return type == BlockPortal.Type.MINE ? internal ? getStateFromEnum(BlockPortal.Portal.INTERNAL_BM) : getStateFromEnum(
+					BlockPortal.Portal.MINE_BM) : getStateFromEnum(BlockPortal.Portal.STONE_BM);
 		} else {
 			return state;
 		}

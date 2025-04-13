@@ -1,11 +1,9 @@
 package joshie.harvest.gathering.block;
 
-import static joshie.harvest.api.gathering.ISmashable.ToolType.HAMMER;
-
 import java.util.Locale;
 
 import javax.annotation.Nonnull;
-import joshie.harvest.api.core.ITiered.ToolTier;
+import joshie.harvest.api.gathering.ISmashable;
 import joshie.harvest.core.HFTab;
 import joshie.harvest.core.base.block.BlockHFSmashable;
 import joshie.harvest.core.lib.CreativeSort;
@@ -83,17 +81,12 @@ public class BlockRock extends BlockHFSmashable<BlockRock, Rock> {
 
 	@Override
 	public ToolType getToolType() {
-		return HAMMER;
+		return ISmashable.ToolType.HAMMER;
 	}
 
 	@Override
 	public boolean isValidTool(ItemStack stack) {
 		return stack.getItem() instanceof ItemHammer;
-	}
-
-	@Override
-	public ToolTier getRequiredTier(IBlockState state) {
-		return ToolTier.BASIC;
 	}
 
 	@Override

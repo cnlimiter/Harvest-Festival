@@ -1,7 +1,5 @@
 package joshie.harvest.crops.item;
 
-import static joshie.harvest.core.lib.HFModInfo.MODID;
-
 import java.util.Locale;
 
 import javax.annotation.Nonnull;
@@ -10,6 +8,7 @@ import joshie.harvest.api.crops.Crop;
 import joshie.harvest.core.HFTab;
 import joshie.harvest.core.base.item.ItemHFFoodEnum;
 import joshie.harvest.core.lib.CreativeSort;
+import joshie.harvest.core.lib.HFModInfo;
 import joshie.harvest.crops.item.ItemCrop.Crops;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
@@ -65,7 +64,7 @@ public class ItemCrop extends ItemHFFoodEnum<ItemCrop, Crops> {
 		private final float saturation;
 
 		Crops(int hunger, float saturation) {
-			this.cropLocation = new ResourceLocation(MODID, getName());
+			this.cropLocation = new ResourceLocation(HFModInfo.MODID, getName());
 			this.hunger = hunger;
 			this.saturation = saturation;
 		}

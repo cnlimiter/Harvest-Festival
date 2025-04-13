@@ -1,10 +1,9 @@
 package joshie.harvest.shops.purchasable;
 
-import static joshie.harvest.core.registry.ShippingRegistry.SELL_VALUE;
-
 import javax.annotation.Nonnull;
 import joshie.harvest.api.cooking.Recipe;
 import joshie.harvest.cooking.CookingHelper;
+import joshie.harvest.core.registry.ShippingRegistry;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
@@ -23,7 +22,7 @@ public class PurchasableMeal extends Purchasable {
 		if (stack.isEmpty()) {
 			stack = CookingHelper.makeRecipe(recipe);
 			if (stack.getTagCompound() != null) {
-				stack.getTagCompound().setLong(SELL_VALUE, 0L);
+				stack.getTagCompound().setLong(ShippingRegistry.SELL_VALUE, 0L);
 			}
 		}
 

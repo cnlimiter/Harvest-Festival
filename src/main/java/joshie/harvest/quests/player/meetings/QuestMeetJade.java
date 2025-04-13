@@ -1,18 +1,12 @@
 package joshie.harvest.quests.player.meetings;
 
-import static joshie.harvest.api.calendar.Season.AUTUMN;
-import static joshie.harvest.api.calendar.Season.SUMMER;
-import static joshie.harvest.api.core.ITiered.ToolTier.BASIC;
-import static joshie.harvest.core.helpers.InventoryHelper.ITEM_STACK;
-import static joshie.harvest.core.helpers.InventoryHelper.SPECIAL;
-import static joshie.harvest.npcs.HFNPCs.FLOWER_GIRL;
-
 import java.util.Set;
 
 import com.google.common.collect.Sets;
 
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.calendar.Season;
+import joshie.harvest.api.core.ITiered;
 import joshie.harvest.api.knowledge.Note;
 import joshie.harvest.api.npc.NPC;
 import joshie.harvest.api.npc.NPCEntity;
@@ -25,6 +19,7 @@ import joshie.harvest.core.helpers.InventoryHelper;
 import joshie.harvest.core.helpers.InventoryHelper.SearchType;
 import joshie.harvest.crops.HFCrops;
 import joshie.harvest.knowledge.HFNotes;
+import joshie.harvest.npcs.HFNPCs;
 import joshie.harvest.quests.Quests;
 import joshie.harvest.quests.selection.TutorialSelection;
 import joshie.harvest.tools.HFTools;
@@ -42,7 +37,7 @@ public class QuestMeetJade extends QuestQuestion {
 
 	public QuestMeetJade() {
 		super(new TutorialSelection("crops"));
-		setNPCs(FLOWER_GIRL);
+		setNPCs(HFNPCs.FLOWER_GIRL);
 	}
 
 	@Override
@@ -101,13 +96,13 @@ public class QuestMeetJade extends QuestQuestion {
 			return getLocalized("start");
 		} else if (quest_stage == TURNIPS) {
 			if (attempted) {
-				if (InventoryHelper.getHandItemIsIn(player, SPECIAL, SearchType.FLOWER, 5) != null) {
+				if (InventoryHelper.getHandItemIsIn(player, InventoryHelper.SPECIAL, SearchType.FLOWER, 5) != null) {
 					/* Jade thanks the player for the flowers, and gives them turnip seeds */
 					return getLocalized("thanks.flowers");
-				} else if (InventoryHelper.getHandItemIsIn(player, SPECIAL, SearchType.HOE) != null) {
+				} else if (InventoryHelper.getHandItemIsIn(player, InventoryHelper.SPECIAL, SearchType.HOE) != null) {
 					/* Jade thanks the player for the hoe and gives them a hf hoe */
 					return getLocalized("thanks.hoe");
-				} else if (InventoryHelper.getHandItemIsIn(player, SPECIAL, SearchType.BUCKET) != null) {
+				} else if (InventoryHelper.getHandItemIsIn(player, InventoryHelper.SPECIAL, SearchType.BUCKET) != null) {
 					/* Jade thanks the player for the bucket and gives them a watering can */
 					return getLocalized("thanks.bucket");
 				}
@@ -124,7 +119,8 @@ public class QuestMeetJade extends QuestQuestion {
                She however also explains that her variety is limited, and suggests that you build a supermarket
                She also informs the player that the harvest goddess has heard of your great work
                And that she would really like to hear from you, in fact she would love to see a turnip!*/
-			if (InventoryHelper.getHandItemIsIn(player, ITEM_STACK, HFCrops.TUTORIAL.getCropStack(9), 9) != null) {
+			if (InventoryHelper.getHandItemIsIn(player,
+					InventoryHelper.ITEM_STACK, HFCrops.TUTORIAL.getCropStack(9), 9) != null) {
 				return getLocalized("complete");
 			}
 
@@ -146,23 +142,24 @@ public class QuestMeetJade extends QuestQuestion {
 			return;
 		}
 		if (quest_stage == START) {
-			rewardItem(player, HFTools.HOES.get(BASIC).getStack());
-			rewardItem(player, HFTools.WATERING_CANS.get(BASIC).getStack());
+			rewardItem(player, HFTools.HOES.get(ITiered.ToolTier.BASIC).getStack());
+			rewardItem(player, HFTools.WATERING_CANS.get(ITiered.ToolTier.BASIC).getStack());
 			HFApi.player.getTrackingForPlayer(player).learnNote(HFNotes.CROP_FARMING);
 			rewardItem(player, HFCrops.TUTORIAL.getSeedStack(3));
 			increaseStage(player);
 		} else if (quest_stage == TURNIPS) {
-			if (InventoryHelper.getHandItemIsIn(player, ITEM_STACK, HFCrops.TUTORIAL.getCropStack(9), 9) != null) {
+			if (InventoryHelper.getHandItemIsIn(player,
+					InventoryHelper.ITEM_STACK, HFCrops.TUTORIAL.getCropStack(9), 9) != null) {
 				complete(player);
 			}
 
 			if (attempted) {
-				if (InventoryHelper.takeItemsIfHeld(player, SPECIAL, SearchType.FLOWER, 5) != null) {
+				if (InventoryHelper.takeItemsIfHeld(player, InventoryHelper.SPECIAL, SearchType.FLOWER, 5) != null) {
 					rewardItem(player, HFCrops.TUTORIAL.getSeedStack(1));
-				} else if (InventoryHelper.takeItemsIfHeld(player, SPECIAL, SearchType.HOE) != null) {
-					rewardItem(player, HFTools.HOES.get(BASIC).getStack());
-				} else if (InventoryHelper.takeItemsIfHeld(player, SPECIAL, SearchType.BUCKET) != null) {
-					rewardItem(player, HFTools.WATERING_CANS.get(BASIC).getStack());
+				} else if (InventoryHelper.takeItemsIfHeld(player, InventoryHelper.SPECIAL, SearchType.HOE) != null) {
+					rewardItem(player, HFTools.HOES.get(ITiered.ToolTier.BASIC).getStack());
+				} else if (InventoryHelper.takeItemsIfHeld(player, InventoryHelper.SPECIAL, SearchType.BUCKET) != null) {
+					rewardItem(player, HFTools.WATERING_CANS.get(ITiered.ToolTier.BASIC).getStack());
 				}
 			}
 
@@ -179,15 +176,15 @@ public class QuestMeetJade extends QuestQuestion {
 	public void onQuestCompleted(EntityPlayer player) {
 		//If we finished early
 		if (isCompletedEarly()) {
-			rewardItem(player, HFTools.HOES.get(BASIC).getStack());
-			rewardItem(player, HFTools.WATERING_CANS.get(BASIC).getStack());
+			rewardItem(player, HFTools.HOES.get(ITiered.ToolTier.BASIC).getStack());
+			rewardItem(player, HFTools.WATERING_CANS.get(ITiered.ToolTier.BASIC).getStack());
 		}
 
-		rewardItem(player, HFTools.SICKLES.get(BASIC).getStack());
+		rewardItem(player, HFTools.SICKLES.get(ITiered.ToolTier.BASIC).getStack());
 		Season season = HFApi.calendar.getDate(player.world).getSeason();
-		if (season == SUMMER) {
+		if (season == Season.SUMMER) {
 			rewardItem(player, HFCrops.ONION.getSeedStack(3));
-		} else if (season == AUTUMN) {
+		} else if (season == Season.AUTUMN) {
 			rewardItem(player, HFCrops.SPINACH.getSeedStack(3));
 		} else {
 			rewardItem(player, HFCrops.TURNIP.getSeedStack(3));

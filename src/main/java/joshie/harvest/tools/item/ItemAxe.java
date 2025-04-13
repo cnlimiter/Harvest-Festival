@@ -1,7 +1,5 @@
 package joshie.harvest.tools.item;
 
-import static joshie.harvest.api.core.ITiered.ToolTier.BASIC;
-
 import java.util.List;
 import java.util.Set;
 import java.util.Stack;
@@ -11,6 +9,7 @@ import com.google.common.collect.Sets;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import joshie.harvest.api.core.ITiered;
 import joshie.harvest.api.gathering.ISmashable.ToolType;
 import joshie.harvest.core.HFTab;
 import joshie.harvest.core.base.item.ItemToolSmashing;
@@ -232,7 +231,7 @@ public class ItemAxe extends ItemToolSmashing<ItemAxe> {
 		if (slot == EntityEquipmentSlot.MAINHAND) {
 			multimap.put(
 					SharedMonsterAttributes.ATTACK_DAMAGE.getName(),
-					new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Tool modifier", tier == BASIC ? 6F : 8F, 0));
+					new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Tool modifier", tier == ITiered.ToolTier.BASIC ? 6F : 8F, 0));
 			multimap.put(
 					SharedMonsterAttributes.ATTACK_SPEED.getName(),
 					new AttributeModifier(ATTACK_SPEED_MODIFIER, "Tool modifier", ATTACK_SPEEDS[tier.ordinal()], 0));

@@ -1,7 +1,6 @@
 package joshie.harvest.core.network;
 
 
-import io.netty.buffer.ByteBuf;
 import joshie.harvest.HarvestFestival;
 import joshie.harvest.core.entity.EntityBasket;
 import joshie.harvest.core.handlers.BasketHandler;
@@ -12,12 +11,6 @@ import net.minecraft.entity.player.EntityPlayer;
 @Packet(Side.SERVER)
 public class PacketOpenBasket extends PenguinPacket {
 	public PacketOpenBasket() {}
-
-	@Override
-	public void toBytes(ByteBuf to) {}
-
-	@Override
-	public void fromBytes(ByteBuf from) {}
 
 	@Override
 	public void handlePacket(EntityPlayer player) {

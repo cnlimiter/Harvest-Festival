@@ -1,9 +1,5 @@
 package joshie.harvest.api.npc;
 
-import static joshie.harvest.api.HFApi.npc;
-import static joshie.harvest.api.npc.INPCHelper.Age.ADULT;
-import static joshie.harvest.core.lib.HFModInfo.MODID;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -17,6 +13,7 @@ import com.google.common.collect.Maps;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import joshie.harvest.api.HFApi;
 import joshie.harvest.api.buildings.BuildingLocation;
 import joshie.harvest.api.calendar.CalendarDate;
 import joshie.harvest.api.calendar.CalendarEntry;
@@ -29,6 +26,7 @@ import joshie.harvest.api.npc.gift.IGiftHandler.Quality;
 import joshie.harvest.api.npc.greeting.GreetingShop;
 import joshie.harvest.api.npc.greeting.IConditionalGreeting;
 import joshie.harvest.api.shops.Shop;
+import joshie.harvest.core.lib.HFModInfo;
 import joshie.harvest.npcs.HFNPCs;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.EntityAgeable;
@@ -70,7 +68,7 @@ public class NPC extends HFRegistry<NPC> implements CalendarEntry {
 
 	private NPC() {
 		this(
-				new ResourceLocation(MODID, "null"),
+				new ResourceLocation(HFModInfo.MODID, "null"),
 				INPCHelper.Gender.MALE,
 				INPCHelper.Age.ADULT,
 				new CalendarDate(1, Season.SPRING, 1),
@@ -200,7 +198,7 @@ public class NPC extends HFRegistry<NPC> implements CalendarEntry {
 	}
 
 	public boolean isMarriageCandidate() {
-		return age == ADULT;
+		return age == Age.ADULT;
 	}
 
 	@Deprecated
@@ -269,7 +267,7 @@ public class NPC extends HFRegistry<NPC> implements CalendarEntry {
 			}
 		}
 
-		return npc.getRandomSpeech(this, multipleLocalizationKey, 100);
+		return HFApi.npc.getRandomSpeech(this, multipleLocalizationKey, 100);
 	}
 
 	public Quality getGiftValue(@Nonnull ItemStack stack) {
@@ -312,7 +310,7 @@ public class NPC extends HFRegistry<NPC> implements CalendarEntry {
 	@Override
 	@Nonnull
 	public ItemStack getStackRepresentation() {
-		return npc.getStackForNPC(this);
+		return HFApi.npc.getStackForNPC(this);
 	}
 
 	@SuppressWarnings("deprecation")

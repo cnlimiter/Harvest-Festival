@@ -1,9 +1,5 @@
 package joshie.harvest.crops.render;
 
-import static joshie.harvest.core.lib.HFModInfo.MODID;
-import static net.minecraft.block.BlockLeaves.CHECK_DECAY;
-import static net.minecraft.block.BlockLeaves.DECAYABLE;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -17,11 +13,13 @@ import joshie.harvest.api.HFApi;
 import joshie.harvest.api.calendar.Season;
 import joshie.harvest.core.base.render.BakedHF;
 import joshie.harvest.core.helpers.MCClientHelper;
+import joshie.harvest.core.lib.HFModInfo;
 import joshie.harvest.core.util.annotations.HFEvents;
 import joshie.harvest.crops.HFCrops;
 import joshie.harvest.crops.block.BlockLeavesFruit.LeavesFruit;
 import joshie.harvest.crops.block.BlockLeavesTropical.LeavesTropical;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -73,8 +71,8 @@ public class BakedLeaves extends BakedHF {
 		private static final List<IProperty<?>> ignored = Lists.newArrayList();
 
 		static {
-			ignored.add(CHECK_DECAY);
-			ignored.add(DECAYABLE);
+			ignored.add(BlockLeaves.CHECK_DECAY);
+			ignored.add(BlockLeaves.DECAYABLE);
 		}
 
 		@Override
@@ -88,8 +86,8 @@ public class BakedLeaves extends BakedHF {
 
 		@SubscribeEvent
 		public void onStitch(TextureStitchEvent event) {
-			event.getMap().registerSprite(new ResourceLocation(MODID, "blocks/leaves_oak_black"));
-			event.getMap().registerSprite(new ResourceLocation(MODID, "blocks/leaves_jungle_black"));
+			event.getMap().registerSprite(new ResourceLocation(HFModInfo.MODID, "blocks/leaves_oak_black"));
+			event.getMap().registerSprite(new ResourceLocation(HFModInfo.MODID, "blocks/leaves_jungle_black"));
 		}
 
 		@SubscribeEvent

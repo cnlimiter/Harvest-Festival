@@ -1,12 +1,11 @@
 package joshie.harvest.mining.loot;
 
-import static joshie.harvest.core.lib.HFModInfo.MODID;
-
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 
 import javax.annotation.Nonnull;
+import joshie.harvest.core.lib.HFModInfo;
 import net.minecraft.util.JsonUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.loot.conditions.LootCondition;
@@ -25,7 +24,7 @@ public class EndsIn extends FloorCondition {
 
 	public static class Serializer extends LootCondition.Serializer<EndsIn> {
 		public Serializer() {
-			super(new ResourceLocation(MODID, "ends"), EndsIn.class);
+			super(new ResourceLocation(HFModInfo.MODID, "ends"), EndsIn.class);
 		}
 
 		@Override

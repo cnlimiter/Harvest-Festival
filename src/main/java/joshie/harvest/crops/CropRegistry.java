@@ -1,8 +1,5 @@
 package joshie.harvest.crops;
 
-import static joshie.harvest.crops.block.BlockHFCrops.CropType.FRESH;
-import static joshie.harvest.crops.block.BlockHFCrops.CropType.FRESH_DOUBLE;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -18,6 +15,7 @@ import joshie.harvest.api.crops.WateringHandler;
 import joshie.harvest.core.handlers.DisableHandler;
 import joshie.harvest.core.util.annotations.HFApiImplementation;
 import joshie.harvest.core.util.holders.ItemStackHolder;
+import joshie.harvest.crops.block.BlockHFCrops;
 import joshie.harvest.crops.tile.TileWithered;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.PropertyInteger;
@@ -105,9 +103,9 @@ public class CropRegistry implements ICropRegistry {
 
 	@Override
 	public void plantCrop(@Nullable EntityPlayer player, World world, BlockPos pos, Crop theCrop, int stage) {
-		world.setBlockState(pos, HFCrops.CROPS.getStateFromEnum(FRESH), 2);
+		world.setBlockState(pos, HFCrops.CROPS.getStateFromEnum(BlockHFCrops.CropType.FRESH), 2);
 		if (theCrop.isCurrentlyDouble(stage)) {
-			world.setBlockState(pos.up(), HFCrops.CROPS.getStateFromEnum(FRESH_DOUBLE));
+			world.setBlockState(pos.up(), HFCrops.CROPS.getStateFromEnum(BlockHFCrops.CropType.FRESH_DOUBLE));
 		}
 
 		TileWithered tile = (TileWithered) world.getTileEntity(pos);

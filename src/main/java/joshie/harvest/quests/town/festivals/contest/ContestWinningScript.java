@@ -1,14 +1,11 @@
 package joshie.harvest.quests.town.festivals.contest;
 
-import static joshie.harvest.core.lib.HFModInfo.MODID;
-import static joshie.harvest.quests.town.festivals.Place.FIRST;
-import static joshie.harvest.quests.town.festivals.Place.SECOND;
-import static joshie.harvest.quests.town.festivals.Place.THIRD;
-
 import org.apache.commons.lang3.StringEscapeUtils;
 
 import joshie.harvest.api.npc.NPCEntity;
 import joshie.harvest.api.npc.greeting.Script;
+import joshie.harvest.core.lib.HFModInfo;
+import joshie.harvest.quests.town.festivals.Place;
 import joshie.harvest.town.TownHelper;
 import joshie.harvest.town.data.TownData;
 import net.minecraft.util.ResourceLocation;
@@ -17,7 +14,7 @@ import net.minecraft.world.World;
 
 public class ContestWinningScript extends Script {
 	public ContestWinningScript(String name) {
-		super(new ResourceLocation(MODID, name + "_winner"));
+		super(new ResourceLocation(HFModInfo.MODID, name + "_winner"));
 	}
 
 	@SuppressWarnings("deprecation")
@@ -27,9 +24,9 @@ public class ContestWinningScript extends Script {
 		QuestContest quest = data.getQuests().getAQuest(data.getFestival().getQuest());
 		ContestEntries entries = quest.getEntries();
 		World world = entity.getAsEntity().getEntityWorld();
-		ContestEntry third = entries.getEntry(THIRD);
-		ContestEntry second = entries.getEntry(SECOND);
-		ContestEntry first = entries.getEntry(FIRST);
+		ContestEntry third = entries.getEntry(Place.THIRD);
+		ContestEntry second = entries.getEntry(Place.SECOND);
+		ContestEntry first = entries.getEntry(Place.FIRST);
 		return StringEscapeUtils.unescapeJava(I18n.translateToLocalFormatted(
 				unlocalised, third.getOwnerName(world), third.getName(world),
 				second.getOwnerName(world), second.getName(world),

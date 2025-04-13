@@ -1,7 +1,5 @@
 package joshie.harvest.animals.tile;
 
-import static joshie.harvest.api.animals.AnimalFoodType.GRASS;
-
 import joshie.harvest.animals.HFAnimals;
 import joshie.harvest.animals.block.BlockTrough;
 import joshie.harvest.animals.block.BlockTrough.Section;
@@ -36,7 +34,7 @@ public class TileTrough extends TileFillableConnected<TileTrough> {
 			if (trough.getMaster() == trough) {
 				for (EntityAnimal animal : EntityHelper.getEntities(EntityAnimal.class, world, pos, 32D, 5D)) {
 					AnimalStats stats = EntityHelper.getStats(animal);
-					if (stats != null && trough.fillAmount > 0 && HFApi.animals.canAnimalEatFoodType(stats, GRASS) &&
+					if (stats != null && trough.fillAmount > 0 && HFApi.animals.canAnimalEatFoodType(stats, AnimalFoodType.GRASS) &&
 							!stats.performTest(AnimalTest.HAS_EATEN) && trough.setFilled(trough.getFillAmount() - 1)) {
 						stats.performAction(world, ItemStack.EMPTY, AnimalAction.FEED);
 					}

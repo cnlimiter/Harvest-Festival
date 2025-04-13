@@ -105,15 +105,15 @@ public class NPCHelper implements INPCHelper {
 
 	private static boolean canPlayerOpenShop(NPC npc, Shop shop, @Nonnull EntityPlayer player) {
 		return (
-				!player.world.isRemote && HFTrackers.<PlayerTrackerServer>getPlayerTrackerFromPlayer(player).getRelationships().isStatusMet(
+				player.world.isRemote || HFTrackers.<PlayerTrackerServer>getPlayerTrackerFromPlayer(player).getRelationships().isStatusMet(
 						npc,
-						RelationStatus.MET) || player.world.isRemote) && (shop.canBuyFromShop(player) || shop.canSellToShop(player));
+						RelationStatus.MET)) && (shop.canBuyFromShop(player) || shop.canSellToShop(player));
 	}
 
 	public static boolean isShopOpen(EntityNPC npc, World world, @Nonnull EntityPlayer player) {
 		Shop shop = npc.getNPC().getShop(world, new BlockPos(npc), player); //Grab the shop
 		return (shop != null && isShopOpen(world, npc, player, shop) && canPlayerOpenShop(npc.getNPC(), shop, player)) &&
-				(shop.getContents().size() > 0);
+				(!shop.getContents().isEmpty());
 	}
 
 	public static int getGuiIDForNPC(EntityNPC npc, World world, @Nonnull EntityPlayer player) {

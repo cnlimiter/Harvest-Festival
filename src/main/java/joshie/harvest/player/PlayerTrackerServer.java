@@ -1,7 +1,5 @@
 package joshie.harvest.player;
 
-import static joshie.harvest.npcs.gui.ContainerNPCGift.CHRISTMAS;
-
 import java.util.UUID;
 
 import javax.annotation.Nullable;
@@ -14,6 +12,7 @@ import joshie.harvest.core.helpers.EntityHelper;
 import joshie.harvest.core.network.PacketHandler;
 import joshie.harvest.core.util.interfaces.ISyncMaster;
 import joshie.harvest.knowledge.letter.LetterDataServer;
+import joshie.harvest.npcs.gui.ContainerNPCGift;
 import joshie.harvest.player.relationships.RelationshipDataServer;
 import joshie.harvest.player.stats.StatsServer;
 import joshie.harvest.player.tracking.TrackingServer;
@@ -118,7 +117,7 @@ public class PlayerTrackerServer extends PlayerTracker implements ISyncMaster {
 			}
 			relationships.resetStatus(yesterday, player); //Reset the relationship status
 			stats.syncGold(player); //Resync the players gold
-			if (CalendarHelper.isDateSame(today, CHRISTMAS)) {
+			if (CalendarHelper.isDateSame(today, ContainerNPCGift.CHRISTMAS)) {
 				EventTrigger.INSTANCE.trigger(player, "first_christmas");
 			}
 			if (CalendarHelper.isDateSame(today, stats.getBirthday())) {

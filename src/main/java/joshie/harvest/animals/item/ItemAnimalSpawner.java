@@ -1,8 +1,5 @@
 package joshie.harvest.animals.item;
 
-import static joshie.harvest.calendar.HFCalendar.TICKS_PER_DAY;
-import static joshie.harvest.core.lib.HFModInfo.MODID;
-
 import java.util.List;
 import java.util.Locale;
 
@@ -14,9 +11,11 @@ import joshie.harvest.animals.entity.EntityHarvestCow;
 import joshie.harvest.animals.entity.EntityHarvestSheep;
 import joshie.harvest.animals.item.ItemAnimalSpawner.Spawner;
 import joshie.harvest.api.animals.AnimalStats;
+import joshie.harvest.calendar.HFCalendar;
 import joshie.harvest.core.base.item.ItemHFEnum;
 import joshie.harvest.core.helpers.EntityHelper;
 import joshie.harvest.core.helpers.TextHelper;
+import joshie.harvest.core.lib.HFModInfo;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityAgeable;
@@ -78,7 +77,7 @@ public class ItemAnimalSpawner extends ItemHFEnum<ItemAnimalSpawner, Spawner> {
 			EntityAgeable entity = getEntityFromEnum(world, getEnumFromStack(stack));
 			if (entity != null) {
 				if (player.isSneaking()) {
-					entity.setGrowingAge(-(int) (TICKS_PER_DAY * HFAnimals.AGING_TIMER));
+					entity.setGrowingAge(-(int) (HFCalendar.TICKS_PER_DAY * HFAnimals.AGING_TIMER));
 				}
 				entity.setPosition(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5);
 				AnimalStats stats = EntityHelper.getStats(entity);
@@ -107,7 +106,7 @@ public class ItemAnimalSpawner extends ItemHFEnum<ItemAnimalSpawner, Spawner> {
 					i,
 					new ModelResourceLocation(
 							new ResourceLocation(
-									MODID,
+									HFModInfo.MODID,
 									getPrefix(values[i]) + "_" + values[i].name().toLowerCase(Locale.ENGLISH)), "inventory"));
 		}
 	}

@@ -1,11 +1,10 @@
 package joshie.harvest.animals.tile;
 
-import static joshie.harvest.core.helpers.MCServerHelper.markTileForUpdate;
-
 import javax.annotation.Nonnull;
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.core.Size;
 import joshie.harvest.core.base.tile.TileHarvest;
+import joshie.harvest.core.helpers.MCServerHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -21,7 +20,7 @@ public class TileNest extends TileHarvest {
 		this.drop = stack;
 		this.size = HFApi.sizeable.getSize(stack);
 		this.markDirty();
-		markTileForUpdate(this);
+		MCServerHelper.markTileForUpdate(this);
 	}
 
 	public void clear() {
@@ -29,7 +28,7 @@ public class TileNest extends TileHarvest {
 		this.drop = ItemStack.EMPTY;
 		this.size = Size.NONE;
 		this.markDirty();
-		markTileForUpdate(this);
+		MCServerHelper.markTileForUpdate(this);
 	}
 
 	public int getRelationship() {

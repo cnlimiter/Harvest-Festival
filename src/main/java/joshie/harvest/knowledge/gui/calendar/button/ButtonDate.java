@@ -1,11 +1,10 @@
 package joshie.harvest.knowledge.gui.calendar.button;
 
-import static joshie.harvest.api.calendar.CalendarDate.DAYS_PER_SEASON;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import joshie.harvest.api.calendar.CalendarDate;
 import joshie.harvest.api.calendar.CalendarEntry;
 import joshie.harvest.calendar.CalendarHelper;
 import joshie.harvest.core.helpers.StackRenderHelper;
@@ -61,7 +60,7 @@ public class ButtonDate extends GuiButton {
 			mc.fontRenderer.setUnicodeFlag(prev);
 			mouseDragged(mc, mouseX, mouseY);
 			icons.render(gui, mouseX, mouseY);
-			if (DAYS_PER_SEASON != 30 && hovered) {
+			if (CalendarDate.DAYS_PER_SEASON != 30 && hovered) {
 				gui.addTooltip(start + "-" + end);
 			}
 		}
@@ -88,7 +87,7 @@ public class ButtonDate extends GuiButton {
 		}
 
 		public void render(GuiCalendar gui, int mouseX, int mouseY) {
-			if (entries.size() > 0) {
+			if (!entries.isEmpty()) {
 				if (ticker % 128 == 0 || stack.isEmpty()) {
 					stack = entries.get(index).getStackRepresentation(); //Pick out the stack
 					tooltip = new ArrayList<>();
@@ -102,7 +101,7 @@ public class ButtonDate extends GuiButton {
 				StackRenderHelper.drawStack(stack, x, y, 1F);
 				if (mouseX >= x && mouseX <= x + 16 && mouseY >= y && mouseY < y + 16) {
 					gui.addTooltip(tooltip);
-					if (DAYS_PER_SEASON != 30) {
+					if (CalendarDate.DAYS_PER_SEASON != 30) {
 						gui.addTooltip("------");
 					}
 				} else {

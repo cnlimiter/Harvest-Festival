@@ -1,9 +1,5 @@
 package joshie.harvest.quests;
 
-import static joshie.harvest.core.lib.HFModInfo.MODID;
-import static joshie.harvest.core.network.PacketHandler.sendToClient;
-import static joshie.harvest.core.network.PacketHandler.sendToDimension;
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -16,6 +12,8 @@ import joshie.harvest.api.quests.Quest;
 import joshie.harvest.api.quests.TargetType;
 import joshie.harvest.core.HFTrackers;
 import joshie.harvest.core.helpers.SpawnItemHelper;
+import joshie.harvest.core.lib.HFModInfo;
+import joshie.harvest.core.network.PacketHandler;
 import joshie.harvest.core.util.annotations.HFApiImplementation;
 import joshie.harvest.npcs.entity.EntityNPC;
 import joshie.harvest.player.PlayerTrackerServer;
@@ -75,10 +73,10 @@ public class QuestHelper implements IQuestHelper {
 		if (!player.world.isRemote) {
 			quest.setStage(quest.getStage() + 1);
 			if (quest.getQuestType() == TargetType.PLAYER) {
-				sendToClient(new PacketSyncData(quest, quest.writeToNBT(new NBTTagCompound())), player);
+				PacketHandler.sendToClient(new PacketSyncData(quest, quest.writeToNBT(new NBTTagCompound())), player);
 			} else {
 				TownDataServer data = TownHelper.getClosestTownToEntity(player, false);
-				sendToDimension(
+				PacketHandler.sendToDimension(
 						player.world.provider.getDimension(),
 						new PacketSyncData(quest, quest.writeToNBT(new NBTTagCompound())).setUUID(data.getID()));
 				HFTrackers.markTownsDirty();
@@ -90,10 +88,10 @@ public class QuestHelper implements IQuestHelper {
 	public void syncData(Quest quest, EntityPlayer player) {
 		if (!player.world.isRemote) {
 			if (quest.getQuestType() == TargetType.PLAYER) {
-				sendToClient(new PacketSyncData(quest, quest.writeToNBT(new NBTTagCompound())), player);
+				PacketHandler.sendToClient(new PacketSyncData(quest, quest.writeToNBT(new NBTTagCompound())), player);
 			} else {
 				TownDataServer data = TownHelper.getClosestTownToEntity(player, false);
-				sendToDimension(
+				PacketHandler.sendToDimension(
 						player.world.provider.getDimension(),
 						new PacketSyncData(quest, quest.writeToNBT(new NBTTagCompound())).setUUID(data.getID()));
 				HFTrackers.markTownsDirty();
@@ -119,7 +117,7 @@ public class QuestHelper implements IQuestHelper {
 	@Override
 	public void rewardEntity(Quest quest, EntityPlayer player, String entity) {
 		if (!player.world.isRemote) {
-			ResourceLocation resource = entity.contains(":") ? new ResourceLocation(entity) : new ResourceLocation(MODID, entity);
+			ResourceLocation resource = entity.contains(":") ? new ResourceLocation(entity) : new ResourceLocation(HFModInfo.MODID, entity);
 			Entity theEntity = EntityList.createEntityByIDFromName(resource, player.world);
 			if (theEntity != null) {
 				theEntity.setPosition(player.posX, player.posY, player.posZ);
@@ -149,7 +147,7 @@ public class QuestHelper implements IQuestHelper {
 
 	public static Quest getQuest(String name) {
 		try {
-			return Quest.REGISTRY.getValue(new ResourceLocation(MODID, name));
+			return Quest.REGISTRY.getValue(new ResourceLocation(HFModInfo.MODID, name));
 		} catch (Exception e) {
 			return null;
 		}

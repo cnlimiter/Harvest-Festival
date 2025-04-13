@@ -1,12 +1,10 @@
 package joshie.harvest.quests.town.trade;
 
 import java.util.Random;
-import java.util.Set;
 
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.calendar.CalendarDate;
 import joshie.harvest.api.quests.HFQuest;
-import joshie.harvest.api.quests.Quest;
 import joshie.harvest.core.helpers.InventoryHelper;
 import joshie.harvest.quests.base.QuestDummyTown;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,13 +16,8 @@ public class QuestFlowerBuyingDo extends QuestDummyTown {
 	private CalendarDate lastCheck;
 	private int value;
 
-	@Override
-	public boolean canStartQuest(Set<Quest> active, Set<Quest> finished) {
-		return false;
-	}
-
 	private int getValue(CalendarDate date, Random rand) {
-		if (lastCheck != null && date.equals(lastCheck)) {
+		if (date.equals(lastCheck)) {
 			return value;
 		} else {
 			lastCheck = date.copy();

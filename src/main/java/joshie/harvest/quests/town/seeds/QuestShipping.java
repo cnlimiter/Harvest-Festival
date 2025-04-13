@@ -10,7 +10,6 @@ import joshie.harvest.api.calendar.Season;
 import joshie.harvest.api.crops.Crop;
 import joshie.harvest.api.npc.NPC;
 import joshie.harvest.api.npc.NPCEntity;
-import joshie.harvest.api.quests.Quest;
 import joshie.harvest.core.HFTrackers;
 import joshie.harvest.core.advancements.EventTrigger;
 import joshie.harvest.player.PlayerTrackerServer;
@@ -39,11 +38,6 @@ public class QuestShipping extends QuestTown {
 		this.required = required;
 	}
 
-	@Override
-	public boolean canStartQuest(Set<Quest> active, Set<Quest> finished) {
-		return true;
-	}
-
 	//Rebuild the list of spring crops
 	private void rebuildCropSet() {
 		crops = new HashSet<>();
@@ -58,7 +52,7 @@ public class QuestShipping extends QuestTown {
 	}
 
 	private int getTotalCrops(CalendarDate date, EntityPlayer player) {
-		if (lastCheck != null && date.equals(lastCheck)) {
+		if (date.equals(lastCheck)) {
 			return total;
 		} else {
 			total = 0;

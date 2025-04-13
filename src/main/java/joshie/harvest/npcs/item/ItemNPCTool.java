@@ -1,10 +1,5 @@
 package joshie.harvest.npcs.item;
 
-import static joshie.harvest.core.lib.LootStrings.MINING_GEMS;
-import static joshie.harvest.npcs.item.ItemNPCTool.NPCTool.NPC_KILLER;
-import static net.minecraft.util.text.TextFormatting.AQUA;
-import static net.minecraft.util.text.TextFormatting.GOLD;
-
 import java.util.List;
 import java.util.Locale;
 
@@ -14,6 +9,7 @@ import joshie.harvest.core.HFTab;
 import joshie.harvest.core.base.item.ItemHFEnum;
 import joshie.harvest.core.helpers.SpawnItemHelper;
 import joshie.harvest.core.helpers.TextHelper;
+import joshie.harvest.core.lib.LootStrings;
 import joshie.harvest.mining.MiningHelper;
 import joshie.harvest.npcs.item.ItemNPCTool.NPCTool;
 import net.minecraft.client.util.ITooltipFlag;
@@ -25,6 +21,7 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -51,7 +48,7 @@ public class ItemNPCTool extends ItemHFEnum<ItemNPCTool, NPCTool> {
 
 	@Override
 	public boolean onLeftClickEntity(@Nonnull ItemStack stack, EntityPlayer player, Entity entity) {
-		if (getEnumFromStack(stack) == NPC_KILLER) {
+		if (getEnumFromStack(stack) == NPCTool.NPC_KILLER) {
 			entity.setDead();
 			return true;
 		}
@@ -74,9 +71,9 @@ public class ItemNPCTool extends ItemHFEnum<ItemNPCTool, NPCTool> {
 	@Nonnull
 	public String getItemStackDisplayName(@Nonnull ItemStack stack) {
 		if (stack.hasTagCompound() && stack.getTagCompound().hasKey(SPECIAL)) {
-			return GOLD + TextHelper.translate("npctool.gift.special");
+			return TextFormatting.GOLD + TextHelper.translate("npctool.gift.special");
 		} else if (getEnumFromStack(stack).isReal()) {
-			return AQUA + super.getItemStackDisplayName(stack);
+			return TextFormatting.AQUA + super.getItemStackDisplayName(stack);
 		} else {
 			return super.getItemStackDisplayName(stack);
 		}
@@ -99,7 +96,7 @@ public class ItemNPCTool extends ItemHFEnum<ItemNPCTool, NPCTool> {
 		if (held.hasTagCompound() && held.getTagCompound().hasKey(SPECIAL)) {
 			if (!world.isRemote) {
 				NonNullList<ItemStack> drops = NonNullList.create();
-				MiningHelper.getLoot(drops, MINING_GEMS, world, player, 3F);
+				MiningHelper.getLoot(drops, LootStrings.MINING_GEMS, world, player, 3F);
 				for (ItemStack stack : drops) {
 					SpawnItemHelper.spawnByEntity(player, stack);
 				}

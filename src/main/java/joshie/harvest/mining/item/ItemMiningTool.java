@@ -1,7 +1,5 @@
 package joshie.harvest.mining.item;
 
-import static joshie.harvest.core.helpers.InventoryHelper.ITEM_STACK;
-
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
@@ -106,14 +104,14 @@ public class ItemMiningTool extends ItemHFEnum<ItemMiningTool, MiningTool> {
 					int floor2 = MiningHelper.getFloor(pos);
 					if (floor1 != floor2) {
 						int cost = getCost(link1, pos);
-						int amount = InventoryHelper.getCount(player, stack, ITEM_STACK);
+						int amount = InventoryHelper.getCount(player, stack, InventoryHelper.ITEM_STACK);
 						if (amount - cost >= 0) {
 							//Message that you have successfully linked the elevators
 							if (world.isRemote) {
 								ChatHelper.displayChat(TextHelper.formatHF("elevator.success", floor1, floor2));
 							}
 							((TileElevator) world.getTileEntity(pos)).setTwin(link1);
-							InventoryHelper.takeItemsInInventory(player, ITEM_STACK, stack, cost);
+							InventoryHelper.takeItemsInInventory(player, InventoryHelper.ITEM_STACK, stack, cost);
 							//Remove the link
 							link.removeTag("Link1");
 						} else {

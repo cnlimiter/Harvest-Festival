@@ -1,10 +1,5 @@
 package joshie.harvest.cooking.item;
 
-import static joshie.harvest.cooking.recipe.RecipeBuilder.FOOD_LEVEL;
-import static joshie.harvest.cooking.recipe.RecipeBuilder.SATURATION_LEVEL;
-import static joshie.harvest.core.registry.ShippingRegistry.SELL_VALUE;
-import static net.minecraft.util.text.TextFormatting.DARK_GRAY;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumMap;
@@ -19,12 +14,14 @@ import joshie.harvest.api.cooking.Recipe;
 import joshie.harvest.api.cooking.Utensil;
 import joshie.harvest.cooking.HFCooking;
 import joshie.harvest.cooking.item.ItemMeal.Meal;
+import joshie.harvest.cooking.recipe.RecipeBuilder;
 import joshie.harvest.cooking.recipe.RecipeHF;
 import joshie.harvest.cooking.recipe.RecipeMaker;
 import joshie.harvest.core.HFCore;
 import joshie.harvest.core.HFTab;
 import joshie.harvest.core.base.item.ItemHFFoodEnum;
 import joshie.harvest.core.helpers.TextHelper;
+import joshie.harvest.core.registry.ShippingRegistry;
 import joshie.harvest.quests.town.festivals.contest.cooking.CookingContestEntry;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
@@ -39,6 +36,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -200,7 +198,7 @@ public class ItemMeal extends ItemHFFoodEnum<ItemMeal, Meal> {
 	}
 
 	private static Recipe getRecipeFromMeal(Meal meal) {
-		if (MEAL_TO_RECIPE.size() == 0) {
+		if (MEAL_TO_RECIPE.isEmpty()) {
 			for (Meal ameal : MEALS) {
 				MEAL_TO_RECIPE.put(ameal, Recipe.REGISTRY.get(new ResourceLocation("harvestfestival", ameal.getName())));
 			}
@@ -219,7 +217,7 @@ public class ItemMeal extends ItemHFFoodEnum<ItemMeal, Meal> {
 	public String getItemStackDisplayName(@Nonnull ItemStack stack) {
 		Meal meal = getEnumFromStack(stack);
 		if (meal.getUtensil() != null) {
-			return DARK_GRAY + meal.getUtensil().getBurntName();
+			return TextFormatting.DARK_GRAY + meal.getUtensil().getBurntName();
 		}
 		Recipe impl = getRecipeFromMeal(meal);
 		return impl != null ? impl.getDisplayName() : "Corrupted Meal";
@@ -228,13 +226,13 @@ public class ItemMeal extends ItemHFFoodEnum<ItemMeal, Meal> {
 	@Override
 	@SuppressWarnings("ConstantConditions")
 	public int getHealAmount(@Nonnull ItemStack stack) {
-		return stack.hasTagCompound() ? stack.getTagCompound().getInteger(FOOD_LEVEL) : 0;
+		return stack.hasTagCompound() ? stack.getTagCompound().getInteger(RecipeBuilder.FOOD_LEVEL) : 0;
 	}
 
 	@Override
 	@SuppressWarnings("ConstantConditions")
 	public float getSaturationModifier(@Nonnull ItemStack stack) {
-		return stack.hasTagCompound() ? stack.getTagCompound().getFloat(SATURATION_LEVEL) : 0;
+		return stack.hasTagCompound() ? stack.getTagCompound().getFloat(RecipeBuilder.SATURATION_LEVEL) : 0;
 	}
 
 	@Override
@@ -243,9 +241,9 @@ public class ItemMeal extends ItemHFFoodEnum<ItemMeal, Meal> {
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		if (HFCore.DEBUG_MODE && flagIn.isAdvanced()) {
 			if (stack.hasTagCompound()) {
-				tooltip.add(TextHelper.translate("meal.hunger") + " : " + stack.getTagCompound().getInteger(FOOD_LEVEL));
-				tooltip.add(TextHelper.translate("meal.sat") + " : " + stack.getTagCompound().getFloat(SATURATION_LEVEL));
-				tooltip.add(TextHelper.translate("meal.sell") + " : " + stack.getTagCompound().getLong(SELL_VALUE));
+				tooltip.add(TextHelper.translate("meal.hunger") + " : " + stack.getTagCompound().getInteger(RecipeBuilder.FOOD_LEVEL));
+				tooltip.add(TextHelper.translate("meal.sat") + " : " + stack.getTagCompound().getFloat(RecipeBuilder.SATURATION_LEVEL));
+				tooltip.add(TextHelper.translate("meal.sell") + " : " + stack.getTagCompound().getLong(ShippingRegistry.SELL_VALUE));
 			}
 		}
 	}

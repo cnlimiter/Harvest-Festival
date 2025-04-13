@@ -1,10 +1,9 @@
 package joshie.harvest.npcs.gui;
 
-import static joshie.harvest.api.calendar.Season.WINTER;
-
 import joshie.harvest.HarvestFestival;
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.calendar.CalendarDate;
+import joshie.harvest.api.calendar.Season;
 import joshie.harvest.api.npc.NPC;
 import joshie.harvest.api.npc.RelationStatus;
 import joshie.harvest.calendar.CalendarHelper;
@@ -19,7 +18,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 
 public class ContainerNPCGift extends ContainerNPCChat {
-	public static final CalendarDate CHRISTMAS = new CalendarDate(25, WINTER, 0);
+	public static final CalendarDate CHRISTMAS = new CalendarDate(25, Season.WINTER, 0);
 	private final EnumHand hand;
 
 	public ContainerNPCGift(EntityPlayer player, EntityNPC npc, EnumHand hand, int nextGui) {

@@ -1,8 +1,5 @@
 package joshie.harvest.core.util;
 
-import static joshie.harvest.core.lib.HFModInfo.MODID;
-import static joshie.harvest.core.lib.HFModInfo.MODNAME;
-
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -10,6 +7,7 @@ import java.util.List;
 
 import joshie.harvest.HarvestFestival;
 import joshie.harvest.core.helpers.ConfigHelper;
+import joshie.harvest.core.lib.HFModInfo;
 import joshie.harvest.core.util.annotations.HFEvents;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraftforge.common.config.ConfigElement;
@@ -26,7 +24,7 @@ import net.minecraftforge.fml.relauncher.Side;
 public class HFGuiFactory extends DefaultGuiFactory {
 
 	public HFGuiFactory() {
-		super(MODID, MODNAME);
+		super(HFModInfo.MODID, HFModInfo.MODNAME);
 	}
 
 	@Override
@@ -34,7 +32,7 @@ public class HFGuiFactory extends DefaultGuiFactory {
 		return new GuiConfig(
 				parentScreen,
 				getConfigElements(),
-				MODID,
+				HFModInfo.MODID,
 				false,
 				true,
 				GuiConfig.getAbridgedConfigPath(ConfigHelper.getConfig().toString()));
@@ -53,7 +51,7 @@ public class HFGuiFactory extends DefaultGuiFactory {
 					List<IConfigElement> configElements = new ConfigElement(ConfigHelper.getConfig()
 							.getCategory(categoryName)).getChildElements();
 
-					list.add(new DummyConfigElement.DummyCategoryElement(categoryName, MODID + ".config", configElements));
+					list.add(new DummyConfigElement.DummyCategoryElement(categoryName, HFModInfo.MODID + ".config", configElements));
 				}
 
 			} catch (Exception ignored) {
@@ -64,7 +62,7 @@ public class HFGuiFactory extends DefaultGuiFactory {
 
 	@SubscribeEvent
 	public void onConfigurationChangedEvent(ConfigChangedEvent.OnConfigChangedEvent event) {
-		if (event.getModID().equalsIgnoreCase(MODID)) {
+		if (event.getModID().equalsIgnoreCase(HFModInfo.MODID)) {
 			Configuration config = ConfigHelper.getConfig();
 			if (config.hasChanged()) {
 				config.save();

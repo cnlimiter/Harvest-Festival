@@ -1,7 +1,5 @@
 package joshie.harvest.knowledge.gui.stats;
 
-import static joshie.harvest.core.lib.HFModInfo.MODID;
-
 import joshie.harvest.core.base.gui.BookPage;
 import joshie.harvest.core.base.gui.GuiBaseBook;
 import joshie.harvest.core.lib.HFModInfo;
@@ -13,8 +11,8 @@ import joshie.harvest.knowledge.gui.stats.relations.page.PageNPC;
 import net.minecraft.util.ResourceLocation;
 
 public class GuiStats extends GuiBaseBook {
-	private static final ResourceLocation LEFT_GUI = new ResourceLocation(MODID, "textures/gui/book_cooking_left.png");
-	private static final ResourceLocation RIGHT_GUI = new ResourceLocation(MODID, "textures/gui/book_cooking_right.png");
+	private static final ResourceLocation LEFT_GUI = new ResourceLocation(HFModInfo.MODID, "textures/gui/book_cooking_left.png");
+	private static final ResourceLocation RIGHT_GUI = new ResourceLocation(HFModInfo.MODID, "textures/gui/book_cooking_right.png");
 	private static final int imageWidth = 154;
 	private static final int imageHeight = 202;
 	public static BookPage collection;

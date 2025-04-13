@@ -1,7 +1,5 @@
 package joshie.harvest.quests.packet;
 
-import static joshie.harvest.town.TownHelper.getClosestTownToEntity;
-
 import io.netty.buffer.ByteBuf;
 import joshie.harvest.HarvestFestival;
 import joshie.harvest.api.quests.Quest;
@@ -44,7 +42,7 @@ public class PacketQuestStart extends PacketSyncData {
 	public void handlePacket(EntityPlayer player) {
 		TownDataServer town = TownHelper.getClosestTownToEntity(player, false);
 		QuestData data = town.getQuests();
-		Quest quest = getClosestTownToEntity(player, false).getDailyQuest();
+		Quest quest = TownHelper.getClosestTownToEntity(player, false).getDailyQuest();
 		if (quest != null && !data.getCurrent().contains(quest)) {
 			data.startQuest(quest, true, town.getDailyQuest().writeToNBT(new NBTTagCompound()));
 			player.openGui(HarvestFestival.instance, GuiHandler.QUEST_BOARD, player.world, pos.getX(), pos.getY(), pos.getZ());

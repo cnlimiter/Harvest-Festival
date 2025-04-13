@@ -44,8 +44,9 @@ public class HFCommandShops extends CommandBase {
 	}
 
 	private List<ResourceLocation> getShopList() {
-		List<ResourceLocation> list = Shop.REGISTRY.entrySet().stream().map(Entry::getKey).collect(Collectors.toList());
-		list.sort(Comparator.comparing(ResourceLocation::toString));
-		return list;
+		return Shop.REGISTRY.keySet()
+				.stream()
+				.sorted(Comparator.comparing(ResourceLocation::toString))
+				.collect(Collectors.toList());
 	}
 }

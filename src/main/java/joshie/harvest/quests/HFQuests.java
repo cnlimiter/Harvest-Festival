@@ -1,7 +1,6 @@
 package joshie.harvest.quests;
 
-import static joshie.harvest.core.helpers.ConfigHelper.getInteger;
-
+import joshie.harvest.core.helpers.ConfigHelper;
 import joshie.harvest.core.helpers.RegistryHelper;
 import joshie.harvest.core.util.annotations.HFLoader;
 import joshie.harvest.quests.block.BlockQuestBoard;
@@ -18,6 +17,6 @@ public class HFQuests {
 	public static int LOGS_CARPENTER;
 
 	public static void configure() {
-		LOGS_CARPENTER = getInteger("Logs for Carpenter", 24);
+		LOGS_CARPENTER = ConfigHelper.getInteger("Logs for Carpenter", 24);
 	}
 }

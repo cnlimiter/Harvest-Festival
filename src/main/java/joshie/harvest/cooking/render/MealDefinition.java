@@ -1,13 +1,12 @@
 package joshie.harvest.cooking.render;
 
-import static joshie.harvest.cooking.tile.TileCooking.IN_UTENSIL;
-
 import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
 import javax.annotation.Nonnull;
 import joshie.harvest.cooking.HFCooking;
 import joshie.harvest.cooking.item.ItemMeal;
 import joshie.harvest.cooking.item.ItemMeal.Meal;
+import joshie.harvest.cooking.tile.TileCooking;
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -50,7 +49,7 @@ public class MealDefinition implements ItemMeshDefinition {
 		if (stack.hasTagCompound()) {
 			Meal meal = HFCooking.MEAL.getEnumFromStack(stack);
 			if (meal.hasAltTexture()) {
-				return stack.getTagCompound().hasKey(IN_UTENSIL) ? alts.get(getMealMetaFromStack(stack)) : meals.get(getMealMetaFromStack(
+				return stack.getTagCompound().hasKey(TileCooking.IN_UTENSIL) ? alts.get(getMealMetaFromStack(stack)) : meals.get(getMealMetaFromStack(
 						stack));
 			}
 		}

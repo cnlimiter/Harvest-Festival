@@ -19,6 +19,8 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.storage.loot.LootContext;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.player.ItemFishedEvent;
 
 public class EntityFishHookHF extends EntityFishHook {
 	public EntityFishHookHF(World world) {
@@ -53,7 +55,7 @@ public class EntityFishHookHF extends EntityFishHook {
 		EntityPlayer angler = getAngler();
 		if (!world.isRemote && angler != null) {
 			int i = 0;
-			net.minecraftforge.event.entity.player.ItemFishedEvent event = null;
+			ItemFishedEvent event = null;
 			if (caughtEntity != null) {
 				bringInHookedEntity();
 				world.setEntityState(this, (byte) 31);
@@ -67,8 +69,8 @@ public class EntityFishHookHF extends EntityFishHook {
 				List<ItemStack> result = world.getLootTableManager().getLootTableFromLocation(FishingHelper.getFishingTable(
 						world,
 						new BlockPos(this))).generateLootForPools(rand, builder.build());
-				event = new net.minecraftforge.event.entity.player.ItemFishedEvent(result, this.inGround ? 2 : 1, this);
-				net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(event);
+				event = new ItemFishedEvent(result, this.inGround ? 2 : 1, this);
+				MinecraftForge.EVENT_BUS.post(event);
 				if (event.isCanceled()) {
 					this.setDead();
 					return event.getRodDamage();

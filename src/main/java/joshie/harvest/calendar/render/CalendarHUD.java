@@ -1,8 +1,5 @@
 package joshie.harvest.calendar.render;
 
-import static joshie.harvest.calendar.HFCalendar.HIDE_GOLD_TEXTURE;
-import static joshie.harvest.core.lib.HFModInfo.MODID;
-
 import java.text.NumberFormat;
 import java.util.Locale;
 
@@ -38,7 +35,7 @@ import net.minecraftforge.fml.relauncher.Side;
 
 @HFEvents(Side.CLIENT)
 public class CalendarHUD {
-	private static final ResourceLocation MINE_HUD = new ResourceLocation(MODID, "textures/gui/mine.png");
+	private static final ResourceLocation MINE_HUD = new ResourceLocation(HFModInfo.MODID, "textures/gui/mine.png");
 	public static boolean editingCalendar;
 	public static boolean editingGold;
 
@@ -203,7 +200,7 @@ public class CalendarHUD {
 						.format(HFApi.player.getStatsForPlayer(MCClientHelper.getPlayer()).getGold());
 				float adjustedX = ((HFCalendar.X_GOLD / 100F) * maxWidth);
 				float adjustedY = ((HFCalendar.Y_GOLD / 100F) * maxHeight);
-				if (!HIDE_GOLD_TEXTURE) {
+				if (!HFCalendar.HIDE_GOLD_TEXTURE) {
 					mc.getTextureManager().bindTexture(HFModInfo.ELEMENTS);
 					mc.ingameGUI.drawTexturedModalRect(
 							maxWidth - mc.fontRenderer.getStringWidth(text) - 20 + adjustedX,

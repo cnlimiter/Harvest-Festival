@@ -1,7 +1,5 @@
 package joshie.harvest.town.data;
 
-import static joshie.harvest.mining.HFMining.MINING_ID;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +30,7 @@ import joshie.harvest.core.util.interfaces.ISyncMaster;
 import joshie.harvest.gathering.GatheringData;
 import joshie.harvest.knowledge.letter.LetterDataServer;
 import joshie.harvest.knowledge.packet.PacketSyncLetters;
+import joshie.harvest.mining.HFMining;
 import joshie.harvest.mining.gen.MineManager;
 import joshie.harvest.mining.gen.MiningProvider;
 import joshie.harvest.npcs.HFNPCs;
@@ -195,7 +194,7 @@ public class TownDataServer extends TownData<QuestDataServer, LetterDataServer> 
 			}
 		}
 
-		if (quests.size() > 0) {
+		if (!quests.isEmpty()) {
 			dailyQuest = quests.get(world.rand.nextInt(quests.size()));
 			dailyQuest.onSelectedAsDailyQuest(this, world, townCentre);
 		} else {
@@ -234,7 +233,7 @@ public class TownDataServer extends TownData<QuestDataServer, LetterDataServer> 
 			}
 			NPC npc = entry.getKey();
 			if (npc == HFNPCs.MINER) {
-				WorldServer server = FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(MINING_ID);
+				WorldServer server = FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(HFMining.MINING_ID);
 				EntityNPCMiner entity = NPCHelper.getEntityForNPC(server, HFNPCs.MINER);
 				int id = HFTrackers.getTowns(entity.world).getMineIDFromCoordinates(getTownCentre());
 				MiningProvider provider = ((MiningProvider) server.provider);

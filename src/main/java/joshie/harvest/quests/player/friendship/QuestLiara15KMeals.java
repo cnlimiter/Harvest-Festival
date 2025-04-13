@@ -1,7 +1,5 @@
 package joshie.harvest.quests.player.friendship;
 
-import static joshie.harvest.core.registry.ShippingRegistry.SELL_VALUE;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -12,6 +10,7 @@ import joshie.harvest.api.cooking.Recipe;
 import joshie.harvest.api.quests.HFQuest;
 import joshie.harvest.api.quests.Quest;
 import joshie.harvest.cooking.CookingHelper;
+import joshie.harvest.core.registry.ShippingRegistry;
 import joshie.harvest.npcs.HFNPCs;
 import joshie.harvest.quests.Quests;
 import joshie.harvest.quests.base.QuestFriendshipStore;
@@ -47,7 +46,7 @@ public class QuestLiara15KMeals extends QuestFriendshipStore {
 				stack = CookingHelper.makeRecipe(list.get(rand.nextInt(list.size())));
 			}
 
-			stack.getTagCompound().setLong(SELL_VALUE, 0L);
+			stack.getTagCompound().setLong(ShippingRegistry.SELL_VALUE, 0L);
 			stacks.add(stack);
 		}
 

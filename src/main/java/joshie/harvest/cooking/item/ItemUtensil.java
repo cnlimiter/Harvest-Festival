@@ -1,7 +1,5 @@
 package joshie.harvest.cooking.item;
 
-import static joshie.harvest.cooking.item.ItemUtensil.Utensil.KNIFE;
-
 import java.util.Locale;
 
 import com.google.common.collect.Multimap;
@@ -32,14 +30,14 @@ public class ItemUtensil extends ItemHFEnum<ItemUtensil, Utensil> {
 
 	@Override
 	public boolean shouldDisplayInCreative(Utensil utensil) {
-		return utensil == KNIFE;
+		return utensil == ItemUtensil.Utensil.KNIFE;
 	}
 
 	@Override
 	@SuppressWarnings("deprecation")
 	@Nonnull
 	public Multimap<String, AttributeModifier> getAttributeModifiers(@Nonnull EntityEquipmentSlot slot, @Nonnull ItemStack stack) {
-		if (getEnumFromStack(stack) != KNIFE) {
+		if (getEnumFromStack(stack) != Utensil.KNIFE) {
 			return super.getAttributeModifiers(slot, stack);
 		} else {
 			Multimap<String, AttributeModifier> multimap = super.getItemAttributeModifiers(slot);

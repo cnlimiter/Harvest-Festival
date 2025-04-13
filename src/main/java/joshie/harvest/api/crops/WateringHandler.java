@@ -7,6 +7,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.IPlantable;
 
 public class WateringHandler {
 	private static final int WET_SOIL = 7;
@@ -74,6 +75,6 @@ public class WateringHandler {
 	 **/
 	protected boolean hasNoCrops(World worldIn, BlockPos pos) {
 		Block block = worldIn.getBlockState(pos.up()).getBlock();
-		return !(block instanceof net.minecraftforge.common.IPlantable);
+		return !(block instanceof IPlantable);
 	}
 }

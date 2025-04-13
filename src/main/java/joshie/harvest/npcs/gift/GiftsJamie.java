@@ -1,13 +1,7 @@
 package joshie.harvest.npcs.gift;
 
-import static joshie.harvest.api.npc.gift.GiftCategory.FLOWER;
-import static joshie.harvest.api.npc.gift.GiftCategory.KNOWLEDGE;
-import static joshie.harvest.api.npc.gift.GiftCategory.MAGIC;
-import static joshie.harvest.api.npc.gift.GiftCategory.MONSTER;
-import static joshie.harvest.api.npc.gift.GiftCategory.MUSHROOM;
-import static joshie.harvest.cooking.HFCooking.MEAL;
-
 import joshie.harvest.api.core.Ore;
+import joshie.harvest.api.npc.gift.GiftCategory;
 import joshie.harvest.cooking.HFCooking;
 import joshie.harvest.cooking.item.ItemIngredients.Ingredient;
 import joshie.harvest.cooking.item.ItemMeal.Meal;
@@ -32,16 +26,16 @@ public class GiftsJamie extends Gifts {
 		stackRegistry.register(Ore.of("cropPineapple"), Quality.GOOD);
 		stackRegistry.register(Ore.of("cropCabbage"), Quality.GOOD);
 		stackRegistry.register(Ore.of("cropBanana"), Quality.GOOD);
-		categoryRegistry.put(MONSTER, Quality.GOOD);
-		categoryRegistry.put(KNOWLEDGE, Quality.GOOD);
-		categoryRegistry.put(FLOWER, Quality.DECENT);
+		categoryRegistry.put(GiftCategory.MONSTER, Quality.GOOD);
+		categoryRegistry.put(GiftCategory.KNOWLEDGE, Quality.GOOD);
+		categoryRegistry.put(GiftCategory.FLOWER, Quality.DECENT);
 		stackRegistry.register(HFFishing.FISH.getStackFromEnum(Fish.PIRANHA), Quality.DECENT);
-		stackRegistry.register(MEAL.getStackFromEnum(Meal.CUCUMBER_PICKLED), Quality.DISLIKE);
+		stackRegistry.register(HFCooking.MEAL.getStackFromEnum(Meal.CUCUMBER_PICKLED), Quality.DISLIKE);
 		stackRegistry.register(Ore.of("cropCucumber"), Quality.DISLIKE);
-		stackRegistry.register(MEAL.getStackFromEnum(Meal.RICE_MATSUTAKE), Quality.DISLIKE);
-		stackRegistry.register(MEAL.getStackFromEnum(Meal.RICE_MUSHROOM), Quality.DISLIKE);
-		categoryRegistry.put(MUSHROOM, Quality.DISLIKE);
-		categoryRegistry.put(MAGIC, Quality.DISLIKE);
+		stackRegistry.register(HFCooking.MEAL.getStackFromEnum(Meal.RICE_MATSUTAKE), Quality.DISLIKE);
+		stackRegistry.register(HFCooking.MEAL.getStackFromEnum(Meal.RICE_MUSHROOM), Quality.DISLIKE);
+		categoryRegistry.put(GiftCategory.MUSHROOM, Quality.DISLIKE);
+		categoryRegistry.put(GiftCategory.MAGIC, Quality.DISLIKE);
 		stackRegistry.register(Ore.of("cropWatermelon"), Quality.BAD);
 		stackRegistry.register(Items.STICK, Quality.TERRIBLE);
 		stackRegistry.register(HFGathering.NATURE.getStackFromEnum(NaturalBlock.MATSUTAKE), Quality.TERRIBLE);

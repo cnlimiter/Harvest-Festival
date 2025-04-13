@@ -1,13 +1,12 @@
 package joshie.harvest.quests.player.friendship;
 
-import static joshie.harvest.core.registry.ShippingRegistry.SELL_VALUE;
-
 import java.util.Set;
 
 import joshie.harvest.api.quests.HFQuest;
 import joshie.harvest.api.quests.Quest;
 import joshie.harvest.cooking.HFCooking;
 import joshie.harvest.cooking.item.ItemMeal.Meal;
+import joshie.harvest.core.registry.ShippingRegistry;
 import joshie.harvest.npcs.HFNPCs;
 import joshie.harvest.quests.Quests;
 import joshie.harvest.quests.base.QuestFriendship;
@@ -32,17 +31,17 @@ public class QuestFenn5KSalad extends QuestFriendship {
 		NonNullList<ItemStack> stacks = NonNullList.create();
 		//Salad
 		ItemStack stack = HFCooking.MEAL.getCreativeStack(Meal.SALAD);
-		stack.getTagCompound().setLong(SELL_VALUE, 0L);
+		stack.getTagCompound().setLong(ShippingRegistry.SELL_VALUE, 0L);
 		stacks.add(stack);
 
 		//Pickled Cucumber
 		stack = HFCooking.MEAL.getCreativeStack(Meal.CUCUMBER_PICKLED);
-		stack.getTagCompound().setLong(SELL_VALUE, 0L);
+		stack.getTagCompound().setLong(ShippingRegistry.SELL_VALUE, 0L);
 		stacks.add(stack);
 
 		//Boiled Spinach
 		stack = HFCooking.MEAL.getCreativeStack(Meal.SPINACH_BOILED);
-		stack.getTagCompound().setLong(SELL_VALUE, 0L);
+		stack.getTagCompound().setLong(ShippingRegistry.SELL_VALUE, 0L);
 		stacks.add(stack);
 		return stacks;
 	}

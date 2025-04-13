@@ -107,7 +107,7 @@ public abstract class QuestContest<E extends ContestEntries> extends QuestFestiv
 				return null;
 			}
 			if (entries.isSelecting(player)) {
-				if (entries.getNames().size() > 0) {
+				if (!entries.getNames().isEmpty()) {
 					return entrySelection;
 				} else {
 					return null;
@@ -140,7 +140,7 @@ public abstract class QuestContest<E extends ContestEntries> extends QuestFestiv
 				return getLocalized("explain");
 			}
 			if (entries.isSelecting(player)) {
-				return entries.getNames().size() > 0 ? getLocalized("select") : getLocalized("none");
+				return !entries.getNames().isEmpty() ? getLocalized("select") : getLocalized("none");
 			}
 
 			if (!entries.isEntered(player)) {
@@ -162,7 +162,7 @@ public abstract class QuestContest<E extends ContestEntries> extends QuestFestiv
 		if (quest_stage == START) {
 			increaseStage(player);
 		}
-		if (entries.isSelecting(player) && entries.getNames().size() == 0) {
+		if (entries.isSelecting(player) && entries.getNames().isEmpty()) {
 			entries.getSelecting().remove(EntityHelper.getPlayerUUID(player)); //Remove the player
 		}
 	}

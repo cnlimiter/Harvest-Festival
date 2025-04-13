@@ -1,14 +1,13 @@
 package joshie.harvest.core.network;
 
-import static joshie.harvest.core.lib.HFModInfo.MODID;
-
+import joshie.harvest.core.lib.HFModInfo;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.relauncher.Side;
 
 public class PacketHandler {
-	private static final PenguinNetwork INSTANCE = new PenguinNetwork(MODID);
+	private static final PenguinNetwork INSTANCE = new PenguinNetwork(HFModInfo.MODID);
 
 	public static void registerPacket(Class clazz) {
 		registerPacket(clazz, Side.CLIENT);

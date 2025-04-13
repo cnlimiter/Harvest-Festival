@@ -1,7 +1,5 @@
 package joshie.harvest.tools.item;
 
-import static net.minecraft.block.Block.spawnAsEntity;
-
 import java.util.List;
 import java.util.Set;
 
@@ -147,7 +145,7 @@ public class ItemHammer extends ItemToolSmashing<ItemHammer> {
 					}
 				}
 
-				drops.stream().forEach(item -> spawnAsEntity(worldIn, new BlockPos(player), item));
+				drops.stream().forEach(item -> Block.spawnAsEntity(worldIn, new BlockPos(player), item));
 			}
 
 			return true;

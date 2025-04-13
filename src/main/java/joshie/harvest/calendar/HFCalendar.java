@@ -1,11 +1,5 @@
 package joshie.harvest.calendar;
 
-import static joshie.harvest.core.helpers.ConfigHelper.getBoolean;
-import static joshie.harvest.core.helpers.ConfigHelper.getInteger;
-import static joshie.harvest.core.helpers.ConfigHelper.setBoolean;
-import static joshie.harvest.core.helpers.ConfigHelper.setInteger;
-import static joshie.harvest.core.lib.LoadOrder.HFCALENDAR;
-
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.calendar.CalendarDate;
 import joshie.harvest.api.calendar.SeasonProvider;
@@ -14,6 +8,7 @@ import joshie.harvest.calendar.provider.HFWorldProvider;
 import joshie.harvest.calendar.provider.SeasonProviderHidden;
 import joshie.harvest.core.HFTrackers;
 import joshie.harvest.core.helpers.ConfigHelper;
+import joshie.harvest.core.lib.LoadOrder;
 import joshie.harvest.core.util.annotations.HFLoader;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.DimensionType;
@@ -21,7 +16,7 @@ import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
-@HFLoader(priority = HFCALENDAR)
+@HFLoader(priority = LoadOrder.HFCALENDAR)
 public class HFCalendar {
 	private static final SeasonProvider HIDDEN = new SeasonProviderHidden();
 	public static Configuration CONFIG;
@@ -69,12 +64,12 @@ public class HFCalendar {
 	public static void save() {
 		ConfigHelper.setConfig(CONFIG);
 		ConfigHelper.setCategory("calendar");
-		setInteger("HUD > Calendar X", X_CALENDAR);
-		setInteger("HUD > Calendar Y", Y_CALENDAR);
-		setBoolean("HUD > Calendar Hide Texture", HIDE_CALENDAR_TEXTURE);
-		setInteger("HUD > Gold X", X_GOLD);
-		setInteger("HUD > Gold Y", Y_GOLD);
-		setBoolean("HUD > Gold Hide Texture", HIDE_GOLD_TEXTURE);
+		ConfigHelper.setInteger("HUD > Calendar X", X_CALENDAR);
+		ConfigHelper.setInteger("HUD > Calendar Y", Y_CALENDAR);
+		ConfigHelper.setBoolean("HUD > Calendar Hide Texture", HIDE_CALENDAR_TEXTURE);
+		ConfigHelper.setInteger("HUD > Gold X", X_GOLD);
+		ConfigHelper.setInteger("HUD > Gold Y", Y_GOLD);
+		ConfigHelper.setBoolean("HUD > Gold Hide Texture", HIDE_GOLD_TEXTURE);
 		CONFIG.save();
 	}
 
@@ -82,25 +77,25 @@ public class HFCalendar {
 	public static void configure() {
 		CONFIG = ConfigHelper.getConfig();
 		//OVERWORLD_ID = getInteger("Overworld ID", 3);
-		DAYS_PER_SEASON_INTEGRATED = getInteger("Integrated Server > Days per season", 30, 30, 3000);
-		DAYS_PER_SEASON_DEDICATED = getInteger("Dedicated Server > Days per season", 300, 30, 3000);
-		TICKS_PER_DAY = getInteger("Ticks per day", 24000);
-		ENABLE_SUNNY = getBoolean("Weather > Enable sunny", true);
-		ENABLE_RAIN = getBoolean("Weather > Enable rain", true);
-		ENABLE_TYPHOON = getBoolean("Weather > Enable typhoon", true);
-		ENABLE_SNOW = getBoolean("Weather > Enable snow", true);
-		ENABLE_BLIZZARD = getBoolean("Weather > Enable blizzard", true);
-		ENABLE_SNOW_FOG = getBoolean("Weather -> Enable snow fog", true);
-		HIDE_CALENDAR_TEXTURE = getBoolean("HUD > Calendar Hide Texture", false);
-		X_CALENDAR = getInteger("HUD > Calendar X", 0);
-		Y_CALENDAR = getInteger("HUD > Calendar Y", 0);
-		HIDE_GOLD_TEXTURE = getBoolean("HUD > Gold Hide Texture", false);
-		X_GOLD = getInteger("HUD > Gold X", 0);
-		Y_GOLD = getInteger("HUD > Gold Y", 0);
-		ENABLE_DATE_HUD = getBoolean("HUD > Enable data", true);
-		ENABLE_GOLD_HUD = getBoolean("HUD > Enable gold", true);
-		SNOW_TICKER = getBoolean("Remove snow faster", true);
-		CLOCK_24H = getBoolean("24 hour clock", true);
+		DAYS_PER_SEASON_INTEGRATED = ConfigHelper.getInteger("Integrated Server > Days per season", 30, 30, 3000);
+		DAYS_PER_SEASON_DEDICATED = ConfigHelper.getInteger("Dedicated Server > Days per season", 300, 30, 3000);
+		TICKS_PER_DAY = ConfigHelper.getInteger("Ticks per day", 24000);
+		ENABLE_SUNNY = ConfigHelper.getBoolean("Weather > Enable sunny", true);
+		ENABLE_RAIN = ConfigHelper.getBoolean("Weather > Enable rain", true);
+		ENABLE_TYPHOON = ConfigHelper.getBoolean("Weather > Enable typhoon", true);
+		ENABLE_SNOW = ConfigHelper.getBoolean("Weather > Enable snow", true);
+		ENABLE_BLIZZARD = ConfigHelper.getBoolean("Weather > Enable blizzard", true);
+		ENABLE_SNOW_FOG = ConfigHelper.getBoolean("Weather -> Enable snow fog", true);
+		HIDE_CALENDAR_TEXTURE = ConfigHelper.getBoolean("HUD > Calendar Hide Texture", false);
+		X_CALENDAR = ConfigHelper.getInteger("HUD > Calendar X", 0);
+		Y_CALENDAR = ConfigHelper.getInteger("HUD > Calendar Y", 0);
+		HIDE_GOLD_TEXTURE = ConfigHelper.getBoolean("HUD > Gold Hide Texture", false);
+		X_GOLD = ConfigHelper.getInteger("HUD > Gold X", 0);
+		Y_GOLD = ConfigHelper.getInteger("HUD > Gold Y", 0);
+		ENABLE_DATE_HUD = ConfigHelper.getBoolean("HUD > Enable data", true);
+		ENABLE_GOLD_HUD = ConfigHelper.getBoolean("HUD > Enable gold", true);
+		SNOW_TICKER = ConfigHelper.getBoolean("Remove snow faster", true);
+		CLOCK_24H = ConfigHelper.getBoolean("24 hour clock", true);
 		TWO_HOURS = (TICKS_PER_DAY / 12);
 	}
 

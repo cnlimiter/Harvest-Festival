@@ -1,14 +1,13 @@
 package joshie.harvest.plugins;
 
-import static joshie.harvest.core.helpers.RegistryHelper.registerOreIfNotExists;
-import static joshie.harvest.shops.HFShops.BAITSHOP;
-
 import javax.annotation.Nonnull;
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.calendar.CalendarDate;
 import joshie.harvest.api.cooking.Ingredient;
+import joshie.harvest.core.helpers.RegistryHelper;
 import joshie.harvest.core.util.annotations.HFLoader;
 import joshie.harvest.plugins.crafttweaker.wrappers.RequirementOreWrapper;
+import joshie.harvest.shops.HFShops;
 import joshie.harvest.shops.purchasable.PurchasableMaterials;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -76,7 +75,7 @@ public class Aquaculture {
 			ItemStack stack = new ItemStack(fish, 1, i);
 			HFApi.fishing.registerForFishingCollection(stack);
 			if (isFish(i)) {
-				registerOreIfNotExists("fish", stack);
+				RegistryHelper.registerOreIfNotExists("fish", stack);
 				HFApi.fishing.registerAsBreedable(stack, 3);
 				HFApi.cooking.register(stack, fishIngredient);
 			} else {
@@ -88,8 +87,8 @@ public class Aquaculture {
 		HFApi.shipping.registerSellable(new ItemStack(loot, 1, 2), 0);
 		HFApi.shipping.registerSellable(new ItemStack(loot, 1, 2), 1);
 
-		BAITSHOP.addPurchasable(new PurchasableMaterials(1000L, new ItemStack(fishing_rod), new RequirementOreWrapper("stickWood", 1)));
-		BAITSHOP.addPurchasable(new PurchasableMaterials(
+		HFShops.BAITSHOP.addPurchasable(new PurchasableMaterials(1000L, new ItemStack(fishing_rod), new RequirementOreWrapper("stickWood", 1)));
+		HFShops.BAITSHOP.addPurchasable(new PurchasableMaterials(
 				1000L,
 				new ItemStack(gold_fishing_rod),
 				new RequirementOreWrapper("ingotGold", 1)) {
@@ -100,7 +99,7 @@ public class Aquaculture {
 			}
 		});
 
-		BAITSHOP.addPurchasable(new PurchasableMaterials(
+		HFShops.BAITSHOP.addPurchasable(new PurchasableMaterials(
 				1500L,
 				new ItemStack(iron_fishing_rod),
 				new RequirementOreWrapper("ingotIron", 1)) {
@@ -111,7 +110,7 @@ public class Aquaculture {
 			}
 		});
 
-		BAITSHOP.addPurchasable(new PurchasableMaterials(
+		HFShops.BAITSHOP.addPurchasable(new PurchasableMaterials(
 				5000L,
 				new ItemStack(diamond_fishing_rod),
 				new RequirementOreWrapper("gemDiamond", 1)) {

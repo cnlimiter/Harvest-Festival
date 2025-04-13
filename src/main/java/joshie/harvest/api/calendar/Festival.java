@@ -1,7 +1,5 @@
 package joshie.harvest.api.calendar;
 
-import static joshie.harvest.api.calendar.CalendarDate.DAYS_PER_SEASON;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -127,7 +125,7 @@ public final class Festival implements CalendarEntry {
 	 * Returns how many days this festival lasts
 	 **/
 	public int getFestivalLength() {
-		return (int) ((length / 30D) * DAYS_PER_SEASON);
+		return (int) ((length / 30D) * CalendarDate.DAYS_PER_SEASON);
 	}
 
 	public boolean isHidden() {
@@ -189,7 +187,7 @@ public final class Festival implements CalendarEntry {
 		if (this == o) {
 			return true;
 		}
-		if (o == null || !(o instanceof Festival)) {
+		if (!(o instanceof Festival)) {
 			return false;
 		}
 		Festival festival = (Festival) o;

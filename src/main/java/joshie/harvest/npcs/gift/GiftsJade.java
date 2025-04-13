@@ -1,12 +1,7 @@
 package joshie.harvest.npcs.gift;
 
-import static joshie.harvest.api.npc.gift.GiftCategory.FLOWER;
-import static joshie.harvest.api.npc.gift.GiftCategory.HERB;
-import static joshie.harvest.api.npc.gift.GiftCategory.MINERAL;
-import static joshie.harvest.api.npc.gift.GiftCategory.MONEY;
-import static joshie.harvest.api.npc.gift.GiftCategory.PLANT;
-
 import joshie.harvest.api.core.Ore;
+import joshie.harvest.api.npc.gift.GiftCategory;
 import joshie.harvest.gathering.HFGathering;
 import joshie.harvest.gathering.block.BlockNature.NaturalBlock;
 import joshie.harvest.mining.HFMining;
@@ -23,11 +18,11 @@ public class GiftsJade extends Gifts {
 		stackRegistry.register(HFGathering.NATURE.getStackFromEnum(NaturalBlock.LAVENDER), Quality.AWESOME);
 		stackRegistry.register(HFMining.MATERIALS.getStackFromEnum(Material.AMETHYST), Quality.AWESOME);
 		stackRegistry.register(Items.RABBIT_FOOT, Quality.GOOD);
-		categoryRegistry.put(FLOWER, Quality.GOOD);
-		categoryRegistry.put(PLANT, Quality.GOOD);
-		categoryRegistry.put(HERB, Quality.GOOD);
-		categoryRegistry.put(MONEY, Quality.DECENT);
-		categoryRegistry.put(MINERAL, Quality.BAD);
+		categoryRegistry.put(GiftCategory.FLOWER, Quality.GOOD);
+		categoryRegistry.put(GiftCategory.PLANT, Quality.GOOD);
+		categoryRegistry.put(GiftCategory.HERB, Quality.GOOD);
+		categoryRegistry.put(GiftCategory.MONEY, Quality.DECENT);
+		categoryRegistry.put(GiftCategory.MINERAL, Quality.BAD);
 		stackRegistry.register(Ore.of("stone"), Quality.TERRIBLE);
 		stackRegistry.register(Ore.of("logWood"), Quality.TERRIBLE);
 	}

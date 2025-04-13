@@ -12,7 +12,7 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 @Packet(Packet.Side.CLIENT)
 public class PacketSyncObtained extends PenguinPacket {
 	@Nonnull
-	private ItemStack stack;
+	private ItemStack stack = ItemStack.EMPTY;
 
 	public PacketSyncObtained() {}
 

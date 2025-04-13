@@ -20,7 +20,7 @@ public class LetterDataClient extends LetterData {
 
 	@Override
 	public boolean hasUnreadLetters() {
-		return letters.size() > 0;
+		return !letters.isEmpty();
 	}
 
 	public void setLetters(Set<ResourceLocation> letters) {

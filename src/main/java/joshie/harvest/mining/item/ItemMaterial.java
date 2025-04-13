@@ -1,8 +1,5 @@
 package joshie.harvest.mining.item;
 
-import static net.minecraft.util.text.TextFormatting.GREEN;
-import static net.minecraft.util.text.TextFormatting.WHITE;
-
 import java.util.Locale;
 
 import javax.annotation.Nonnull;
@@ -13,6 +10,7 @@ import joshie.harvest.core.util.interfaces.ISellable;
 import joshie.harvest.mining.item.ItemMaterial.Material;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.text.TextFormatting;
 
 public class ItemMaterial extends ItemHFEnum<ItemMaterial, Material> {
 	public enum Material implements IStringSerializable, ISellable {
@@ -51,9 +49,9 @@ public class ItemMaterial extends ItemHFEnum<ItemMaterial, Material> {
 	public String getItemStackDisplayName(@Nonnull ItemStack stack) {
 		switch (getEnumFromStack(stack)) {
 			case MYTHIC:
-				return GREEN + super.getItemStackDisplayName(stack);
+				return TextFormatting.GREEN + super.getItemStackDisplayName(stack);
 			default:
-				return WHITE + super.getItemStackDisplayName(stack);
+				return TextFormatting.WHITE + super.getItemStackDisplayName(stack);
 		}
 	}
 

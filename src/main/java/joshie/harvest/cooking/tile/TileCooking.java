@@ -1,10 +1,9 @@
 package joshie.harvest.cooking.tile;
 
-import static joshie.harvest.cooking.CookingHelper.PlaceIngredientResult.SUCCESS;
-
 import javax.annotation.Nonnull;
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.cooking.Utensil;
+import joshie.harvest.cooking.CookingHelper;
 import joshie.harvest.cooking.CookingHelper.PlaceIngredientResult;
 import joshie.harvest.core.HFTrackers;
 import joshie.harvest.core.advancements.EventTrigger;
@@ -59,11 +58,11 @@ public abstract class TileCooking extends TileFaceable {
 	}
 
 	public PlaceIngredientResult hasPrerequisites() {
-		return SUCCESS;
+		return CookingHelper.PlaceIngredientResult.SUCCESS;
 	}
 
 	public boolean isFinishedCooking() {
-		return result.size() > 0;
+		return !result.isEmpty();
 	}
 
 	public NonNullList<ItemStack> getResult() {
@@ -92,7 +91,7 @@ public abstract class TileCooking extends TileFaceable {
 
 	@SuppressWarnings("ConstantConditions")
 	public void takeBackLastStack(EntityPlayer player) {
-		if (ingredients.size() > 0) {
+		if (!ingredients.isEmpty()) {
 			ItemStack stack = ingredients.get(ingredients.size() - 1);
 			if (stack.hasTagCompound()) {
 				stack.getTagCompound().removeTag(IN_UTENSIL);
@@ -127,7 +126,7 @@ public abstract class TileCooking extends TileFaceable {
 		if (!world.isRemote) {
 			if (cooking) {
 				cookTimer++;
-				if (ingredients.size() == 0) {
+				if (ingredients.isEmpty()) {
 					cooking = false;
 					markDirty();
 				} else if (cookTimer >= getCookingTime()) {
@@ -138,7 +137,7 @@ public abstract class TileCooking extends TileFaceable {
 					markDirty();
 				}
 
-				if (hasPrerequisites() != SUCCESS) {
+				if (hasPrerequisites() != CookingHelper.PlaceIngredientResult.SUCCESS) {
 					cooking = false;
 					this.markDirty();
 				}
@@ -152,7 +151,7 @@ public abstract class TileCooking extends TileFaceable {
 		if (ingredients.size() >= 20) {
 			return false;
 		}
-		if (hasPrerequisites() != SUCCESS) {
+		if (hasPrerequisites() != CookingHelper.PlaceIngredientResult.SUCCESS) {
 			return false;
 		}
 		if (!HFApi.cooking.isIngredient(stack)) {
@@ -247,7 +246,7 @@ public abstract class TileCooking extends TileFaceable {
 		nbt.setShort("CookingTimer", cookTimer);
 		nbt.setByte("Last", (byte) last);
 		//Write out the saved Ingredients
-		if (ingredients.size() > 0) {
+		if (!ingredients.isEmpty()) {
 			NBTTagList is = new NBTTagList();
 			for (ItemStack ingredient : ingredients) {
 				is.appendTag(NBTHelper.writeItemStack(ingredient, new NBTTagCompound()));
@@ -257,7 +256,7 @@ public abstract class TileCooking extends TileFaceable {
 		}
 
 		//Write out the result items
-		if (result.size() > 0) {
+		if (!result.isEmpty()) {
 			NBTTagList is = new NBTTagList();
 			for (ItemStack ingredient : result) {
 				is.appendTag(NBTHelper.writeItemStack(ingredient, new NBTTagCompound()));

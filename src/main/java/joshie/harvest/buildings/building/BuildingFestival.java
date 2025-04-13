@@ -1,10 +1,9 @@
 package joshie.harvest.buildings.building;
 
-import static joshie.harvest.buildings.HFBuildings.getGson;
-
 import javax.annotation.Nonnull;
 import joshie.harvest.api.buildings.Building;
 import joshie.harvest.api.calendar.Festival;
+import joshie.harvest.buildings.HFBuildings;
 import joshie.harvest.core.util.HFTemplate;
 import joshie.harvest.core.util.ResourceLoader;
 import joshie.harvest.town.TownHelper;
@@ -61,6 +60,6 @@ public class BuildingFestival extends Building {
 	}
 
 	public static HFTemplate getFestivalTemplateFromFestival(Festival festival) {
-		return (getGson().fromJson(ResourceLoader.getJSONResource(festival.getResource(), "festivals"), HFTemplate.class));
+		return (HFBuildings.getGson().fromJson(ResourceLoader.getJSONResource(festival.getResource(), "festivals"), HFTemplate.class));
 	}
 }

@@ -1,15 +1,5 @@
 package joshie.harvest.quests.town.festivals.starry;
 
-import static joshie.harvest.cooking.item.ItemMeal.Meal.DUMPLINGS;
-import static joshie.harvest.cooking.item.ItemMeal.Meal.FISH_GRILLED;
-import static joshie.harvest.cooking.item.ItemMeal.Meal.POTSTICKER;
-import static joshie.harvest.cooking.item.ItemMeal.Meal.RISOTTO;
-import static joshie.harvest.cooking.item.ItemMeal.Meal.SASHIMI_CHIRASHI;
-import static joshie.harvest.cooking.item.ItemMeal.Meal.STEW_PUMPKIN;
-import static joshie.harvest.cooking.item.ItemMeal.Meal.STIR_FRY;
-import static joshie.harvest.quests.town.festivals.QuestStarryNight.GOODBYE;
-import static joshie.harvest.quests.town.festivals.QuestStarryNight.WELCOME;
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -24,6 +14,7 @@ import joshie.harvest.api.npc.task.TaskWait;
 import joshie.harvest.api.quests.Selection;
 import joshie.harvest.buildings.HFBuildings;
 import joshie.harvest.cooking.HFCooking;
+import joshie.harvest.cooking.item.ItemMeal;
 import joshie.harvest.cooking.item.ItemMeal.Meal;
 import joshie.harvest.core.HFCore;
 import joshie.harvest.core.block.BlockStand.Stand;
@@ -55,7 +46,11 @@ public class StarryNightData extends Selection<QuestStarryNight> {
 			new BlockPos(10, 2, 16),
 			new BlockPos(10, 2, 17),
 			new BlockPos(10, 2, 18)};
-	private static final Meal[] meals = new Meal[]{FISH_GRILLED, POTSTICKER, RISOTTO, SASHIMI_CHIRASHI, DUMPLINGS, STEW_PUMPKIN, STIR_FRY};
+	private static final Meal[] meals = new Meal[]{
+			ItemMeal.Meal.FISH_GRILLED, ItemMeal.Meal.POTSTICKER, ItemMeal.Meal.RISOTTO,
+			ItemMeal.Meal.SASHIMI_CHIRASHI, ItemMeal.Meal.DUMPLINGS,
+			ItemMeal.Meal.STEW_PUMPKIN,
+			ItemMeal.Meal.STIR_FRY};
 	private static final String prefix = "harvestfestival.quest.festival.starry.night";
 	private static final String[] lines2 = new String[]{
 			"harvestfestival.quest.festival.starry.night.ready",
@@ -159,10 +154,10 @@ public class StarryNightData extends Selection<QuestStarryNight> {
 		//Have the main person thank everyone for coming tonight and make a speech
 		//Have everyone dig in to their meal
 		entity.setPath(
-				TaskSpeech.of(WELCOME),
+				TaskSpeech.of(QuestStarryNight.WELCOME),
 				TaskWait.of(1),
 				new ConsumeFood(positions, false),
-				TaskSpeech.of(GOODBYE),
+				TaskSpeech.of(QuestStarryNight.GOODBYE),
 				new ConsumeFood(positions, true));
 	}
 

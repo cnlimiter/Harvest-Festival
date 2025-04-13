@@ -32,7 +32,7 @@ public class LetterHelper {
 		List<Letter> letterList = new ArrayList<>();
 		letterList.addAll(HFTrackers.getPlayerTrackerFromPlayer(player).getLetters().getLetters());
 		letterList.addAll(TownHelper.getClosestTownToEntity(player, false).getLetters().getLetters());
-		if (letterList.size() == 0) {
+		if (letterList.isEmpty()) {
 			return Letter.NONE;
 		}
 		letterList.sort((Comparator.comparing(Letter::getPriority)));

@@ -1,9 +1,5 @@
 package joshie.harvest.calendar;
 
-import static net.minecraft.block.BlockSnow.LAYERS;
-import static net.minecraft.init.Blocks.SNOW_LAYER;
-import static net.minecraft.world.chunk.Chunk.NULL_BLOCK_STORAGE;
-
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.calendar.Season;
 import joshie.harvest.api.calendar.Weather;
@@ -11,6 +7,7 @@ import joshie.harvest.api.ticking.DailyTickableBlock;
 import joshie.harvest.calendar.data.Calendar;
 import joshie.harvest.core.HFTrackers;
 import joshie.harvest.core.util.annotations.HFEvents;
+import net.minecraft.block.BlockSnow;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -59,9 +56,9 @@ public class SnowLoader extends DailyTickableBlock {
 				}
 			}
 		} else if (weather == Weather.BLIZZARD && state.getBlock() == Blocks.SNOW_LAYER) {
-			int meta = state.getValue(LAYERS);
+			int meta = state.getValue(BlockSnow.LAYERS);
 			if (meta < 5) {
-				world.setBlockState(pos, state.withProperty(LAYERS, meta + 1), 2);
+				world.setBlockState(pos, state.withProperty(BlockSnow.LAYERS, meta + 1), 2);
 			}
 		}
 	}
@@ -75,8 +72,8 @@ public class SnowLoader extends DailyTickableBlock {
 			for (int z = 0; z < 16; z++) {
 				for (int y = 0; y < 256; y++) {
 					ExtendedBlockStorage extendedblockstorage = array[y >> 4];
-					if (extendedblockstorage != NULL_BLOCK_STORAGE) {
-						if (extendedblockstorage.get(x, y & 15, z).getBlock() == SNOW_LAYER || extendedblockstorage.get(x, y & 15, z)
+					if (extendedblockstorage != Chunk.NULL_BLOCK_STORAGE) {
+						if (extendedblockstorage.get(x, y & 15, z).getBlock() == Blocks.SNOW_LAYER || extendedblockstorage.get(x, y & 15, z)
 								.getBlock() == Blocks.ICE) {
 							BlockPos pos = new BlockPos((chunk.x * 16) + x, y, (chunk.z * 16) + z);
 							if (!chunk.getBiome(pos, world.provider.getBiomeProvider()).isSnowyBiome()) {

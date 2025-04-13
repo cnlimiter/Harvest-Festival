@@ -1,8 +1,5 @@
 package joshie.harvest.shops.purchasable;
 
-import static joshie.harvest.core.lib.HFModInfo.MODID;
-import static joshie.harvest.core.registry.ShippingRegistry.SELL_VALUE;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -11,6 +8,8 @@ import javax.annotation.Nonnull;
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.cooking.Recipe;
 import joshie.harvest.cooking.CookingHelper;
+import joshie.harvest.core.lib.HFModInfo;
+import joshie.harvest.core.registry.ShippingRegistry;
 import joshie.harvest.quests.Quests;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -24,7 +23,7 @@ public class PurchasableRandomMeal extends PurchasableMeal {
 	private ItemStack stack = ItemStack.EMPTY;
 
 	public PurchasableRandomMeal(int seedAdjustment) {
-		super(0, new ResourceLocation(MODID, "ice_cream"));
+		super(0, new ResourceLocation(HFModInfo.MODID, "ice_cream"));
 		this.seedAdjustment = seedAdjustment;
 		this.setStock(10);
 	}
@@ -54,9 +53,9 @@ public class PurchasableRandomMeal extends PurchasableMeal {
 		}
 
 		if (stack.getTagCompound() != null) {
-			adjustableCost = (long) (stack.getTagCompound().getLong(SELL_VALUE) / 1.1);
+			adjustableCost = (long) (stack.getTagCompound().getLong(ShippingRegistry.SELL_VALUE) / 1.1);
 			adjustableCost = (long) Math.ceil((double) adjustableCost / 50) * 50;
-			stack.getTagCompound().setLong(SELL_VALUE, 0L);
+			stack.getTagCompound().setLong(ShippingRegistry.SELL_VALUE, 0L);
 		}
 
 		return true;
@@ -68,7 +67,7 @@ public class PurchasableRandomMeal extends PurchasableMeal {
 		if (stack.isEmpty()) {
 			stack = CookingHelper.makeRecipe(recipe);
 			if (stack.getTagCompound() != null) {
-				stack.getTagCompound().setLong(SELL_VALUE, 0L);
+				stack.getTagCompound().setLong(ShippingRegistry.SELL_VALUE, 0L);
 			}
 		}
 		return stack;

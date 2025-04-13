@@ -1,11 +1,10 @@
 package joshie.harvest.api.crops;
 
-import static net.minecraft.block.Block.NULL_AABB;
-
 import com.google.common.collect.ImmutableList;
 
 import javax.annotation.Nullable;
 import joshie.harvest.api.calendar.Season;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -47,7 +46,7 @@ public interface IStateHandler<C extends Crop> {
 			PlantSection section,
 			C crop,
 			int stage,
-			boolean withered) {return NULL_AABB;}
+			boolean withered) {return Block.NULL_AABB;}
 
 	/**
 	 * Called to get the colur for this crop

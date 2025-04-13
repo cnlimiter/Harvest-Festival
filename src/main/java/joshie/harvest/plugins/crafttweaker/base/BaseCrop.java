@@ -1,8 +1,7 @@
 package joshie.harvest.plugins.crafttweaker.base;
 
-import static joshie.harvest.core.lib.HFModInfo.MODID;
-
 import joshie.harvest.api.crops.Crop;
+import joshie.harvest.core.lib.HFModInfo;
 import net.minecraft.util.ResourceLocation;
 
 public abstract class BaseCrop extends BaseOnce {
@@ -12,7 +11,7 @@ public abstract class BaseCrop extends BaseOnce {
 		if (name.contains(":")) {
 			this.resource = new ResourceLocation(name);
 		} else {
-			this.resource = new ResourceLocation(MODID, name);
+			this.resource = new ResourceLocation(HFModInfo.MODID, name);
 		}
 	}
 

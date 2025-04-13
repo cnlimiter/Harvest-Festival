@@ -51,7 +51,7 @@ public class PageCollection extends BookPage<GuiStats> {
 					return;
 				default:
 					if (search.length() < 10 && ChatAllowedCharacters.isAllowedCharacter(typedChar)) {
-						search = search + Character.toString(typedChar);
+						search = search + typedChar;
 						MCClientHelper.getMinecraft().currentScreen.initGui();
 					}
 			}

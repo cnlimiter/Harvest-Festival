@@ -73,7 +73,7 @@ public class ButtonRelationsAnimal extends ButtonBook<GuiStats> {
 		this.isTreated = stats.performTest(AnimalTest.HAD_TREAT);
 		this.products = stats.getType().getProductsForDisplay(stats);
 		this.product = products.get(0);
-		this.doProductTick = products.size() > 0;
+		this.doProductTick = !products.isEmpty();
 		this.collected = !stats.canProduce();
 	}
 

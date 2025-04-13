@@ -18,6 +18,8 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.BlockSnapshot;
+import net.minecraftforge.event.ForgeEventFactory;
 
 public class ItemBlockFishing extends ItemBlockHF<BlockFloating> {
 	public ItemBlockFishing(BlockFloating block) {
@@ -48,14 +50,14 @@ public class ItemBlockFishing extends ItemBlockHF<BlockFloating> {
 				if (iblockstate.getMaterial() == Material.WATER && (iblockstate.getValue(BlockLiquid.LEVEL)) == 0 && world.isAirBlock(
 						blockpos1)) {
 					// special case for handling block placement with water lilies
-					net.minecraftforge.common.util.BlockSnapshot blocksnapshot = net.minecraftforge.common.util.BlockSnapshot.getBlockSnapshot(
+					BlockSnapshot blocksnapshot = BlockSnapshot.getBlockSnapshot(
 							world,
 							blockpos1);
 					world.setBlockState(blockpos1, state);
-					if (net.minecraftforge.event.ForgeEventFactory.onPlayerBlockPlace(
+					if (ForgeEventFactory.onPlayerBlockPlace(
 							player,
 							blocksnapshot,
-							net.minecraft.util.EnumFacing.UP,
+							EnumFacing.UP,
 							hand).isCanceled()) {
 						blocksnapshot.restore(true, false);
 						return new ActionResult<>(EnumActionResult.FAIL, stack);

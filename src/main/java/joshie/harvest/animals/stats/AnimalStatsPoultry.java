@@ -4,7 +4,6 @@ import javax.annotation.Nonnull;
 import joshie.harvest.animals.HFAnimals;
 import joshie.harvest.api.animals.AnimalAction;
 import joshie.harvest.api.animals.AnimalTest;
-import joshie.harvest.api.animals.IAnimalType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -14,11 +13,6 @@ public class AnimalStatsPoultry extends AnimalStatsHF {
 
 	public AnimalStatsPoultry() {
 		this.type = HFAnimals.CHICKENS;
-	}
-
-	@Override
-	public IAnimalType getType() {
-		return type;
 	}
 
 	@Override

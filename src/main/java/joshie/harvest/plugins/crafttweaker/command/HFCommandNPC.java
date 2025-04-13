@@ -41,11 +41,10 @@ public class HFCommandNPC extends CommandBase {
 	}
 
 	private List<String> getShopList() {
-		List<String> list = NPC.REGISTRY.values()
+		return NPC.REGISTRY.values()
 				.stream()
 				.map(npc -> npc.getLocalizedName() + " = " + npc.getResource())
+				.sorted(String::compareTo)
 				.collect(Collectors.toList());
-		list.sort(String::compareTo);
-		return list;
 	}
 }

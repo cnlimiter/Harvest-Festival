@@ -1,15 +1,5 @@
 package joshie.harvest.core.helpers;
 
-import static joshie.harvest.core.HFTab.FARMING;
-import static joshie.harvest.core.handlers.DisableHandler.SEEDS_BLACKLIST;
-import static joshie.harvest.core.lib.HFModInfo.CROPSTATES;
-import static joshie.harvest.core.lib.HFModInfo.DROPHANDLERS;
-import static joshie.harvest.core.lib.HFModInfo.GROWTHHANDLERS;
-import static joshie.harvest.core.lib.HFModInfo.MODID;
-import static joshie.harvest.core.lib.HFModInfo.RULES;
-import static joshie.harvest.crops.HFCrops.DISABLE_VANILLA_SEEDS;
-import static joshie.harvest.crops.HFCrops.DISABLE_VANILLA_WHEAT_SEEDS;
-
 import java.util.Locale;
 
 import org.apache.commons.lang3.text.WordUtils;
@@ -22,9 +12,11 @@ import joshie.harvest.api.crops.DropHandler;
 import joshie.harvest.api.crops.GrowthHandler;
 import joshie.harvest.api.crops.IStateHandler;
 import joshie.harvest.api.trees.Tree;
+import joshie.harvest.core.HFTab;
 import joshie.harvest.core.base.render.FakeEntityRenderer;
 import joshie.harvest.core.base.render.FakeEntityRenderer.EntityItemRenderer;
 import joshie.harvest.core.handlers.DisableHandler;
+import joshie.harvest.core.lib.HFModInfo;
 import joshie.harvest.crops.HFCrops;
 import joshie.harvest.crops.handlers.SeedRecipeHandler;
 import joshie.harvest.crops.handlers.drop.DropHandlerTree;
@@ -48,7 +40,7 @@ import net.minecraftforge.registries.GameData;
 public class RegistryHelper {
 	public static void registerSounds(String... sounds) {
 		for (String sound : sounds) {
-			ResourceLocation resource = new ResourceLocation(MODID, sound);
+			ResourceLocation resource = new ResourceLocation(HFModInfo.MODID, sound);
 			GameData.register_impl(new SoundEvent(resource).setRegistryName(resource));
 		}
 	}
@@ -58,13 +50,13 @@ public class RegistryHelper {
 		for (Class<? extends TileEntity> tile : tiles) {
 			GameRegistry.registerTileEntity(
 					tile,
-					new ResourceLocation(MODID, tile.getSimpleName().replace("Tile", "").toLowerCase(Locale.ENGLISH)));
+					new ResourceLocation(HFModInfo.MODID, tile.getSimpleName().replace("Tile", "").toLowerCase(Locale.ENGLISH)));
 		}
 	}
 
 	@SideOnly(Side.CLIENT)
 	public static void registerFluidBlockRendering(Block block, String name) {
-		final ModelResourceLocation fluidLocation = new ModelResourceLocation(MODID + ":fluids", name);
+		final ModelResourceLocation fluidLocation = new ModelResourceLocation(HFModInfo.MODID + ":fluids", name);
 		ModelLoader.setCustomStateMapper(
 				block, new StateMapperBase() {
 					@Override
@@ -82,39 +74,39 @@ public class RegistryHelper {
 	}
 
 	public static Crop registerCrop(String name) {
-		return addHandlersToCrop(name, new Crop(new ResourceLocation(MODID, name)));
+		return addHandlersToCrop(name, new Crop(new ResourceLocation(HFModInfo.MODID, name)));
 	}
 
 	public static Tree registerTree(String name) {
-		return addHandlersToCrop(name, (Tree) new Tree(new ResourceLocation(MODID, name)).setDropHandler(new DropHandlerTree()));
+		return addHandlersToCrop(name, (Tree) new Tree(new ResourceLocation(HFModInfo.MODID, name)).setDropHandler(new DropHandlerTree()));
 	}
 
 	private static <C extends Crop> C addHandlersToCrop(String name, C crop) {
 		//Atempt to add a drop handler
 		try {
 			DropHandler handler = (DropHandler) Class.forName(
-					DROPHANDLERS + WordUtils.capitalizeFully(name.replace("_", " ")).replace(" ", "")).newInstance();
+					HFModInfo.DROPHANDLERS + WordUtils.capitalizeFully(name.replace("_", " ")).replace(" ", "")).newInstance();
 			crop.setDropHandler(handler);
 		} catch (IllegalAccessException | ClassNotFoundException | InstantiationException e) {/**/}
 
 		//Atempt to add a growth handler
 		try {
 			GrowthHandler handler = (GrowthHandler) Class.forName(
-					GROWTHHANDLERS + WordUtils.capitalizeFully(name.replace("_", " ")).replace(" ", "")).newInstance();
+					HFModInfo.GROWTHHANDLERS + WordUtils.capitalizeFully(name.replace("_", " ")).replace(" ", "")).newInstance();
 			crop.setGrowthHandler(handler);
 		} catch (IllegalAccessException | ClassNotFoundException | InstantiationException e) {/**/}
 
 		//Atempt to add a state handler
 		try {
 			IStateHandler handler = (IStateHandler) Class.forName(
-					CROPSTATES + WordUtils.capitalizeFully(name.replace("_", " ")).replace(" ", "")).newInstance();
+					HFModInfo.CROPSTATES + WordUtils.capitalizeFully(name.replace("_", " ")).replace(" ", "")).newInstance();
 			crop.setStateHandler(handler);
 		} catch (IllegalAccessException | ClassNotFoundException | InstantiationException e) {/**/}
 
 		//Atempt to add a rules handler
 		try {
 			ISpecialRules handler = (ISpecialRules) Class.forName(
-					RULES + WordUtils.capitalizeFully(name.replace("_", " ")).replace(" ", "")).newInstance();
+					HFModInfo.RULES + WordUtils.capitalizeFully(name.replace("_", " ")).replace(" ", "")).newInstance();
 			crop.setPurchaseRules(handler);
 		} catch (IllegalAccessException | ClassNotFoundException | InstantiationException e) {/**/}
 
@@ -122,8 +114,8 @@ public class RegistryHelper {
 	}
 
 	private static void addSeeds(Crop crop, @Nonnull ItemStack seeds) {
-		if (DISABLE_VANILLA_WHEAT_SEEDS || DISABLE_VANILLA_SEEDS) {
-			SEEDS_BLACKLIST.register(seeds.getItem()); //Disable the item
+		if (HFCrops.DISABLE_VANILLA_WHEAT_SEEDS || HFCrops.DISABLE_VANILLA_SEEDS) {
+			DisableHandler.SEEDS_BLACKLIST.register(seeds.getItem()); //Disable the item
 		}
 
 		//Add a bag > seed recipe
@@ -138,7 +130,7 @@ public class RegistryHelper {
 		addSeeds(crop, seeds);
 		HFApi.crops.registerCropProvider(item, crop);
 		crop.setSkipRender();
-		item.getItem().setCreativeTab(FARMING);
+		item.getItem().setCreativeTab(HFTab.FARMING);
 		if (HFCrops.DISABLE_VANILLA_GROWTH || HFCrops.DISABLE_VANILLA_DROPS) {
 			DisableHandler.CROPS.add(cropBlock);
 		}

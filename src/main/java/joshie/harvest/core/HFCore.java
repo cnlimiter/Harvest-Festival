@@ -1,15 +1,5 @@
 package joshie.harvest.core;
 
-import static joshie.harvest.core.helpers.ConfigHelper.getBoolean;
-import static joshie.harvest.core.helpers.ConfigHelper.getInteger;
-import static joshie.harvest.core.helpers.RegistryHelper.registerSounds;
-import static joshie.harvest.core.lib.HFModInfo.MODID;
-import static joshie.harvest.core.lib.LoadOrder.HFCORE;
-import static net.minecraft.block.BlockDoublePlant.EnumPlantType.PAEONIA;
-import static net.minecraft.block.BlockDoublePlant.EnumPlantType.ROSE;
-import static net.minecraft.block.BlockDoublePlant.EnumPlantType.SUNFLOWER;
-import static net.minecraft.block.BlockDoublePlant.EnumPlantType.SYRINGA;
-
 import java.util.List;
 
 import org.apache.commons.lang3.text.WordUtils;
@@ -25,9 +15,12 @@ import joshie.harvest.core.block.BlockStand;
 import joshie.harvest.core.block.BlockStorage;
 import joshie.harvest.core.entity.EntityBasket;
 import joshie.harvest.core.handlers.GuiHandler;
+import joshie.harvest.core.helpers.ConfigHelper;
 import joshie.harvest.core.helpers.InventoryHelper;
 import joshie.harvest.core.helpers.RegistryHelper;
 import joshie.harvest.core.lib.EntityIDs;
+import joshie.harvest.core.lib.HFModInfo;
+import joshie.harvest.core.lib.LoadOrder;
 import joshie.harvest.core.loot.SetEnum;
 import joshie.harvest.core.loot.SetSizeable;
 import joshie.harvest.core.render.RenderBasket;
@@ -41,6 +34,7 @@ import joshie.harvest.core.tile.TileMailbox;
 import joshie.harvest.core.tile.TilePlate;
 import joshie.harvest.core.tile.TileShipping;
 import joshie.harvest.core.util.annotations.HFLoader;
+import net.minecraft.block.BlockDoublePlant;
 import net.minecraft.block.BlockFlower.EnumFlowerColor;
 import net.minecraft.block.BlockFlower.EnumFlowerType;
 import net.minecraft.client.Minecraft;
@@ -70,14 +64,14 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 
-@HFLoader(priority = HFCORE)
+@HFLoader(priority = LoadOrder.HFCORE)
 @EventBusSubscriber
 @SuppressWarnings("unused")
 public class HFCore {
 	public static final Fluid GODDESS = registerFluid(new Fluid(
 			"goddess_water",
-			new ResourceLocation(MODID, "blocks/goddess_still"),
-			new ResourceLocation(MODID, "blocks/goddess_flow")).setRarity(EnumRarity.RARE));
+			new ResourceLocation(HFModInfo.MODID, "blocks/goddess_still"),
+			new ResourceLocation(HFModInfo.MODID, "blocks/goddess_flow")).setRarity(EnumRarity.RARE));
 	public static final BlockGoddessWater GODDESS_WATER = new BlockGoddessWater(GODDESS).register("goddess_water");
 	public static final BlockFlower FLOWERS = new BlockFlower().register("flowers");
 	public static final BlockStorage STORAGE = new BlockStorage().register("storage");
@@ -92,7 +86,7 @@ public class HFCore {
 		LootFunctionManager.registerFunction(new SetSizeable.Serializer());
 		RegistryHelper.registerTiles(TileShipping.class, TileMailbox.class, TilePlate.class, TileBasket.class, TileFestivalPot.class);
 		EntityRegistry.registerModEntity(
-				new ResourceLocation(MODID, "basket"),
+				new ResourceLocation(HFModInfo.MODID, "basket"),
 				EntityBasket.class,
 				"basket",
 				EntityIDs.BASKET,
@@ -100,7 +94,7 @@ public class HFCore {
 				150,
 				3,
 				true);
-		registerSounds("kerching");
+		RegistryHelper.registerSounds("kerching");
 		GODDESS.setBlock(GODDESS_WATER);
 
 		//Register Flowers
@@ -109,10 +103,10 @@ public class HFCore {
 		registerIfNotRegistered("flowerMagicBlue", FLOWERS.getStackFromEnum(FlowerType.BLUE_MAGICGRASS));
 		registerIfNotRegistered("flowerMagicRed", FLOWERS.getStackFromEnum(FlowerType.RED_MAGICGRASS));
 		registerIfNotRegistered("flowerMoondrop", FLOWERS.getStackFromEnum(FlowerType.MOONDROP));
-		registerIfNotRegistered("flowerSunflower", new ItemStack(Blocks.DOUBLE_PLANT, 1, SUNFLOWER.getMeta()));
-		registerIfNotRegistered("flowerLilac", new ItemStack(Blocks.DOUBLE_PLANT, 1, SYRINGA.getMeta()));
-		registerIfNotRegistered("flowerRose", new ItemStack(Blocks.DOUBLE_PLANT, 1, ROSE.getMeta()));
-		registerIfNotRegistered("flowerPeony", new ItemStack(Blocks.DOUBLE_PLANT, 1, PAEONIA.getMeta()));
+		registerIfNotRegistered("flowerSunflower", new ItemStack(Blocks.DOUBLE_PLANT, 1, BlockDoublePlant.EnumPlantType.SUNFLOWER.getMeta()));
+		registerIfNotRegistered("flowerLilac", new ItemStack(Blocks.DOUBLE_PLANT, 1, BlockDoublePlant.EnumPlantType.SYRINGA.getMeta()));
+		registerIfNotRegistered("flowerRose", new ItemStack(Blocks.DOUBLE_PLANT, 1, BlockDoublePlant.EnumPlantType.ROSE.getMeta()));
+		registerIfNotRegistered("flowerPeony", new ItemStack(Blocks.DOUBLE_PLANT, 1, BlockDoublePlant.EnumPlantType.PAEONIA.getMeta()));
 		registerIfNotRegistered("flowerDandelion", new ItemStack(Blocks.YELLOW_FLOWER));
 		for (EnumFlowerType type : getTypes(EnumFlowerColor.RED)) {
 			registerIfNotRegistered(
@@ -224,19 +218,19 @@ public class HFCore {
 	public static int MOBS_ONLY_SPAWN_UNDERGROUND_IN_OVERWORLD;
 
 	public static void configure() {
-		DEBUG_MODE = getBoolean("Debug Mode", false, "Enabling this adds extra information to items, when you have f3 debug mode on");
-		SLEEP_ANYTIME = getBoolean("Sleep any time of day", true);
-		SLEEP_ONLY_AT_NIGHT = getBoolean("Disable sleep between 6am and sunset", false);
-		NO_TICK_OFFLINE = getBoolean("Server doesn't update time when no players online", false);
-		DISPLAY_SHIPPED_LIST = getBoolean(
+		DEBUG_MODE = ConfigHelper.getBoolean("Debug Mode", false, "Enabling this adds extra information to items, when you have f3 debug mode on");
+		SLEEP_ANYTIME = ConfigHelper.getBoolean("Sleep any time of day", true);
+		SLEEP_ONLY_AT_NIGHT = ConfigHelper.getBoolean("Disable sleep between 6am and sunset", false);
+		NO_TICK_OFFLINE = ConfigHelper.getBoolean("Server doesn't update time when no players online", false);
+		DISPLAY_SHIPPED_LIST = ConfigHelper.getBoolean(
 				"Shipped items list > Enabled",
 				true,
 				"Will display a list of items and how much they were sold for when they day changes. Needs to be enabled on the client and the server to work");
-		DISPLAY_SHIPPED_TICKS_ON_SCREEN = getInteger(
+		DISPLAY_SHIPPED_TICKS_ON_SCREEN = ConfigHelper.getInteger(
 				"Shipped items list > Ticks Displayed",
 				500,
 				"This is the number of ticks the list will stay on the screen for, before scrolling off");
-		MOBS_ONLY_SPAWN_UNDERGROUND_IN_OVERWORLD = getInteger(
+		MOBS_ONLY_SPAWN_UNDERGROUND_IN_OVERWORLD = ConfigHelper.getInteger(
 				"Mobs in overworld only spawn under Y value",
 				60,
 				"Set to 0, or less for no mob spawns. Set to 256 or greater to disable.");

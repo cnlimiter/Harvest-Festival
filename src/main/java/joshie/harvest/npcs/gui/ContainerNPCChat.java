@@ -1,9 +1,5 @@
 package joshie.harvest.npcs.gui;
 
-import static joshie.harvest.core.handlers.GuiHandler.NEXT_NONE;
-import static joshie.harvest.core.handlers.GuiHandler.SELECTION;
-import static joshie.harvest.core.handlers.GuiHandler.SHOP_OPTIONS;
-
 import joshie.harvest.HarvestFestival;
 import joshie.harvest.api.quests.Quest;
 import joshie.harvest.api.quests.Selection;
@@ -35,7 +31,7 @@ public class ContainerNPCChat extends ContainerBase {
 				if (nextGui == GuiHandler.NEXT_NONE) {
 					Selection selection = this.quest.getSelection(player, npc);
 					if (selection != null) {
-						this.nextGui = SELECTION;
+						this.nextGui = GuiHandler.SELECTION;
 					}
 				}
 			}
@@ -56,10 +52,13 @@ public class ContainerNPCChat extends ContainerBase {
 				if (quest != null) {
 					quest.onChatClosed(player, npc, sneaking);
 				}
-			} else if (nextGui == SHOP_OPTIONS) {
-				player.openGui(HarvestFestival.instance, SHOP_OPTIONS, player.world, npc.getEntityId(), 0, NEXT_NONE);
+			} else if (nextGui == GuiHandler.SHOP_OPTIONS) {
+				player.openGui(HarvestFestival.instance,
+						GuiHandler.SHOP_OPTIONS, player.world, npc.getEntityId(), 0,
+						GuiHandler.NEXT_NONE);
 			} else if (quest != null) {
-				player.openGui(HarvestFestival.instance, SELECTION, player.world, npc.getEntityId(), 0, Quest.REGISTRY.getID(quest));
+				player.openGui(HarvestFestival.instance,
+						GuiHandler.SELECTION, player.world, npc.getEntityId(), 0, Quest.REGISTRY.getID(quest));
 			}
 
 			//Add the bonus RP after doing quest based stuff.

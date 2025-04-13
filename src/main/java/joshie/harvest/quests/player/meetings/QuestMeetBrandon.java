@@ -1,7 +1,5 @@
 package joshie.harvest.quests.player.meetings;
 
-import static joshie.harvest.core.helpers.InventoryHelper.ITEM_STACK;
-
 import java.util.Set;
 
 import com.google.common.collect.Sets;
@@ -63,7 +61,8 @@ public class QuestMeetBrandon extends QuestMeetingTutorial {
 			//Brandon explains mining, and asks the player to bring him 3 junk rocks
 			return getLocalized("explain");
 		} else if (quest_stage == ORE) {
-			if (InventoryHelper.getHandItemIsIn(player, ITEM_STACK, HFMining.MATERIALS.getStackFromEnum(Material.JUNK), 3) != null) {
+			if (InventoryHelper.getHandItemIsIn(player,
+					InventoryHelper.ITEM_STACK, HFMining.MATERIALS.getStackFromEnum(Material.JUNK), 3) != null) {
 				return getLocalized("complete");
 			} else {
 				return getLocalized("reminder");
@@ -80,8 +79,7 @@ public class QuestMeetBrandon extends QuestMeetingTutorial {
 			increaseStage(player);
 		} else if ((
 				quest_stage == ORE && InventoryHelper.getHandItemIsIn(
-						player,
-						ITEM_STACK,
+						player, InventoryHelper.ITEM_STACK,
 						HFMining.MATERIALS.getStackFromEnum(Material.JUNK),
 						3) != null)) {
 			complete(player);

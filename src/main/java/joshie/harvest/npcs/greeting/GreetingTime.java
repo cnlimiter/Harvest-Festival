@@ -1,12 +1,11 @@
 package joshie.harvest.npcs.greeting;
 
-import static joshie.harvest.core.lib.HFModInfo.ICONS;
-
 import joshie.harvest.api.calendar.CalendarDate;
 import joshie.harvest.api.npc.IInfoButton;
 import joshie.harvest.api.npc.NPC;
 import joshie.harvest.calendar.CalendarHelper;
 import joshie.harvest.core.HFTrackers;
+import joshie.harvest.core.lib.HFModInfo;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.player.EntityPlayer;
@@ -32,7 +31,7 @@ public class GreetingTime implements IInfoButton<EntityAgeable> {
 
 	@Override
 	public void drawIcon(GuiScreen gui, int x, int y) {
-		gui.mc.renderEngine.bindTexture(ICONS);
+		gui.mc.renderEngine.bindTexture(HFModInfo.ICONS);
 		gui.drawTexturedModalRect(x, y, 48, 0, 16, 16);
 	}
 

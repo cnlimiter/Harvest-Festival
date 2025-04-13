@@ -1,13 +1,8 @@
 package joshie.harvest.cooking.render;
 
-import static joshie.harvest.core.lib.HFModInfo.MODID;
-import static net.minecraft.util.EnumFacing.EAST;
-import static net.minecraft.util.EnumFacing.NORTH;
-import static net.minecraft.util.EnumFacing.SOUTH;
-import static net.minecraft.util.EnumFacing.WEST;
-
 import javax.annotation.Nonnull;
 import joshie.harvest.cooking.tile.TileFridge;
+import joshie.harvest.core.lib.HFModInfo;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.util.EnumFacing;
@@ -17,7 +12,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class SpecialRendererFridge extends TileEntitySpecialRenderer<TileFridge> {
-	private static final ResourceLocation TEXTURE = new ResourceLocation(MODID, "textures/models/fridge_door.png");
+	private static final ResourceLocation TEXTURE = new ResourceLocation(HFModInfo.MODID, "textures/models/fridge_door.png");
 	private final ModelFridgeDoor ovenModel = new ModelFridgeDoor();
 
 	@Override
@@ -41,12 +36,12 @@ public class SpecialRendererFridge extends TileEntitySpecialRenderer<TileFridge>
 		GlStateManager.translate((float) x, (float) y + 1.0F, (float) z + 1.0F);
 		GlStateManager.scale(1.0F, -1.0F, -1.0F);
 		EnumFacing facing = fridge.getFacing();
-		int j = facing == NORTH ? 180 : facing == SOUTH ? 0 : facing == WEST ? 90 : -90;
-		if (facing == SOUTH) {
+		int j = facing == EnumFacing.NORTH ? 180 : facing == EnumFacing.SOUTH ? 0 : facing == EnumFacing.WEST ? 90 : -90;
+		if (facing == EnumFacing.SOUTH) {
 			GlStateManager.translate(1F, 0F, 1F);
-		} else if (facing == WEST) {
+		} else if (facing == EnumFacing.WEST) {
 			GlStateManager.translate(1F, 0F, 0F);
-		} else if (facing == EAST) {
+		} else if (facing == EnumFacing.EAST) {
 			GlStateManager.translate(0F, 0F, 1F);
 		}
 

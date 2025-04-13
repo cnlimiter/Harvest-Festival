@@ -1,8 +1,5 @@
 package joshie.harvest.cooking.gui;
 
-import static joshie.harvest.cooking.gui.GuiCookbook.LEFT_GUI;
-import static joshie.harvest.cooking.gui.GuiCookbook.ingredients;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -141,7 +138,7 @@ public class PageRecipe extends Page {
 
 		//Cook Button
 		GlStateManager.color(1F, 1F, 1F);
-		gui.mc.getTextureManager().bindTexture(LEFT_GUI);
+		gui.mc.getTextureManager().bindTexture(GuiCookbook.LEFT_GUI);
 		int y = mouseX >= buttonX && mouseX <= buttonX + 66 && mouseY >= buttonY && mouseY <= buttonY + 34 ? 135 : 101;
 		gui.drawTexture(buttonX, buttonY, 0, y, 66, 34);
 		gui.drawString(buttonX + 18, buttonY + 14, TextFormatting.BOLD + TextHelper.translate("cook"));
@@ -201,7 +198,7 @@ public class PageRecipe extends Page {
 		private final IngredientStack ingredient;
 		private NonNullList<ItemStack> stacks;
 		@Nonnull
-		private ItemStack stack;
+		private ItemStack stack = ItemStack.EMPTY;
 		private int ticker;
 		private int index;
 
@@ -214,7 +211,7 @@ public class PageRecipe extends Page {
 		}
 
 		public void render(GuiCookbook gui, int mouseX, int mouseY) {
-			if (stacks.size() > 0) {
+			if (!stacks.isEmpty()) {
 				if (ticker % 128 == 0 || stack.isEmpty()) {
 					stack = stacks.get(index); //Pick out the stack
 					stack.setCount(ingredient.getStackSize());
@@ -225,11 +222,11 @@ public class PageRecipe extends Page {
 				}
 
 				gui.drawStack(x, y, stack, 1F);
-				boolean isInInventory = ingredient.isSame(ingredients);
+				boolean isInInventory = ingredient.isSame(GuiCookbook.ingredients);
 				TextFormatting formatting = isInInventory ? TextFormatting.DARK_GREEN : TextFormatting.RED;
 				gui.drawString(x + 20, y + 6, formatting + stack.getDisplayName());
 				GlStateManager.disableDepth();
-				gui.mc.getTextureManager().bindTexture(LEFT_GUI);
+				gui.mc.getTextureManager().bindTexture(GuiCookbook.LEFT_GUI);
 				if (isInInventory) {
 					gui.drawTexture(x + 8, y + 10, 31, 248, 10, 8);
 				} else {

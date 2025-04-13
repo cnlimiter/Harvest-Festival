@@ -1,17 +1,5 @@
 package joshie.harvest.buildings.item;
 
-import static joshie.harvest.buildings.item.ItemCheat.Cheat.AIR_PLACER;
-import static joshie.harvest.buildings.item.ItemCheat.Cheat.AIR_REMOVER;
-import static joshie.harvest.buildings.item.ItemCheat.Cheat.CODE_GENERATOR;
-import static joshie.harvest.buildings.item.ItemCheat.Cheat.COORD_SETTER;
-import static joshie.harvest.buildings.item.ItemCheat.Cheat.ORE_CHECKER;
-import static joshie.harvest.buildings.item.ItemCheat.Cheat.PARK_ENDSTONE;
-import static joshie.harvest.buildings.item.ItemCheat.Cheat.PARK_LOCATIONS_GENERATOR;
-import static joshie.harvest.buildings.item.ItemCheat.Cheat.PARK_PLACER;
-import static joshie.harvest.core.lib.HFModInfo.MODID;
-import static joshie.harvest.mining.MiningHelper.MAX_FLOORS;
-import static joshie.harvest.mining.gen.MineManager.CHUNK_BOUNDARY;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -37,7 +25,10 @@ import joshie.harvest.core.HFTab;
 import joshie.harvest.core.base.item.ItemHFEnum;
 import joshie.harvest.core.helpers.ChatHelper;
 import joshie.harvest.core.lib.CreativeSort;
+import joshie.harvest.core.lib.HFModInfo;
 import joshie.harvest.core.util.HFTemplate;
+import joshie.harvest.mining.MiningHelper;
+import joshie.harvest.mining.gen.MineManager;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
@@ -89,7 +80,7 @@ public class ItemCheat extends ItemHFEnum<ItemCheat, Cheat> {
 			float hitY,
 			float hitZ) {
 		int damage = player.getHeldItem(hand).getItemDamage();
-		if (damage == COORD_SETTER.ordinal()) {
+		if (damage == Cheat.COORD_SETTER.ordinal()) {
 			if (player.isSneaking()) {
 				pos2 = pos;
 				if (world.isRemote) {
@@ -104,7 +95,7 @@ public class ItemCheat extends ItemHFEnum<ItemCheat, Cheat> {
 			}
 
 			return EnumActionResult.SUCCESS;
-		} else if (damage == CODE_GENERATOR.ordinal() && pos1 != null && pos2 != null) {
+		} else if (damage == Cheat.CODE_GENERATOR.ordinal() && pos1 != null && pos2 != null) {
 			new CodeGeneratorBuildings(
 					world,
 					pos1.getX(),
@@ -115,7 +106,7 @@ public class ItemCheat extends ItemHFEnum<ItemCheat, Cheat> {
 					pos2.getZ(),
 					false).getCode();
 			return EnumActionResult.SUCCESS;
-		} else if (damage == AIR_PLACER.ordinal()) {
+		} else if (damage == Cheat.AIR_PLACER.ordinal()) {
 			if (!world.isRemote) {
 				Set<BlockPos> positions = new HashSet<>();
 				if (world.isAirBlock(pos.up())) {
@@ -139,7 +130,7 @@ public class ItemCheat extends ItemHFEnum<ItemCheat, Cheat> {
 					}
 				}
 			}
-		} else if (damage == AIR_REMOVER.ordinal()) {
+		} else if (damage == Cheat.AIR_REMOVER.ordinal()) {
 			Set<BlockPos> positions = new HashSet<>();
 			if (world.getBlockState(pos.up()).getBlock() == HFBuildings.AIR) {
 				positions.add(pos.up());
@@ -161,7 +152,7 @@ public class ItemCheat extends ItemHFEnum<ItemCheat, Cheat> {
 					BlockInternalAir.onPlaced(world, position, player);
 				}
 			}
-		} else if (damage == PARK_PLACER.ordinal()) {
+		} else if (damage == Cheat.PARK_PLACER.ordinal()) {
 			List<Pair<BlockPos, IBlockState>> states = new ArrayList<>();
 			for (int x = 0; x < 38; x++) {
 				for (int z = 0; z < 31; z++) {
@@ -182,7 +173,7 @@ public class ItemCheat extends ItemHFEnum<ItemCheat, Cheat> {
 
 			world.setBlockState(pos, Blocks.END_STONE.getDefaultState());
 			world.setBlockState(pos.south(30).east(37).up(9), Blocks.END_STONE.getDefaultState());
-		} else if (damage == PARK_ENDSTONE.ordinal()) {
+		} else if (damage == Cheat.PARK_ENDSTONE.ordinal()) {
 			List<Pair<BlockPos, IBlockState>> states = new ArrayList<>();
 			for (int x = 0; x < 38; x++) {
 				for (int z = 0; z < 31; z++) {
@@ -205,10 +196,10 @@ public class ItemCheat extends ItemHFEnum<ItemCheat, Cheat> {
 				world.setBlockState(pos, Blocks.END_STONE.getDefaultState());
 				world.setBlockState(pos.south(30).east(37).up(9), Blocks.END_STONE.getDefaultState());
 			}
-		} else if (damage == PARK_LOCATIONS_GENERATOR.ordinal() && pos1 != null && pos2 != null) {
+		} else if (damage == Cheat.PARK_LOCATIONS_GENERATOR.ordinal() && pos1 != null && pos2 != null) {
 			new CodeGeneratorBuildings(world, pos1.getX(), pos1.getY(), pos1.getZ(), pos2.getX(), pos2.getY(), pos2.getZ(), true).getCode();
 			return EnumActionResult.SUCCESS;
-		} else if (damage == ORE_CHECKER.ordinal()) {
+		} else if (damage == Cheat.ORE_CHECKER.ordinal()) {
 			if (!world.isRemote) {
 				TIntObjectMap<TObjectIntMap<IBlockState>> map = new TIntObjectHashMap<>();
 				int start = 800;
@@ -219,11 +210,15 @@ public class ItemCheat extends ItemHFEnum<ItemCheat, Cheat> {
 					for (int floor = 1; floor <= 127; floor += 42) {
 						HarvestFestival.LOGGER.log(Level.INFO, "Processing floor " + floor + " in mine: " + mineID);
 						TObjectIntMap<IBlockState> counter = map.containsKey(floor) ? map.get(floor) : new TObjectIntHashMap<>();
-						int chunkX = (int) (Math.floor(((double) floor - 1) / MAX_FLOORS) * CHUNK_BOUNDARY * 16);
-						BlockPos pos2 = new BlockPos(chunkX, (floor - 1) % MAX_FLOORS == 0 ? 247 : 1, mineID * CHUNK_BOUNDARY * 16);
+						int chunkX = (int) (
+								Math.floor(((double) floor - 1) / MiningHelper.MAX_FLOORS) *
+										MineManager.CHUNK_BOUNDARY * 16);
+						BlockPos pos2 = new BlockPos(
+								chunkX, (floor - 1) % MiningHelper.MAX_FLOORS == 0 ? 247 : 1, mineID *
+								MineManager.CHUNK_BOUNDARY * 16);
 						for (int y = 1; y < 255; y++) {
-							for (int x = 0; x < 16 * CHUNK_BOUNDARY; x++) {
-								for (int z = 0; z < 16 * CHUNK_BOUNDARY; z++) {
+							for (int x = 0; x < 16 * MineManager.CHUNK_BOUNDARY; x++) {
+								for (int z = 0; z < 16 * MineManager.CHUNK_BOUNDARY; z++) {
 									BlockPos toCheck = pos2.add(x, 0, z);
 									toCheck = new BlockPos(toCheck.getX(), y, toCheck.getZ());
 									IBlockState state = world.getBlockState(toCheck);
@@ -257,11 +252,6 @@ public class ItemCheat extends ItemHFEnum<ItemCheat, Cheat> {
 	}
 
 	@Override
-	public boolean shouldDisplayInCreative(Cheat cheat) {
-		return true;
-	}
-
-	@Override
 	public int getSortValue(@Nonnull ItemStack stack) {
 		return CreativeSort.LAST;
 	}
@@ -279,7 +269,7 @@ public class ItemCheat extends ItemHFEnum<ItemCheat, Cheat> {
 				ModelLoader.setCustomModelResourceLocation(
 						item,
 						cheat.ordinal(),
-						new ModelResourceLocation(new ResourceLocation(MODID, "debug"), "inventory"));
+						new ModelResourceLocation(new ResourceLocation(HFModInfo.MODID, "debug"), "inventory"));
 			}
 		}
 	}

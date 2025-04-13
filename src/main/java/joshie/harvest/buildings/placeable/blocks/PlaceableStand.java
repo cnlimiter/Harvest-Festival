@@ -26,11 +26,6 @@ public class PlaceableStand extends PlaceableIFaceable {
 	}
 
 	@Override
-	public boolean canPlace(ConstructionStage stage) {
-		return stage == ConstructionStage.DECORATE;
-	}
-
-	@Override
 	public void postPlace(World world, BlockPos pos, Rotation rotation) {
 		super.postPlace(world, pos, rotation); //SUPERGIRL!!!!!!!
 		TileEntity tile = world.getTileEntity(pos);

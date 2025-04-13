@@ -1,10 +1,5 @@
 package joshie.harvest.mining.gen;
 
-import static joshie.harvest.mining.MiningHelper.MAX_LOOP;
-import static joshie.harvest.mining.MiningHelper.MAX_Y;
-import static joshie.harvest.mining.MiningHelper.MYSTRIL_FLOOR;
-import static joshie.harvest.mining.gen.MineManager.CHUNK_BOUNDARY;
-
 import java.util.List;
 import java.util.Random;
 
@@ -74,7 +69,7 @@ public class MiningChunk implements IChunkGenerator {
 
 	public void setBlockState(ChunkPrimer primer, int x, int y, int z, IBlockState state, int chunkX) {
 		x = Math.min(15, Math.max(0, x));
-		y = Math.min(MAX_Y, Math.max(0, y));
+		y = Math.min(MiningHelper.MAX_Y, Math.max(0, y));
 		z = Math.min(15, Math.max(0, z));
 		if (state.getBlock() == PORTAL.getBlock()) {
 			primer.setBlockState(x, y, z, state);
@@ -91,7 +86,7 @@ public class MiningChunk implements IChunkGenerator {
 			}
 		} else {
 			Block block = primer.getBlockState(x, y, z).getBlock();
-			if ((!IRREPLACABLE.contains(block) && state == AIR) || state != AIR) {
+			if (!IRREPLACABLE.contains(block) || state != AIR) {
 				primer.setBlockState(x, y, z, state);
 			}
 		}
@@ -99,7 +94,7 @@ public class MiningChunk implements IChunkGenerator {
 
 	public IBlockState getBlockState(ChunkPrimer primer, int x, int y, int z) {
 		x = Math.min(15, Math.max(0, x));
-		y = Math.min(MAX_Y, Math.max(0, y));
+		y = Math.min(MiningHelper.MAX_Y, Math.max(0, y));
 		z = Math.min(15, Math.max(0, z));
 		return primer.getBlockState(x, y, z);
 	}
@@ -112,7 +107,7 @@ public class MiningChunk implements IChunkGenerator {
 		//Set the chunk to wall blocks
 		for (int i = 0; i < 16; i++) {
 			for (int j = 0; j < 16; j++) {
-				for (int k = 0; k < MAX_Y; k++) {
+				for (int k = 0; k < MiningHelper.MAX_Y; k++) {
 					setBlockState(primer, i, k, j, WALLS, chunkX);
 				}
 			}
@@ -121,7 +116,7 @@ public class MiningChunk implements IChunkGenerator {
 		if (chunkX >= 0 && chunkZ >= 0) {
 			boolean up = true;
 			int been = 0;
-			for (int chunkY = 0; chunkY < MAX_LOOP; chunkY += MiningHelper.FLOOR_HEIGHT) {
+			for (int chunkY = 0; chunkY < MiningHelper.MAX_LOOP; chunkY += MiningHelper.FLOOR_HEIGHT) {
 				IBlockState[][] states = getMineGeneration(chunkX, chunkY, chunkZ);
 				rand.setSeed(getIndex(chunkX, chunkY, chunkZ) * world.getSeed());
 
@@ -204,7 +199,7 @@ public class MiningChunk implements IChunkGenerator {
 								}
 
 								int floor = MiningHelper.getFloor(chunkX, belowY + MiningHelper.FLOOR_HEIGHT);
-								if (MiningHelper.HOLE_FLOORS.contains(floor) || (floor > MYSTRIL_FLOOR && rand.nextInt(4) == 0)) {
+								if (MiningHelper.HOLE_FLOORS.contains(floor) || (floor > MiningHelper.MYSTRIL_FLOOR && rand.nextInt(4) == 0)) {
 									setBlockState(primer, i, belowY + MiningHelper.FLOOR_HEIGHT, j, LADDER_HOLE, chunkX);
 								}
 							}
@@ -217,14 +212,14 @@ public class MiningChunk implements IChunkGenerator {
 		//Fix the ceiling
 		for (int i = 0; i < 16; i++) {
 			for (int j = 0; j < 16; j++) {
-				for (int k = 0; k < MAX_Y; k++) {
+				for (int k = 0; k < MiningHelper.MAX_Y; k++) {
 					setBlockState(primer, i, 251, j, WALLS, chunkX);
 				}
 			}
 		}
 
 		//Place the Spawn Portals
-		for (int chunkY = 0; chunkY < MAX_LOOP; chunkY += MiningHelper.FLOOR_HEIGHT) {
+		for (int chunkY = 0; chunkY < MiningHelper.MAX_LOOP; chunkY += MiningHelper.FLOOR_HEIGHT) {
 			int mineID = MiningHelper.getMineID(chunkZ);
 			int floor = MiningHelper.getFloor(chunkX, chunkY);
 			if (floor != 0 && isFloorWithPortal(floor) && !MineManager.areCoordinatesGenerated(world, mineID, floor)) {
@@ -334,11 +329,11 @@ public class MiningChunk implements IChunkGenerator {
 	}
 
 	private int clamp(int number) {
-		return Math.max(0, Math.min((CHUNK_BOUNDARY * 16) - 1, number));
+		return Math.max(0, Math.min((MineManager.CHUNK_BOUNDARY * 16) - 1, number));
 	}
 
 	private int getChunkIndexFromCoordinates(int chunkXIndex, int chunkZIndex) {
-		return chunkXIndex + (chunkZIndex * CHUNK_BOUNDARY);
+		return chunkXIndex + (chunkZIndex * MineManager.CHUNK_BOUNDARY);
 	}
 
 	private IBlockState[][] getBooleanFromMap(TIntObjectMap<IBlockState[][]> map, int index) {
@@ -347,9 +342,9 @@ public class MiningChunk implements IChunkGenerator {
 	}
 
 	private long getIndex(int chunkX, int chunkY, int chunkZ) {
-		int x = (int) Math.floor(chunkX / CHUNK_BOUNDARY); //3x3 Chunks
+		int x = (int) Math.floor(chunkX / MineManager.CHUNK_BOUNDARY); //3x3 Chunks
 		int y = (int) Math.floor(chunkY / MiningHelper.FLOOR_HEIGHT); // Height
-		int z = (int) Math.floor(chunkZ / CHUNK_BOUNDARY); //3x3 Chunks
+		int z = (int) Math.floor(chunkZ / MineManager.CHUNK_BOUNDARY); //3x3 Chunks
 		return new BlockPos(x, y, z).toLong();
 	}
 
@@ -359,7 +354,7 @@ public class MiningChunk implements IChunkGenerator {
 		long mapIndex = getIndex(chunkX, chunkY, chunkZ);
 		//Put if absent
 		if (!MineManager.containsStateKey(mapIndex)) {
-			IBlockState[][] blockStateMap = new IBlockState[CHUNK_BOUNDARY * 16][CHUNK_BOUNDARY * 16];
+			IBlockState[][] blockStateMap = new IBlockState[MineManager.CHUNK_BOUNDARY * 16][MineManager.CHUNK_BOUNDARY * 16];
 			boolean first = true;
 			rand.setSeed(mapIndex * world.getSeed());
 			int startX = 15 + rand.nextInt(75);
@@ -582,8 +577,8 @@ public class MiningChunk implements IChunkGenerator {
 		}
 
 		TIntObjectMap<IBlockState[][]> map = MineManager.getStateMap(mapIndex);
-		int chunkXIndex = chunkX % CHUNK_BOUNDARY;
-		int chunkZIndex = chunkZ % CHUNK_BOUNDARY;
+		int chunkXIndex = chunkX % MineManager.CHUNK_BOUNDARY;
+		int chunkZIndex = chunkZ % MineManager.CHUNK_BOUNDARY;
 		int checkIndex = getChunkIndexFromCoordinates(chunkXIndex, chunkZIndex);
 		return map.get(checkIndex);
 	}

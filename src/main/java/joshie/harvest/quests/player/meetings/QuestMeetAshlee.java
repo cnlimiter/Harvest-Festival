@@ -1,10 +1,5 @@
 package joshie.harvest.quests.player.meetings;
 
-import static joshie.harvest.animals.block.BlockTray.Tray.FEEDER_EMPTY;
-import static joshie.harvest.animals.block.BlockTray.Tray.NEST_EMPTY;
-import static joshie.harvest.animals.item.ItemAnimalTool.Tool.CHICKEN_FEED;
-import static joshie.harvest.core.helpers.InventoryHelper.ITEM_STACK;
-
 import java.util.Set;
 
 import com.google.common.collect.Sets;
@@ -12,9 +7,11 @@ import com.google.common.collect.Sets;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import joshie.harvest.animals.HFAnimals;
+import joshie.harvest.animals.block.BlockTray;
 import joshie.harvest.animals.entity.EntityHarvestChicken;
 import joshie.harvest.animals.item.ItemAnimalProduct.Sizeable;
 import joshie.harvest.animals.item.ItemAnimalSpawner.Spawner;
+import joshie.harvest.animals.item.ItemAnimalTool;
 import joshie.harvest.animals.item.ItemAnimalTool.Tool;
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.core.Size;
@@ -158,7 +155,8 @@ public class QuestMeetAshlee extends QuestMeetingTutorial {
             She explains this is a valuable egg from the best of chickens, you'll have to take care
             Of yours properly if you wish to look after it. She also heard that yulif had a spare cow
             And that you should go talk to him if you want it */
-			if (InventoryHelper.getHandItemIsIn(player, ITEM_STACK, HFAnimals.ANIMAL_PRODUCT.getStack(Sizeable.EGG, Size.SMALL)) != null) {
+			if (InventoryHelper.getHandItemIsIn(player,
+					InventoryHelper.ITEM_STACK, HFAnimals.ANIMAL_PRODUCT.getStack(Sizeable.EGG, Size.SMALL)) != null) {
 				return getLocalized("complete");
 			}
 
@@ -175,12 +173,13 @@ public class QuestMeetAshlee extends QuestMeetingTutorial {
 		if (quest_stage == THROW) {
 			increaseStage(player);
 			rewardEntity(player, "chicken");
-			rewardItem(player, new ItemStack(HFAnimals.TOOLS, 16, CHICKEN_FEED.ordinal()));
+			rewardItem(player, new ItemStack(HFAnimals.TOOLS, 16, ItemAnimalTool.Tool.CHICKEN_FEED.ordinal()));
 		} else if (quest_stage == EGG) {
 			increaseStage(player);
-			rewardItem(player, HFAnimals.TRAY.getStackFromEnum(NEST_EMPTY));
+			rewardItem(player, HFAnimals.TRAY.getStackFromEnum(BlockTray.Tray.NEST_EMPTY));
 		} else if (quest_stage == FINAL) {
-			if (InventoryHelper.getHandItemIsIn(player, ITEM_STACK, HFAnimals.ANIMAL_PRODUCT.getStack(Sizeable.EGG, Size.SMALL)) != null) {
+			if (InventoryHelper.getHandItemIsIn(player,
+					InventoryHelper.ITEM_STACK, HFAnimals.ANIMAL_PRODUCT.getStack(Sizeable.EGG, Size.SMALL)) != null) {
 				complete(player);
 				rewardItem(player, HFAnimals.ANIMAL_PRODUCT.getStack(Sizeable.EGG, Size.LARGE));
 			}
@@ -197,12 +196,12 @@ public class QuestMeetAshlee extends QuestMeetingTutorial {
 		//If we finished early
 		if (isCompletedEarly()) {
 			rewardEntity(player, "chicken");
-			rewardItem(player, new ItemStack(HFAnimals.TOOLS, 16, CHICKEN_FEED.ordinal()));
-			rewardItem(player, HFAnimals.TRAY.getStackFromEnum(NEST_EMPTY));
+			rewardItem(player, new ItemStack(HFAnimals.TOOLS, 16, ItemAnimalTool.Tool.CHICKEN_FEED.ordinal()));
+			rewardItem(player, HFAnimals.TRAY.getStackFromEnum(BlockTray.Tray.NEST_EMPTY));
 		}
 
 		rewardItem(player, HFAnimals.ANIMAL_PRODUCT.getStack(Sizeable.EGG, Size.LARGE));
-		rewardItem(player, HFAnimals.TRAY.getStackFromEnum(FEEDER_EMPTY));
+		rewardItem(player, HFAnimals.TRAY.getStackFromEnum(BlockTray.Tray.FEEDER_EMPTY));
 	}
 
 	@Override

@@ -1,7 +1,6 @@
 package joshie.harvest.tools;
 
-import static joshie.harvest.core.lib.HFModInfo.MODID;
-
+import joshie.harvest.core.lib.HFModInfo;
 import net.minecraft.client.Minecraft;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.ResourceLocation;
@@ -9,7 +8,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class HFPotion extends Potion {
-	private static final ResourceLocation TEXTURE = new ResourceLocation(MODID, "textures/gui/potions.png");
+	private static final ResourceLocation TEXTURE = new ResourceLocation(HFModInfo.MODID, "textures/gui/potions.png");
 
 	public HFPotion(String name, int color, int x, int y) {
 		super(true, color);

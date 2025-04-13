@@ -23,6 +23,6 @@ public class LootHelper {
 		}
 		List<ItemStack> list = loottable.generateLootForPools(random, lootcontext$builder.build());
 		Collections.shuffle(list); //Shuffle up the list
-		return list.size() > 0 ? list.get(0) : ItemStack.EMPTY;
+		return !list.isEmpty() ? list.get(0) : ItemStack.EMPTY;
 	}
 }

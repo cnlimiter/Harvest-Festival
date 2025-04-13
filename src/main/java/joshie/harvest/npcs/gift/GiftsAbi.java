@@ -1,10 +1,7 @@
 package joshie.harvest.npcs.gift;
 
-import static joshie.harvest.api.npc.gift.GiftCategory.MUSHROOM;
-import static joshie.harvest.api.npc.gift.GiftCategory.VEGETABLE;
-import static joshie.harvest.cooking.HFCooking.MEAL;
-
 import joshie.harvest.api.core.Ore;
+import joshie.harvest.api.npc.gift.GiftCategory;
 import joshie.harvest.cooking.HFCooking;
 import joshie.harvest.cooking.item.ItemIngredients.Ingredient;
 import joshie.harvest.cooking.item.ItemMeal.Meal;
@@ -15,8 +12,8 @@ public class GiftsAbi extends Gifts {
 	public GiftsAbi() {
 		stackRegistry.register(Items.SUGAR, Quality.AWESOME);
 		stackRegistry.register(Items.COOKIE, Quality.AWESOME);
-		stackRegistry.register(MEAL.getStackFromEnum(Meal.COOKIES), Quality.AWESOME);
-		stackRegistry.register(MEAL.getStackFromEnum(Meal.COOKIES_CHOCOLATE), Quality.AWESOME);
+		stackRegistry.register(HFCooking.MEAL.getStackFromEnum(Meal.COOKIES), Quality.AWESOME);
+		stackRegistry.register(HFCooking.MEAL.getStackFromEnum(Meal.COOKIES_CHOCOLATE), Quality.AWESOME);
 		stackRegistry.register(Items.SADDLE, Quality.GOOD);
 		stackRegistry.register(Ore.of("cropApple"), Quality.GOOD);
 		stackRegistry.register(Ore.of("cropGrape"), Quality.GOOD);
@@ -24,20 +21,20 @@ public class GiftsAbi extends Gifts {
 		stackRegistry.register(Ore.of("cropCarrot"), Quality.DECENT);
 		stackRegistry.register(Ore.of("cropCabbage"), Quality.DECENT);
 		stackRegistry.register(Ore.of("cropSweetPotato"), Quality.DECENT);
-		stackRegistry.register(MEAL.getStackFromEnum(Meal.RICE_MATSUTAKE), Quality.DISLIKE);
-		stackRegistry.register(MEAL.getStackFromEnum(Meal.RICE_MUSHROOM), Quality.DISLIKE);
-		categoryRegistry.put(MUSHROOM, Quality.DISLIKE);
-		categoryRegistry.put(VEGETABLE, Quality.DISLIKE);
-		stackRegistry.register(MEAL.getStackFromEnum(Meal.TURNIP_PICKLED), Quality.DISLIKE);
-		stackRegistry.register(MEAL.getStackFromEnum(Meal.SALAD), Quality.DISLIKE);
-		stackRegistry.register(MEAL.getStackFromEnum(Meal.SPINACH_BOILED), Quality.DISLIKE);
-		stackRegistry.register(MEAL.getStackFromEnum(Meal.CORN_BAKED), Quality.DISLIKE);
+		stackRegistry.register(HFCooking.MEAL.getStackFromEnum(Meal.RICE_MATSUTAKE), Quality.DISLIKE);
+		stackRegistry.register(HFCooking.MEAL.getStackFromEnum(Meal.RICE_MUSHROOM), Quality.DISLIKE);
+		categoryRegistry.put(GiftCategory.MUSHROOM, Quality.DISLIKE);
+		categoryRegistry.put(GiftCategory.VEGETABLE, Quality.DISLIKE);
+		stackRegistry.register(HFCooking.MEAL.getStackFromEnum(Meal.TURNIP_PICKLED), Quality.DISLIKE);
+		stackRegistry.register(HFCooking.MEAL.getStackFromEnum(Meal.SALAD), Quality.DISLIKE);
+		stackRegistry.register(HFCooking.MEAL.getStackFromEnum(Meal.SPINACH_BOILED), Quality.DISLIKE);
+		stackRegistry.register(HFCooking.MEAL.getStackFromEnum(Meal.CORN_BAKED), Quality.DISLIKE);
 		stackRegistry.register(Items.RABBIT_FOOT, Quality.DISLIKE);
 		stackRegistry.register(HFCooking.INGREDIENTS.getStackFromEnum(Ingredient.WINE), Quality.DISLIKE);
 		stackRegistry.register(Ore.of("leather"), Quality.BAD);
 		stackRegistry.register(Items.RABBIT_HIDE, Quality.BAD);
 		stackRegistry.register(Items.ROTTEN_FLESH, Quality.TERRIBLE);
 		stackRegistry.register(Ore.of("bone"), Quality.TERRIBLE);
-		stackRegistry.register(MEAL.getStackFromEnum(Meal.PORRIDGE), Quality.TERRIBLE);
+		stackRegistry.register(HFCooking.MEAL.getStackFromEnum(Meal.PORRIDGE), Quality.TERRIBLE);
 	}
 }

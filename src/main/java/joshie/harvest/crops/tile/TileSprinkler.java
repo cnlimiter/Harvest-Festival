@@ -1,7 +1,5 @@
 package joshie.harvest.crops.tile;
 
-import static joshie.harvest.crops.HFCrops.SPRINKLER_DRAIN_RATE;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import joshie.harvest.api.HFApi;
@@ -37,10 +35,10 @@ public class TileSprinkler extends TileHarvest implements ITickable {
 		@SuppressWarnings("ConstantConditions")
 		public void newDay(World world, BlockPos pos, IBlockState state) {
 			TileSprinkler sprinkler = (TileSprinkler) world.getTileEntity(pos);
-			if (SPRINKLER_DRAIN_RATE <= 0 || sprinkler.getTank().getFluidAmount() > 1) {
+			if (HFCrops.SPRINKLER_DRAIN_RATE <= 0 || sprinkler.getTank().getFluidAmount() > 1) {
 				//Reduce the amount in the tank
-				if (sprinkler.hydrateSoil() && SPRINKLER_DRAIN_RATE > 0) {
-					sprinkler.getTank().drainInternal(SPRINKLER_DRAIN_RATE, true);
+				if (sprinkler.hydrateSoil() && HFCrops.SPRINKLER_DRAIN_RATE > 0) {
+					sprinkler.getTank().drainInternal(HFCrops.SPRINKLER_DRAIN_RATE, true);
 					if (sprinkler.getTank().getFluidAmount() <= 1) {
 						MCServerHelper.markTileForUpdate(sprinkler);
 					}
@@ -74,7 +72,7 @@ public class TileSprinkler extends TileHarvest implements ITickable {
 	@Override
 	public void update() {
 		if (world.isRemote) {
-			if (tick % 15 == 0 && (SPRINKLER_DRAIN_RATE <= 0 || tank.getFluidAmount() > 1) && CalendarHelper.isBetween(world, 6000, 6250) &&
+			if (tick % 15 == 0 && (HFCrops.SPRINKLER_DRAIN_RATE <= 0 || tank.getFluidAmount() > 1) && CalendarHelper.isBetween(world, 6000, 6250) &&
 					!world.isRaining()) {
 				int setting = (2 - Minecraft.getMinecraft().gameSettings.particleSetting);
 				for (int i = 0; i < setting * 32; i++) {

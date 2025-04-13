@@ -1,13 +1,12 @@
 package joshie.harvest.npcs.greeting;
 
-import static joshie.harvest.core.lib.HFModInfo.MODID;
-
 import java.util.Locale;
 
 import joshie.harvest.api.npc.NPC;
 import joshie.harvest.api.npc.greeting.IConditionalGreeting;
 import joshie.harvest.buildings.BuildingStage;
 import joshie.harvest.buildings.placeable.Placeable.ConstructionStage;
+import joshie.harvest.core.lib.HFModInfo;
 import joshie.harvest.npcs.entity.EntityNPCBuilder;
 import joshie.harvest.town.TownHelper;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,7 +17,7 @@ public class GreetingCarpenter implements IConditionalGreeting<EntityNPCBuilder>
 	@Override
 	public String getLocalizedText(EntityPlayer player, EntityNPCBuilder builder, NPC npc) {
 		BuildingStage stage = TownHelper.getClosestTownToEntity(builder, false).getCurrentlyBuilding();
-		String toLocalize = MODID + ".npc.builder." + stage.getStage().name().toLowerCase(Locale.ENGLISH);
+		String toLocalize = HFModInfo.MODID + ".npc.builder." + stage.getStage().name().toLowerCase(Locale.ENGLISH);
 		return I18n.translateToLocalFormatted(toLocalize, stage.getBuilding().getLocalisedName());
 	}
 

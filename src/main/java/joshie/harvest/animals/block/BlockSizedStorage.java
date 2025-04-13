@@ -1,7 +1,5 @@
 package joshie.harvest.animals.block;
 
-import static joshie.harvest.animals.block.BlockSizedStorage.Fill.EMPTY;
-
 import java.util.Locale;
 
 import javax.annotation.Nonnull;
@@ -66,7 +64,7 @@ public class BlockSizedStorage extends BlockHFEnumRotatableTile<BlockSizedStorag
 		super(Material.WOOD, SizedStorage.class);
 		setHardness(1.5F);
 		setSoundType(SoundType.WOOD);
-		setDefaultState(getDefaultState().withProperty(FILL, EMPTY));
+		setDefaultState(getDefaultState().withProperty(FILL, Fill.EMPTY));
 	}
 
 	@Override
@@ -145,7 +143,7 @@ public class BlockSizedStorage extends BlockHFEnumRotatableTile<BlockSizedStorag
 			boolean isFilled = sized.getFillAmount() > 0;
 			IBlockState theState = isFilled ? state.withProperty(FILL, Fill.getFillFromSize(sized.getSize())) : state.withProperty(
 					FILL,
-					EMPTY);
+					Fill.EMPTY);
 			return super.getActualState(theState, world, pos);
 		}
 

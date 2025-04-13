@@ -1,7 +1,5 @@
 package joshie.harvest.calendar.data;
 
-import static joshie.harvest.api.calendar.Weather.SUNNY;
-
 import javax.annotation.Nullable;
 import joshie.harvest.api.calendar.CalendarDate;
 import joshie.harvest.api.calendar.Season;
@@ -38,7 +36,7 @@ public abstract class Calendar extends HFTracker implements SeasonProvider {
 
 	/* ############# Weather ################*/
 	Weather[] forecast = new Weather[7];
-	Weather recentNonSunnyWeather = SUNNY;
+	Weather recentNonSunnyWeather = Weather.SUNNY;
 	int rainStrength;
 	int stormStrength;
 
@@ -49,7 +47,7 @@ public abstract class Calendar extends HFTracker implements SeasonProvider {
 	}
 
 	public Weather getTodaysWeather() {
-		return forecast[0] != null ? forecast[0] : SUNNY;
+		return forecast[0] != null ? forecast[0] : Weather.SUNNY;
 	}
 
 	public Weather getRecentNonSunnyWeather() {
@@ -87,7 +85,7 @@ public abstract class Calendar extends HFTracker implements SeasonProvider {
 				break;
 		}
 
-		if (forecast[0] != SUNNY) {
+		if (forecast[0] != Weather.SUNNY) {
 			recentNonSunnyWeather = forecast[0];
 		}
 	}

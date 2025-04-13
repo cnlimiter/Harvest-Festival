@@ -1,7 +1,5 @@
 package joshie.harvest.tools.item;
 
-import static net.minecraft.block.Block.spawnAsEntity;
-
 import java.util.Queue;
 import java.util.Set;
 
@@ -10,6 +8,7 @@ import com.google.common.collect.Lists;
 import gnu.trove.set.hash.THashSet;
 import javax.annotation.Nonnull;
 import joshie.harvest.tools.ToolHelper;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -70,7 +69,7 @@ class TreeTasks {
 
 		private void finishChoppingTree() {
 			BlockPos target = new BlockPos(player);
-			drops.stream().forEach(i -> spawnAsEntity(world, target, i));
+			drops.stream().forEach(i -> Block.spawnAsEntity(world, target, i));
 			MinecraftForge.EVENT_BUS.unregister(this);
 		}
 

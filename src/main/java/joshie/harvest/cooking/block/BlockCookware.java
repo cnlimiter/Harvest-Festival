@@ -23,7 +23,6 @@ import joshie.harvest.core.util.interfaces.IFaceable;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
@@ -51,7 +50,7 @@ public class BlockCookware extends BlockHFEnumRotatableTile<BlockCookware, Cookw
 	private static final AxisAlignedBB POT_AABB = new AxisAlignedBB(0.2F, 0F, 0.2F, 0.8F, 0.375F, 0.8F);
 	private static Item cookware = null;
 
-	public static enum Cookware implements IStringSerializable {
+	public enum Cookware implements IStringSerializable {
 		FRIDGE_TOP(false),
 		FRIDGE(true),
 		COUNTER(true),
@@ -79,15 +78,6 @@ public class BlockCookware extends BlockHFEnumRotatableTile<BlockCookware, Cookw
 		super(Material.PISTON, Cookware.class, HFTab.COOKING);
 		setHardness(2.5F);
 		setSoundType(SoundType.METAL);
-	}
-
-	@Override
-	@Nonnull
-	protected BlockStateContainer createBlockState() {
-		if (property == null) {
-			return new BlockStateContainer(this, temporary, FACING);
-		}
-		return new BlockStateContainer(this, property, FACING);
 	}
 
 	@Override

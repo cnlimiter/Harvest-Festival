@@ -1,11 +1,5 @@
 package joshie.harvest.mining.block;
 
-import static joshie.harvest.api.gathering.ISmashable.ToolType.HAMMER;
-import static joshie.harvest.core.lib.LootStrings.MINING;
-import static joshie.harvest.core.lib.LootStrings.MINING_GEMS;
-import static net.minecraft.block.material.Material.ROCK;
-import static net.minecraft.init.Items.DIAMOND;
-
 import java.util.Locale;
 
 import javax.annotation.Nonnull;
@@ -15,6 +9,7 @@ import joshie.harvest.core.HFTrackers;
 import joshie.harvest.core.base.block.BlockHFSmashable;
 import joshie.harvest.core.entity.EntityBasket;
 import joshie.harvest.core.lib.CreativeSort;
+import joshie.harvest.core.lib.LootStrings;
 import joshie.harvest.mining.HFMining;
 import joshie.harvest.mining.MiningHelper;
 import joshie.harvest.mining.block.BlockOre.Ore;
@@ -51,7 +46,7 @@ public class BlockOre extends BlockHFSmashable<BlockOre, Ore> implements ISmasha
 	}
 
 	public BlockOre() {
-		super(ROCK, Ore.class, HFTab.MINING);
+		super(net.minecraft.block.material.Material.ROCK, Ore.class, HFTab.MINING);
 		setBlockUnbreakable();
 		setSoundType(SoundType.STONE);
 	}
@@ -79,7 +74,7 @@ public class BlockOre extends BlockHFSmashable<BlockOre, Ore> implements ISmasha
 
 	@Override
 	public ToolType getToolType() {
-		return HAMMER;
+		return ToolType.HAMMER;
 	}
 
 	@Override
@@ -157,7 +152,7 @@ public class BlockOre extends BlockHFSmashable<BlockOre, Ore> implements ISmasha
 				if (world.isRemote) {
 					drops.add(new ItemStack(this));
 				} else {
-					MiningHelper.getLoot(drops, MINING, world, player, luck);
+					MiningHelper.getLoot(drops, LootStrings.MINING, world, player, luck);
 				}
 				break;
 			case COPPER:
@@ -179,7 +174,7 @@ public class BlockOre extends BlockHFSmashable<BlockOre, Ore> implements ISmasha
 				if (world.rand.nextInt(512) == 0) {
 					getRandomStack(drops, world, Material.PINK_DIAMOND, 1);
 				} else {
-					getRandomStack(drops, world, DIAMOND, 3);
+					getRandomStack(drops, world, Items.DIAMOND, 3);
 				}
 				break;
 			case RUBY:
@@ -198,7 +193,7 @@ public class BlockOre extends BlockHFSmashable<BlockOre, Ore> implements ISmasha
 				if (world.isRemote) {
 					drops.add(new ItemStack(this));
 				} else {
-					MiningHelper.getLoot(drops, MINING_GEMS, world, player, luck);
+					MiningHelper.getLoot(drops, LootStrings.MINING_GEMS, world, player, luck);
 				}
 				break;
 		}

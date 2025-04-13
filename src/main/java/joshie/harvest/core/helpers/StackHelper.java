@@ -156,7 +156,7 @@ public class StackHelper {
 
 	private static int parseAmount(String str) {
 		try {
-			return Integer.parseInt(str.substring(1, str.length()));
+			return Integer.parseInt(str.substring(1));
 		} catch (NumberFormatException numberformatexception) {
 			return 0;
 		}
@@ -166,7 +166,7 @@ public class StackHelper {
 
 	@SideOnly(Side.CLIENT)
 	public static NonNullList<ItemStack> getAllStacks() {
-		if (allStacks.size() == 0) {
+		if (allStacks.isEmpty()) {
 			for (CreativeTabs tab : CreativeTabs.CREATIVE_TAB_ARRAY) {
 				tab.displayAllRelevantItems(allStacks);
 			}

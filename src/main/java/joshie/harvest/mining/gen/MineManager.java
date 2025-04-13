@@ -1,9 +1,5 @@
 package joshie.harvest.mining.gen;
 
-import static joshie.harvest.core.helpers.EntityHelper.isSpawnable;
-import static joshie.harvest.mining.MiningHelper.MAX_FLOORS;
-import static joshie.harvest.mining.MiningHelper.getFloor;
-
 import java.util.Random;
 
 import gnu.trove.map.TIntObjectMap;
@@ -14,6 +10,7 @@ import gnu.trove.set.TIntSet;
 import gnu.trove.set.hash.TIntHashSet;
 import javax.annotation.Nonnull;
 import joshie.harvest.core.HFTrackers;
+import joshie.harvest.core.helpers.EntityHelper;
 import joshie.harvest.core.helpers.NBTHelper;
 import joshie.harvest.core.lib.LootStrings;
 import joshie.harvest.core.util.annotations.HFEvents;
@@ -75,7 +72,7 @@ public class MineManager extends WorldSavedData {
 			Random rand = dim.rand;
 			for (int i = 0; i < 512; i++) {
 				BlockPos pos = spawn.add(rand.nextInt(51) - 25, 0, rand.nextInt(51) - 25);
-				if (isSpawnable(dim, pos)) {
+				if (EntityHelper.isSpawnable(dim, pos)) {
 					return pos;
 				}
 			}
@@ -99,10 +96,10 @@ public class MineManager extends WorldSavedData {
 				if (torch.equals(pos)) {
 					continue;
 				}
-				if (!foundTorch && isSpawnable(world, torch)) {
+				if (!foundTorch && EntityHelper.isSpawnable(world, torch)) {
 					world.setBlockState(torch, Blocks.TORCH.getDefaultState(), 3);
 					foundTorch = true;
-				} else if (!foundChest && isSpawnable(world, torch)) {
+				} else if (!foundChest && EntityHelper.isSpawnable(world, torch)) {
 					EnumFacing facing = EnumFacing.HORIZONTALS[world.rand.nextInt(EnumFacing.HORIZONTALS.length)];
 					if (!world.isAirBlock(torch.east())) {
 						facing = EnumFacing.WEST;
@@ -120,7 +117,7 @@ public class MineManager extends WorldSavedData {
 					}
 
 					foundChest = true;
-				} else if (!foundSign && isSpawnable(world, torch)) {
+				} else if (!foundSign && EntityHelper.isSpawnable(world, torch)) {
 					world.setBlockState(
 							torch,
 							Blocks.STANDING_SIGN.getDefaultState().withProperty(BlockStandingSign.ROTATION, world.rand.nextInt(16)));
@@ -157,9 +154,9 @@ public class MineManager extends WorldSavedData {
 
 	BlockPos getSpawnCoordinateForMine(World world, int mineID, int floor) {
 		BlockPos ret = getCoordinateMap(mineID).get(floor);
-		if (ret == null || getFloor(ret) != floor) {
-			int chunkX = (int) (Math.floor(((double) floor - 1) / MAX_FLOORS) * CHUNK_BOUNDARY * 16);
-			BlockPos pos = new BlockPos(chunkX, (floor - 1) % MAX_FLOORS == 0 ? 247 : 1, mineID * CHUNK_BOUNDARY * 16);
+		if (ret == null || MiningHelper.getFloor(ret) != floor) {
+			int chunkX = (int) (Math.floor(((double) floor - 1) / MiningHelper.MAX_FLOORS) * CHUNK_BOUNDARY * 16);
+			BlockPos pos = new BlockPos(chunkX, (floor - 1) % MiningHelper.MAX_FLOORS == 0 ? 247 : 1, mineID * CHUNK_BOUNDARY * 16);
 			for (int x = 0; x < 16 * CHUNK_BOUNDARY; x++) {
 				for (int z = 0; z < 16 * CHUNK_BOUNDARY; z++) {
 					BlockPos toCheck = pos.add(x, 0, z);

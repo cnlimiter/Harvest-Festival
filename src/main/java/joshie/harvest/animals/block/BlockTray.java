@@ -1,8 +1,5 @@
 package joshie.harvest.animals.block;
 
-import static joshie.harvest.animals.block.BlockTray.Tray.FEEDER_EMPTY;
-import static joshie.harvest.animals.block.BlockTray.Tray.NEST_EMPTY;
-
 import java.util.Locale;
 
 import javax.annotation.Nonnull;
@@ -114,7 +111,7 @@ public class BlockTray extends BlockHFEnum<BlockTray, Tray> implements IAnimalFe
 				}
 
 				if (!world.isRemote) {
-					world.setBlockState(pos, getStateFromEnum(NEST_EMPTY));
+					world.setBlockState(pos, getStateFromEnum(Tray.NEST_EMPTY));
 				}
 
 				return true;
@@ -145,7 +142,7 @@ public class BlockTray extends BlockHFEnum<BlockTray, Tray> implements IAnimalFe
 
 	@Override
 	public boolean isNest(AnimalStats stats, World world, BlockPos pos, IBlockState state) {
-		return getEnumFromState(state.getActualState(world, pos)) == NEST_EMPTY;
+		return getEnumFromState(state.getActualState(world, pos)) == Tray.NEST_EMPTY;
 	}
 
 	@Override
@@ -211,7 +208,7 @@ public class BlockTray extends BlockHFEnum<BlockTray, Tray> implements IAnimalFe
 
 	@Override
 	protected boolean shouldDisplayInCreative(Tray tray) {
-		return tray == NEST_EMPTY || tray == FEEDER_EMPTY;
+		return tray == Tray.NEST_EMPTY || tray == Tray.FEEDER_EMPTY;
 	}
 
 	@Override

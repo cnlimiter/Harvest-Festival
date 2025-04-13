@@ -45,7 +45,7 @@ public class ShopHours implements OpeningHandler {
 		for (OpeningHours hours : open.get(day)) {
 			boolean isOpen = CalendarHelper.isBetween(world, hours.open, hours.close) &&
 					(player == null || hours.rules == null || hours.rules.canDo(world, player, 0));
-			if (isOpen && (shop.getPurchasableIDs().size() > 0)) {
+			if (isOpen && (!shop.getPurchasableIDs().isEmpty())) {
 				return true;
 			}
 		}

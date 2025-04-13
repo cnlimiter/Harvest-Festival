@@ -1,12 +1,11 @@
 package joshie.harvest.crops.block;
 
-import static joshie.harvest.crops.HFCrops.SPRINKLER_DRAIN_RATE;
-
 import java.util.Locale;
 
 import javax.annotation.Nonnull;
 import joshie.harvest.core.base.block.BlockHFEnum;
 import joshie.harvest.core.lib.CreativeSort;
+import joshie.harvest.crops.HFCrops;
 import joshie.harvest.crops.block.BlockSprinkler.Sprinkler;
 import joshie.harvest.crops.tile.TileSprinkler;
 import joshie.harvest.crops.tile.TileSprinklerOld;
@@ -74,7 +73,7 @@ public class BlockSprinkler extends BlockHFEnum<BlockSprinkler, Sprinkler> {
 			float hitX,
 			float hitY,
 			float hitZ) {
-		if (SPRINKLER_DRAIN_RATE <= 0) {
+		if (HFCrops.SPRINKLER_DRAIN_RATE <= 0) {
 			return false;
 		}
 		ItemStack heldItem = player.getHeldItem(hand);

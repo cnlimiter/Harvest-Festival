@@ -1,8 +1,5 @@
 package joshie.harvest.quests.town.tasks;
 
-import static joshie.harvest.core.helpers.InventoryHelper.ITEM_STACK;
-import static joshie.harvest.fishing.item.ItemFish.FISH_LOCATIONS;
-
 import java.util.List;
 
 import com.google.common.collect.Lists;
@@ -16,6 +13,7 @@ import joshie.harvest.api.town.Town;
 import joshie.harvest.core.helpers.InventoryHelper;
 import joshie.harvest.core.helpers.TextHelper;
 import joshie.harvest.fishing.HFFishing;
+import joshie.harvest.fishing.item.ItemFish;
 import joshie.harvest.fishing.item.ItemFish.Fish;
 import joshie.harvest.fishing.loot.SetWeight;
 import joshie.harvest.npcs.HFNPCs;
@@ -51,7 +49,7 @@ public class QuestCollectFish extends QuestDaily {
 	public void onSelectedAsDailyQuest(Town town, World world, BlockPos pos) {
 		rand.setSeed(HFApi.calendar.getDate(world).hashCode());
 		int amount = 1 + rand.nextInt(3);
-		List<Fish> list = Lists.newArrayList(FISH_LOCATIONS.get(HFApi.calendar.getDate(world).getSeason()));
+		List<Fish> list = Lists.newArrayList(ItemFish.FISH_LOCATIONS.get(HFApi.calendar.getDate(world).getSeason()));
 		Fish fishy = list.get(rand.nextInt(list.size()));
 		fish = SetWeight.applyFishSizeData(rand, ROD, HFFishing.FISH.getStackFromEnum(fishy, amount));
 		reward = HFApi.shipping.getSellValue(fish) * 10;
@@ -59,7 +57,8 @@ public class QuestCollectFish extends QuestDaily {
 
 	@Override
 	public boolean isNPCUsed(EntityPlayer player, NPCEntity entity) {
-		return super.isNPCUsed(player, entity) && InventoryHelper.getHandItemIsIn(player, ITEM_STACK, fish, fish.getCount()) != null;
+		return super.isNPCUsed(player, entity) && InventoryHelper.getHandItemIsIn(player,
+				InventoryHelper.ITEM_STACK, fish, fish.getCount()) != null;
 	}
 
 	@Override
@@ -71,7 +70,7 @@ public class QuestCollectFish extends QuestDaily {
 
 	@Override
 	public void onChatClosed(EntityPlayer player, NPCEntity entity, boolean wasSneaking) {
-		if (InventoryHelper.takeItemsIfHeld(player, ITEM_STACK, fish, fish.getCount()) != null) {
+		if (InventoryHelper.takeItemsIfHeld(player, InventoryHelper.ITEM_STACK, fish, fish.getCount()) != null) {
 			complete(player);
 		}
 	}

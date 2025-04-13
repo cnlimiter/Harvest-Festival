@@ -1,9 +1,5 @@
 package joshie.harvest.cooking;
 
-import static joshie.harvest.cooking.CookingHelper.PlaceIngredientResult.FAILURE;
-import static joshie.harvest.cooking.CookingHelper.PlaceIngredientResult.SUCCESS;
-import static joshie.harvest.core.lib.HFModInfo.MODID;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -16,6 +12,7 @@ import joshie.harvest.api.cooking.IngredientStack;
 import joshie.harvest.api.cooking.Recipe;
 import joshie.harvest.cooking.recipe.RecipeMaker;
 import joshie.harvest.cooking.tile.TileCooking;
+import joshie.harvest.core.lib.HFModInfo;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -27,7 +24,7 @@ import net.minecraft.world.World;
 public class CookingHelper {
 	@Nonnull
 	public static ItemStack getRecipe(String name) {
-		return HFCooking.RECIPE.getStackFromObject(Recipe.REGISTRY.get(new ResourceLocation(MODID, name)));
+		return HFCooking.RECIPE.getStackFromObject(Recipe.REGISTRY.get(new ResourceLocation(HFModInfo.MODID, name)));
 	}
 
 	private static void addIngredientsToSet(Set<IngredientStack> ingredients, IInventory inventory) {
@@ -76,13 +73,13 @@ public class CookingHelper {
 					if (tile instanceof TileCooking) {
 						TileCooking cooking = (TileCooking) tile;
 						PlaceIngredientResult result = cooking.hasPrerequisites();
-						if (result != SUCCESS) {
+						if (result != CookingHelper.PlaceIngredientResult.SUCCESS) {
 							return result;
 						}
-						if (cooking.getUtensil() == recipe.getUtensil() && cooking.getIngredients().size() == 0 &&
-								cooking.getResult().size() == 0) {
+						if (cooking.getUtensil() == recipe.getUtensil() && cooking.getIngredients().isEmpty() &&
+								cooking.getResult().isEmpty()) {
 							if (cook(cooking, recipe, fridges)) {
-								return SUCCESS;
+								return CookingHelper.PlaceIngredientResult.SUCCESS;
 							}
 						}
 					}
@@ -90,7 +87,7 @@ public class CookingHelper {
 			}
 		}
 
-		return FAILURE;
+		return CookingHelper.PlaceIngredientResult.FAILURE;
 	}
 
 	@Nonnull

@@ -1,7 +1,5 @@
 package joshie.harvest.quests.town.festivals;
 
-import static joshie.harvest.core.registry.ShippingRegistry.SELL_VALUE;
-
 import javax.annotation.Nullable;
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.npc.NPC;
@@ -9,6 +7,7 @@ import joshie.harvest.api.quests.HFQuest;
 import joshie.harvest.cooking.HFCooking;
 import joshie.harvest.cooking.item.ItemIngredients.Ingredient;
 import joshie.harvest.cooking.item.ItemMeal.Meal;
+import joshie.harvest.core.registry.ShippingRegistry;
 import joshie.harvest.npcs.HFNPCs;
 import joshie.harvest.quests.base.QuestFestivalMultichat;
 import net.minecraft.entity.player.EntityPlayer;
@@ -63,7 +62,7 @@ public class QuestNewYears extends QuestFestivalMultichat {
 		} else if (npc == HFNPCs.TRADER) {
 			ItemStack wine = HFCooking.INGREDIENTS.getStackFromEnum(Ingredient.WINE);
 			wine.setStackDisplayName("Canard-Duchêne");
-			wine.getTagCompound().setLong(SELL_VALUE, 5000L);
+			wine.getTagCompound().setLong(ShippingRegistry.SELL_VALUE, 5000L);
 			rewardItem(player, wine);
 		}
 	}

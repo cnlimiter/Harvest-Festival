@@ -1,10 +1,9 @@
 package joshie.harvest.core.base.block;
 
-import static joshie.harvest.core.lib.HFModInfo.MODID;
-
 import javax.annotation.Nonnull;
 import joshie.harvest.core.base.item.ItemBlockHF;
 import joshie.harvest.core.helpers.TextHelper;
+import joshie.harvest.core.lib.HFModInfo;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -30,9 +29,9 @@ public abstract class BlockHFBase<B extends BlockHFBase> extends Block {
 
 	@SuppressWarnings("unchecked")
 	public B register(String name) {
-		this.unlocalizedName = MODID + "." + name.replace("_", ".");
+		this.unlocalizedName = HFModInfo.MODID + "." + name.replace("_", ".");
 		setUnlocalizedName(name.replace("_", "."));
-		setRegistryName(new ResourceLocation(MODID, name));
+		setRegistryName(new ResourceLocation(HFModInfo.MODID, name));
 		GameData.register_impl(this);
 		ItemBlockHF item = getItemBlock();
 		if (item != null) {
@@ -97,6 +96,6 @@ public abstract class BlockHFBase<B extends BlockHFBase> extends Block {
 
 	@SideOnly(Side.CLIENT)
 	public void registerModels(Item item, String name) {
-		ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(new ResourceLocation(MODID, name), "inventory"));
+		ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(new ResourceLocation(HFModInfo.MODID, name), "inventory"));
 	}
 }

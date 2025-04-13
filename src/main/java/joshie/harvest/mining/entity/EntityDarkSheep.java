@@ -1,13 +1,10 @@
 package joshie.harvest.mining.entity;
 
-import static joshie.harvest.mining.HFMining.ANIMALS_ON_EVERY_FLOOR;
-import static joshie.harvest.mining.MiningHelper.GOLD_FLOOR;
-import static joshie.harvest.mining.MiningHelper.SHEEP_FLOORS;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import joshie.harvest.core.helpers.EntityHelper;
 import joshie.harvest.core.lib.LootStrings;
+import joshie.harvest.mining.HFMining;
 import joshie.harvest.mining.MiningHelper;
 import net.minecraft.block.Block;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -67,8 +64,10 @@ public class EntityDarkSheep extends EntityMob {
 	@Override
 	protected boolean isValidLightLevel() {
 		int floor = MiningHelper.getFloor((int) posX >> 4, (int) posY);
-		return floor >= GOLD_FLOOR && (ANIMALS_ON_EVERY_FLOOR || (((floor + 6) % SHEEP_FLOORS == 0)))
-				&& EntityHelper.getEntities(EntityDarkSheep.class, this, 24D).size() < 1;
+		return floor >= MiningHelper.GOLD_FLOOR && (
+				HFMining.ANIMALS_ON_EVERY_FLOOR || (((floor + 6) % MiningHelper.SHEEP_FLOORS == 0)))
+				&& joshie.harvest.core.helpers.EntityHelper.getEntities(joshie.harvest.mining.entity.EntityDarkSheep.class, this, 24D)
+				.isEmpty();
 	}
 
 	@Override

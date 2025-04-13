@@ -1,8 +1,5 @@
 package joshie.harvest.town.tracker;
 
-import static joshie.harvest.api.calendar.Season.SPRING;
-import static joshie.harvest.town.BuildingLocations.MINE_ENTRANCE;
-
 import java.util.Map.Entry;
 import java.util.UUID;
 
@@ -14,7 +11,9 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.calendar.CalendarDate;
+import joshie.harvest.api.calendar.Season;
 import joshie.harvest.core.network.PacketHandler;
+import joshie.harvest.town.BuildingLocations;
 import joshie.harvest.town.data.TownData;
 import joshie.harvest.town.data.TownDataServer;
 import joshie.harvest.town.data.TownSavedData;
@@ -29,7 +28,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class TownTrackerServer extends TownTracker<TownDataServer> {
-	private static final CalendarDate FUTURE = new CalendarDate(0, SPRING, 999);
+	private static final CalendarDate FUTURE = new CalendarDate(0, Season.SPRING, 999);
 	public static final TownDataServer NULL_TOWN = new TownDataServer() {
 		@Override
 		public CalendarDate getBirthday() {
@@ -74,10 +73,10 @@ public class TownTrackerServer extends TownTracker<TownDataServer> {
 		if (data == null) {
 			return default_;
 		}
-		if (!data.hasBuilding(MINE_ENTRANCE.getBuilding())) {
+		if (!data.hasBuilding(BuildingLocations.MINE_ENTRANCE.getBuilding())) {
 			return data.getTownCentre();
 		}
-		BlockPos location = data.getCoordinatesFor(MINE_ENTRANCE);
+		BlockPos location = data.getCoordinatesFor(BuildingLocations.MINE_ENTRANCE);
 		if (location != null) {
 			Rotation rotation = getMineOrientation(mineID);
 			if (rotation == Rotation.NONE) {
@@ -101,16 +100,16 @@ public class TownTrackerServer extends TownTracker<TownDataServer> {
 			return Rotation.NONE;
 		}
 		TownDataServer data = uuidMap.get(uuid);
-		if (data == null || !data.hasBuilding(MINE_ENTRANCE.getBuilding())) {
+		if (data == null || !data.hasBuilding(BuildingLocations.MINE_ENTRANCE.getBuilding())) {
 			return Rotation.NONE;
 		}
-		return data.getFacingFor(MINE_ENTRANCE.getBuilding().getResource());
+		return data.getFacingFor(BuildingLocations.MINE_ENTRANCE.getBuilding().getResource());
 	}
 
 	@Override
 	public int getMineIDFromCoordinates(@Nonnull BlockPos pos) {
 		TownData data = getClosestTownToBlockPos(pos, false);
-		if (!data.hasBuilding(MINE_ENTRANCE.getBuilding())) {
+		if (!data.hasBuilding(BuildingLocations.MINE_ENTRANCE.getBuilding())) {
 			return -1;
 		}
 		if (townIDs.containsKey(data.getID())) {

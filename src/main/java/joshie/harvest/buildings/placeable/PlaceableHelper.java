@@ -22,6 +22,7 @@ import joshie.harvest.core.base.tile.TileFillable;
 import joshie.harvest.core.base.tile.TileStand;
 import joshie.harvest.core.block.BlockStand;
 import joshie.harvest.core.util.interfaces.IFaceable;
+import joshie.harvest.mining.block.BlockPortal;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAnvil;
 import net.minecraft.block.BlockButton;
@@ -64,7 +65,7 @@ public class PlaceableHelper {
 		} else if (world.getTileEntity(actual) instanceof IFaceable) {
 			IFaceable stand = (IFaceable) world.getTileEntity(actual);
 			return new PlaceableIFaceable(stand.getFacing(), state, x, y, z);
-		} else if (block instanceof joshie.harvest.mining.block.BlockPortal) {
+		} else if (block instanceof BlockPortal) {
 			return new PlaceableMoveIn(state, x, y, z);
 		} else if (block == HFBuildings.AIR || block == Blocks.GOLD_BLOCK) {
 			return new PlaceableBlock(Blocks.AIR.getDefaultState(), x, y, z);

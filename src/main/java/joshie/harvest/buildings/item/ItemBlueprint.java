@@ -73,7 +73,7 @@ public class ItemBlueprint extends ItemHFRegistry<ItemBlueprint, Building> imple
 		}
 
 		//Process the errors for the player
-		if (errors.size() == 0) {
+		if (errors.isEmpty()) {
 			return new ActionResult<>(EnumActionResult.SUCCESS, stack);
 		} else {
 			return BuildingHelper.displayErrors(world, stack, errors);

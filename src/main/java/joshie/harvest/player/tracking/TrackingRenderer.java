@@ -1,11 +1,10 @@
 package joshie.harvest.player.tracking;
 
-import static joshie.harvest.core.HFCore.DISPLAY_SHIPPED_TICKS_ON_SCREEN;
-
 import java.text.NumberFormat;
 import java.util.Locale;
 import java.util.Set;
 
+import joshie.harvest.core.HFCore;
 import joshie.harvest.core.helpers.MCClientHelper;
 import joshie.harvest.core.helpers.StackRenderHelper;
 import joshie.harvest.core.lib.HFModInfo;
@@ -42,7 +41,7 @@ public class TrackingRenderer {
 		ticker++;
 		if (ticker >= 2) {
 			if (yOffset + 1 >= sold.size() * 20) {
-				if (ticker >= DISPLAY_SHIPPED_TICKS_ON_SCREEN) {
+				if (ticker >= HFCore.DISPLAY_SHIPPED_TICKS_ON_SCREEN) {
 					ticker = 0; //Reset
 					return true;
 				}

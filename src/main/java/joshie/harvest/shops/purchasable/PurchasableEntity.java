@@ -1,7 +1,5 @@
 package joshie.harvest.shops.purchasable;
 
-import static net.minecraft.util.text.TextFormatting.WHITE;
-
 import java.util.List;
 import java.util.Locale;
 
@@ -21,6 +19,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.server.SPacketSetPassengers;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
 public class PurchasableEntity implements IPurchasable {
@@ -65,7 +64,7 @@ public class PurchasableEntity implements IPurchasable {
 
 	@Override
 	public void addTooltip(List<String> list) {
-		list.add(WHITE + product.getDisplayName());
+		list.add(TextFormatting.WHITE + product.getDisplayName());
 
 		//Calculate if this is carriable animal
 		if (!loaded) {
@@ -111,7 +110,7 @@ public class PurchasableEntity implements IPurchasable {
 				AnimalStats stats = EntityHelper.getStats(theEntity);
 				if (stats != null && theEntity.canBeLeashedTo(player)) {
 					if (stats.performTest(AnimalTest.CAN_CARRY)) {
-						if (player.getPassengers().size() == 0) {
+						if (player.getPassengers().isEmpty()) {
 							theEntity.startRiding(player, true);
 						}
 					} else {

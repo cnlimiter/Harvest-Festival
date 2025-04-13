@@ -1,11 +1,10 @@
 package joshie.harvest.npcs.entity;
 
-import static joshie.harvest.npcs.HFNPCs.NPC_AI_DISTANCE;
-
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.npc.NPC;
 import joshie.harvest.api.npc.task.TaskElement;
 import joshie.harvest.core.HFTrackers;
+import joshie.harvest.npcs.HFNPCs;
 import joshie.harvest.npcs.entity.ai.EntityAIPathing;
 import joshie.harvest.npcs.entity.ai.EntityAISchedule;
 import joshie.harvest.npcs.entity.ai.EntityAITalkingTo;
@@ -54,7 +53,7 @@ public abstract class EntityNPCHuman<E extends EntityNPCHuman> extends EntityNPC
 	@Override
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
-		getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(NPC_AI_DISTANCE);
+		getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(HFNPCs.NPC_AI_DISTANCE);
 	}
 
 	public EntityAIPathing getPathing() {

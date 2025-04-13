@@ -1,8 +1,7 @@
 package joshie.harvest.cooking.render;
 
-import static joshie.harvest.core.lib.HFModInfo.MODID;
-
 import joshie.harvest.api.cooking.Ingredient;
+import joshie.harvest.core.lib.HFModInfo;
 import joshie.harvest.core.util.annotations.HFEvents;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.TextureStitchEvent;
@@ -11,9 +10,9 @@ import net.minecraftforge.fml.relauncher.Side;
 
 @HFEvents(Side.CLIENT)
 public class IngredientMappingEvent {
-	public static final ResourceLocation OIL = new ResourceLocation(MODID, "fluids/oil_cooking");
-	public static final ResourceLocation MILK = new ResourceLocation(MODID, "fluids/milk");
-	public static final ResourceLocation WINE = new ResourceLocation(MODID, "fluids/wine");
+	public static final ResourceLocation OIL = new ResourceLocation(HFModInfo.MODID, "fluids/oil_cooking");
+	public static final ResourceLocation MILK = new ResourceLocation(HFModInfo.MODID, "fluids/milk");
+	public static final ResourceLocation WINE = new ResourceLocation(HFModInfo.MODID, "fluids/wine");
 
 	@SubscribeEvent
 	public void onMapping(TextureStitchEvent.Pre event) {

@@ -1,11 +1,5 @@
 package joshie.harvest.calendar.data;
 
-import static joshie.harvest.api.calendar.CalendarDate.DAYS_PER_SEASON;
-import static joshie.harvest.api.calendar.Season.AUTUMN;
-import static joshie.harvest.api.calendar.Season.SPRING;
-import static joshie.harvest.api.calendar.Season.SUMMER;
-import static joshie.harvest.api.calendar.Season.WINTER;
-
 import java.util.Random;
 
 import joshie.harvest.api.calendar.CalendarDate;
@@ -24,7 +18,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
 public class CalendarServer extends Calendar {
-	private final CalendarDate DATE = new CalendarDate(0, SPRING, 1);
+	private final CalendarDate DATE = new CalendarDate(0, Season.SPRING, 1);
 	private static final Random rand = new Random();
 	private CalendarSavedData data;
 
@@ -50,14 +44,14 @@ public class CalendarServer extends Calendar {
 	}
 
 	private Season getNextSeason(Season season) {
-		if (season == SPRING) {
-			return SUMMER;
-		} else if (season == SUMMER) {
-			return AUTUMN;
-		} else if (season == AUTUMN) {
-			return WINTER;
+		if (season == Season.SPRING) {
+			return Season.SUMMER;
+		} else if (season == Season.SUMMER) {
+			return Season.AUTUMN;
+		} else if (season == Season.AUTUMN) {
+			return Season.WINTER;
 		} else {
-			return SPRING;
+			return Season.SPRING;
 		}
 	}
 
@@ -86,7 +80,7 @@ public class CalendarServer extends Calendar {
 	}
 
 	private Weather getRandomWeather(int day, Season season) {
-		if (day >= DAYS_PER_SEASON) {
+		if (day >= CalendarDate.DAYS_PER_SEASON) {
 			season = getNextSeason(season);
 		}
 

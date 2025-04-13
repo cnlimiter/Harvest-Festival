@@ -1,7 +1,5 @@
 package joshie.harvest.quests.base;
 
-import static joshie.harvest.quests.Quests.YULIF_MEET;
-
 import java.util.Set;
 
 import joshie.harvest.api.buildings.Building;
@@ -9,6 +7,7 @@ import joshie.harvest.api.npc.NPC;
 import joshie.harvest.api.npc.NPCEntity;
 import joshie.harvest.api.quests.Quest;
 import joshie.harvest.api.quests.QuestQuestion;
+import joshie.harvest.quests.Quests;
 import joshie.harvest.town.TownHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -26,7 +25,7 @@ public abstract class QuestMeetingTutorial extends QuestQuestion {
 
 	@Override
 	public boolean canStartQuest(Set<Quest> active, Set<Quest> finished) {
-		return finished.contains(YULIF_MEET);
+		return finished.contains(Quests.YULIF_MEET);
 	}
 
 	@Override

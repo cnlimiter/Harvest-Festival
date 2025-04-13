@@ -1,7 +1,5 @@
 package joshie.harvest.core.block;
 
-import static joshie.harvest.api.HFApi.shipping;
-
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
@@ -9,6 +7,7 @@ import java.util.UUID;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import joshie.harvest.HarvestFestival;
+import joshie.harvest.api.HFApi;
 import joshie.harvest.core.HFTrackers;
 import joshie.harvest.core.base.block.BlockHFEnumRotatableTile;
 import joshie.harvest.core.base.item.ItemBlockHF;
@@ -20,7 +19,6 @@ import joshie.harvest.core.helpers.EntityHelper;
 import joshie.harvest.core.helpers.StackHelper;
 import joshie.harvest.core.helpers.TextHelper;
 import joshie.harvest.core.item.ItemBlockStorage;
-import joshie.harvest.core.lib.CreativeSort;
 import joshie.harvest.core.tile.TileBasket;
 import joshie.harvest.core.tile.TileMailbox;
 import joshie.harvest.core.tile.TileShipping;
@@ -60,7 +58,7 @@ public class BlockStorage extends BlockHFEnumRotatableTile<BlockStorage, Storage
 	private static final AxisAlignedBB MAILBOX_WEST_AABB = new AxisAlignedBB(0.6D, 0.2D, 0.2D, 1.4D, 0.9D, 0.8D);
 	private static final AxisAlignedBB BASKET_AABB = new AxisAlignedBB(0.2F, 0.0F, 0.2F, 0.8F, 0.5F, 0.8F);
 
-	public static enum Storage implements IStringSerializable {
+	public enum Storage implements IStringSerializable {
 		SHIPPING, MAILBOX, BASKET;
 
 		@Override
@@ -127,7 +125,7 @@ public class BlockStorage extends BlockHFEnumRotatableTile<BlockStorage, Storage
 	}
 
 	private static boolean hasShippedItem(World world, EntityPlayer player, @Nonnull ItemStack stack) {
-		long sell = shipping.getSellValue(stack);
+		long sell = HFApi.shipping.getSellValue(stack);
 		if (sell > 0) {
 			if (!world.isRemote) {
 				HFTrackers.<PlayerTrackerServer>getPlayerTrackerFromPlayer(player).getTracking().addForShipping(StackHelper.toStack(
@@ -242,7 +240,7 @@ public class BlockStorage extends BlockHFEnumRotatableTile<BlockStorage, Storage
 			UUID uuid = getPlayer(item, world, pos);
 			if (uuid != null) {
 				ItemStack stack = item.getItem();
-				long sell = shipping.getSellValue(stack);
+				long sell = HFApi.shipping.getSellValue(stack);
 				if (sell > 0) {
 					HFTrackers.<PlayerTrackerServer>getPlayerTracker(world, uuid).getTracking().addForShipping(StackHelper.toStack(
 							stack,
@@ -321,7 +319,7 @@ public class BlockStorage extends BlockHFEnumRotatableTile<BlockStorage, Storage
 
 	@Override
 	public boolean hasTileEntity(IBlockState state) {
-		return true;
+		return super.hasTileEntity(state);
 	}
 
 	@Override
@@ -347,6 +345,6 @@ public class BlockStorage extends BlockHFEnumRotatableTile<BlockStorage, Storage
 
 	@Override
 	public int getSortValue(@Nonnull ItemStack stack) {
-		return CreativeSort.TROUGH;
+		return super.getSortValue(stack);
 	}
 }

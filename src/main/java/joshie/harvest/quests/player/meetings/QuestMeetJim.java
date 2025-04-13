@@ -1,8 +1,5 @@
 package joshie.harvest.quests.player.meetings;
 
-import static joshie.harvest.animals.item.ItemAnimalTool.Tool.BRUSH;
-import static joshie.harvest.core.helpers.InventoryHelper.ITEM_STACK;
-
 import java.util.Set;
 
 import com.google.common.collect.Sets;
@@ -14,6 +11,7 @@ import joshie.harvest.animals.block.BlockTrough.Trough;
 import joshie.harvest.animals.entity.EntityHarvestCow;
 import joshie.harvest.animals.item.ItemAnimalProduct.Sizeable;
 import joshie.harvest.animals.item.ItemAnimalSpawner.Spawner;
+import joshie.harvest.animals.item.ItemAnimalTool;
 import joshie.harvest.animals.item.ItemAnimalTool.Tool;
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.core.Size;
@@ -144,7 +142,8 @@ public class QuestMeetJim extends QuestMeetingTutorial {
         You can autofeed larger animals with a trough, just simply place some fodder in it
         He then mentions that the animal ranch
         Is a great place to buy larger animals, and other things, so he suggests you build one */
-			if (InventoryHelper.getHandItemIsIn(player, ITEM_STACK, HFAnimals.ANIMAL_PRODUCT.getStack(Sizeable.MILK, Size.SMALL)) != null) {
+			if (InventoryHelper.getHandItemIsIn(player,
+					InventoryHelper.ITEM_STACK, HFAnimals.ANIMAL_PRODUCT.getStack(Sizeable.MILK, Size.SMALL)) != null) {
 				return getLocalized("complete");
 			}
 
@@ -163,12 +162,13 @@ public class QuestMeetJim extends QuestMeetingTutorial {
 			rewardEntity(player, "cow");
 			rewardItem(player, new ItemStack(Items.LEAD));
 			rewardItem(player, HFCrops.GRASS.getCropStack(16));
-			rewardItem(player, HFAnimals.TOOLS.getStackFromEnum(BRUSH));
+			rewardItem(player, HFAnimals.TOOLS.getStackFromEnum(ItemAnimalTool.Tool.BRUSH));
 		} else if (quest_stage == MILKER) {
 			increaseStage(player);
 			rewardItem(player, HFAnimals.TOOLS.getStackFromEnum(Tool.MILKER));
 		} else if (quest_stage == MILKING) {
-			if (InventoryHelper.getHandItemIsIn(player, ITEM_STACK, HFAnimals.ANIMAL_PRODUCT.getStack(Sizeable.MILK, Size.SMALL)) != null) {
+			if (InventoryHelper.getHandItemIsIn(player,
+					InventoryHelper.ITEM_STACK, HFAnimals.ANIMAL_PRODUCT.getStack(Sizeable.MILK, Size.SMALL)) != null) {
 				complete(player);
 			}
 		}
@@ -186,7 +186,7 @@ public class QuestMeetJim extends QuestMeetingTutorial {
 			rewardItem(player, HFAnimals.TOOLS.getStackFromEnum(Tool.MILKER));
 			rewardItem(player, new ItemStack(Items.LEAD));
 			rewardItem(player, HFCrops.GRASS.getCropStack(16));
-			rewardItem(player, HFAnimals.TOOLS.getStackFromEnum(BRUSH));
+			rewardItem(player, HFAnimals.TOOLS.getStackFromEnum(ItemAnimalTool.Tool.BRUSH));
 		}
 
 		rewardItem(player, HFAnimals.ANIMAL_PRODUCT.getStackOfSize(Sizeable.MILK, Size.LARGE, 1));

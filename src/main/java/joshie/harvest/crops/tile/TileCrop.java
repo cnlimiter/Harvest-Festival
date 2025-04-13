@@ -1,12 +1,10 @@
 package joshie.harvest.crops.tile;
 
-import static joshie.harvest.core.helpers.MCServerHelper.markTileForUpdate;
-import static joshie.harvest.crops.CropHelper.isWetSoil;
-
 import joshie.harvest.api.ticking.DailyTickableBlock;
 import joshie.harvest.api.ticking.DailyTickableBlock.Phases;
 import joshie.harvest.core.HFCore;
 import joshie.harvest.core.block.BlockFlower.FlowerType;
+import joshie.harvest.core.helpers.MCServerHelper;
 import joshie.harvest.core.helpers.NBTHelper;
 import joshie.harvest.crops.CropData;
 import joshie.harvest.crops.CropHelper;
@@ -32,7 +30,7 @@ public class TileCrop extends TileWithered {
 			BlockPos soil = pos.down();
 			if (!data.isWatered() && (
 					data.getCrop().requiresWater() && (
-							CropHelper.isRainingAt(world, pos.up()) || isWetSoil(
+							CropHelper.isRainingAt(world, pos.up()) || CropHelper.isWetSoil(
 									world,
 									soil,
 									world.getBlockState(soil))))) {
@@ -61,7 +59,7 @@ public class TileCrop extends TileWithered {
 					NBTHelper.copyTileData(crop, world, pos, HFCrops.CROPS.getStateFromEnum(CropType.WITHERED));
 				}
 			} else {
-				markTileForUpdate(crop);
+				MCServerHelper.markTileForUpdate(crop);
 			}
 
 			//Save and Refresh the crop

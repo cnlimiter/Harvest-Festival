@@ -1,8 +1,5 @@
 package joshie.harvest.knowledge.gui.calendar;
 
-import static joshie.harvest.api.calendar.CalendarDate.DAYS_PER_SEASON;
-import static joshie.harvest.core.lib.HFModInfo.MODID;
-
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
@@ -21,6 +18,7 @@ import joshie.harvest.calendar.CalendarAPI;
 import joshie.harvest.calendar.CalendarHelper;
 import joshie.harvest.core.base.gui.ContainerNull;
 import joshie.harvest.core.base.gui.GuiBase;
+import joshie.harvest.core.lib.HFModInfo;
 import joshie.harvest.knowledge.gui.calendar.button.ButtonDate;
 import joshie.harvest.knowledge.gui.calendar.button.ButtonNext;
 import joshie.harvest.knowledge.gui.calendar.button.ButtonPrevious;
@@ -32,7 +30,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 
 public class GuiCalendar extends GuiBase {
-	public static final ResourceLocation CALENDAR_TEXTURE = new ResourceLocation(MODID, "textures/gui/calendar.png");
+	public static final ResourceLocation CALENDAR_TEXTURE = new ResourceLocation(HFModInfo.MODID, "textures/gui/calendar.png");
 	private final Multimap<CalendarDate, CalendarEntry> entries = HashMultimap.create();
 	public static CalendarDate date;
 	public static Season season;
@@ -84,7 +82,7 @@ public class GuiCalendar extends GuiBase {
 			buttonList.add(new ButtonDate(
 					this,
 					day,
-					getStacksForDate(new CalendarDate(day * (DAYS_PER_SEASON / 30), season, year)),
+					getStacksForDate(new CalendarDate(day * (CalendarDate.DAYS_PER_SEASON / 30), season, year)),
 					guiLeft + getXForDate(date),
 					guiTop + getYForDate(date)));
 		}

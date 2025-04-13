@@ -1,7 +1,5 @@
 package joshie.harvest.quests.town.festivals;
 
-import static joshie.harvest.town.BuildingLocations.PARK_COW_JUDGE;
-
 import joshie.harvest.animals.entity.EntityHarvestCow;
 import joshie.harvest.api.npc.NPC;
 import joshie.harvest.api.npc.NPCEntity;
@@ -18,6 +16,7 @@ import joshie.harvest.quests.town.festivals.contest.ContestJudgingScript;
 import joshie.harvest.quests.town.festivals.contest.ContestTaskWinner;
 import joshie.harvest.quests.town.festivals.contest.ContestWinningScript;
 import joshie.harvest.quests.town.festivals.contest.animal.AnimalContestEntries;
+import joshie.harvest.town.BuildingLocations;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -86,6 +85,6 @@ public class QuestContestCow extends QuestAnimalContest<EntityHarvestCow> {
 	public void execute(Town town, EntityPlayer player, NPCEntity npc) {
 		npc.setPath(
 				move(STAND1), speech(JUDGE_1), move(STAND2), speech(JUDGE_2), move(STAND3), speech(JUDGE_3), move(STAND4), speech(JUDGE_4),
-				wait(1), speech(FINISH), move(PARK_COW_JUDGE), speech(WINNER), new ContestTaskWinner(HFFestivals.COW_FESTIVAL));
+				wait(1), speech(FINISH), move(BuildingLocations.PARK_COW_JUDGE), speech(WINNER), new ContestTaskWinner(HFFestivals.COW_FESTIVAL));
 	}
 }

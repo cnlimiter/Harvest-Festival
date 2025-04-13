@@ -1,19 +1,11 @@
 package joshie.harvest.quests.player.meetings;
 
-import static joshie.harvest.api.HFApi.npc;
-import static joshie.harvest.core.helpers.InventoryHelper.ORE_DICTIONARY;
-import static joshie.harvest.core.helpers.InventoryHelper.SPECIAL;
-import static joshie.harvest.core.helpers.InventoryHelper.SearchType.FLOWER;
-import static joshie.harvest.npcs.HFNPCs.CARPENTER;
-import static joshie.harvest.npcs.HFNPCs.FLOWER_GIRL;
-import static joshie.harvest.npcs.HFNPCs.GODDESS;
-import static joshie.harvest.quests.Quests.GODDESS_MEET;
-
 import java.util.Set;
 
 import com.google.common.collect.Sets;
 
 import javax.annotation.Nonnull;
+import joshie.harvest.api.HFApi;
 import joshie.harvest.api.knowledge.Note;
 import joshie.harvest.api.npc.NPC;
 import joshie.harvest.api.npc.NPCEntity;
@@ -25,14 +17,15 @@ import joshie.harvest.core.helpers.InventoryHelper;
 import joshie.harvest.knowledge.HFNotes;
 import joshie.harvest.npcs.HFNPCs;
 import joshie.harvest.quests.HFQuests;
+import joshie.harvest.quests.Quests;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 @HFQuest("tutorial.carpenter")
 public class QuestMeetYulif extends Quest {
-	private static final ItemStack GODDESS_STACK = npc.getStackForNPC(HFNPCs.GODDESS);
-	private static final ItemStack FLOWER_GIRL_STACK = npc.getStackForNPC(HFNPCs.FLOWER_GIRL);
+	private static final ItemStack GODDESS_STACK = HFApi.npc.getStackForNPC(HFNPCs.GODDESS);
+	private static final ItemStack FLOWER_GIRL_STACK = HFApi.npc.getStackForNPC(HFNPCs.FLOWER_GIRL);
 	private static final int WELCOME = 0;
 	private static final int LOGS = 1;
 	private static final int SEED_CHAT = 2;
@@ -40,12 +33,12 @@ public class QuestMeetYulif extends Quest {
 	private boolean attempted = false;
 
 	public QuestMeetYulif() {
-		setNPCs(GODDESS, CARPENTER, FLOWER_GIRL);
+		setNPCs(HFNPCs.GODDESS, HFNPCs.CARPENTER, HFNPCs.FLOWER_GIRL);
 	}
 
 	@Override
 	public boolean canStartQuest(Set<Quest> active, Set<Quest> finished) {
-		return finished.contains(GODDESS_MEET);
+		return finished.contains(Quests.GODDESS_MEET);
 	}
 
 	private String getWoodAmount() {
@@ -108,7 +101,7 @@ public class QuestMeetYulif extends Quest {
             Will move in with yulif and she can often be found upstairs in the house, she requests that you deliver some sort of flower
             To jaded, and tells you that she carries around a bunch of seeds, but she is always on the lookout for flowers instead
             Normally she would ask for 10 flowers, but for a one off deal she is doing one flower for some seeds */
-			if (InventoryHelper.getHandItemIsIn(player, ORE_DICTIONARY, "logWood", HFQuests.LOGS_CARPENTER) != null) {
+			if (InventoryHelper.getHandItemIsIn(player, InventoryHelper.ORE_DICTIONARY, "logWood", HFQuests.LOGS_CARPENTER) != null) {
 				return getLocalized("thanks.build");
 			}
 
@@ -119,7 +112,7 @@ public class QuestMeetYulif extends Quest {
                 /*The Goddess reminds the player that she has asked you to deliver a flower to jaded, and to do so
                   You must get the carpenter house built, she says that if you lost the blueprint, then bring the goddess
                   Another 64 logs of wood, and she will happily give you a blueprint again */
-				if (attempted && InventoryHelper.getHandItemIsIn(player, ORE_DICTIONARY, "logWood", HFQuests.LOGS_CARPENTER) != null) {
+				if (attempted && InventoryHelper.getHandItemIsIn(player, InventoryHelper.ORE_DICTIONARY, "logWood", HFQuests.LOGS_CARPENTER) != null) {
 					return getLocalized("reminder.give");
 				} else {
 					attempted = true;
@@ -130,7 +123,8 @@ public class QuestMeetYulif extends Quest {
                   She then informs you that the goddess would like to see you again
                   She has a reward, She says to come back to see her after you have
                   revisited the goddess, as she has something to show you */
-				if (InventoryHelper.getHandItemIsIn(player, SPECIAL, FLOWER, 1) != null) {
+				if (InventoryHelper.getHandItemIsIn(player,
+						InventoryHelper.SPECIAL, InventoryHelper.SearchType.FLOWER, 1) != null) {
 					return getLocalized("thanks.flowers");
 				}
 
@@ -158,7 +152,7 @@ public class QuestMeetYulif extends Quest {
 		if (quest_stage == WELCOME && npc == HFNPCs.GODDESS) {
 			increaseStage(player);
 		} else if (quest_stage == LOGS && npc == HFNPCs.GODDESS) {
-			if (InventoryHelper.takeItemsIfHeld(player, ORE_DICTIONARY, "logWood", HFQuests.LOGS_CARPENTER) != null) {
+			if (InventoryHelper.takeItemsIfHeld(player, InventoryHelper.ORE_DICTIONARY, "logWood", HFQuests.LOGS_CARPENTER) != null) {
 				HFTrackers.getPlayerTrackerFromPlayer(player).getTracking().learnNote(HFNotes.BLUEPRINTS);
 				if (HFBuildings.CHEAT_BUILDINGS) {
 					rewardItem(player, HFBuildings.CARPENTER.getSpawner());
@@ -169,13 +163,14 @@ public class QuestMeetYulif extends Quest {
 			}
 		} else if (quest_stage == SEED_CHAT) {
 			if (npc == HFNPCs.GODDESS) {
-				if (attempted && InventoryHelper.takeItemsIfHeld(player, ORE_DICTIONARY, "logWood", HFQuests.LOGS_CARPENTER) != null) {
+				if (attempted && InventoryHelper.takeItemsIfHeld(player, InventoryHelper.ORE_DICTIONARY, "logWood", HFQuests.LOGS_CARPENTER) != null) {
 					rewardItem(player, HFBuildings.CARPENTER.getBlueprint());
 				} else {
 					attempted = true;
 				}
 			} else if (npc == HFNPCs.FLOWER_GIRL) {
-				if (InventoryHelper.takeItemsIfHeld(player, SPECIAL, FLOWER, 1) != null) {
+				if (InventoryHelper.takeItemsIfHeld(player,
+						InventoryHelper.SPECIAL, InventoryHelper.SearchType.FLOWER, 1) != null) {
 					increaseStage(player);
 				}
 			}

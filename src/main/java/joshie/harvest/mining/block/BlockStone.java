@@ -39,7 +39,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockStone extends BlockHFEnumCube<BlockStone, Type> {
-	public static enum Type implements IStringSerializable {
+	public enum Type implements IStringSerializable {
 		REAL(false),
 		DECORATIVE_BLANK(true),
 		DECORATIVE_PURPLE(true),

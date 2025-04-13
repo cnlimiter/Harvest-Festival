@@ -1,9 +1,8 @@
 package joshie.harvest.plugins;
 
-import static joshie.harvest.shops.HFShops.BLOODMAGE;
-
 import javax.annotation.Nonnull;
 import joshie.harvest.core.util.annotations.HFLoader;
+import joshie.harvest.shops.HFShops;
 import net.minecraft.init.Items;
 import net.minecraft.init.PotionTypes;
 import net.minecraft.item.Item;
@@ -22,15 +21,15 @@ public class BloodMagic {
 
 	@SuppressWarnings("ConstantConditions")
 	public static void init() {
-		BLOODMAGE.addPurchasable(100, new ItemStack(ItemSoulSnare));
-		BLOODMAGE.addPurchasable(150, new ItemStack(Items.ROTTEN_FLESH));
-		BLOODMAGE.addPurchasable(500, new ItemStack(Items.BONE));
-		BLOODMAGE.addPurchasable(300, new ItemStack(Items.SPIDER_EYE));
-		BLOODMAGE.addPurchasable(3000, PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.REGENERATION));
-		BLOODMAGE.addPurchasable(4000, PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.LONG_REGENERATION));
-		BLOODMAGE.addPurchasable(5000, PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.STRONG_REGENERATION));
-		BLOODMAGE.addPurchasable(1200, getSoulGem(32));
-		BLOODMAGE.addPurchasable(2000, getSoulGem(64));
+		HFShops.BLOODMAGE.addPurchasable(100, new ItemStack(ItemSoulSnare));
+		HFShops.BLOODMAGE.addPurchasable(150, new ItemStack(Items.ROTTEN_FLESH));
+		HFShops.BLOODMAGE.addPurchasable(500, new ItemStack(Items.BONE));
+		HFShops.BLOODMAGE.addPurchasable(300, new ItemStack(Items.SPIDER_EYE));
+		HFShops.BLOODMAGE.addPurchasable(3000, PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.REGENERATION));
+		HFShops.BLOODMAGE.addPurchasable(4000, PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.LONG_REGENERATION));
+		HFShops.BLOODMAGE.addPurchasable(5000, PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.STRONG_REGENERATION));
+		HFShops.BLOODMAGE.addPurchasable(1200, getSoulGem(32));
+		HFShops.BLOODMAGE.addPurchasable(2000, getSoulGem(64));
 
 		//Make NPCs Give 0 LP
 		FMLInterModComms.sendMessage("BloodMagic", "sacrificeValue", "EntityNPCBuilder;0");

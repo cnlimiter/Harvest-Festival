@@ -1,20 +1,15 @@
 package joshie.harvest.core.handlers;
 
-import static joshie.harvest.animals.HFAnimals.DISABLE_SPAWN_CHICKEN;
-import static joshie.harvest.crops.HFCrops.DISABLE_VANILLA_DROPS;
-import static joshie.harvest.crops.HFCrops.DISABLE_VANILLA_GROWTH;
-import static joshie.harvest.crops.HFCrops.DISABLE_VANILLA_HOE;
-import static joshie.harvest.crops.HFCrops.DISABLE_VANILLA_SEEDS;
-import static joshie.harvest.crops.HFCrops.DISABLE_VANILLA_WHEAT_SEEDS;
-import static net.minecraft.init.Items.EGG;
-
 import java.util.HashSet;
 import java.util.Set;
 
+import joshie.harvest.animals.HFAnimals;
 import joshie.harvest.core.util.annotations.HFEvents;
 import joshie.harvest.core.util.holders.HolderRegistrySet;
+import joshie.harvest.crops.HFCrops;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemHoe;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.UseHoeEvent;
@@ -34,7 +29,7 @@ public class DisableHandler {
 	@HFEvents
 	@SuppressWarnings("unused")
 	public static class VanillaSeeds {
-		public static boolean register() {return DISABLE_VANILLA_SEEDS;}
+		public static boolean register() {return HFCrops.DISABLE_VANILLA_SEEDS;}
 
 		@SubscribeEvent
 		public void onRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
@@ -48,7 +43,7 @@ public class DisableHandler {
 	@HFEvents
 	@SuppressWarnings("unused")
 	public static class VanillaGrowth {
-		public static boolean register() {return DISABLE_VANILLA_GROWTH;}
+		public static boolean register() {return HFCrops.DISABLE_VANILLA_GROWTH;}
 
 		@SubscribeEvent
 		public void onRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
@@ -62,7 +57,7 @@ public class DisableHandler {
 	@HFEvents
 	@SuppressWarnings("unused")
 	public static class VanillaDrops {
-		public static boolean register() {return DISABLE_VANILLA_DROPS;}
+		public static boolean register() {return HFCrops.DISABLE_VANILLA_DROPS;}
 
 		@SubscribeEvent
 		public void onHarvestBlock(BlockEvent.HarvestDropsEvent event) {
@@ -76,11 +71,11 @@ public class DisableHandler {
 	@HFEvents
 	@SuppressWarnings("unused")
 	public static class EggSpawning {
-		public static boolean register() {return DISABLE_SPAWN_CHICKEN;}
+		public static boolean register() {return HFAnimals.DISABLE_SPAWN_CHICKEN;}
 
 		@SubscribeEvent
 		public void onRightClickItem(PlayerInteractEvent.RightClickItem event) {
-			if (event.getItemStack().getItem() == EGG) {
+			if (event.getItemStack().getItem() == Items.EGG) {
 				event.setResult(Result.DENY);
 			}
 		}
@@ -90,11 +85,11 @@ public class DisableHandler {
 	@HFEvents
 	@SuppressWarnings("unused")
 	public static class VanillaHoes {
-		public static boolean register() {return DISABLE_VANILLA_HOE;}
+		public static boolean register() {return HFCrops.DISABLE_VANILLA_HOE;}
 
 		@SubscribeEvent
 		public void onUseHoe(UseHoeEvent event) {
-			if (DISABLE_VANILLA_HOE && (event.getCurrent().getItem() instanceof ItemHoe || HOE_BLACKLIST.contains(event.getCurrent()))) {
+			if (HFCrops.DISABLE_VANILLA_HOE && (event.getCurrent().getItem() instanceof ItemHoe || HOE_BLACKLIST.contains(event.getCurrent()))) {
 				event.setCanceled(true);
 			}
 		}
@@ -104,7 +99,7 @@ public class DisableHandler {
 	@HFEvents
 	@SuppressWarnings("unused")
 	public static class SeedDrops {
-		public static boolean register() {return DISABLE_VANILLA_WHEAT_SEEDS;}
+		public static boolean register() {return HFCrops.DISABLE_VANILLA_WHEAT_SEEDS;}
 
 		@SubscribeEvent
 		public void onItemDropping(BlockEvent.HarvestDropsEvent event) {

@@ -1,12 +1,11 @@
 package joshie.harvest.mining.item;
 
-import static joshie.harvest.core.lib.HFModInfo.MODID;
-
 import java.util.Locale;
 
 import javax.annotation.Nonnull;
 import joshie.harvest.core.HFTab;
 import joshie.harvest.core.base.item.ItemHFEnum;
+import joshie.harvest.core.lib.HFModInfo;
 import joshie.harvest.mining.entity.EntityDarkChick;
 import joshie.harvest.mining.entity.EntityDarkChicken;
 import joshie.harvest.mining.entity.EntityDarkCow;
@@ -89,7 +88,7 @@ public class ItemDarkSpawner extends ItemHFEnum<ItemDarkSpawner, DarkSpawner> {
 					item,
 					i,
 					new ModelResourceLocation(
-							new ResourceLocation(MODID, "dark_spawner_" + values[i].name().toLowerCase(Locale.ENGLISH)),
+							new ResourceLocation(HFModInfo.MODID, "dark_spawner_" + values[i].name().toLowerCase(Locale.ENGLISH)),
 							"inventory"));
 		}
 	}

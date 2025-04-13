@@ -43,11 +43,6 @@ public class PlaceableBlock extends Placeable {
 		return state.withRotation(rotation);
 	}
 
-	@Override
-	public boolean canPlace(ConstructionStage stage) {
-		return stage == ConstructionStage.BUILD;
-	}
-
 	private boolean prePlace(World world, BlockPos pos) {
 		return world.getBlockState(pos).getBlockHardness(world, pos) != -1.0F;
 	}

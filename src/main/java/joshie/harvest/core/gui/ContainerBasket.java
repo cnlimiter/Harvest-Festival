@@ -1,14 +1,12 @@
 package joshie.harvest.core.gui;
 
-import static joshie.harvest.core.entity.EntityBasket.ITEM;
-import static joshie.harvest.core.tile.TileBasket.BASKET_INVENTORY;
-
 import javax.annotation.Nonnull;
 import joshie.harvest.api.HFApi;
 import joshie.harvest.core.HFCore;
 import joshie.harvest.core.base.gui.ContainerBase;
 import joshie.harvest.core.block.BlockStorage.Storage;
 import joshie.harvest.core.entity.EntityBasket;
+import joshie.harvest.core.tile.TileBasket;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
@@ -24,7 +22,7 @@ public class ContainerBasket extends ContainerBase {
 	private final ItemStack basketItem;
 
 	public ContainerBasket(InventoryPlayer inventory, @Nonnull ItemStack basketItem, EntityBasket basketEntity) {
-		this.handler = !basketItem.isEmpty() ? new ItemStackHandler(BASKET_INVENTORY) : basketEntity.handler;
+		this.handler = !basketItem.isEmpty() ? new ItemStackHandler(TileBasket.BASKET_INVENTORY) : basketEntity.handler;
 		this.basketItem = basketItem;
 		if (!basketItem.isEmpty() && basketItem.getTagCompound() != null) {
 			this.handler.deserializeNBT(basketItem.getTagCompound().getCompoundTag("inventory"));
@@ -86,7 +84,7 @@ public class ContainerBasket extends ContainerBase {
 		public void onSlotChanged() {
 			super.onSlotChanged();
 			if (basketEntity != null && !getStack().isEmpty()) {
-				basketEntity.getDataManager().set(ITEM, getStack());
+				basketEntity.getDataManager().set(EntityBasket.ITEM, getStack());
 			}
 		}
 

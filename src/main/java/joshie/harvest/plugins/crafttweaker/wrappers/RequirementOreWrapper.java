@@ -1,7 +1,5 @@
 package joshie.harvest.plugins.crafttweaker.wrappers;
 
-import static joshie.harvest.core.helpers.InventoryHelper.ORE_DICTIONARY;
-
 import joshie.harvest.core.helpers.InventoryHelper;
 import joshie.harvest.shops.requirement.AbstractRequirement;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,11 +16,11 @@ public class RequirementOreWrapper extends AbstractRequirement {
 
 	@Override
 	public boolean isFulfilled(World world, EntityPlayer player, int amount) {
-		return InventoryHelper.hasInInventory(player, ORE_DICTIONARY, name, (cost * amount));
+		return InventoryHelper.hasInInventory(player, InventoryHelper.ORE_DICTIONARY, name, (cost * amount));
 	}
 
 	@Override
 	public void onPurchased(EntityPlayer player) {
-		InventoryHelper.takeItemsInInventory(player, ORE_DICTIONARY, "ingotBrick", cost);
+		InventoryHelper.takeItemsInInventory(player, InventoryHelper.ORE_DICTIONARY, "ingotBrick", cost);
 	}
 }

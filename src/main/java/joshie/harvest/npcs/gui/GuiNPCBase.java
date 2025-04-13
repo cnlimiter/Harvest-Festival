@@ -225,7 +225,7 @@ public abstract class GuiNPCBase extends GuiBase {
 			}
 		}
 
-		net.minecraftforge.fml.client.config.GuiUtils.preItemToolTip(stack);
+		GuiUtils.preItemToolTip(stack);
 		if (!textLines.isEmpty()) {
 			RenderTooltipEvent.Pre event = new RenderTooltipEvent.Pre(stack, textLines, x, y, width, height, -1, fontRenderer);
 			if (MinecraftForge.EVENT_BUS.post(event)) {
@@ -428,6 +428,6 @@ public abstract class GuiNPCBase extends GuiBase {
 			GlStateManager.enableRescaleNormal();
 		}
 
-		net.minecraftforge.fml.client.config.GuiUtils.postItemToolTip();
+		GuiUtils.postItemToolTip();
 	}
 }

@@ -1,7 +1,5 @@
 package joshie.harvest.shops.requirement;
 
-import static joshie.harvest.core.helpers.InventoryHelper.ITEM_STACK;
-
 import joshie.harvest.core.helpers.InventoryHelper;
 import joshie.harvest.mining.HFMining;
 import joshie.harvest.mining.item.ItemMaterial.Material;
@@ -19,11 +17,11 @@ public class Materials extends AbstractRequirement {
 
 	@Override
 	public boolean isFulfilled(World world, EntityPlayer player, int amount) {
-		return InventoryHelper.hasInInventory(player, ITEM_STACK, getIcon(), (cost * amount));
+		return InventoryHelper.hasInInventory(player, InventoryHelper.ITEM_STACK, getIcon(), (cost * amount));
 	}
 
 	@Override
 	public void onPurchased(EntityPlayer player) {
-		InventoryHelper.takeItemsInInventory(player, ITEM_STACK, getIcon(), cost);
+		InventoryHelper.takeItemsInInventory(player, InventoryHelper.ITEM_STACK, getIcon(), cost);
 	}
 }

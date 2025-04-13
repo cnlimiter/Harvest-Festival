@@ -1,7 +1,5 @@
 package joshie.harvest.animals.tile;
 
-import static joshie.harvest.api.animals.AnimalFoodType.SEED;
-
 import joshie.harvest.animals.HFAnimals;
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.animals.AnimalAction;
@@ -31,7 +29,7 @@ public class TileFeeder extends TileFillable {
 			TileFeeder feeder = (TileFeeder) world.getTileEntity(pos);
 			for (EntityAnimal animal : EntityHelper.getEntities(EntityAnimal.class, world, pos, 32D, 5D)) {
 				AnimalStats stats = EntityHelper.getStats(animal);
-				if (stats != null && feeder.fillAmount > 0 && HFApi.animals.canAnimalEatFoodType(stats, SEED) &&
+				if (stats != null && feeder.fillAmount > 0 && HFApi.animals.canAnimalEatFoodType(stats, AnimalFoodType.SEED) &&
 						!stats.performTest(AnimalTest.HAS_EATEN) && feeder.setFilled(feeder.getFillAmount() - 1)) {
 					stats.performAction(world, ItemStack.EMPTY, AnimalAction.FEED);
 				}

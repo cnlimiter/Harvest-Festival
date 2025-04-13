@@ -1,7 +1,5 @@
 package joshie.harvest.shops.requirement;
 
-import static joshie.harvest.core.helpers.InventoryHelper.ITEM_STACK;
-
 import javax.annotation.Nonnull;
 import joshie.harvest.animals.HFAnimals;
 import joshie.harvest.animals.item.ItemAnimalProduct.Sizeable;
@@ -27,11 +25,11 @@ public class RequirementSizeable implements IRequirement {
 	@Override
 	public boolean isFulfilled(World world, EntityPlayer player, int amount) {
 		return amount == 1 && (
-				InventoryHelper.hasInInventory(player, ITEM_STACK, small, amount) || InventoryHelper.hasInInventory(
+				InventoryHelper.hasInInventory(player, InventoryHelper.ITEM_STACK, small, amount) || InventoryHelper.hasInInventory(
 						player,
-						ITEM_STACK,
+						InventoryHelper.ITEM_STACK,
 						medium,
-						amount) || InventoryHelper.hasInInventory(player, ITEM_STACK, large, amount));
+						amount) || InventoryHelper.hasInInventory(player, InventoryHelper.ITEM_STACK, large, amount));
 
 	}
 
@@ -57,14 +55,14 @@ public class RequirementSizeable implements IRequirement {
 	}
 
 	public int getPurchased(EntityPlayer player) {
-		if (InventoryHelper.hasInInventory(player, ITEM_STACK, small)) {
-			InventoryHelper.takeItemsInInventory(player, ITEM_STACK, small);
+		if (InventoryHelper.hasInInventory(player, InventoryHelper.ITEM_STACK, small)) {
+			InventoryHelper.takeItemsInInventory(player, InventoryHelper.ITEM_STACK, small);
 			return 1;
-		} else if (InventoryHelper.hasInInventory(player, ITEM_STACK, medium)) {
-			InventoryHelper.takeItemsInInventory(player, ITEM_STACK, medium);
+		} else if (InventoryHelper.hasInInventory(player, InventoryHelper.ITEM_STACK, medium)) {
+			InventoryHelper.takeItemsInInventory(player, InventoryHelper.ITEM_STACK, medium);
 			return 2;
-		} else if (InventoryHelper.hasInInventory(player, ITEM_STACK, large)) {
-			InventoryHelper.takeItemsInInventory(player, ITEM_STACK, large);
+		} else if (InventoryHelper.hasInInventory(player, InventoryHelper.ITEM_STACK, large)) {
+			InventoryHelper.takeItemsInInventory(player, InventoryHelper.ITEM_STACK, large);
 			return 3;
 		}
 

@@ -1,13 +1,5 @@
 package joshie.harvest.crops.block;
 
-import static joshie.harvest.api.crops.IStateHandler.PlantSection.BOTTOM;
-import static joshie.harvest.api.crops.IStateHandler.PlantSection.TOP;
-import static joshie.harvest.core.helpers.MCServerHelper.markTileForUpdate;
-import static joshie.harvest.crops.CropHelper.harvestCrop;
-import static joshie.harvest.crops.block.BlockHFCrops.CropType.FRESH;
-import static joshie.harvest.crops.block.BlockHFCrops.CropType.FRESH_DOUBLE;
-import static joshie.harvest.crops.block.BlockHFCrops.CropType.WITHERED_DOUBLE;
-
 import java.util.Locale;
 import java.util.Random;
 
@@ -24,6 +16,7 @@ import joshie.harvest.core.base.block.BlockHFEnum;
 import joshie.harvest.core.base.item.ItemBlockHF;
 import joshie.harvest.core.entity.EntityBasket;
 import joshie.harvest.core.helpers.EntityHelper;
+import joshie.harvest.core.helpers.MCServerHelper;
 import joshie.harvest.core.lib.HFModInfo;
 import joshie.harvest.crops.CropData;
 import joshie.harvest.crops.CropHelper;
@@ -66,7 +59,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockHFCrops extends BlockHFEnum<BlockHFCrops, CropType> implements IPlantable, IGrowable, IAnimalFeeder {
 	public enum CropType implements IStringSerializable {
-		FRESH(BOTTOM), WITHERED(BOTTOM), FRESH_DOUBLE(TOP), WITHERED_DOUBLE(TOP);
+		FRESH(PlantSection.BOTTOM), WITHERED(PlantSection.BOTTOM), FRESH_DOUBLE(PlantSection.TOP), WITHERED_DOUBLE(PlantSection.TOP);
 
 		private final PlantSection section;
 
@@ -106,16 +99,6 @@ public class BlockHFCrops extends BlockHFEnum<BlockHFCrops, CropType> implements
 		} else {
 			return 0;
 		}
-	}
-
-	@Override
-	public boolean isOpaqueCube(IBlockState state) {
-		return false;
-	}
-
-	@Override
-	public boolean isFullCube(IBlockState state) {
-		return false;
 	}
 
 	@Override
@@ -178,7 +161,7 @@ public class BlockHFCrops extends BlockHFEnum<BlockHFCrops, CropType> implements
 			return null;
 		}
 		int stage = state.getBlock().getMetaFromState(state); //Can't get the Enum from state, because this method is static.
-		PlantSection section = BOTTOM;
+		PlantSection section = PlantSection.BOTTOM;
 		if (stage == CropType.WITHERED_DOUBLE.ordinal() || stage == CropType.FRESH_DOUBLE.ordinal()) {
 			section = PlantSection.TOP;
 		}
@@ -259,20 +242,20 @@ public class BlockHFCrops extends BlockHFEnum<BlockHFCrops, CropType> implements
 							PlantSection theSection = BlockHFCrops.getSection(theState);
 							CropData theData = CropHelper.getCropDataAt(world, position);
 							if (!(theData == null || theData.getCrop().requiresSickle() || theData.getCrop() instanceof Tree)) {
-								if (theSection == BOTTOM) {
-									harvestCrop(player, world, position);
+								if (theSection == PlantSection.BOTTOM) {
+									CropHelper.harvestCrop(player, world, position);
 								} else {
-									harvestCrop(player, world, position.down());
+									CropHelper.harvestCrop(player, world, position.down());
 								}
 							}
 						}
 					}
 				}
 
-				if (section == BOTTOM) {
-					return harvestCrop(player, world, pos);
+				if (section == PlantSection.BOTTOM) {
+					return CropHelper.harvestCrop(player, world, pos);
 				} else {
-					return harvestCrop(player, world, pos.down());
+					return CropHelper.harvestCrop(player, world, pos.down());
 				}
 			}
 		}
@@ -333,10 +316,10 @@ public class BlockHFCrops extends BlockHFEnum<BlockHFCrops, CropType> implements
 		int originalStage = data.getStage();
 		boolean isSickle = HFApi.crops.isSickle(player.getHeldItemMainhand());
 		if (isSickle || !crop.requiresSickle()) {
-			if (section == BOTTOM) {
-				harvestCrop(player, world, pos);
+			if (section == PlantSection.BOTTOM) {
+				CropHelper.harvestCrop(player, world, pos);
 			} else {
-				harvestCrop(player, world, pos.down());
+				CropHelper.harvestCrop(player, world, pos.down());
 			}
 		}
 
@@ -359,12 +342,12 @@ public class BlockHFCrops extends BlockHFEnum<BlockHFCrops, CropType> implements
 	@Override
 	public void breakBlock(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state) {
 		CropType stage = getEnumFromState(state);
-		if (stage == FRESH || stage == CropType.WITHERED) {
+		if (stage == CropType.FRESH || stage == CropType.WITHERED) {
 			CropData data = CropHelper.getCropDataAt(world, pos);
 			if (data == null || data.isClearable()) {
 				if (world.getBlockState(pos.up()).getBlock() == this) {
 					CropType above = getEnumFromState(world.getBlockState(pos.up()));
-					if (above == FRESH_DOUBLE || above == WITHERED_DOUBLE) {
+					if (above == CropType.FRESH_DOUBLE || above == CropType.WITHERED_DOUBLE) {
 						world.setBlockToAir(pos.up());
 					}
 				}
@@ -505,9 +488,9 @@ public class BlockHFCrops extends BlockHFEnum<BlockHFCrops, CropType> implements
 		PlantSection section = getSection(state);
 		TileWithered crop = CropHelper.getTile(world, pos, section);
 		if (crop != null) {
-			crop.getData().grow(world, section == BOTTOM ? pos : pos.down());
+			crop.getData().grow(world, section == PlantSection.BOTTOM ? pos : pos.down());
 			crop.saveAndRefresh();
-			markTileForUpdate(crop);
+			MCServerHelper.markTileForUpdate(crop);
 		}
 	}
 
@@ -535,7 +518,7 @@ public class BlockHFCrops extends BlockHFEnum<BlockHFCrops, CropType> implements
 
 	@Override
 	public boolean hasTileEntity(IBlockState state) {
-		return getEnumFromState(state).section == BOTTOM;
+		return getEnumFromState(state).section == PlantSection.BOTTOM;
 	}
 
 	@Override

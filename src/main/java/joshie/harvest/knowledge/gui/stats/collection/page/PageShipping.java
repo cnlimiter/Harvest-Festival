@@ -1,7 +1,5 @@
 package joshie.harvest.knowledge.gui.stats.collection.page;
 
-import static joshie.harvest.knowledge.gui.stats.CollectionHelper.isInShippingCollection;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -22,6 +20,7 @@ import joshie.harvest.core.registry.ShippingRegistry;
 import joshie.harvest.core.util.holders.AbstractItemHolder;
 import joshie.harvest.crops.HFCrops;
 import joshie.harvest.crops.item.ItemCrop.Crops;
+import joshie.harvest.knowledge.gui.stats.CollectionHelper;
 import joshie.harvest.knowledge.gui.stats.GuiStats;
 import joshie.harvest.knowledge.gui.stats.button.ButtonNext;
 import joshie.harvest.knowledge.gui.stats.button.ButtonPrevious;
@@ -45,7 +44,7 @@ public class PageShipping extends PageCollection {
 	}
 
 	boolean qualifies(@Nonnull ItemStack stack) {
-		return isInShippingCollection(stack);
+		return CollectionHelper.isInShippingCollection(stack);
 	}
 
 	private List<AbstractItemHolder> getList() {
@@ -55,16 +54,16 @@ public class PageShipping extends PageCollection {
 						List<AbstractItemHolder> list = new ArrayList<>();
 						for (AbstractItemHolder holder : ShippingRegistry.INSTANCE.getRegistry().getStacks()) {
 							List<ItemStack> stacks = holder.getMatchingStacks();
-							if (stacks.size() > 0 && qualifies(stacks.get(0))
+							if (!stacks.isEmpty() && qualifies(stacks.get(0))
 									&& (
 									Strings.isNullOrEmpty(search) || (
 											hasObtainedStack(holder) && ButtonSearch.matchesFilter(
 													stacks.get(0), search.toLowerCase())))) {
 								list.add(holder);
-							} else if (stacks.size() == 0) {
+							} else if (stacks.isEmpty()) {
 								HarvestFestival.LOGGER.log(
 										Level.INFO,
-										"Unable to find matching stacks when adding to collections for: " + holder.toString());
+										"Unable to find matching stacks when adding to collections for: " + holder);
 							}
 						}
 

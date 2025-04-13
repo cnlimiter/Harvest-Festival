@@ -1,8 +1,5 @@
 package joshie.harvest.mining.block;
 
-import static joshie.harvest.mining.block.BlockLadder.Ladder.DECORATIVE;
-import static joshie.harvest.mining.block.BlockLadder.Ladder.WOOD;
-
 import java.util.Locale;
 
 import javax.annotation.Nonnull;
@@ -44,7 +41,7 @@ public class BlockLadder extends BlockHFEnumRotatableMeta<BlockLadder, Ladder> {
 	@SuppressWarnings("deprecation")
 	@Override
 	public float getBlockHardness(IBlockState state, World world, BlockPos pos) {
-		return getEnumFromState(state) == DECORATIVE ? 1F : -1F;
+		return getEnumFromState(state) == BlockLadder.Ladder.DECORATIVE ? 1F : -1F;
 	}
 
 	@SuppressWarnings("deprecation")
@@ -72,7 +69,7 @@ public class BlockLadder extends BlockHFEnumRotatableMeta<BlockLadder, Ladder> {
 
 	@Override
 	protected boolean shouldDisplayInCreative(Ladder ladder) {
-		return ladder != WOOD;
+		return ladder != BlockLadder.Ladder.WOOD;
 	}
 
 	@Override

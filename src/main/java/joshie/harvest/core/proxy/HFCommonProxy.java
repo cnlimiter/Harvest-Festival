@@ -1,7 +1,5 @@
 package joshie.harvest.core.proxy;
 
-import static joshie.harvest.core.helpers.ConfigHelper.setCategory;
-
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -90,7 +88,7 @@ public class HFCommonProxy {
 				Method configure = c.getMethod("configure");
 				try {
 					config.load();
-					setCategory(c.getSimpleName().replace("HF", ""));
+					ConfigHelper.setCategory(c.getSimpleName().replace("HF", ""));
 					configure.invoke(null);
 				} catch (IllegalAccessException | InvocationTargetException e) {
 					e.printStackTrace();

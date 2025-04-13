@@ -1,7 +1,5 @@
 package joshie.harvest.buildings.loader;
 
-import static joshie.harvest.core.lib.HFModInfo.MODID;
-
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -15,6 +13,7 @@ import joshie.harvest.buildings.placeable.PlaceableHelper;
 import joshie.harvest.buildings.placeable.blocks.PlaceableBlock;
 import joshie.harvest.buildings.placeable.blocks.PlaceableChest;
 import joshie.harvest.buildings.placeable.entities.PlaceableNPC;
+import joshie.harvest.core.lib.HFModInfo;
 import joshie.harvest.core.util.HFTemplate;
 import joshie.harvest.npcs.entity.EntityNPCBuilder;
 import joshie.harvest.npcs.entity.EntityNPCVillager;
@@ -71,7 +70,7 @@ public class CodeGeneratorBuildings {
 				String name = chest.getName();
 				if (name.startsWith("npc.")) {
 					name = name.replace("npc.", "");
-					NPC npc = NPC.REGISTRY.get(new ResourceLocation(MODID, name));
+					NPC npc = NPC.REGISTRY.get(new ResourceLocation(HFModInfo.MODID, name));
 					String npcField = npc == null ? "" : npc.getResource().toString();
 					ret.add(new PlaceableNPC(name, npcField, x, y, z));
 					ret.add(new PlaceableBlock(Blocks.AIR.getDefaultState(), x, y, z));
@@ -84,7 +83,7 @@ public class CodeGeneratorBuildings {
 		}
 
 		if (!parkLocations) {
-			if ((block != Blocks.AIR || entityList.size() > 0) && block != Blocks.END_STONE) {
+			if ((block != Blocks.AIR || !entityList.isEmpty()) && block != Blocks.END_STONE) {
 				int meta = state.getBlock().getMetaFromState(state);
 				if ((block == Blocks.DOUBLE_PLANT || block instanceof BlockDoor) && meta >= 8) {
 					return;
@@ -103,7 +102,7 @@ public class CodeGeneratorBuildings {
 				}
 
 				//Entities
-				if (entityList.size() > 0) {
+				if (!entityList.isEmpty()) {
 					entityList.stream().filter(e -> !all.contains(e)).forEach(e -> {
 						ret.add(PlaceableHelper.getPlaceableEntityString(e, x, y, z));
 						all.add(e);

@@ -1,14 +1,13 @@
 package joshie.harvest.crops.handlers.growth;
 
-import static joshie.harvest.buildings.HFBuildings.getGson;
-import static joshie.harvest.core.lib.HFModInfo.MODID;
-
 import java.util.List;
 
 import joshie.harvest.api.calendar.Season;
 import joshie.harvest.api.trees.GrowthHandlerTree;
 import joshie.harvest.api.trees.Tree;
+import joshie.harvest.buildings.HFBuildings;
 import joshie.harvest.core.helpers.TextHelper;
+import joshie.harvest.core.lib.HFModInfo;
 import joshie.harvest.core.util.HFTemplate;
 import joshie.harvest.core.util.HFTemplate.Replaceable;
 import joshie.harvest.core.util.ResourceLoader;
@@ -48,8 +47,8 @@ public abstract class GrowthHandlerHFTree extends GrowthHandlerTree {
 		this.fruit = fruit;
 		this.radius = radius;
 		this.number = (radius * 2) + 1;
-		this.template = getGson().fromJson(
-				ResourceLoader.getJSONResource(new ResourceLocation(MODID, fruit.getName()), "trees"),
+		this.template = HFBuildings.getGson().fromJson(
+				ResourceLoader.getJSONResource(new ResourceLocation(HFModInfo.MODID, fruit.getName()), "trees"),
 				HFTemplate.class);
 	}
 

@@ -1,8 +1,5 @@
 package joshie.harvest.quests.town.festivals;
 
-import static joshie.harvest.api.HFApi.calendar;
-import static joshie.harvest.core.lib.HFModInfo.MODID;
-
 import javax.annotation.Nullable;
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.calendar.CalendarDate;
@@ -24,6 +21,7 @@ import joshie.harvest.calendar.CalendarHelper;
 import joshie.harvest.calendar.data.CalendarServer;
 import joshie.harvest.core.HFTrackers;
 import joshie.harvest.core.helpers.EntityHelper;
+import joshie.harvest.core.lib.HFModInfo;
 import joshie.harvest.npcs.HFNPCs;
 import joshie.harvest.quests.base.QuestFestival;
 import joshie.harvest.quests.town.festivals.contest.cooking.TaskEat;
@@ -40,13 +38,13 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @HFQuest("festival.new.years.eve")
 public class QuestNewYearsEve extends QuestFestival {
-	private static final Script scriptIntro = new Script(new ResourceLocation(MODID, "new_years_eve_intro"));
-	private static final Script scriptCountdown5 = new Script(new ResourceLocation(MODID, "new_years_eve_5"));
-	private static final Script scriptCountdown4 = new Script(new ResourceLocation(MODID, "new_years_eve_4"));
-	private static final Script scriptCountdown3 = new Script(new ResourceLocation(MODID, "new_years_eve_3"));
-	private static final Script scriptCountdown2 = new Script(new ResourceLocation(MODID, "new_years_eve_2"));
-	private static final Script scriptCountdown1 = new Script(new ResourceLocation(MODID, "new_years_eve_1"));
-	private static final Script scriptCountdown0 = new Script(new ResourceLocation(MODID, "new_years_eve_0"));
+	private static final Script scriptIntro = new Script(new ResourceLocation(HFModInfo.MODID, "new_years_eve_intro"));
+	private static final Script scriptCountdown5 = new Script(new ResourceLocation(HFModInfo.MODID, "new_years_eve_5"));
+	private static final Script scriptCountdown4 = new Script(new ResourceLocation(HFModInfo.MODID, "new_years_eve_4"));
+	private static final Script scriptCountdown3 = new Script(new ResourceLocation(HFModInfo.MODID, "new_years_eve_3"));
+	private static final Script scriptCountdown2 = new Script(new ResourceLocation(HFModInfo.MODID, "new_years_eve_2"));
+	private static final Script scriptCountdown1 = new Script(new ResourceLocation(HFModInfo.MODID, "new_years_eve_1"));
+	private static final Script scriptCountdown0 = new Script(new ResourceLocation(HFModInfo.MODID, "new_years_eve_0"));
 	private final Selection start = new Selection(
 			"harvestfestival.quest.festival.new.years.eve.question",
 			"harvestfestival.quest.festival.new.years.eve.option1",
@@ -105,7 +103,7 @@ public class QuestNewYearsEve extends QuestFestival {
 	@Nullable
 	@SideOnly(Side.CLIENT)
 	public String getLocalizedScript(EntityPlayer player, NPCEntity entity) {
-		CalendarDate date = calendar.getDate(player.world);
+		CalendarDate date = HFApi.calendar.getDate(player.world);
 		if (!isCorrectTime() || date.getSeason() != Season.WINTER) {
 			return null;
 		}
@@ -166,8 +164,8 @@ public class QuestNewYearsEve extends QuestFestival {
 			if (stop(5)) {
 				for (int color : colors) {
 					summonFireworks(npc, town, locations[0], 40, 1, 0, 1, String.valueOf(color), "");
-					summonFireworks(npc, town, locations[1], 40, 1, 0, 1, String.valueOf(color + "," + color), "");
-					summonFireworks(npc, town, locations[2], 40, 1, 0, 1, String.valueOf(color + "," + color), "");
+					summonFireworks(npc, town, locations[1], 40, 1, 0, 1, color + "," + color, "");
+					summonFireworks(npc, town, locations[2], 40, 1, 0, 1, color + "," + color, "");
 					summonFireworks(npc, town, locations[3], 40, 1, 0, 1, String.valueOf(color), "");
 				}
 			}

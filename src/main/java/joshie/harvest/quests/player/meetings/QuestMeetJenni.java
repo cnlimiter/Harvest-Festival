@@ -1,9 +1,5 @@
 package joshie.harvest.quests.player.meetings;
 
-import static joshie.harvest.api.calendar.Season.AUTUMN;
-import static joshie.harvest.api.calendar.Season.SUMMER;
-import static joshie.harvest.npcs.HFNPCs.GS_OWNER;
-
 import java.util.Set;
 
 import com.google.common.collect.Sets;
@@ -17,6 +13,7 @@ import joshie.harvest.api.quests.HFQuest;
 import joshie.harvest.buildings.HFBuildings;
 import joshie.harvest.crops.HFCrops;
 import joshie.harvest.knowledge.HFNotes;
+import joshie.harvest.npcs.HFNPCs;
 import joshie.harvest.quests.Quests;
 import joshie.harvest.quests.base.QuestMeeting;
 import joshie.harvest.town.TownHelper;
@@ -27,7 +24,7 @@ import net.minecraft.world.World;
 @HFQuest("tutorial.supermarket")
 public class QuestMeetJenni extends QuestMeeting {
 	public QuestMeetJenni() {
-		super(HFBuildings.SUPERMARKET, GS_OWNER);
+		super(HFBuildings.SUPERMARKET, HFNPCs.GS_OWNER);
 	}
 
 	@Override
@@ -65,11 +62,6 @@ public class QuestMeetJenni extends QuestMeeting {
 	}
 
 	@Override
-	public void onChatClosed(EntityPlayer player, NPCEntity entity, boolean wasSneaking) {
-		complete(player);
-	}
-
-	@Override
 	public Set<Note> getNotes() {
 		return Sets.newHashSet(HFNotes.SUPERMARKET);
 	}
@@ -77,9 +69,9 @@ public class QuestMeetJenni extends QuestMeeting {
 	@Override
 	public void onQuestCompleted(EntityPlayer player) {
 		Season season = HFApi.calendar.getDate(player.world).getSeason();
-		if (season == SUMMER) {
+		if (season == Season.SUMMER) {
 			rewardItem(player, HFCrops.TOMATO.getSeedStack(4));
-		} else if (season == AUTUMN) {
+		} else if (season == Season.AUTUMN) {
 			rewardItem(player, HFCrops.EGGPLANT.getSeedStack(4));
 		} else {
 			rewardItem(player, HFCrops.CUCUMBER.getSeedStack(4));

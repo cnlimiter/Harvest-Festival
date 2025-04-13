@@ -13,11 +13,6 @@ public abstract class GreetingLocalized implements IConditionalGreeting {
 		this.text = text;
 	}
 
-	@Override
-	public double getDisplayChance() {
-		return 5D;
-	}
-
 	@SuppressWarnings("deprecation")
 	@Override
 	public String getLocalizedText(EntityPlayer player, EntityAgeable ageable, NPC npc) {

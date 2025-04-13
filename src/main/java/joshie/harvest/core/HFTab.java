@@ -1,7 +1,5 @@
 package joshie.harvest.core;
 
-import static joshie.harvest.mining.item.ItemMaterial.Material.ADAMANTITE;
-
 import java.util.Comparator;
 
 import javax.annotation.Nonnull;
@@ -18,6 +16,7 @@ import joshie.harvest.crops.HFCrops;
 import joshie.harvest.fishing.HFFishing;
 import joshie.harvest.fishing.item.ItemFish.Fish;
 import joshie.harvest.mining.HFMining;
+import joshie.harvest.mining.item.ItemMaterial;
 import joshie.harvest.tools.HFTools;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -38,7 +37,7 @@ public abstract class HFTab extends CreativeTabs {
 	public static final HFTab MINING = new HFTab("mining") {
 		@Override
 		public ItemStack getTabIconItem() {
-			return HFMining.MATERIALS.getStackFromEnum(ADAMANTITE);
+			return HFMining.MATERIALS.getStackFromEnum(ItemMaterial.Material.ADAMANTITE);
 		}
 	};
 	public static final HFTab FARMING = new HFTab("farming") {

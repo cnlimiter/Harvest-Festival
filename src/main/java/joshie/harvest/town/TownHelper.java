@@ -1,13 +1,12 @@
 package joshie.harvest.town;
 
-import static joshie.harvest.core.HFTrackers.getTowns;
-
 import java.util.UUID;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import joshie.harvest.api.town.ITownHelper;
 import joshie.harvest.api.town.Town;
+import joshie.harvest.core.HFTrackers;
 import joshie.harvest.core.util.annotations.HFApiImplementation;
 import joshie.harvest.mining.HFMining;
 import joshie.harvest.mining.MiningHelper;
@@ -41,14 +40,14 @@ public class TownHelper implements ITownHelper {
 		//If we're in the mine, adjust the block position
 		//Based on the mining id that we have been given
 		if (world.provider.getDimension() == HFMining.MINING_ID) {
-			return (T) getTowns(world).getTownFromMineID(MiningHelper.getMineID(pos));
+			return (T) HFTrackers.getTowns(world).getTownFromMineID(MiningHelper.getMineID(pos));
 		} else if (world.provider.getDimension() != 0) {
 			//If the world isn't the overworld, take the spawn coordinates instead
 			BlockPos default_ = getDefaultCoordinates(entity);
-			return default_ == null ? (T) getTowns(world).getNullTown() : (T) getTowns(world).getClosestTownToBlockPos(default_, create);
+			return default_ == null ? (T) HFTrackers.getTowns(world).getNullTown() : (T) HFTrackers.getTowns(world).getClosestTownToBlockPos(default_, create);
 		}
 
-		return (T) getTowns(world).getClosestTownToBlockPos(pos, create);
+		return (T) HFTrackers.getTowns(world).getClosestTownToBlockPos(pos, create);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -70,7 +69,7 @@ public class TownHelper implements ITownHelper {
 	}
 
 	public static TownData getTownByID(World world, UUID townID) {
-		return getTowns(world).getTownByID(townID);
+		return HFTrackers.getTowns(world).getTownByID(townID);
 	}
 
 	@Override

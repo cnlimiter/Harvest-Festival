@@ -1,9 +1,8 @@
 package joshie.harvest.api.gathering;
 
-import static joshie.harvest.api.core.ITiered.ToolTier.BASIC;
-import static net.minecraft.block.Block.spawnAsEntity;
-
+import joshie.harvest.api.core.ITiered;
 import joshie.harvest.api.core.ITiered.ToolTier;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -31,7 +30,7 @@ public interface ISmashable {
 	 * @return the tier required
 	 **/
 	default ToolTier getRequiredTier(IBlockState state) {
-		return BASIC;
+		return ITiered.ToolTier.BASIC;
 	}
 
 	/**
@@ -51,10 +50,10 @@ public interface ISmashable {
 			NonNullList<ItemStack> drops = NonNullList.create();
 			getDrops(drops, player, world, pos, state, luck);
 			world.setBlockToAir(pos); //Clear out the block
-			if (drops.size() > 0) {
+			if (!drops.isEmpty()) {
 				if (!world.isRemote) {
 					for (ItemStack drop : drops) {
-						spawnAsEntity(world, pos, drop);
+						Block.spawnAsEntity(world, pos, drop);
 					}
 				}
 

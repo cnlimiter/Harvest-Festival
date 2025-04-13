@@ -1,21 +1,5 @@
 package joshie.harvest.animals;
 
-import static joshie.harvest.animals.AnimalRegistry.registerFoodsAsType;
-import static joshie.harvest.animals.item.ItemAnimalTool.Tool.CHICKEN_FEED;
-import static joshie.harvest.api.HFApi.animals;
-import static joshie.harvest.api.animals.AnimalFoodType.CHICKEN;
-import static joshie.harvest.api.animals.AnimalFoodType.FISH;
-import static joshie.harvest.api.animals.AnimalFoodType.FRUIT;
-import static joshie.harvest.api.animals.AnimalFoodType.GRASS;
-import static joshie.harvest.api.animals.AnimalFoodType.REDMEAT;
-import static joshie.harvest.api.animals.AnimalFoodType.SEED;
-import static joshie.harvest.api.animals.AnimalFoodType.VEGETABLE;
-import static joshie.harvest.core.helpers.ConfigHelper.getBoolean;
-import static joshie.harvest.core.helpers.ConfigHelper.getInteger;
-import static joshie.harvest.core.helpers.RegistryHelper.registerSounds;
-import static joshie.harvest.core.helpers.RegistryHelper.registerTiles;
-import static joshie.harvest.core.lib.HFModInfo.MODID;
-
 import joshie.harvest.HarvestFestival;
 import joshie.harvest.animals.block.BlockSizedStorage;
 import joshie.harvest.animals.block.BlockTray;
@@ -47,12 +31,15 @@ import joshie.harvest.animals.type.AnimalChicken;
 import joshie.harvest.animals.type.AnimalCow;
 import joshie.harvest.animals.type.AnimalSheep;
 import joshie.harvest.api.HFApi;
+import joshie.harvest.api.animals.AnimalFoodType;
 import joshie.harvest.api.animals.AnimalStats;
 import joshie.harvest.api.animals.IAnimalType;
 import joshie.harvest.api.core.Size;
 import joshie.harvest.api.crops.Crop;
+import joshie.harvest.core.helpers.ConfigHelper;
 import joshie.harvest.core.helpers.RegistryHelper;
 import joshie.harvest.core.lib.EntityIDs;
+import joshie.harvest.core.lib.HFModInfo;
 import joshie.harvest.core.util.annotations.HFLoader;
 import net.minecraft.client.model.ModelChicken;
 import net.minecraft.client.model.ModelCow;
@@ -98,7 +85,7 @@ public class HFAnimals {
 		HFApi.shipping.registerSellable(new ItemStack(Items.FEATHER), 30);
 		HFApi.shipping.registerSellable(new ItemStack(Items.LEATHER), 80);
 		EntityRegistry.registerModEntity(
-				new ResourceLocation(MODID, "cow"),
+				new ResourceLocation(HFModInfo.MODID, "cow"),
 				EntityHarvestCow.class,
 				"Cow",
 				EntityIDs.COW,
@@ -107,7 +94,7 @@ public class HFAnimals {
 				3,
 				true);
 		EntityRegistry.registerModEntity(
-				new ResourceLocation(MODID, "sheep"),
+				new ResourceLocation(HFModInfo.MODID, "sheep"),
 				EntityHarvestSheep.class,
 				"Sheep",
 				EntityIDs.SHEEP,
@@ -116,7 +103,7 @@ public class HFAnimals {
 				3,
 				true);
 		EntityRegistry.registerModEntity(
-				new ResourceLocation(MODID, "chicken"),
+				new ResourceLocation(HFModInfo.MODID, "chicken"),
 				EntityHarvestChicken.class,
 				"Chicken",
 				EntityIDs.CHICKEN,
@@ -124,16 +111,16 @@ public class HFAnimals {
 				150,
 				3,
 				true);
-		registerSounds("brush");
-		registerFoodsAsType(CHICKEN, Items.CHICKEN, Items.COOKED_CHICKEN);
-		registerFoodsAsType(FISH, Items.FISH, Items.COOKED_FISH);
-		registerFoodsAsType(FRUIT, Items.APPLE, Items.MELON);
-		registerFoodsAsType(GRASS, Items.WHEAT);
-		registerFoodsAsType(REDMEAT, Items.PORKCHOP, Items.BEEF, Items.COOKED_PORKCHOP, Items.COOKED_BEEF);
-		registerFoodsAsType(SEED, Items.MELON_SEEDS, Items.WHEAT_SEEDS, Items.PUMPKIN_SEEDS);
-		registerFoodsAsType(VEGETABLE, Items.CARROT);
-		animals.registerFoodAsType(TOOLS.getStackFromEnum(CHICKEN_FEED), SEED);
-		registerTiles(TileIncubator.class, TileTrough.class, TileFeeder.class, TileNest.class);
+		RegistryHelper.registerSounds("brush");
+		AnimalRegistry.registerFoodsAsType(AnimalFoodType.CHICKEN, Items.CHICKEN, Items.COOKED_CHICKEN);
+		AnimalRegistry.registerFoodsAsType(AnimalFoodType.FISH, Items.FISH, Items.COOKED_FISH);
+		AnimalRegistry.registerFoodsAsType(AnimalFoodType.FRUIT, Items.APPLE, Items.MELON);
+		AnimalRegistry.registerFoodsAsType(AnimalFoodType.GRASS, Items.WHEAT);
+		AnimalRegistry.registerFoodsAsType(AnimalFoodType.REDMEAT, Items.PORKCHOP, Items.BEEF, Items.COOKED_PORKCHOP, Items.COOKED_BEEF);
+		AnimalRegistry.registerFoodsAsType(AnimalFoodType.SEED, Items.MELON_SEEDS, Items.WHEAT_SEEDS, Items.PUMPKIN_SEEDS);
+		AnimalRegistry.registerFoodsAsType(AnimalFoodType.VEGETABLE, Items.CARROT);
+		HFApi.animals.registerFoodAsType(TOOLS.getStackFromEnum(Tool.CHICKEN_FEED), AnimalFoodType.SEED);
+		RegistryHelper.registerTiles(TileIncubator.class, TileTrough.class, TileFeeder.class, TileNest.class);
 		OreDictionary.registerOre("egg", ANIMAL_PRODUCT.getStack(Sizeable.EGG, Size.SMALL));
 		OreDictionary.registerOre("egg", ANIMAL_PRODUCT.getStack(Sizeable.EGG, Size.MEDIUM));
 		OreDictionary.registerOre("egg", ANIMAL_PRODUCT.getStack(Sizeable.EGG, Size.LARGE));
@@ -179,7 +166,7 @@ public class HFAnimals {
 	public static void init() {
 		HFApi.npc.getGifts().addToBlacklist(ANIMAL);
 		Crop.REGISTRY.values().stream().filter(crop -> crop != Crop.NULL_CROP && crop.getFoodType() != null)
-				.forEachOrdered(crop -> animals.registerFoodAsType(crop.getCropStack(1), crop.getFoodType()));
+				.forEachOrdered(crop -> HFApi.animals.registerFoodAsType(crop.getCropStack(1), crop.getFoodType()));
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -200,15 +187,15 @@ public class HFAnimals {
 	public static boolean OUTDOOR_HAPPINESS;
 
 	public static void configure() {
-		CAN_SPAWN = getBoolean("Enable animal natural spawning", true);
-		DISABLE_SPAWN_CHICKEN = getBoolean("Disable vanilla chickens from eggs", false);
-		PICKUP_POULTRY = getBoolean("Enable placing of chickens on your head", true);
-		PREGNANCY_TIMER = getInteger("Pregnancy > Number of days", 7);
+		CAN_SPAWN = ConfigHelper.getBoolean("Enable animal natural spawning", true);
+		DISABLE_SPAWN_CHICKEN = ConfigHelper.getBoolean("Disable vanilla chickens from eggs", false);
+		PICKUP_POULTRY = ConfigHelper.getBoolean("Enable placing of chickens on your head", true);
+		PREGNANCY_TIMER = ConfigHelper.getInteger("Pregnancy > Number of days", 7);
 		CHICKEN_TIMER = HFAnimals.PREGNANCY_TIMER / 2;
-		MAX_LITTER_SIZE = getInteger("Pregnancy > Max litter size", 5);
-		LITTER_EXTRA_CHANCE = getInteger("Pregnancy > Chance of extra birth", 4);
-		AGING_TIMER = getInteger("Number of days animals take to mature", 14);
-		VANILLA_MODELS = getBoolean("Use vanilla models for animals", false);
-		OUTDOOR_HAPPINESS = getBoolean("Animals gain relationship when left outside", true);
+		MAX_LITTER_SIZE = ConfigHelper.getInteger("Pregnancy > Max litter size", 5);
+		LITTER_EXTRA_CHANCE = ConfigHelper.getInteger("Pregnancy > Chance of extra birth", 4);
+		AGING_TIMER = ConfigHelper.getInteger("Number of days animals take to mature", 14);
+		VANILLA_MODELS = ConfigHelper.getBoolean("Use vanilla models for animals", false);
+		OUTDOOR_HAPPINESS = ConfigHelper.getBoolean("Animals gain relationship when left outside", true);
 	}
 }

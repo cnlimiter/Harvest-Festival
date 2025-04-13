@@ -1,7 +1,5 @@
 package joshie.harvest.shops.gui.button;
 
-import static joshie.harvest.shops.gui.GuiNPCShop.SHOP_EXTRA;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,7 +46,7 @@ public class ButtonListing<I extends IPurchasable> extends GuiButton {
 	public void drawButton(@Nonnull Minecraft mc, int mouseX, int mouseY, float partialTicks) {
 		if (visible) {
 			FontRenderer fontrenderer = mc.fontRenderer;
-			mc.getTextureManager().bindTexture(SHOP_EXTRA);
+			mc.getTextureManager().bindTexture(GuiNPCShop.SHOP_EXTRA);
 			GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 			hovered = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
 			int originalState = getHoverState(hovered);

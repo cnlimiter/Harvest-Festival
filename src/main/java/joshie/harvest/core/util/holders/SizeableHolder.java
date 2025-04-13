@@ -28,7 +28,7 @@ public class SizeableHolder extends AbstractItemHolder {
 	@Override
 	@SuppressWarnings("unchecked")
 	public NonNullList<ItemStack> getMatchingStacks() {
-		if (matchingStacks != null && matchingStacks.size() > 0) {
+		if (matchingStacks != null && !matchingStacks.isEmpty()) {
 			return matchingStacks;
 		} else {
 			matchingStacks = NonNullList.create();

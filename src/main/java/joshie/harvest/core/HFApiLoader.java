@@ -1,8 +1,5 @@
 package joshie.harvest.core;
 
-import static joshie.harvest.core.lib.HFModInfo.MODID;
-import static joshie.harvest.core.network.PacketHandler.registerPacket;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Comparator;
@@ -23,7 +20,9 @@ import joshie.harvest.api.quests.Quest;
 import joshie.harvest.core.commands.CommandManager;
 import joshie.harvest.core.commands.HFCommand;
 import joshie.harvest.core.commands.HFDebugCommand;
+import joshie.harvest.core.lib.HFModInfo;
 import joshie.harvest.core.network.Packet;
+import joshie.harvest.core.network.PacketHandler;
 import joshie.harvest.core.util.annotations.HFApiImplementation;
 import joshie.harvest.core.util.annotations.HFEvents;
 import net.minecraft.command.ICommand;
@@ -45,12 +44,10 @@ public class HFApiLoader {
 				Class clazz = Class.forName(data.getClassName());
 				Object instance = clazz.getField("INSTANCE").get(null);
 				Class[] interfaces = clazz.getInterfaces();
-				if (interfaces != null && interfaces.length > 0) {
-					for (Class inter : interfaces) {
-						for (Field f : HFApi.class.getFields()) {
-							if (f.getType().equals(inter)) {
-								f.set(null, instance);
-							}
+				for (Class inter : interfaces) {
+					for (Field f : HFApi.class.getFields()) {
+						if (f.getType().equals(inter)) {
+							f.set(null, instance);
 						}
 					}
 				}
@@ -107,7 +104,7 @@ public class HFApiLoader {
 				Class clazz = Class.forName(asmData.getClassName());
 				String value = data.get("value") != null ? (String) data.get("value") : "";
 				if (!value.equals("")) {
-					ResourceLocation resource = value.contains(":") ? new ResourceLocation(value) : new ResourceLocation(MODID, value);
+					ResourceLocation resource = value.contains(":") ? new ResourceLocation(value) : new ResourceLocation(HFModInfo.MODID, value);
 					TaskElement.REGISTRY.put(resource, clazz);
 				}
 			} catch (Exception e) {
@@ -228,7 +225,7 @@ public class HFApiLoader {
 			Side side = sidedPackets.get(sided);
 			try {
 				Class<?> asmClass = Class.forName(sided);
-				registerPacket(asmClass, side);
+				PacketHandler.registerPacket(asmClass, side);
 			} catch (Exception ignored) {
 			}
 		}
@@ -237,7 +234,7 @@ public class HFApiLoader {
 		for (String unsided : namesUnsided) {
 			try {
 				Class<?> asmClass = Class.forName(unsided);
-				registerPacket(asmClass);
+				PacketHandler.registerPacket(asmClass);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

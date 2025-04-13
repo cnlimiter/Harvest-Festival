@@ -297,7 +297,7 @@ public class GuiNPCShop extends GuiNPCBase {
 	private static final DecimalFormat formatter = new DecimalFormat("#,###");
 
 	private void drawCoinage(int x, int y, long gold) {
-		String formatted = String.valueOf(formatter.format(gold));
+		String formatted = formatter.format(gold);
 		ShopFontRenderer.render(this, x + 220, y, formatted, true);
 		GlStateManager.disableDepth();
 		mc.renderEngine.bindTexture(HFModInfo.ELEMENTS);

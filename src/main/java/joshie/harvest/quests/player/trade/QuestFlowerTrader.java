@@ -1,10 +1,5 @@
 package joshie.harvest.quests.player.trade;
 
-import static joshie.harvest.api.calendar.Season.AUTUMN;
-import static joshie.harvest.api.calendar.Season.SPRING;
-import static joshie.harvest.api.calendar.Season.SUMMER;
-import static joshie.harvest.core.helpers.InventoryHelper.SPECIAL;
-
 import java.util.Random;
 import java.util.Set;
 
@@ -39,7 +34,8 @@ public class QuestFlowerTrader extends QuestTrade {
 
 	@Override
 	public boolean isNPCUsed(EntityPlayer player, NPCEntity entity) {
-		return entity.getNPC() == HFNPCs.FLOWER_GIRL && InventoryHelper.getHandItemIsIn(player, SPECIAL, SearchType.FLOWER, 5) != null;
+		return entity.getNPC() == HFNPCs.FLOWER_GIRL && InventoryHelper.getHandItemIsIn(player,
+				InventoryHelper.SPECIAL, SearchType.FLOWER, 5) != null;
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -52,7 +48,8 @@ public class QuestFlowerTrader extends QuestTrade {
 		}
 		if (received < 10) {
 			Season season = HFApi.calendar.getDate(player.world).getSeason();
-			if (season == SPRING || season == SUMMER || season == AUTUMN) {
+			if (season == Season.SPRING || season == Season.SUMMER || season ==
+					Season.AUTUMN) {
 				//Jade informs the player that she will happily trade flowers
 				//For a bag of seeds
 				int chance = player.world.rand.nextInt(3);
@@ -79,15 +76,16 @@ public class QuestFlowerTrader extends QuestTrade {
 
 		for (int i = 0; i < (wasSneaking ? 10 : 1); i++) {
 			if (received < 10) {
-				if (InventoryHelper.takeItemsIfHeld(player, SPECIAL, SearchType.FLOWER, 5) != null) {
+				if (InventoryHelper.takeItemsIfHeld(player, InventoryHelper.SPECIAL, SearchType.FLOWER, 5) != null) {
 					Season season = HFApi.calendar.getDate(player.world).getSeason();
-					if (season == SPRING || season == SUMMER || season == AUTUMN) {
+					if (season == Season.SPRING || season == Season.SUMMER || season ==
+							Season.AUTUMN) {
 						rand.setSeed(today.hashCode());
 						if (rand.nextInt(30) == 0) {
 							rewardItem(player, HFCrops.TUTORIAL.getSeedStack(1));
-						} else if (season == SPRING) {
+						} else if (season == Season.SPRING) {
 							rewardItem(player, HFCrops.TURNIP.getSeedStack(1));
-						} else if (season == SUMMER) {
+						} else if (season == Season.SUMMER) {
 							rewardItem(player, HFCrops.ONION.getSeedStack(1));
 						} else {
 							rewardItem(player, HFCrops.SPINACH.getSeedStack(1));

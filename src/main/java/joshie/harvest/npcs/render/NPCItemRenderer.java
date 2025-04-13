@@ -1,11 +1,10 @@
 package joshie.harvest.npcs.render;
 
-import static joshie.harvest.core.base.render.FakeEntityRenderer.SHADOW;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import joshie.harvest.api.npc.INPCHelper;
 import joshie.harvest.api.npc.NPC;
+import joshie.harvest.core.base.render.FakeEntityRenderer;
 import joshie.harvest.core.base.render.FakeEntityRenderer.EntityItemRenderer;
 import joshie.harvest.core.helpers.MCClientHelper;
 import joshie.harvest.core.helpers.StackRenderHelper;
@@ -68,7 +67,7 @@ public class NPCItemRenderer extends TileEntitySpecialRenderer<NPCTile> {
 			GlStateManager.scale(-1.0F, -1.0F, 1.0F);
 			GlStateManager.translate(0.0F, -1.501F, 0.0F);
 			if (StackRenderHelper.renderShadow) {
-				bindTexture(SHADOW);
+				bindTexture(FakeEntityRenderer.SHADOW);
 				GlStateManager.disableLighting();
 			} else {
 				bindTexture(fake.npc.getSkin());

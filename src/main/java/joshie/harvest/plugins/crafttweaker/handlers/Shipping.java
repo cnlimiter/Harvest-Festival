@@ -1,8 +1,5 @@
 package joshie.harvest.plugins.crafttweaker.handlers;
 
-import static joshie.harvest.plugins.crafttweaker.CraftTweaker.asOre;
-import static joshie.harvest.plugins.crafttweaker.CraftTweaker.asStack;
-
 import crafttweaker.CraftTweakerAPI;
 import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IIngredient;
@@ -11,6 +8,7 @@ import crafttweaker.api.oredict.IOreDictEntry;
 import javax.annotation.Nonnull;
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.core.Ore;
+import joshie.harvest.plugins.crafttweaker.CraftTweaker;
 import joshie.harvest.plugins.crafttweaker.base.BaseOnce;
 import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.ZenClass;
@@ -35,8 +33,8 @@ public class Shipping {
 
 		public Add(IIngredient ingredient, long sellValue) {
 			this.sellValue = sellValue;
-			this.stack = asStack(ingredient);
-			String name = asOre(ingredient);
+			this.stack = CraftTweaker.asStack(ingredient);
+			String name = CraftTweaker.asOre(ingredient);
 			if (name != null) {
 				this.ore = Ore.of(name);
 			}

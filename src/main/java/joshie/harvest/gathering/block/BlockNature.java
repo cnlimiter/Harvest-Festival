@@ -1,7 +1,5 @@
 package joshie.harvest.gathering.block;
 
-import static net.minecraftforge.common.EnumPlantType.Plains;
-
 import java.util.Locale;
 
 import javax.annotation.Nonnull;
@@ -106,7 +104,7 @@ public class BlockNature extends BlockHFEnum<BlockNature, NaturalBlock> implemen
 	private boolean canBlockStay(World world, BlockPos pos, IBlockState state) {
 		if (state.getBlock() == this) {
 			IBlockState soil = world.getBlockState(pos.down());
-			return soil.getBlock().canSustainPlant(soil, world, pos.down(), net.minecraft.util.EnumFacing.UP, this);
+			return soil.getBlock().canSustainPlant(soil, world, pos.down(), EnumFacing.UP, this);
 		}
 
 		return this.canSustainBush(world.getBlockState(pos.down()));
@@ -127,7 +125,7 @@ public class BlockNature extends BlockHFEnum<BlockNature, NaturalBlock> implemen
 
 	@Override
 	public EnumPlantType getPlantType(IBlockAccess world, BlockPos pos) {
-		return Plains;
+		return EnumPlantType.Plains;
 	}
 
 	@Override

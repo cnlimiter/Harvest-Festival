@@ -1,14 +1,11 @@
 package joshie.harvest.quests.player.trade;
 
-import static joshie.harvest.api.core.ITiered.ToolTier.CURSED;
-import static joshie.harvest.core.helpers.SpawnItemHelper.spawnXP;
-import static joshie.harvest.quests.Quests.TOMAS_MEET;
-
 import java.util.Set;
 
 import javax.annotation.Nonnull;
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.calendar.CalendarDate;
+import joshie.harvest.api.core.ITiered;
 import joshie.harvest.api.core.ITiered.ToolTier;
 import joshie.harvest.api.npc.NPCEntity;
 import joshie.harvest.api.quests.HFQuest;
@@ -16,6 +13,7 @@ import joshie.harvest.api.quests.Quest;
 import joshie.harvest.calendar.CalendarHelper;
 import joshie.harvest.core.HFTrackers;
 import joshie.harvest.core.base.item.ItemTool;
+import joshie.harvest.core.helpers.SpawnItemHelper;
 import joshie.harvest.core.lib.HFSounds;
 import joshie.harvest.npcs.HFNPCs;
 import joshie.harvest.quests.Quests;
@@ -39,7 +37,7 @@ public class QuestBlessing extends QuestTrade {
 
 	@Override
 	public boolean canStartQuest(Set<Quest> active, Set<Quest> finished) {
-		return finished.contains(TOMAS_MEET);
+		return finished.contains(Quests.TOMAS_MEET);
 	}
 
 	@Override
@@ -120,7 +118,7 @@ public class QuestBlessing extends QuestTrade {
 	public void onQuestCompleted(EntityPlayer player) {
 		rewardItem(player, tool);
 		HFTrackers.getPlayerTrackerFromPlayer(player).getTracking().addAsObtained(tool);
-		spawnXP(player.world, (int) player.posX, (int) player.posY, (int) player.posZ, 5);
+		SpawnItemHelper.spawnXP(player.world, (int) player.posX, (int) player.posY, (int) player.posZ, 5);
 	}
 
 	@Override
@@ -155,7 +153,7 @@ public class QuestBlessing extends QuestTrade {
 			if (held.getItem() instanceof ItemTool) {
 				ItemTool tool = ((ItemTool) held.getItem());
 				ToolTier tier = tool.getTier(held);
-				return tier == CURSED;
+				return tier == ITiered.ToolTier.CURSED;
 			}
 		}
 

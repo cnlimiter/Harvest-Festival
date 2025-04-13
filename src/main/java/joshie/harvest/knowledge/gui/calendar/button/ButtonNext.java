@@ -1,7 +1,5 @@
 package joshie.harvest.knowledge.gui.calendar.button;
 
-import static joshie.harvest.knowledge.gui.calendar.GuiCalendar.CALENDAR_TEXTURE;
-
 import javax.annotation.Nonnull;
 import joshie.harvest.api.calendar.Season;
 import joshie.harvest.calendar.CalendarHelper;
@@ -24,7 +22,7 @@ public class ButtonNext extends GuiButton {
 	@Override
 	public void drawButton(@Nonnull Minecraft mc, int mouseX, int mouseY, float partialTicks) {
 		if (visible) {
-			mc.getTextureManager().bindTexture(CALENDAR_TEXTURE);
+			mc.getTextureManager().bindTexture(GuiCalendar.CALENDAR_TEXTURE);
 			GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 			hovered = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
 			int state = getHoverState(hovered);

@@ -1,7 +1,5 @@
 package joshie.harvest.crops.handlers;
 
-import static net.minecraft.world.chunk.Chunk.NULL_BLOCK_STORAGE;
-
 import javax.annotation.Nonnull;
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.crops.WateringHandler;
@@ -37,7 +35,7 @@ public class WateringTickHandler extends DailyTickableBlock {
 			for (int z = 0; z < 16; z++) {
 				for (int y = 0; y < 256; y++) {
 					ExtendedBlockStorage extendedblockstorage = array[y >> 4];
-					if (extendedblockstorage != NULL_BLOCK_STORAGE) {
+					if (extendedblockstorage != Chunk.NULL_BLOCK_STORAGE) {
 						IBlockState state = extendedblockstorage.get(x, y & 15, z);
 						BlockPos pos = new BlockPos((chunk.x * 16) + x, y, (chunk.z * 16) + z);
 						WateringHandler handler = CropHelper.getWateringHandler(world, pos, state);

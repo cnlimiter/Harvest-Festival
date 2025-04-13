@@ -40,8 +40,7 @@ public class BuildingHelper {
 		Vec3d vec3d = getPositionEyes(player, partialTicks);
 		Vec3d vec3d1 = player.getLook(partialTicks);
 		Vec3d vec3d2 = vec3d.addVector(vec3d1.x * blockReachDistance, vec3d1.y * blockReachDistance, vec3d1.z * blockReachDistance);
-		RayTraceResult result = player.world.rayTraceBlocks(vec3d, vec3d2, false, false, true);
-		return result;
+		return player.world.rayTraceBlocks(vec3d, vec3d2, false, false, true);
 	}
 
 	@SuppressWarnings("all")
@@ -136,7 +135,7 @@ public class BuildingHelper {
 					if (world.isRemote) {
 						ChatHelper.displayChat(TextFormatting.YELLOW + building.getLocalisedName() + TextFormatting.RESET + " " +
 								TextHelper.translate("town.preview") + "\n-"
-								+ TextHelper.translate("town.sneak") + " " + TextFormatting.GREEN + "" +
+								+ TextHelper.translate("town.sneak") + " " + TextFormatting.GREEN +
 								TextHelper.translate("town.confirm") + "\n-"
 								+ TextFormatting.RESET + TextHelper.translate("town.click") + " " + TextFormatting.RED +
 								TextHelper.translate("town.cancel"));

@@ -1,8 +1,5 @@
 package joshie.harvest.quests.data;
 
-import static joshie.harvest.core.helpers.SerializeHelper.readMap;
-import static joshie.harvest.core.helpers.SerializeHelper.writeMap;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -14,6 +11,7 @@ import joshie.harvest.api.calendar.CalendarDate;
 import joshie.harvest.api.quests.Quest;
 import joshie.harvest.api.quests.TargetType;
 import joshie.harvest.core.HFTrackers;
+import joshie.harvest.core.helpers.SerializeHelper;
 import joshie.harvest.core.util.interfaces.ISyncMaster;
 import joshie.harvest.quests.packet.PacketQuestCompleted;
 import joshie.harvest.quests.packet.PacketQuestConnect;
@@ -147,12 +145,12 @@ public class QuestDataServer extends QuestData {
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
-		lastFinished = readMap(Quest.class, CalendarDate.class, "LastQuest", nbt);
+		lastFinished = SerializeHelper.readMap(Quest.class, CalendarDate.class, "LastQuest", nbt);
 	}
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
-		writeMap(lastFinished, "LastQuest", nbt);
+		SerializeHelper.writeMap(lastFinished, "LastQuest", nbt);
 		return super.writeToNBT(nbt);
 	}
 }

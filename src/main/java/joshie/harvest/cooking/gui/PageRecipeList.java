@@ -1,14 +1,5 @@
 package joshie.harvest.cooking.gui;
 
-import static joshie.harvest.cooking.HFCooking.COOKWARE;
-import static joshie.harvest.cooking.block.BlockCookware.Cookware.COUNTER;
-import static joshie.harvest.cooking.block.BlockCookware.Cookware.FRYING_PAN;
-import static joshie.harvest.cooking.block.BlockCookware.Cookware.MIXER;
-import static joshie.harvest.cooking.block.BlockCookware.Cookware.OVEN_ON;
-import static joshie.harvest.cooking.block.BlockCookware.Cookware.POT;
-import static joshie.harvest.cooking.gui.GuiCookbook.LEFT_GUI;
-import static joshie.harvest.cooking.gui.GuiCookbook.MASTER;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,6 +7,7 @@ import java.util.List;
 import joshie.harvest.api.cooking.Recipe;
 import joshie.harvest.api.cooking.Utensil;
 import joshie.harvest.cooking.HFCooking;
+import joshie.harvest.cooking.block.BlockCookware;
 import joshie.harvest.core.HFTrackers;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.ItemStack;
@@ -31,11 +23,11 @@ public class PageRecipeList extends Page {
 	private static final HashMap<Utensil, ItemStack> RENDER_MAP = new HashMap<>();
 
 	static {
-		RENDER_MAP.put(HFCooking.COUNTER, COOKWARE.getStackFromEnum(COUNTER));
-		RENDER_MAP.put(HFCooking.FRYING_PAN, COOKWARE.getStackFromEnum(FRYING_PAN));
-		RENDER_MAP.put(HFCooking.MIXER, COOKWARE.getStackFromEnum(MIXER));
-		RENDER_MAP.put(HFCooking.OVEN, COOKWARE.getStackFromEnum(OVEN_ON));
-		RENDER_MAP.put(HFCooking.POT, COOKWARE.getStackFromEnum(POT));
+		RENDER_MAP.put(HFCooking.COUNTER, HFCooking.COOKWARE.getStackFromEnum(BlockCookware.Cookware.COUNTER));
+		RENDER_MAP.put(HFCooking.FRYING_PAN, HFCooking.COOKWARE.getStackFromEnum(BlockCookware.Cookware.FRYING_PAN));
+		RENDER_MAP.put(HFCooking.MIXER, HFCooking.COOKWARE.getStackFromEnum(BlockCookware.Cookware.MIXER));
+		RENDER_MAP.put(HFCooking.OVEN, HFCooking.COOKWARE.getStackFromEnum(BlockCookware.Cookware.OVEN_ON));
+		RENDER_MAP.put(HFCooking.POT, HFCooking.COOKWARE.getStackFromEnum(BlockCookware.Cookware.POT));
 		Utensil.REGISTRY.values().stream().forEach(utensil -> UTENSIL_PAGES.put(utensil, new PageRecipeList(utensil)));
 	}
 
@@ -67,7 +59,7 @@ public class PageRecipeList extends Page {
 
 	@Override
 	public Page getOwner() {
-		return MASTER;
+		return GuiCookbook.MASTER;
 	}
 
 	@Override
@@ -80,7 +72,7 @@ public class PageRecipeList extends Page {
 	}
 
 	boolean hasRecipes() {
-		return recipes.size() > 0;
+		return !recipes.isEmpty();
 	}
 
 	@Override
@@ -110,7 +102,7 @@ public class PageRecipeList extends Page {
 				if (index < recipes.size()) {
 					PageRecipe recipe = recipes.get(index);
 					GlStateManager.disableDepth();
-					gui.mc.getTextureManager().bindTexture(LEFT_GUI);
+					gui.mc.getTextureManager().bindTexture(GuiCookbook.LEFT_GUI);
 					if (recipe.canMake()) {
 						gui.drawTexture(25 + 8, 20 + i * 14 + 8, 48, 248, 10, 8);
 					}
@@ -144,7 +136,7 @@ public class PageRecipeList extends Page {
 					int i = j - 10;
 					PageRecipe recipe = recipes.get(index);
 					GlStateManager.disableDepth();
-					gui.mc.getTextureManager().bindTexture(LEFT_GUI);
+					gui.mc.getTextureManager().bindTexture(GuiCookbook.LEFT_GUI);
 					if (recipe.canMake()) {
 						gui.drawTexture(170 + 8, 20 + i * 14 + 8, 48, 248, 10, 8);
 					}
@@ -154,7 +146,7 @@ public class PageRecipeList extends Page {
 
 		//Draw the next page button
 		if (start + 20 < size) {
-			gui.mc.getTextureManager().bindTexture(LEFT_GUI);
+			gui.mc.getTextureManager().bindTexture(GuiCookbook.LEFT_GUI);
 			//Draw the next page button
 			GlStateManager.color(1F, 1F, 1F);
 			int buttonY = mouseX >= 270 && mouseX <= 285 && mouseY >= 168 && mouseY <= 178 ? 246 : 235;

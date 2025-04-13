@@ -24,7 +24,7 @@ public class HolderRegistrySet {
 
 	private void unregisterHolder(Item item, AbstractItemHolder holder) {
 		setMap.remove(item, holder);
-		if (setMap.get(item).size() == 0) {
+		if (setMap.get(item).isEmpty()) {
 			setMap.removeAll(item);
 		}
 	}

@@ -1,21 +1,14 @@
 package joshie.harvest.tools;
 
-import static joshie.harvest.animals.item.ItemAnimalTool.Tool.BRUSH;
-import static joshie.harvest.calendar.HFCalendar.TICKS_PER_DAY;
-import static joshie.harvest.tools.HFTools.ENABLE_DEATH_FAINTING;
-import static joshie.harvest.tools.HFTools.ENABLE_EARLY_FAINTING;
-import static joshie.harvest.tools.HFTools.ENABLE_FAINTING;
-import static joshie.harvest.tools.HFTools.ENABLE_FAINTING_SLEEP;
-import static joshie.harvest.tools.HFTools.EXHAUSTION;
-import static joshie.harvest.tools.HFTools.FATIGUE;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import javax.annotation.Nonnull;
 import joshie.harvest.animals.HFAnimals;
 import joshie.harvest.animals.item.ItemAnimalProduct.Sizeable;
+import joshie.harvest.animals.item.ItemAnimalTool;
 import joshie.harvest.api.core.ITiered;
+import joshie.harvest.calendar.HFCalendar;
 import joshie.harvest.core.base.item.ItemTool;
 import joshie.harvest.core.helpers.EntityHelper;
 import joshie.harvest.core.util.annotations.HFEvents;
@@ -51,7 +44,7 @@ public class ToolHelper {
 	}.setDamageBypassesArmor().setDamageIsAbsolute();
 
 	public static boolean isBrush(@Nonnull ItemStack stack) {
-		return HFAnimals.TOOLS.getEnumFromStack(stack) == BRUSH;
+		return HFAnimals.TOOLS.getEnumFromStack(stack) == ItemAnimalTool.Tool.BRUSH;
 	}
 
 	//TODO: Reenable in 1.0 when I readd marriage
@@ -107,18 +100,18 @@ public class ToolHelper {
 			player.getFoodStats().addExhaustion(HFTools.EXHAUSTION_AMOUNT * amount); //Add Exhaustion
 		}
 		if (level > 2 && level <= 6) {
-			player.removePotionEffect(EXHAUSTION); //Don't ever have fatigue/exhaustion at same time
-			player.addPotionEffect(new PotionEffect(FATIGUE, 6000));
-		} else if (level <= 2 && !player.isPotionActive(EXHAUSTION)) {
-			player.removePotionEffect(FATIGUE); //Don't ever have fatigue/exhaustion at same time
-			player.addPotionEffect(new PotionEffect(EXHAUSTION, 2000));
+			player.removePotionEffect(HFTools.EXHAUSTION); //Don't ever have fatigue/exhaustion at same time
+			player.addPotionEffect(new PotionEffect(HFTools.FATIGUE, 6000));
+		} else if (level <= 2 && !player.isPotionActive(HFTools.EXHAUSTION)) {
+			player.removePotionEffect(HFTools.FATIGUE); //Don't ever have fatigue/exhaustion at same time
+			player.addPotionEffect(new PotionEffect(HFTools.EXHAUSTION, 2000));
 		} else {
-			PotionEffect effect = player.getActivePotionEffect(EXHAUSTION);
+			PotionEffect effect = player.getActivePotionEffect(HFTools.EXHAUSTION);
 			if (effect != null &&
-					((level == 0 && effect.getDuration() <= 1990) || (ENABLE_EARLY_FAINTING && effect.getDuration() <= 1500))) {
+					((level == 0 && effect.getDuration() <= 1990) || (HFTools.ENABLE_EARLY_FAINTING && effect.getDuration() <= 1500))) {
 				player.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, 100, 7));
-				if (!player.world.isRemote && ENABLE_FAINTING) {
-					if (ENABLE_DEATH_FAINTING) {
+				if (!player.world.isRemote && HFTools.ENABLE_FAINTING) {
+					if (HFTools.ENABLE_DEATH_FAINTING) {
 						player.attackEntityFrom(EXHAUSTED, 1000F);
 					} else {
 						int dimension = player.world.provider.canRespawnHere() ? player.world.provider.getDimension() : 0;
@@ -127,15 +120,15 @@ public class ToolHelper {
 										dimension).provider.getRandomizedSpawnPoint();
 						EntityHelper.teleport(player, dimension, spawn);
 						player.trySleep(spawn);
-						if (ENABLE_FAINTING_SLEEP) { //Force instant sleep
+						if (HFTools.ENABLE_FAINTING_SLEEP) { //Force instant sleep
 							player.sleepTimer = 100;
 						}
 					}
 				}
 
 				//Remove all effects
-				player.removePotionEffect(FATIGUE);
-				player.removePotionEffect(EXHAUSTION);
+				player.removePotionEffect(HFTools.FATIGUE);
+				player.removePotionEffect(HFTools.EXHAUSTION);
 				if (HFTools.RESTORE_HUNGER_ON_FAINTING) {
 					restoreHunger(player);
 				}
@@ -153,12 +146,12 @@ public class ToolHelper {
 		@SubscribeEvent
 		public void onWakeup(PlayerWakeUpEvent event) {
 			EntityPlayer player = event.getEntityPlayer();
-			if (player.world.getWorldTime() % TICKS_PER_DAY == 0) {
-				if (player.isPotionActive(EXHAUSTION)) {
-					player.removePotionEffect(EXHAUSTION);
+			if (player.world.getWorldTime() % HFCalendar.TICKS_PER_DAY == 0) {
+				if (player.isPotionActive(HFTools.EXHAUSTION)) {
+					player.removePotionEffect(HFTools.EXHAUSTION);
 				}
-				if (player.isPotionActive(FATIGUE)) {
-					player.removePotionEffect(FATIGUE);
+				if (player.isPotionActive(HFTools.FATIGUE)) {
+					player.removePotionEffect(HFTools.FATIGUE);
 				}
 				restoreHunger(player);
 			}

@@ -1,24 +1,37 @@
 package joshie.harvest.npcs.gift.init;
 
-import static joshie.harvest.api.npc.gift.GiftCategory.COOKING;
-import static joshie.harvest.api.npc.gift.GiftCategory.JUNK;
-import static joshie.harvest.cooking.HFCooking.INGREDIENTS;
-import static joshie.harvest.cooking.HFCooking.MEAL;
-
+import joshie.harvest.api.npc.gift.GiftCategory;
+import joshie.harvest.cooking.HFCooking;
 import joshie.harvest.cooking.item.ItemIngredients.Ingredient;
 import joshie.harvest.core.util.annotations.HFLoader;
 
 @HFLoader(priority = 0)
 public class HFGiftsCooking extends HFGiftsAbstract {
 	public static void init() {
-		assignGeneric(MEAL, COOKING); //Register all the meals the same
-		assignGeneric(INGREDIENTS.getStackFromEnum(Ingredient.CHOCOLATE), COOKING);
-		assignGeneric(INGREDIENTS.getStackFromEnum(Ingredient.DUMPLING_POWDER), JUNK);
-		assignGeneric(INGREDIENTS.getStackFromEnum(Ingredient.CURRY_POWDER), JUNK);
-		assignGeneric(INGREDIENTS.getStackFromEnum(Ingredient.WINE), COOKING);
-		assignGeneric(INGREDIENTS.getStackFromEnum(Ingredient.FLOUR), JUNK);
-		assignGeneric(INGREDIENTS.getStackFromEnum(Ingredient.OIL), JUNK);
-		assignGeneric(INGREDIENTS.getStackFromEnum(Ingredient.RICEBALL), JUNK);
-		assignGeneric(INGREDIENTS.getStackFromEnum(Ingredient.SALT), JUNK);
+		assignGeneric(HFCooking.MEAL, GiftCategory.COOKING); //Register all the meals the same
+		assignGeneric(
+				HFCooking.INGREDIENTS.getStackFromEnum(Ingredient.CHOCOLATE),
+				GiftCategory.COOKING);
+		assignGeneric(
+				HFCooking.INGREDIENTS.getStackFromEnum(Ingredient.DUMPLING_POWDER),
+				GiftCategory.JUNK);
+		assignGeneric(
+				HFCooking.INGREDIENTS.getStackFromEnum(Ingredient.CURRY_POWDER),
+				GiftCategory.JUNK);
+		assignGeneric(
+				HFCooking.INGREDIENTS.getStackFromEnum(Ingredient.WINE),
+				GiftCategory.COOKING);
+		assignGeneric(
+				HFCooking.INGREDIENTS.getStackFromEnum(Ingredient.FLOUR),
+				GiftCategory.JUNK);
+		assignGeneric(
+				HFCooking.INGREDIENTS.getStackFromEnum(Ingredient.OIL),
+				GiftCategory.JUNK);
+		assignGeneric(
+				HFCooking.INGREDIENTS.getStackFromEnum(Ingredient.RICEBALL),
+				GiftCategory.JUNK);
+		assignGeneric(
+				HFCooking.INGREDIENTS.getStackFromEnum(Ingredient.SALT),
+				GiftCategory.JUNK);
 	}
 }

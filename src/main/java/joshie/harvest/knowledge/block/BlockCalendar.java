@@ -1,7 +1,5 @@
 package joshie.harvest.knowledge.block;
 
-import static joshie.harvest.core.lib.HFModInfo.MODID;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +8,7 @@ import javax.annotation.Nullable;
 import joshie.harvest.HarvestFestival;
 import joshie.harvest.core.base.block.BlockHFBase;
 import joshie.harvest.core.handlers.GuiHandler;
+import joshie.harvest.core.lib.HFModInfo;
 import joshie.harvest.knowledge.HFKnowledge;
 import joshie.harvest.knowledge.item.ItemBook;
 import net.minecraft.block.Block;
@@ -154,7 +153,7 @@ public class BlockCalendar extends BlockHFBase<BlockCalendar> {
 	@Override
 	public BlockCalendar register(String name) {
 		setUnlocalizedName(name.replace("_", "."));
-		setRegistryName(new ResourceLocation(MODID, name));
+		setRegistryName(new ResourceLocation(HFModInfo.MODID, name));
 		GameData.register_impl(this);
 		return this;
 	}

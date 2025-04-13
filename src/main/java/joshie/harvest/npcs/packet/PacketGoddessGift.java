@@ -19,7 +19,7 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 public class PacketGoddessGift extends PenguinPacket {
 	private int npcID;
 	@Nonnull
-	private ItemStack stack;
+	private ItemStack stack = ItemStack.EMPTY;
 
 	public PacketGoddessGift() {}
 

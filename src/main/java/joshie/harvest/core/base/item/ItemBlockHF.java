@@ -1,10 +1,9 @@
 package joshie.harvest.core.base.item;
 
-import static joshie.harvest.core.lib.HFModInfo.MODID;
-
 import javax.annotation.Nonnull;
 import joshie.harvest.core.base.block.BlockHFBase;
 import joshie.harvest.core.base.block.BlockHFEnum;
+import joshie.harvest.core.lib.HFModInfo;
 import joshie.harvest.core.util.interfaces.ICreativeSorted;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -61,7 +60,7 @@ public class ItemBlockHF<B extends BlockHFBase> extends ItemBlock implements ICr
 
 	public void register(String name) {
 		setUnlocalizedName(name.replace("_", "."));
-		setRegistryName(new ResourceLocation(MODID, name));
+		setRegistryName(new ResourceLocation(HFModInfo.MODID, name));
 		GameData.register_impl(this);
 		if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) {
 			block.registerModels(this, name);

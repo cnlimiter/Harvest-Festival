@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
+import com.google.common.collect.ImmutableSet;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import joshie.harvest.api.core.ITiered;
@@ -385,7 +387,7 @@ public abstract class ItemTool<I extends ItemTool> extends ItemHFBase<I> impleme
 	@Override
 	@Nonnull
 	public Set<String> getToolClasses(@Nonnull ItemStack stack) {
-		return toolClass != null ? com.google.common.collect.ImmutableSet.of(toolClass) : super.getToolClasses(stack);
+		return toolClass != null ? ImmutableSet.of(toolClass) : super.getToolClasses(stack);
 	}
 
 	@Override

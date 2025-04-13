@@ -6,7 +6,6 @@ import javax.annotation.Nonnull;
 import joshie.harvest.api.HFApi;
 import joshie.harvest.core.HFTab;
 import joshie.harvest.core.helpers.TextHelper;
-import joshie.harvest.core.lib.CreativeSort;
 import joshie.harvest.core.util.interfaces.ICreativeSorted;
 import joshie.harvest.core.util.interfaces.ISellable;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -100,11 +99,6 @@ public abstract class ItemHFEnum<I extends ItemHFEnum, E extends Enum<E> & IStri
 		return TextHelper.translate(getUnlocalizedName(stack).replaceAll("(.)([A-Z])", "$1$2")
 				.toLowerCase(Locale.ENGLISH)
 				.replace("_", "."));
-	}
-
-	@Override
-	public int getSortValue(@Nonnull ItemStack stack) {
-		return CreativeSort.NONE;
 	}
 
 	public boolean shouldDisplayInCreative(E e) {

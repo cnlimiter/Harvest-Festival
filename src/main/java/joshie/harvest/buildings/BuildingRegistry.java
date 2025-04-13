@@ -1,7 +1,5 @@
 package joshie.harvest.buildings;
 
-import static joshie.harvest.buildings.HFBuildings.getGson;
-
 import java.util.HashMap;
 
 import javax.annotation.Nonnull;
@@ -39,12 +37,12 @@ public class BuildingRegistry implements IBuildingRegistry {
 	public HFTemplate getTemplateForBuilding(Building building) {
 		if (HFCore.DEBUG_MODE && building instanceof BuildingFestivalDebug) {
 			HFTemplate template = (
-					getGson().fromJson(
+					HFBuildings.getGson().fromJson(
 							ResourceLoader.getJSONResource(
 									HFBuildings.FESTIVAL_GROUNDS.getResource(),
 									"buildings"), HFTemplate.class));
 			HFTemplate festival = (
-					getGson().fromJson(
+					HFBuildings.getGson().fromJson(
 							ResourceLoader.getJSONResource(building.getResource(), "festivals"),
 							HFTemplate.class));
 			template.merge(festival);
@@ -53,6 +51,6 @@ public class BuildingRegistry implements IBuildingRegistry {
 
 		return instructions.computeIfAbsent(
 				building,
-				b -> (getGson().fromJson(ResourceLoader.getJSONResource(b.getResource(), "buildings"), HFTemplate.class)));
+				b -> (HFBuildings.getGson().fromJson(ResourceLoader.getJSONResource(b.getResource(), "buildings"), HFTemplate.class)));
 	}
 }

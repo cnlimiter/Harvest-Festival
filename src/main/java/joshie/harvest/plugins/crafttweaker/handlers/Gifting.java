@@ -1,8 +1,5 @@
 package joshie.harvest.plugins.crafttweaker.handlers;
 
-import static joshie.harvest.plugins.crafttweaker.CraftTweaker.asOre;
-import static joshie.harvest.plugins.crafttweaker.CraftTweaker.asStack;
-
 import crafttweaker.CraftTweakerAPI;
 import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IIngredient;
@@ -48,11 +45,11 @@ public class Gifting {
 
 		public Add(IIngredient ingredient, GiftCategory category) {
 			this.category = category;
-			String name = asOre(ingredient);
+			String name = CraftTweaker.asOre(ingredient);
 			if (name != null) {
 				this.object = Ore.of(name);
 			} else {
-				this.object = asStack(ingredient);
+				this.object = CraftTweaker.asStack(ingredient);
 			}
 		}
 

@@ -1,7 +1,5 @@
 package joshie.harvest.fishing.loot;
 
-import static joshie.harvest.core.lib.HFModInfo.MODID;
-
 import java.util.Random;
 
 import com.google.gson.JsonDeserializationContext;
@@ -9,6 +7,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 
 import javax.annotation.Nonnull;
+import joshie.harvest.core.lib.HFModInfo;
 import joshie.harvest.fishing.item.ItemFishingRod;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -39,7 +38,7 @@ public class ConditionTier implements LootCondition {
 
 	public static class Serializer extends LootCondition.Serializer<ConditionTier> {
 		public Serializer() {
-			super(new ResourceLocation(MODID, "tier"), ConditionTier.class);
+			super(new ResourceLocation(HFModInfo.MODID, "tier"), ConditionTier.class);
 		}
 
 		@Override

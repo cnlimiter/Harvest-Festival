@@ -1,11 +1,5 @@
 package joshie.harvest.mining.block;
 
-import static joshie.harvest.mining.block.BlockDirt.TextureStyle.BLANK;
-import static joshie.harvest.mining.block.BlockDirt.TextureStyle.HORIZONTAL;
-import static joshie.harvest.mining.block.BlockDirt.TextureStyle.INNER;
-import static joshie.harvest.mining.block.BlockDirt.TextureStyle.OUTER;
-import static joshie.harvest.mining.block.BlockDirt.TextureStyle.VERTICAL;
-
 import java.util.List;
 import java.util.Locale;
 
@@ -58,10 +52,10 @@ public class BlockDirt extends BlockHFBase<BlockDirt> {
 		super(Material.GROUND, HFTab.MINING);
 		setSoundType(SoundType.GROUND);
 		setDefaultState(getDefaultState()
-				.withProperty(NORTH_EAST, OUTER)
-				.withProperty(NORTH_WEST, OUTER)
-				.withProperty(SOUTH_EAST, OUTER)
-				.withProperty(SOUTH_WEST, OUTER));
+				.withProperty(NORTH_EAST, BlockDirt.TextureStyle.OUTER)
+				.withProperty(NORTH_WEST, BlockDirt.TextureStyle.OUTER)
+				.withProperty(SOUTH_EAST, BlockDirt.TextureStyle.OUTER)
+				.withProperty(SOUTH_WEST, BlockDirt.TextureStyle.OUTER));
 	}
 
 	@Override
@@ -110,24 +104,24 @@ public class BlockDirt extends BlockHFBase<BlockDirt> {
 
 	private TextureStyle getStateFromBoolean(boolean one, boolean two, boolean three) {
 		if (one && !two && !three) {
-			return VERTICAL;
+			return BlockDirt.TextureStyle.VERTICAL;
 		}
 		if (!one && two && !three) {
-			return HORIZONTAL;
+			return BlockDirt.TextureStyle.HORIZONTAL;
 		}
 		if (one && two && !three) {
-			return INNER;
+			return BlockDirt.TextureStyle.INNER;
 		}
 		if (!one && two) {
-			return HORIZONTAL;
+			return BlockDirt.TextureStyle.HORIZONTAL;
 		}
 		if (one && !two) {
-			return VERTICAL;
+			return BlockDirt.TextureStyle.VERTICAL;
 		}
 		if (one) {
-			return BLANK;
+			return BlockDirt.TextureStyle.BLANK;
 		}
-		return OUTER;
+		return BlockDirt.TextureStyle.OUTER;
 	}
 
 	@Override

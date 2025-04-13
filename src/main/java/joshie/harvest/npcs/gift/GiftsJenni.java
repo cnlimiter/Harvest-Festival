@@ -1,14 +1,7 @@
 package joshie.harvest.npcs.gift;
 
-import static joshie.harvest.api.npc.gift.GiftCategory.ART;
-import static joshie.harvest.api.npc.gift.GiftCategory.BUILDING;
-import static joshie.harvest.api.npc.gift.GiftCategory.JUNK;
-import static joshie.harvest.api.npc.gift.GiftCategory.MINERAL;
-import static joshie.harvest.api.npc.gift.GiftCategory.MONEY;
-import static joshie.harvest.api.npc.gift.GiftCategory.VEGETABLE;
-import static joshie.harvest.api.npc.gift.GiftCategory.WOOL;
-
 import joshie.harvest.api.core.Ore;
+import joshie.harvest.api.npc.gift.GiftCategory;
 import net.minecraft.init.Items;
 
 @SuppressWarnings("unused")
@@ -17,16 +10,16 @@ public class GiftsJenni extends Gifts {
 		stackRegistry.register(Items.CARROT_ON_A_STICK, Quality.AWESOME);
 		stackRegistry.register(Ore.of("cropCarrot"), Quality.AWESOME);
 		stackRegistry.register(Items.GOLDEN_CARROT, Quality.AWESOME);
-		categoryRegistry.put(ART, Quality.GOOD);
+		categoryRegistry.put(GiftCategory.ART, Quality.GOOD);
 		stackRegistry.register(Ore.of("cropOrange"), Quality.GOOD);
 		stackRegistry.register(Ore.of("cropPeach"), Quality.GOOD);
 		stackRegistry.register(Items.RABBIT_FOOT, Quality.GOOD);
-		categoryRegistry.put(WOOL, Quality.GOOD);
-		categoryRegistry.put(VEGETABLE, Quality.GOOD);
-		categoryRegistry.put(MONEY, Quality.DECENT);
-		categoryRegistry.put(JUNK, Quality.DISLIKE);
-		categoryRegistry.put(BUILDING, Quality.DISLIKE);
-		categoryRegistry.put(MINERAL, Quality.BAD);
+		categoryRegistry.put(GiftCategory.WOOL, Quality.GOOD);
+		categoryRegistry.put(GiftCategory.VEGETABLE, Quality.GOOD);
+		categoryRegistry.put(GiftCategory.MONEY, Quality.DECENT);
+		categoryRegistry.put(GiftCategory.JUNK, Quality.DISLIKE);
+		categoryRegistry.put(GiftCategory.BUILDING, Quality.DISLIKE);
+		categoryRegistry.put(GiftCategory.MINERAL, Quality.BAD);
 		stackRegistry.register(Items.FLINT, Quality.TERRIBLE);
 		stackRegistry.register(Ore.of("ingotIron"), Quality.TERRIBLE);
 		stackRegistry.register(Ore.of("ingotGold"), Quality.TERRIBLE);

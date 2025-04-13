@@ -1,9 +1,5 @@
 package joshie.harvest.quests.player.trade;
 
-import static joshie.harvest.core.helpers.InventoryHelper.ITEM_STACK;
-import static joshie.harvest.core.helpers.SpawnItemHelper.spawnXP;
-import static joshie.harvest.quests.Quests.DANIERU_MEET;
-
 import java.util.Set;
 
 import javax.annotation.Nonnull;
@@ -19,9 +15,11 @@ import joshie.harvest.calendar.CalendarHelper;
 import joshie.harvest.core.HFTrackers;
 import joshie.harvest.core.base.item.ItemTool;
 import joshie.harvest.core.helpers.InventoryHelper;
+import joshie.harvest.core.helpers.SpawnItemHelper;
 import joshie.harvest.mining.HFMining;
 import joshie.harvest.mining.item.ItemMaterial.Material;
 import joshie.harvest.npcs.HFNPCs;
+import joshie.harvest.quests.Quests;
 import joshie.harvest.quests.base.QuestTrade;
 import joshie.harvest.tools.HFTools;
 import net.minecraft.entity.EntityLiving;
@@ -45,7 +43,7 @@ public class QuestBlacksmithing extends QuestTrade {
 
 	@Override
 	public boolean canStartQuest(Set<Quest> active, Set<Quest> finished) {
-		return finished.contains(DANIERU_MEET);
+		return finished.contains(Quests.DANIERU_MEET);
 	}
 
 	@Override
@@ -168,7 +166,7 @@ public class QuestBlacksmithing extends QuestTrade {
 					return getLocalized("repair.gold", required);
 				}
 				ItemStack material = getRepairMaterial(broken);
-				if (InventoryHelper.hasInInventory(player, ITEM_STACK, material)) {
+				if (InventoryHelper.hasInInventory(player, InventoryHelper.ITEM_STACK, material)) {
 					return getLocalized("repair.start");
 				}
 
@@ -195,7 +193,8 @@ public class QuestBlacksmithing extends QuestTrade {
 				}
 
 				ItemStack material = new ItemStack(HFMining.MATERIALS, getRequired(holding), getMaterial(holding));
-				boolean hasMaterial = InventoryHelper.hasInInventory(player, ITEM_STACK, material, getRequired(holding));
+				boolean hasMaterial = InventoryHelper.hasInInventory(player,
+						InventoryHelper.ITEM_STACK, material, getRequired(holding));
 				if (!hasMaterial) {
 					return getLocalized("material", material.getCount(), material.getDisplayName());
 				}
@@ -234,7 +233,7 @@ public class QuestBlacksmithing extends QuestTrade {
 					return;
 				}
 				ItemStack material = getRepairMaterial(broken);
-				if (InventoryHelper.takeItemsInInventory(player, ITEM_STACK, material)) {
+				if (InventoryHelper.takeItemsInInventory(player, InventoryHelper.ITEM_STACK, material)) {
 					date = HFApi.calendar.getDate(player.world).copy();
 					tool = player.getHeldItemMainhand().copy();
 					tool.setItemDamage(0);
@@ -258,8 +257,7 @@ public class QuestBlacksmithing extends QuestTrade {
 					return;
 				}
 				if (InventoryHelper.takeItemsInInventory(
-						player,
-						ITEM_STACK,
+						player, InventoryHelper.ITEM_STACK,
 						new ItemStack(HFMining.MATERIALS, 1, getMaterial(holding)),
 						getRequired(holding))) {
 					date = HFApi.calendar.getDate(player.world).copy();
@@ -304,7 +302,7 @@ public class QuestBlacksmithing extends QuestTrade {
 	public void onQuestCompleted(EntityPlayer player) {
 		rewardItem(player, tool);
 		HFTrackers.getPlayerTrackerFromPlayer(player).getTracking().addAsObtained(tool);
-		spawnXP(player.world, (int) player.posX, (int) player.posY, (int) player.posZ, 5);
+		SpawnItemHelper.spawnXP(player.world, (int) player.posX, (int) player.posY, (int) player.posZ, 5);
 	}
 
 	@Override

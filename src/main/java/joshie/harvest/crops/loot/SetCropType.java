@@ -1,7 +1,5 @@
 package joshie.harvest.crops.loot;
 
-import static joshie.harvest.core.lib.HFModInfo.MODID;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -13,6 +11,7 @@ import com.google.gson.JsonSerializationContext;
 
 import javax.annotation.Nonnull;
 import joshie.harvest.api.crops.Crop;
+import joshie.harvest.core.lib.HFModInfo;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.loot.LootContext;
@@ -39,7 +38,7 @@ public class SetCropType extends LootFunction {
 		if (crop.equals("randomSeed")) {
 			return random(false);
 		}
-		ResourceLocation resource = crop.contains(":") ? new ResourceLocation(crop) : new ResourceLocation(MODID, crop);
+		ResourceLocation resource = crop.contains(":") ? new ResourceLocation(crop) : new ResourceLocation(HFModInfo.MODID, crop);
 		Crop theCrop = Crop.REGISTRY.get(resource);
 		return theCrop.getCropStack(stack.getCount());
 	}

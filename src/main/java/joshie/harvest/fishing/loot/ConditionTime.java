@@ -1,7 +1,5 @@
 package joshie.harvest.fishing.loot;
 
-import static joshie.harvest.core.lib.HFModInfo.MODID;
-
 import java.util.Random;
 
 import com.google.gson.JsonDeserializationContext;
@@ -10,6 +8,7 @@ import com.google.gson.JsonSerializationContext;
 
 import javax.annotation.Nonnull;
 import joshie.harvest.calendar.CalendarHelper;
+import joshie.harvest.core.lib.HFModInfo;
 import net.minecraft.util.JsonUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.loot.LootContext;
@@ -31,7 +30,7 @@ public class ConditionTime implements LootCondition {
 
 	public static class Serializer extends LootCondition.Serializer<ConditionTime> {
 		public Serializer() {
-			super(new ResourceLocation(MODID, "time"), ConditionTime.class);
+			super(new ResourceLocation(HFModInfo.MODID, "time"), ConditionTime.class);
 		}
 
 		@Override

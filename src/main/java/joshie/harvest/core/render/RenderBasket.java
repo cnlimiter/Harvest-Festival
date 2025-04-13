@@ -28,6 +28,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -151,7 +152,7 @@ public class RenderBasket extends Render<EntityBasket> {
 					GlStateManager.translate(0, 0, f6);
 				}
 
-				ibakedmodel = net.minecraftforge.client.ForgeHooksClient.handleCameraTransforms(
+				ibakedmodel = ForgeHooksClient.handleCameraTransforms(
 						ibakedmodel,
 						ItemCameraTransforms.TransformType.GROUND,
 						false);
@@ -166,7 +167,7 @@ public class RenderBasket extends Render<EntityBasket> {
 					GlStateManager.translate(f8, f10, 0.0F);
 				}
 
-				ibakedmodel = net.minecraftforge.client.ForgeHooksClient.handleCameraTransforms(
+				ibakedmodel = ForgeHooksClient.handleCameraTransforms(
 						ibakedmodel,
 						ItemCameraTransforms.TransformType.GROUND,
 						false);

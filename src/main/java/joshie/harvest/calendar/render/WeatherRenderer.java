@@ -1,7 +1,5 @@
 package joshie.harvest.calendar.render;
 
-import static net.minecraft.client.renderer.EntityRenderer.SNOW_TEXTURES;
-
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.calendar.Weather;
 import net.minecraft.client.Minecraft;
@@ -137,7 +135,7 @@ public class WeatherRenderer extends IRenderHandler {
 									}
 
 									j1 = 1;
-									mc.getTextureManager().bindTexture(SNOW_TEXTURES);
+									mc.getTextureManager().bindTexture(EntityRenderer.SNOW_TEXTURES);
 									vertexbuffer.begin(7, DefaultVertexFormats.PARTICLE_POSITION_TEX_COLOR_LMAP);
 								}
 

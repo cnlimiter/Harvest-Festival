@@ -1,7 +1,5 @@
 package joshie.harvest.core.helpers;
 
-import static joshie.harvest.core.lib.HFModInfo.MODID;
-
 import java.util.Random;
 
 import org.apache.commons.lang3.tuple.Triple;
@@ -10,6 +8,7 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 
 import joshie.harvest.api.npc.NPC;
+import joshie.harvest.core.lib.HFModInfo;
 import joshie.harvest.npcs.entity.EntityNPC;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.translation.I18n;
@@ -28,7 +27,7 @@ public class TextHelper {
 			return localize(key);
 		} else {
 			String generic = npc.getGeneralLocalizationKey() + text;
-			return canTranslate(generic) ? localize(generic) : format(MODID + ".npc.error", key, generic);
+			return canTranslate(generic) ? localize(generic) : format(HFModInfo.MODID + ".npc.error", key, generic);
 		}
 	}
 
@@ -64,7 +63,7 @@ public class TextHelper {
 
 	@SuppressWarnings("deprecation")
 	public static String formatHF(String key, Object... data) {
-		return I18n.translateToLocalFormatted(MODID + "." + key, data);
+		return I18n.translateToLocalFormatted(HFModInfo.MODID + "." + key, data);
 	}
 
 	@SuppressWarnings("deprecation")
@@ -79,7 +78,7 @@ public class TextHelper {
 
 	@SuppressWarnings("deprecation")
 	public static String translate(String s) {
-		return I18n.translateToLocal(MODID + "." + s);
+		return I18n.translateToLocal(HFModInfo.MODID + "." + s);
 	}
 
 	@SuppressWarnings("deprecation")

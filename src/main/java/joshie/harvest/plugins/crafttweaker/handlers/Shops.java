@@ -1,8 +1,5 @@
 package joshie.harvest.plugins.crafttweaker.handlers;
 
-import static joshie.harvest.core.lib.HFModInfo.MODID;
-import static joshie.harvest.plugins.crafttweaker.CraftTweaker.asStack;
-
 import java.util.Locale;
 
 import crafttweaker.CraftTweakerAPI;
@@ -18,6 +15,7 @@ import joshie.harvest.api.npc.NPC;
 import joshie.harvest.api.shops.IPurchasable;
 import joshie.harvest.api.shops.IRequirement;
 import joshie.harvest.api.shops.Shop;
+import joshie.harvest.core.lib.HFModInfo;
 import joshie.harvest.plugins.crafttweaker.CraftTweaker;
 import joshie.harvest.plugins.crafttweaker.wrappers.GreetingShopWrapper;
 import joshie.harvest.plugins.crafttweaker.wrappers.PurchasableWrapper;
@@ -41,7 +39,7 @@ public class Shops {
 	@ZenMethod
 	@SuppressWarnings("unused")
 	public static void addShopToNPC(String npc, String shop, String greeting, String openinghours, @Optional String hoursText) {
-		NPC theNPC = NPC.REGISTRY.get(new ResourceLocation(MODID, npc));
+		NPC theNPC = NPC.REGISTRY.get(new ResourceLocation(HFModInfo.MODID, npc));
 		if (theNPC == null) {
 			CraftTweaker.logError(String.format("No NPC with the id %s could be found. Use /hf npclist for a list of ids", npc));
 		} else if (theNPC.isShopkeeper()) {
@@ -126,7 +124,7 @@ public class Shops {
 		if (theShop == null) {
 			CraftTweaker.logError(String.format("No shop with the id %s could be found. Use /hf shoplist for a list of ids", shop));
 		}
-		CraftTweakerAPI.apply(new AddPurchasable(theShop, asStack(sellable), cost, CraftTweaker.asRequirements(materials)));
+		CraftTweakerAPI.apply(new AddPurchasable(theShop, CraftTweaker.asStack(sellable), cost, CraftTweaker.asRequirements(materials)));
 	}
 
 	private static class AddPurchasable implements IAction {
@@ -160,7 +158,7 @@ public class Shops {
 	@SuppressWarnings("unused, deprecation")
 	@Deprecated //TODO: Remove in 0.7+
 	public static void addPurchasableToBuilder(IItemStack sellable, int wood, int stone, long cost) {
-		CraftTweakerAPI.apply(new AddBuilderPurchasable(asStack(sellable), wood, stone, cost));
+		CraftTweakerAPI.apply(new AddBuilderPurchasable(CraftTweaker.asStack(sellable), wood, stone, cost));
 	}
 
 	@Deprecated //TODO: Remove in 0.7+

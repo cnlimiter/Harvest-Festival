@@ -1,9 +1,5 @@
 package joshie.harvest.animals.entity;
 
-import static joshie.harvest.api.animals.IAnimalHandler.ANIMAL_STATS_CAPABILITY;
-import static joshie.harvest.core.helpers.InventoryHelper.ITEM;
-import static joshie.harvest.core.helpers.InventoryHelper.ITEM_STACK;
-
 import io.netty.buffer.ByteBuf;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -15,7 +11,9 @@ import joshie.harvest.api.HFApi;
 import joshie.harvest.api.animals.AnimalAction;
 import joshie.harvest.api.animals.AnimalStats;
 import joshie.harvest.api.animals.AnimalTest;
+import joshie.harvest.api.animals.IAnimalHandler;
 import joshie.harvest.api.animals.IAnimalHandler.AnimalType;
+import joshie.harvest.core.helpers.InventoryHelper;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIFollowParent;
@@ -88,7 +86,7 @@ public class EntityHarvestCow extends EntityCow implements IEntityAdditionalSpaw
 			return false;
 		}
 		ItemStack stack = player.getHeldItem(hand);
-		boolean special = ITEM_STACK.matchesAny(stack, getStacks()) || ITEM.matchesAny(stack, HFAnimals.TREATS);
+		boolean special = InventoryHelper.ITEM_STACK.matchesAny(stack, getStacks()) || InventoryHelper.ITEM.matchesAny(stack, HFAnimals.TREATS);
 		if (stack.isEmpty() || !special) {
 			if (!stats.performTest(AnimalTest.BEEN_LOVED)) {
 				stats.performAction(world, ItemStack.EMPTY, AnimalAction.PETTED); //Love <3
@@ -115,14 +113,14 @@ public class EntityHarvestCow extends EntityCow implements IEntityAdditionalSpaw
 	@Override
 	@SuppressWarnings("ConstantConditions")
 	public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
-		return capability == ANIMAL_STATS_CAPABILITY || super.hasCapability(capability, facing);
+		return capability == IAnimalHandler.ANIMAL_STATS_CAPABILITY || super.hasCapability(capability, facing);
 	}
 
 	@Override
 	@SuppressWarnings("unchecked, ConstantConditions")
 	@Nonnull
 	public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
-		return capability == ANIMAL_STATS_CAPABILITY ? (T) stats : super.getCapability(capability, facing);
+		return capability == IAnimalHandler.ANIMAL_STATS_CAPABILITY ? (T) stats : super.getCapability(capability, facing);
 	}
 
 	@Override

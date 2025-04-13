@@ -1,9 +1,8 @@
 package joshie.harvest.buildings.placeable.blocks;
 
-import static joshie.harvest.core.lib.HFModInfo.MODID;
-
 import com.google.gson.annotations.Expose;
 
+import joshie.harvest.core.lib.HFModInfo;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
@@ -21,7 +20,7 @@ public class PlaceableChest extends PlaceableBlock {
 
 	public PlaceableChest(String name, IBlockState state, int x, int y, int z) {
 		super(state, x, y, z);
-		this.chestType = new ResourceLocation(MODID, name);
+		this.chestType = new ResourceLocation(HFModInfo.MODID, name);
 	}
 
 	@Override

@@ -1,10 +1,5 @@
 package joshie.harvest.buildings;
 
-import static joshie.harvest.core.helpers.ConfigHelper.getBoolean;
-import static joshie.harvest.core.helpers.ConfigHelper.getInteger;
-import static joshie.harvest.core.lib.LoadOrder.HFBUILDING;
-import static joshie.harvest.npcs.HFNPCs.CLOCKMAKER_CHILD;
-
 import java.lang.reflect.InvocationTargetException;
 
 import org.apache.logging.log4j.Level;
@@ -39,6 +34,8 @@ import joshie.harvest.buildings.special.SpecialRuleFestivals;
 import joshie.harvest.core.HFCore;
 import joshie.harvest.core.base.render.BuildingDefinition;
 import joshie.harvest.core.base.render.MeshIdentical;
+import joshie.harvest.core.helpers.ConfigHelper;
+import joshie.harvest.core.lib.LoadOrder;
 import joshie.harvest.core.util.HFTemplate;
 import joshie.harvest.core.util.annotations.HFLoader;
 import joshie.harvest.npcs.HFNPCs;
@@ -57,7 +54,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.registries.IForgeRegistryEntry.Impl;
 
-@HFLoader(priority = HFBUILDING)
+@HFLoader(priority = LoadOrder.HFBUILDING)
 @EventBusSubscriber(Side.CLIENT)
 @SuppressWarnings("unchecked, unused")
 public class HFBuildings {
@@ -77,8 +74,7 @@ public class HFBuildings {
 			HFNPCs.FLOWER_GIRL).setOffset(3, -1, 8);
 	public static final Building CHURCH = registerBuilding("church").setSpecialRules(new SpecialRuleChurch()).setOffset(6, -1, 13);
 	public static final Building CLOCKMAKER = registerBuilding("clockmaker").setRequirements("festivals").setInhabitants(
-			HFNPCs.CLOCKMAKER,
-			CLOCKMAKER_CHILD).setOffset(3, -1, 10);
+			HFNPCs.CLOCKMAKER, HFNPCs.CLOCKMAKER_CHILD).setOffset(3, -1, 10);
 	public static final Building FISHING_HOLE = registerBuilding("fishing_hole").setRequirements("fishing_hut").setOffset(5, -5, 12);
 	public static final Building FISHING_HUT = registerBuilding("fishing_hut").setRequirements("barn", "poultry_farm")
 			.setInhabitants(HFNPCs.FISHERMAN)
@@ -207,9 +203,9 @@ public class HFBuildings {
 	public static int BUILDING_SPEED;
 
 	public static void configure() {
-		FULL_BUILDING_RENDER = getBoolean("Use Full Building Render", true);
-		CHEAT_BUILDINGS = getBoolean("Use Cheat Buildings", false);
-		ENABLE_DEMOLITION = getBoolean("Enable demolition", true);
-		BUILDING_SPEED = getInteger("Building Speed", 1);
+		FULL_BUILDING_RENDER = ConfigHelper.getBoolean("Use Full Building Render", true);
+		CHEAT_BUILDINGS = ConfigHelper.getBoolean("Use Cheat Buildings", false);
+		ENABLE_DEMOLITION = ConfigHelper.getBoolean("Enable demolition", true);
+		BUILDING_SPEED = ConfigHelper.getInteger("Building Speed", 1);
 	}
 }

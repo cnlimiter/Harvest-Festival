@@ -1,8 +1,5 @@
 package joshie.harvest.crops.item;
 
-import static joshie.harvest.core.lib.HFModInfo.MODID;
-import static net.minecraft.init.Blocks.FARMLAND;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,12 +11,14 @@ import joshie.harvest.api.trees.Tree;
 import joshie.harvest.core.HFTab;
 import joshie.harvest.core.helpers.TextHelper;
 import joshie.harvest.core.lib.CreativeSort;
+import joshie.harvest.core.lib.HFModInfo;
 import joshie.harvest.core.util.interfaces.ICreativeSorted;
 import joshie.harvest.crops.HFCrops;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemSeeds;
 import net.minecraft.item.ItemStack;
@@ -38,7 +37,7 @@ import net.minecraftforge.registries.GameData;
 
 public class ItemHFSeeds extends ItemSeeds implements ICreativeSorted {
 	public ItemHFSeeds() {
-		super(HFCrops.CROPS, FARMLAND);
+		super(HFCrops.CROPS, Blocks.FARMLAND);
 		setCreativeTab(HFTab.FARMING);
 	}
 
@@ -164,7 +163,7 @@ public class ItemHFSeeds extends ItemSeeds implements ICreativeSorted {
 
 	public ItemHFSeeds register(String name) {
 		setUnlocalizedName(name.replace("_", "."));
-		setRegistryName(new ResourceLocation(MODID, name));
+		setRegistryName(new ResourceLocation(HFModInfo.MODID, name));
 		GameData.register_impl(this);
 		return this;
 	}

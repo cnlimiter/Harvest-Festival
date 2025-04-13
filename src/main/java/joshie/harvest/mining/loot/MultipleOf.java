@@ -1,12 +1,11 @@
 package joshie.harvest.mining.loot;
 
-import static joshie.harvest.core.lib.HFModInfo.MODID;
-
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 
 import javax.annotation.Nonnull;
+import joshie.harvest.core.lib.HFModInfo;
 import net.minecraft.util.JsonUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.loot.conditions.LootCondition;
@@ -30,7 +29,7 @@ public class MultipleOf extends FloorCondition {
 
 	public static class Serializer extends LootCondition.Serializer<MultipleOf> {
 		public Serializer() {
-			super(new ResourceLocation(MODID, "multiple"), MultipleOf.class);
+			super(new ResourceLocation(HFModInfo.MODID, "multiple"), MultipleOf.class);
 		}
 
 		@Override

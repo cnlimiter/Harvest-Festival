@@ -1,8 +1,5 @@
 package joshie.harvest.fishing.loot;
 
-import static joshie.harvest.core.registry.ShippingRegistry.SELL_VALUE;
-import static joshie.harvest.fishing.item.ItemFish.SIZE;
-
 import java.util.Random;
 
 import com.google.gson.JsonDeserializationContext;
@@ -10,7 +7,9 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 
 import javax.annotation.Nonnull;
+import joshie.harvest.core.registry.ShippingRegistry;
 import joshie.harvest.fishing.HFFishing;
+import joshie.harvest.fishing.item.ItemFish;
 import joshie.harvest.fishing.item.ItemFishingRod;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -55,8 +54,8 @@ public class SetWeight extends LootFunction {
 			size = min + rand.nextInt(1 + (max - min));
 		}
 		double length = HFFishing.FISH.getLengthFromSizeOfFish(stack, size);
-		stack.getTagCompound().setDouble(SIZE, length);
-		stack.getTagCompound().setLong(SELL_VALUE, HFFishing.FISH.getEnumFromStack(stack).getSellValue(length));
+		stack.getTagCompound().setDouble(ItemFish.SIZE, length);
+		stack.getTagCompound().setLong(ShippingRegistry.SELL_VALUE, HFFishing.FISH.getEnumFromStack(stack).getSellValue(length));
 		return stack;
 	}
 

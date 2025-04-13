@@ -1,12 +1,5 @@
 package joshie.harvest.core.helpers;
 
-import static joshie.harvest.core.helpers.InventoryHelper.SearchType.BUCKET;
-import static joshie.harvest.core.helpers.InventoryHelper.SearchType.FLOWER;
-import static joshie.harvest.core.helpers.InventoryHelper.SearchType.HOE;
-import static joshie.harvest.core.helpers.InventoryHelper.SearchType.PICKAXE;
-import static joshie.harvest.core.helpers.InventoryHelper.SearchType.SHEARS;
-import static joshie.harvest.core.helpers.InventoryHelper.SearchType.WOOL;
-
 import javax.annotation.Nonnull;
 import joshie.harvest.tools.ToolHelper;
 import net.minecraft.entity.player.EntityPlayer;
@@ -50,7 +43,7 @@ public class InventoryHelper {
 	public static final Matcher<SearchType> SPECIAL = new Matcher<SearchType>() {
 		@Override
 		public boolean matches(@Nonnull ItemStack stack, SearchType type) {
-			if (type.equals(FLOWER)) {
+			if (type.equals(InventoryHelper.SearchType.FLOWER)) {
 				if (stack.getItem() == Item.getItemFromBlock(Blocks.RED_FLOWER) ||
 						stack.getItem() == Item.getItemFromBlock(Blocks.YELLOW_FLOWER)) {
 					return true;
@@ -63,15 +56,15 @@ public class InventoryHelper {
 
 					return false;
 				}
-			} else if (type.equals(HOE)) {
+			} else if (type.equals(InventoryHelper.SearchType.HOE)) {
 				return stack.getItem() instanceof ItemHoe;
-			} else if (type.equals(BUCKET)) {
+			} else if (type.equals(InventoryHelper.SearchType.BUCKET)) {
 				return stack.getItem() instanceof ItemBucket;
-			} else if (type.equals(SHEARS)) {
+			} else if (type.equals(InventoryHelper.SearchType.SHEARS)) {
 				return stack.getItem() instanceof ItemShears;
-			} else if (type.equals(WOOL)) {
+			} else if (type.equals(InventoryHelper.SearchType.WOOL)) {
 				return ToolHelper.isWool(stack);
-			} else if (type.equals(PICKAXE)) {
+			} else if (type.equals(InventoryHelper.SearchType.PICKAXE)) {
 				return stack.getItem() instanceof ItemPickaxe;
 			}
 

@@ -1,9 +1,5 @@
 package joshie.harvest.cooking.render;
 
-import static net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType.FIXED;
-import static net.minecraft.client.renderer.texture.TextureMap.LOCATION_BLOCKS_TEXTURE;
-import static net.minecraft.client.renderer.vertex.DefaultVertexFormats.POSITION_TEX;
-
 import java.util.List;
 
 import org.lwjgl.opengl.GL11;
@@ -18,8 +14,11 @@ import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -87,7 +86,7 @@ public abstract class SpecialRendererCookware<T extends TileCooking> extends Til
 		translateIngredient(stack.getItem() instanceof ItemBlock, position, rotation, offset1, offset2);
 		GlStateManager.blendFunc(GL11.GL_CONSTANT_ALPHA, GL11.GL_ONE_MINUS_CONSTANT_ALPHA);
 		GL14.glBlendColor(1F, 1F, 1F, 1F);
-		MINECRAFT.getRenderItem().renderItem(stack, FIXED);
+		MINECRAFT.getRenderItem().renderItem(stack, ItemCameraTransforms.TransformType.FIXED);
 		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		GlStateManager.disableBlend();
 		RenderHelper.enableStandardItemLighting();
@@ -109,7 +108,7 @@ public abstract class SpecialRendererCookware<T extends TileCooking> extends Til
 		translateResult(t, stack.getItem() instanceof ItemBlock);
 		GlStateManager.blendFunc(GL11.GL_CONSTANT_ALPHA, GL11.GL_ONE_MINUS_CONSTANT_ALPHA);
 		GL14.glBlendColor(1F, 1F, 1F, 1F);
-		MINECRAFT.getRenderItem().renderItem(stack, FIXED);
+		MINECRAFT.getRenderItem().renderItem(stack, ItemCameraTransforms.TransformType.FIXED);
 		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		GlStateManager.disableBlend();
 		RenderHelper.enableStandardItemLighting();
@@ -127,13 +126,13 @@ public abstract class SpecialRendererCookware<T extends TileCooking> extends Til
 		BufferBuilder vb = tessellator.getBuffer();
 		TextureAtlasSprite sprite = MINECRAFT.getTextureMapBlocks().getTextureExtry(fluid.toString());
 		if (sprite != null) {
-			MINECRAFT.renderEngine.bindTexture(LOCATION_BLOCKS_TEXTURE);
+			MINECRAFT.renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 			double uMin = sprite.getMinU();
 			double uMax = sprite.getMaxU();
 			double vMin = sprite.getMinV();
 			double vMax = sprite.getMaxV();
 
-			vb.begin(7, POSITION_TEX);
+			vb.begin(7, DefaultVertexFormats.POSITION_TEX);
 			vb.pos(size / 2f, 0, size / 2f).tex(uMax, vMax).endVertex();
 			vb.pos(size / 2f, 0, -size / 2f).tex(uMax, vMin).endVertex();
 			vb.pos(-size / 2f, 0, -size / 2f).tex(uMin, vMin).endVertex();
@@ -158,7 +157,7 @@ public abstract class SpecialRendererCookware<T extends TileCooking> extends Til
 		BufferBuilder vb = tessellator.getBuffer();
 		TextureAtlasSprite sprite = MINECRAFT.getTextureMapBlocks().getTextureExtry(fluid.toString());
 		if (sprite != null) {
-			MINECRAFT.renderEngine.bindTexture(LOCATION_BLOCKS_TEXTURE);
+			MINECRAFT.renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 			double uMin = sprite.getMinU();
 			double uMax = sprite.getMaxU();
 			double vMin = sprite.getMinV();
@@ -166,7 +165,7 @@ public abstract class SpecialRendererCookware<T extends TileCooking> extends Til
 
 			//Draw Top
 			//
-			vb.begin(7, POSITION_TEX);
+			vb.begin(7, DefaultVertexFormats.POSITION_TEX);
 			vb.pos(size / 2f, 0, size / 2f).tex(uMax, vMax).endVertex();
 			vb.pos(size / 2f, 0, -size / 2f).tex(uMax, vMin).endVertex();
 			vb.pos(-size / 2f, 0, -size / 2f).tex(uMin, vMin).endVertex();
@@ -174,7 +173,7 @@ public abstract class SpecialRendererCookware<T extends TileCooking> extends Til
 			tessellator.draw();
 
 			//Draw Bottom
-			vb.begin(7, POSITION_TEX);
+			vb.begin(7, DefaultVertexFormats.POSITION_TEX);
 			vb.pos(size / 2f, -size / 2f, -size / 2f).tex(uMax, vMax).endVertex();//Top Right
 			vb.pos(size / 2f, -size / 2f, size / 2f).tex(uMax, vMin).endVertex(); //Top Left
 			vb.pos(-size / 2f, -size / 2f, size / 2f).tex(uMin, vMin).endVertex(); //Bottom Left
@@ -182,7 +181,7 @@ public abstract class SpecialRendererCookware<T extends TileCooking> extends Til
 			tessellator.draw();
 
 			//Draw Side 1
-			vb.begin(7, POSITION_TEX);
+			vb.begin(7, DefaultVertexFormats.POSITION_TEX);
 			vb.pos(-size / 2f, 0, size / 2f).tex(uMax, vMax).endVertex();
 			vb.pos(-size / 2f, 0, -size / 2f).tex(uMax, vMin).endVertex();
 			vb.pos(-size / 2f, -size / 2f, -size / 2f).tex(uMin, vMin).endVertex();
@@ -190,7 +189,7 @@ public abstract class SpecialRendererCookware<T extends TileCooking> extends Til
 			tessellator.draw();
 
 			//Draw Side 2
-			vb.begin(7, POSITION_TEX);
+			vb.begin(7, DefaultVertexFormats.POSITION_TEX);
 			vb.pos(size / 2f, 0, -size / 2f).tex(uMax, vMax).endVertex();
 			vb.pos(size / 2f, 0, size / 2f).tex(uMax, vMin).endVertex();
 			vb.pos(size / 2f, -size / 2f, size / 2f).tex(uMin, vMin).endVertex();
@@ -198,7 +197,7 @@ public abstract class SpecialRendererCookware<T extends TileCooking> extends Til
 			tessellator.draw();
 
 			//Draw Side 3
-			vb.begin(7, POSITION_TEX);
+			vb.begin(7, DefaultVertexFormats.POSITION_TEX);
 			vb.pos(size / 2f, 0, size / 2f).tex(uMax, vMax).endVertex(); // Top Right
 			vb.pos(-size / 2f, 0, size / 2f).tex(uMax, vMin).endVertex(); //Top Left
 			vb.pos(-size / 2f, -size / 2f, size / 2f).tex(uMin, vMin).endVertex(); //Bottom Left
@@ -206,7 +205,7 @@ public abstract class SpecialRendererCookware<T extends TileCooking> extends Til
 			tessellator.draw();
 
 			//Draw Side 2
-			vb.begin(7, POSITION_TEX);
+			vb.begin(7, DefaultVertexFormats.POSITION_TEX);
 			vb.pos(-size / 2f, 0, -size / 2f).tex(uMax, vMax).endVertex(); //Top Right
 			vb.pos(size / 2f, 0, -size / 2f).tex(uMax, vMin).endVertex(); //Top Left
 			vb.pos(size / 2f, -size / 2f, -size / 2f).tex(uMin, vMin).endVertex(); //Bottom Left

@@ -1,14 +1,9 @@
 package joshie.harvest.quests.town.building;
 
-import static joshie.harvest.npcs.HFNPCs.GODDESS;
-
-import java.util.Set;
-
 import javax.annotation.Nonnull;
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.npc.NPCEntity;
 import joshie.harvest.api.quests.HFQuest;
-import joshie.harvest.api.quests.Quest;
 import joshie.harvest.api.town.Town;
 import joshie.harvest.buildings.HFBuildings;
 import joshie.harvest.crops.HFCrops;
@@ -23,12 +18,7 @@ public class QuestGoddessPond extends QuestTown {
 	private static final ItemStack BUILDING = HFBuildings.GODDESS_POND.getSpawner();
 
 	public QuestGoddessPond() {
-		setNPCs(GODDESS);
-	}
-
-	@Override
-	public boolean canStartQuest(Set<Quest> active, Set<Quest> finished) {
-		return true;
+		setNPCs(HFNPCs.GODDESS);
 	}
 
 	@Override

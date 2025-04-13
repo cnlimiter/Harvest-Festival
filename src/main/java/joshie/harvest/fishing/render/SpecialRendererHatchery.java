@@ -17,7 +17,7 @@ public class SpecialRendererHatchery extends TileSpecialRendererItem<TileHatcher
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(x, y, z);
 		List<ItemStack> fish = tile.getFish();
-		if (fish.size() > 0) {
+		if (!fish.isEmpty()) {
 			for (int i = 0; i < fish.size(); i++) {
 				renderItem(fish.get(i), tile.render, i);
 			}

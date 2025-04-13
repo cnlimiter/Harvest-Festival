@@ -1,9 +1,8 @@
 package joshie.harvest.knowledge.gui.stats;
 
-import static joshie.harvest.api.core.MatchType.PREFIX;
-
 import javax.annotation.Nonnull;
 import joshie.harvest.api.cooking.Recipe;
+import joshie.harvest.api.core.MatchType;
 import joshie.harvest.api.core.Ore;
 import joshie.harvest.core.util.holders.HolderRegistrySet;
 import joshie.harvest.fishing.HFFishing;
@@ -24,8 +23,8 @@ public class CollectionHelper {
 		}
 
 		ORE.register(HFMining.MATERIALS);
-		ORE.register(Ore.of("ore").setType(PREFIX));
-		ORE.register(Ore.of("gem").setType(PREFIX));
+		ORE.register(Ore.of("ore").setType(MatchType.PREFIX));
+		ORE.register(Ore.of("gem").setType(MatchType.PREFIX));
 	}
 
 	public static boolean isInFishCollection(@Nonnull ItemStack stack) {

@@ -1,37 +1,33 @@
 package joshie.harvest.npcs.gift.init;
 
-import static joshie.harvest.api.npc.gift.GiftCategory.GEM;
-import static joshie.harvest.api.npc.gift.GiftCategory.JUNK;
-import static joshie.harvest.api.npc.gift.GiftCategory.MINERAL;
-import static joshie.harvest.api.npc.gift.GiftCategory.MONEY;
-import static joshie.harvest.mining.HFMining.MATERIALS;
-
+import joshie.harvest.api.npc.gift.GiftCategory;
 import joshie.harvest.core.util.annotations.HFLoader;
+import joshie.harvest.mining.HFMining;
 import joshie.harvest.mining.item.ItemMaterial.Material;
 
 @HFLoader(priority = 0)
 public class HFGiftsMining extends HFGiftsAbstract {
 	public static void init() {
-		assignGeneric(MATERIALS.getStackFromEnum(Material.JUNK), JUNK);
-		assignGeneric(MATERIALS.getStackFromEnum(Material.SILVER), MINERAL);
-		assignGeneric(MATERIALS.getStackFromEnum(Material.MYSTRIL), MINERAL);
-		assignGeneric(MATERIALS.getStackFromEnum(Material.GOLD), MINERAL);
-		assignGeneric(MATERIALS.getStackFromEnum(Material.COPPER), MINERAL);
-		assignGeneric(MATERIALS.getStackFromEnum(Material.MYTHIC), MINERAL);
-		assignGeneric(MATERIALS.getStackFromEnum(Material.ADAMANTITE), GEM);
-		assignGeneric(MATERIALS.getStackFromEnum(Material.AGATE), GEM);
-		assignGeneric(MATERIALS.getStackFromEnum(Material.ALEXANDRITE), GEM);
-		assignGeneric(MATERIALS.getStackFromEnum(Material.AMETHYST), GEM);
-		assignGeneric(MATERIALS.getStackFromEnum(Material.FLUORITE), GEM);
-		assignGeneric(MATERIALS.getStackFromEnum(Material.MOON_STONE), GEM);
-		assignGeneric(MATERIALS.getStackFromEnum(Material.ORICHALC), GEM);
-		assignGeneric(MATERIALS.getStackFromEnum(Material.PERIDOT), GEM);
-		assignGeneric(MATERIALS.getStackFromEnum(Material.PINK_DIAMOND), GEM);
-		assignGeneric(MATERIALS.getStackFromEnum(Material.RUBY), GEM);
-		assignGeneric(MATERIALS.getStackFromEnum(Material.SAND_ROSE), GEM);
-		assignGeneric(MATERIALS.getStackFromEnum(Material.TOPAZ), GEM);
-		assignGeneric(MATERIALS.getStackFromEnum(Material.COIN_COPPER), MONEY);
-		assignGeneric(MATERIALS.getStackFromEnum(Material.COIN_SILVER), MONEY);
-		assignGeneric(MATERIALS.getStackFromEnum(Material.COIN_GOLD), MONEY);
+		assignGeneric(HFMining.MATERIALS.getStackFromEnum(Material.JUNK), GiftCategory.JUNK);
+		assignGeneric(HFMining.MATERIALS.getStackFromEnum(Material.SILVER), GiftCategory.MINERAL);
+		assignGeneric(HFMining.MATERIALS.getStackFromEnum(Material.MYSTRIL), GiftCategory.MINERAL);
+		assignGeneric(HFMining.MATERIALS.getStackFromEnum(Material.GOLD), GiftCategory.MINERAL);
+		assignGeneric(HFMining.MATERIALS.getStackFromEnum(Material.COPPER), GiftCategory.MINERAL);
+		assignGeneric(HFMining.MATERIALS.getStackFromEnum(Material.MYTHIC), GiftCategory.MINERAL);
+		assignGeneric(HFMining.MATERIALS.getStackFromEnum(Material.ADAMANTITE), GiftCategory.GEM);
+		assignGeneric(HFMining.MATERIALS.getStackFromEnum(Material.AGATE), GiftCategory.GEM);
+		assignGeneric(HFMining.MATERIALS.getStackFromEnum(Material.ALEXANDRITE), GiftCategory.GEM);
+		assignGeneric(HFMining.MATERIALS.getStackFromEnum(Material.AMETHYST), GiftCategory.GEM);
+		assignGeneric(HFMining.MATERIALS.getStackFromEnum(Material.FLUORITE), GiftCategory.GEM);
+		assignGeneric(HFMining.MATERIALS.getStackFromEnum(Material.MOON_STONE), GiftCategory.GEM);
+		assignGeneric(HFMining.MATERIALS.getStackFromEnum(Material.ORICHALC), GiftCategory.GEM);
+		assignGeneric(HFMining.MATERIALS.getStackFromEnum(Material.PERIDOT), GiftCategory.GEM);
+		assignGeneric(HFMining.MATERIALS.getStackFromEnum(Material.PINK_DIAMOND), GiftCategory.GEM);
+		assignGeneric(HFMining.MATERIALS.getStackFromEnum(Material.RUBY), GiftCategory.GEM);
+		assignGeneric(HFMining.MATERIALS.getStackFromEnum(Material.SAND_ROSE), GiftCategory.GEM);
+		assignGeneric(HFMining.MATERIALS.getStackFromEnum(Material.TOPAZ), GiftCategory.GEM);
+		assignGeneric(HFMining.MATERIALS.getStackFromEnum(Material.COIN_COPPER), GiftCategory.MONEY);
+		assignGeneric(HFMining.MATERIALS.getStackFromEnum(Material.COIN_SILVER), GiftCategory.MONEY);
+		assignGeneric(HFMining.MATERIALS.getStackFromEnum(Material.COIN_GOLD), GiftCategory.MONEY);
 	}
 }

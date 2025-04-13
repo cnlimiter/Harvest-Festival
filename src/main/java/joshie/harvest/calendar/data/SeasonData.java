@@ -1,8 +1,5 @@
 package joshie.harvest.calendar.data;
 
-import static joshie.harvest.calendar.HFCalendar.TICKS_PER_DAY;
-import static joshie.harvest.core.lib.HFModInfo.MODID;
-
 import java.util.Locale;
 import java.util.NavigableMap;
 import java.util.Random;
@@ -10,6 +7,8 @@ import java.util.TreeMap;
 
 import joshie.harvest.api.calendar.Season;
 import joshie.harvest.api.calendar.Weather;
+import joshie.harvest.calendar.HFCalendar;
+import joshie.harvest.core.lib.HFModInfo;
 import net.minecraft.util.ResourceLocation;
 
 public class SeasonData {
@@ -22,7 +21,7 @@ public class SeasonData {
 	private int midnight;
 
 	public SeasonData(Season season, int skyColor, int sunrise, int sunset) {
-		this.resource = new ResourceLocation(MODID, "textures/gui/" + season.name().toLowerCase(Locale.ENGLISH) + ".png");
+		this.resource = new ResourceLocation(HFModInfo.MODID, "textures/gui/" + season.name().toLowerCase(Locale.ENGLISH) + ".png");
 		this.skyColor = skyColor;
 		this.sunrise = sunrise;
 		this.sunset = sunset;
@@ -67,7 +66,7 @@ public class SeasonData {
 	}
 
 	public float getCelestialAngle(long time) {
-		time = TICKS_PER_DAY == 24000 ? time + 6000 : (long) convertRange(0, TICKS_PER_DAY - 1, 0, 23999, time) + 6000;
+		time = HFCalendar.TICKS_PER_DAY == 24000 ? time + 6000 : (long) convertRange(0, HFCalendar.TICKS_PER_DAY - 1, 0, 23999, time) + 6000;
 		if (time < sunrise) {
 			time += 24000;
 		}

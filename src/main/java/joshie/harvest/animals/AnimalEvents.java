@@ -1,9 +1,5 @@
 package joshie.harvest.animals;
 
-import static joshie.harvest.core.handlers.BasketHandler.forbidsDrop;
-import static joshie.harvest.core.helpers.InventoryHelper.ITEM;
-import static joshie.harvest.core.helpers.InventoryHelper.ITEM_STACK;
-
 import javax.annotation.Nonnull;
 import joshie.harvest.animals.item.ItemAnimalTool.Tool;
 import joshie.harvest.animals.tracker.AnimalTrackerServer;
@@ -13,7 +9,9 @@ import joshie.harvest.api.animals.AnimalStats;
 import joshie.harvest.api.animals.AnimalTest;
 import joshie.harvest.core.HFTrackers;
 import joshie.harvest.core.entity.EntityBasket;
+import joshie.harvest.core.handlers.BasketHandler;
 import joshie.harvest.core.helpers.EntityHelper;
+import joshie.harvest.core.helpers.InventoryHelper;
 import joshie.harvest.core.util.annotations.HFEvents;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.EntityAnimal;
@@ -111,7 +109,7 @@ public class AnimalEvents {
 		}
 
 		private boolean isHolding(@Nonnull ItemStack stack) {
-			return ITEM_STACK.matchesAny(stack, getStacks()) || ITEM.matchesAny(stack, HFAnimals.TREATS, Items.NAME_TAG);
+			return InventoryHelper.ITEM_STACK.matchesAny(stack, getStacks()) || InventoryHelper.ITEM.matchesAny(stack, HFAnimals.TREATS, Items.NAME_TAG);
 		}
 
 		boolean blocksPickup(EntityPlayer player) {
@@ -147,7 +145,7 @@ public class AnimalEvents {
 		@SuppressWarnings("ConstantConditions")
 		public void onRightClickGround(PlayerInteractEvent.RightClickBlock event) {
 			EntityPlayer player = event.getEntityPlayer();
-			if (!forbidsDrop(event.getWorld().getBlockState(event.getPos()).getBlock())) {
+			if (!BasketHandler.forbidsDrop(event.getWorld().getBlockState(event.getPos()).getBlock())) {
 				for (Entity entity : player.getPassengers()) {
 					AnimalStats stats = EntityHelper.getStats(entity);
 					if (stats != null && stats.performTest(AnimalTest.CAN_CARRY)) {

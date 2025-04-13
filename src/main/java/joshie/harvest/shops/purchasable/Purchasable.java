@@ -1,7 +1,5 @@
 package joshie.harvest.shops.purchasable;
 
-import static joshie.harvest.core.helpers.InventoryHelper.ITEM_STACK;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
@@ -71,8 +69,7 @@ public class Purchasable implements IPurchasable {
 	@Override
 	public boolean canDo(@Nonnull World world, @Nonnull EntityPlayer player, int amount) {
 		return getCost() >= 0 || InventoryHelper.hasInInventory(
-				player,
-				ITEM_STACK,
+				player, InventoryHelper.ITEM_STACK,
 				getDisplayStack(),
 				(getDisplayStack().getCount() * amount));
 	}
@@ -101,7 +98,8 @@ public class Purchasable implements IPurchasable {
 	@Override
 	public void onPurchased(EntityPlayer player) {
 		if (getCost() < 0) {
-			InventoryHelper.takeItemsInInventory(player, ITEM_STACK, getPurchasedStack(), getPurchasedStack().getCount());
+			InventoryHelper.takeItemsInInventory(player,
+					InventoryHelper.ITEM_STACK, getPurchasedStack(), getPurchasedStack().getCount());
 		} else {
 			SpawnItemHelper.addToPlayerInventory(player, getPurchasedStack().copy());
 		}

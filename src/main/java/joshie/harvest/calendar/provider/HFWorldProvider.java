@@ -1,11 +1,10 @@
 package joshie.harvest.calendar.provider;
 
-import static joshie.harvest.calendar.HFCalendar.TICKS_PER_DAY;
-
 import javax.annotation.Nonnull;
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.calendar.Season;
 import joshie.harvest.api.calendar.Weather;
+import joshie.harvest.calendar.HFCalendar;
 import joshie.harvest.calendar.SnowLoader;
 import joshie.harvest.calendar.data.Calendar;
 import joshie.harvest.calendar.data.SeasonData;
@@ -186,7 +185,7 @@ public class HFWorldProvider extends WorldProviderSurface {
 	public float calculateCelestialAngle(long worldTime, float partialTicks) {
 		Calendar calendar = HFTrackers.getCalendar(world);
 		if (calendar != null) {
-			return calendar.getSeasonData().getCelestialAngle(worldTime % TICKS_PER_DAY);
+			return calendar.getSeasonData().getCelestialAngle(worldTime % HFCalendar.TICKS_PER_DAY);
 		}
 
 		return 1F;

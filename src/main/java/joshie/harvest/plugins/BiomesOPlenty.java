@@ -1,7 +1,5 @@
 package joshie.harvest.plugins;
 
-import static joshie.harvest.crops.HFCrops.DISABLE_VANILLA_MOISTURE;
-
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.cooking.Ingredient;
 import joshie.harvest.core.util.annotations.HFLoader;
@@ -31,7 +29,7 @@ public class BiomesOPlenty {
 		Ingredient mushroomIngredient = Ingredient.INGREDIENTS.get("mushroom");
 		HFApi.cooking.register(new ItemStack(mushroom, 1, 1), mushroomIngredient);
 		HFApi.cooking.register(new ItemStack(mushroom, 1, 4), mushroomIngredient);
-		if (DISABLE_VANILLA_MOISTURE) {
+		if (HFCrops.DISABLE_VANILLA_MOISTURE) {
 			farmland_0.setTickRandomly(false);
 			farmland_1.setTickRandomly(false);
 		}

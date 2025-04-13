@@ -124,7 +124,7 @@ public abstract class ContestEntries<O, E extends ContestEntry, Q extends QuestC
 
 	@SuppressWarnings("unchecked")
 	public void sort(Q quest, World world) {
-		entries.sort((o1, o2) -> ((Integer) o2.getScore(quest, world)).compareTo(o1.getScore(quest, world)));
+		entries.sort((o1, o2) -> Integer.compare(o2.getScore(quest, world), o1.getScore(quest, world)));
 	}
 
 	public abstract List<Pair<O, Integer>> getAvailableEntries(EntityPlayer player);

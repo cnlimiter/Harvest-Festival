@@ -1,9 +1,5 @@
 package joshie.harvest.mining;
 
-import static joshie.harvest.api.calendar.Season.WINTER;
-import static joshie.harvest.mining.HFMining.MINING_ID;
-import static joshie.harvest.mining.gen.MineManager.CHUNK_BOUNDARY;
-
 import java.util.Random;
 
 import gnu.trove.set.TIntSet;
@@ -13,6 +9,7 @@ import joshie.harvest.api.calendar.Season;
 import joshie.harvest.core.HFTrackers;
 import joshie.harvest.core.helpers.EntityHelper;
 import joshie.harvest.mining.block.BlockPortal.Portal;
+import joshie.harvest.mining.gen.MineManager;
 import joshie.harvest.mining.gen.MiningProvider;
 import joshie.harvest.town.tracker.TownTracker;
 import net.minecraft.block.state.IBlockState;
@@ -76,15 +73,16 @@ public class MiningHelper {
 	}
 
 	public static int getMineID(int chunkZ) {
-		return (int) Math.floor(chunkZ / CHUNK_BOUNDARY);
+		return (int) Math.floor(chunkZ / MineManager.CHUNK_BOUNDARY);
 	}
 
 	private static void preloadChunks(WorldServer worldServer, int mineID, int floor) {
 		MiningProvider provider = ((MiningProvider) worldServer.provider);
 		if (!provider.areCoordinatesGenerated(mineID, floor)) {
 			int xStart = (int) Math.floor((floor - 1) / MAX_FLOORS);
-			for (int x = xStart * CHUNK_BOUNDARY; x < (xStart * CHUNK_BOUNDARY) + CHUNK_BOUNDARY; x++) {
-				for (int z = mineID * CHUNK_BOUNDARY; z < (mineID * CHUNK_BOUNDARY) + CHUNK_BOUNDARY; z++) {
+			for (int x = xStart * MineManager.CHUNK_BOUNDARY; x < (xStart * MineManager.CHUNK_BOUNDARY) +
+					MineManager.CHUNK_BOUNDARY; x++) {
+				for (int z = mineID * MineManager.CHUNK_BOUNDARY; z < (mineID * MineManager.CHUNK_BOUNDARY) + MineManager.CHUNK_BOUNDARY; z++) {
 					worldServer.getChunkProvider().provideChunk(x, z);
 				}
 			}
@@ -131,13 +129,13 @@ public class MiningHelper {
 
 	public static boolean teleportToMine(Entity entity, int mineID) {
 		MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
-		WorldServer newWorld = server.getWorld(MINING_ID);
+		WorldServer newWorld = server.getWorld(HFMining.MINING_ID);
 		preloadChunks(newWorld, mineID, 1);
 		MiningProvider provider = ((MiningProvider) newWorld.provider);
 		provider.onTeleportToMine(mineID); //Called to initiate after chunks are loaded
 		BlockPos spawn = modifySpawnAndEntityRotation(newWorld, provider.getSpawnCoordinateForMine(mineID, 1), entity);
 		newWorld.notifyBlockUpdate(spawn, newWorld.getBlockState(spawn), newWorld.getBlockState(spawn), 3);
-		return EntityHelper.teleport(entity, MINING_ID, spawn);
+		return EntityHelper.teleport(entity, HFMining.MINING_ID, spawn);
 	}
 
 	public static boolean teleportToOverworld(Entity entity) {
@@ -186,7 +184,7 @@ public class MiningHelper {
 		boolean top = floor % MAX_FLOORS == 1;
 		int newFloor = top ? floor - 1 : floor + 1;
 		MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
-		WorldServer newWorld = server.getWorld(MINING_ID);
+		WorldServer newWorld = server.getWorld(HFMining.MINING_ID);
 		preloadChunks(newWorld, mineID, newFloor);
 		MiningProvider provider = ((MiningProvider) newWorld.provider);
 		provider.onTeleportToMine(mineID); //Called to initiate after chunks are loaded
@@ -214,16 +212,16 @@ public class MiningHelper {
 	}
 
 	public static int getFloor(int xPosition, int posY) {
-		int chunkIndex = (int) Math.floor(((double) xPosition) / CHUNK_BOUNDARY);
+		int chunkIndex = (int) Math.floor(((double) xPosition) / MineManager.CHUNK_BOUNDARY);
 		int floorIndex = (int) (MAX_FLOORS - Math.floor(((double) posY) / FLOOR_HEIGHT));
 		return (chunkIndex * MAX_FLOORS) + floorIndex; //Floor
 	}
 
 	public static int getOreChance(Season season, int floor, Random rand) {
-		int lowerLimit = season == WINTER ? 6 : 8;
-		int upperLimit = season == WINTER ? 14 : 18;
+		int lowerLimit = season == Season.WINTER ? 6 : 8;
+		int upperLimit = season == Season.WINTER ? 14 : 18;
 
-		int chance = season == WINTER ? 7 + rand.nextInt(9) : 10 + rand.nextInt(11);
+		int chance = season == Season.WINTER ? 7 + rand.nextInt(9) : 10 + rand.nextInt(11);
 		if (floor % COW_FLOORS == 0) {
 			chance -= 5;
 		} else if (floor % SHEEP_FLOORS == 0) {

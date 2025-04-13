@@ -1,10 +1,8 @@
 package joshie.harvest.quests.player.trade;
 
-import static joshie.harvest.api.core.ITiered.ToolTier.BASIC;
-import static joshie.harvest.core.helpers.InventoryHelper.SPECIAL;
-
 import java.util.Set;
 
+import joshie.harvest.api.core.ITiered;
 import joshie.harvest.api.npc.NPCEntity;
 import joshie.harvest.api.quests.HFQuest;
 import joshie.harvest.api.quests.Quest;
@@ -52,17 +50,17 @@ public class QuestToolTrader extends QuestTrade {
 	@Override
 	public void onQuestCompleted(EntityPlayer player) {
 		if (takeHeldType(player, SearchType.HOE)) {
-			rewardItem(player, HFTools.HOES.get(BASIC).getStack());
+			rewardItem(player, HFTools.HOES.get(ITiered.ToolTier.BASIC).getStack());
 		} else if (takeHeldType(player, SearchType.BUCKET)) {
-			rewardItem(player, HFTools.WATERING_CANS.get(BASIC).getStack());
+			rewardItem(player, HFTools.WATERING_CANS.get(ITiered.ToolTier.BASIC).getStack());
 		} else if (takeHeldType(player, SearchType.SHEARS)) {
-			rewardItem(player, HFTools.SICKLES.get(BASIC).getStack());
+			rewardItem(player, HFTools.SICKLES.get(ITiered.ToolTier.BASIC).getStack());
 		}
 	}
 
 	private boolean hasHeldType(EntityPlayer player, SearchType... searches) {
 		for (SearchType search : searches) {
-			if (InventoryHelper.getHandItemIsIn(player, SPECIAL, search) != null) {
+			if (InventoryHelper.getHandItemIsIn(player, InventoryHelper.SPECIAL, search) != null) {
 				return true;
 			}
 		}
@@ -72,7 +70,7 @@ public class QuestToolTrader extends QuestTrade {
 
 	private boolean takeHeldType(EntityPlayer player, SearchType... searches) {
 		for (SearchType search : searches) {
-			if (InventoryHelper.takeItemsIfHeld(player, SPECIAL, search) != null) {
+			if (InventoryHelper.takeItemsIfHeld(player, InventoryHelper.SPECIAL, search) != null) {
 				return true;
 			}
 		}

@@ -1,18 +1,5 @@
 package joshie.harvest.fishing;
 
-import static joshie.harvest.api.calendar.Season.AUTUMN;
-import static joshie.harvest.api.calendar.Season.SPRING;
-import static joshie.harvest.api.calendar.Season.SUMMER;
-import static joshie.harvest.api.calendar.Season.WINTER;
-import static joshie.harvest.cooking.HFCooking.COOKING_SELL_MODIFIER;
-import static joshie.harvest.core.helpers.RegistryHelper.registerOreIfNotExists;
-import static joshie.harvest.core.helpers.RegistryHelper.registerTiles;
-import static joshie.harvest.core.lib.HFModInfo.MODID;
-import static joshie.harvest.fishing.FishingHelper.WaterType.LAKE;
-import static joshie.harvest.fishing.FishingHelper.WaterType.OCEAN;
-import static joshie.harvest.fishing.FishingHelper.WaterType.POND;
-import static joshie.harvest.fishing.FishingHelper.WaterType.RIVER;
-
 import java.util.EnumMap;
 import java.util.Locale;
 
@@ -23,7 +10,10 @@ import joshie.harvest.api.HFApi;
 import joshie.harvest.api.calendar.Season;
 import joshie.harvest.api.core.ITiered.ToolTier;
 import joshie.harvest.api.core.Ore;
+import joshie.harvest.cooking.HFCooking;
+import joshie.harvest.core.helpers.RegistryHelper;
 import joshie.harvest.core.lib.EntityIDs;
+import joshie.harvest.core.lib.HFModInfo;
 import joshie.harvest.core.util.annotations.HFLoader;
 import joshie.harvest.fishing.FishingHelper.WaterType;
 import joshie.harvest.fishing.block.BlockFishTrap;
@@ -74,7 +64,7 @@ public class HFFishing {
 		LootConditionManager.registerCondition(new ConditionTime.Serializer());
 		LootConditionManager.registerCondition(new ConditionTier.Serializer());
 		EntityRegistry.registerModEntity(
-				new ResourceLocation(MODID, "hook"),
+				new ResourceLocation(HFModInfo.MODID, "hook"),
 				EntityFishHookHF.class,
 				"hook",
 				EntityIDs.FISHING,
@@ -87,20 +77,20 @@ public class HFFishing {
 		HFApi.shipping.registerSellable(new ItemStack(Items.FISH, 1, 1), 30L);
 		HFApi.shipping.registerSellable(new ItemStack(Items.FISH, 1, 2), 50L);
 		HFApi.shipping.registerSellable(new ItemStack(Items.FISH, 1, 3), 100L);
-		HFApi.shipping.registerSellable(new ItemStack(Items.COOKED_FISH, 1, 0), (long) (10 * COOKING_SELL_MODIFIER));
-		HFApi.shipping.registerSellable(new ItemStack(Items.COOKED_FISH, 1, 1), (long) (30 * COOKING_SELL_MODIFIER));
+		HFApi.shipping.registerSellable(new ItemStack(Items.COOKED_FISH, 1, 0), (long) (10 * HFCooking.COOKING_SELL_MODIFIER));
+		HFApi.shipping.registerSellable(new ItemStack(Items.COOKED_FISH, 1, 1), (long) (30 * HFCooking.COOKING_SELL_MODIFIER));
 		HFApi.fishing.registerBait(JUNK.getStackFromEnum(Junk.BAIT));
-		registerTiles(TileTrap.class, TileHatchery.class);
+		RegistryHelper.registerTiles(TileTrap.class, TileHatchery.class);
 
 		FishingAPI.INSTANCE.breeding.register(Ore.of("fish"), 3);
 		//Register vanilla fish
 		for (FishType fish : FishType.values()) {
-			registerOreIfNotExists("fish", new ItemStack(Items.FISH, 1, fish.getMetadata()));
+			RegistryHelper.registerOreIfNotExists("fish", new ItemStack(Items.FISH, 1, fish.getMetadata()));
 		}
 
 		//Register my fish
 		for (Fish fish : Fish.values()) {
-			registerOreIfNotExists("fish", FISH.getStackFromEnum(fish));
+			RegistryHelper.registerOreIfNotExists("fish", FISH.getStackFromEnum(fish));
 		}
 	}
 
@@ -109,22 +99,22 @@ public class HFFishing {
 			HFApi.npc.getGifts().addToBlacklist(FISHING_RODS.get(tier));
 		}
 
-		registerLootTable("lake_spring", LAKE, SPRING);
-		registerLootTable("lake_summer", LAKE, SUMMER);
-		registerLootTable("lake_autumn", LAKE, AUTUMN);
-		registerLootTable("lake_winter", LAKE, WINTER);
-		registerLootTable("ocean_spring", OCEAN, SPRING);
-		registerLootTable("ocean_summer", OCEAN, SUMMER);
-		registerLootTable("ocean_autumn", OCEAN, AUTUMN);
-		registerLootTable("ocean_winter", OCEAN, WINTER);
-		registerLootTable("pond_spring", POND, SPRING);
-		registerLootTable("pond_summer", POND, SUMMER);
-		registerLootTable("pond_autumn", POND, AUTUMN);
-		registerLootTable("pond_winter", POND, WINTER);
-		registerLootTable("river_spring", RIVER, SPRING);
-		registerLootTable("river_summer", RIVER, SUMMER);
-		registerLootTable("river_autumn", RIVER, AUTUMN);
-		registerLootTable("river_winter", RIVER, WINTER);
+		registerLootTable("lake_spring", WaterType.LAKE, Season.SPRING);
+		registerLootTable("lake_summer", WaterType.LAKE, Season.SUMMER);
+		registerLootTable("lake_autumn", WaterType.LAKE, Season.AUTUMN);
+		registerLootTable("lake_winter", WaterType.LAKE, Season.WINTER);
+		registerLootTable("ocean_spring", WaterType.OCEAN, Season.SPRING);
+		registerLootTable("ocean_summer", WaterType.OCEAN, Season.SUMMER);
+		registerLootTable("ocean_autumn", WaterType.OCEAN, Season.AUTUMN);
+		registerLootTable("ocean_winter", WaterType.OCEAN, Season.WINTER);
+		registerLootTable("pond_spring", WaterType.POND, Season.SPRING);
+		registerLootTable("pond_summer", WaterType.POND, Season.SUMMER);
+		registerLootTable("pond_autumn", WaterType.POND, Season.AUTUMN);
+		registerLootTable("pond_winter", WaterType.POND, Season.WINTER);
+		registerLootTable("river_spring", WaterType.RIVER, Season.SPRING);
+		registerLootTable("river_summer", FishingHelper.WaterType.RIVER, Season.SUMMER);
+		registerLootTable("river_autumn", FishingHelper.WaterType.RIVER, Season.AUTUMN);
+		registerLootTable("river_winter", FishingHelper.WaterType.RIVER, Season.WINTER);
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -136,6 +126,6 @@ public class HFFishing {
 	private static void registerLootTable(String id, WaterType type, Season season) {
 		FishingHelper.FISHING_LOOT.put(
 				Pair.of(season, type),
-				LootTableList.register(new ResourceLocation(MODID, "gameplay/fishing/" + id)));
+				LootTableList.register(new ResourceLocation(HFModInfo.MODID, "gameplay/fishing/" + id)));
 	}
 }

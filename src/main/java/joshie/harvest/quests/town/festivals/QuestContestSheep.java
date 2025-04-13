@@ -1,8 +1,5 @@
 package joshie.harvest.quests.town.festivals;
 
-import static joshie.harvest.core.registry.ShippingRegistry.SELL_VALUE;
-import static joshie.harvest.town.BuildingLocations.PARK_SHEEP_JUDGE;
-
 import javax.annotation.Nonnull;
 import joshie.harvest.animals.entity.EntityHarvestSheep;
 import joshie.harvest.api.npc.NPC;
@@ -14,6 +11,7 @@ import joshie.harvest.calendar.HFFestivals;
 import joshie.harvest.cooking.HFCooking;
 import joshie.harvest.cooking.item.ItemMeal.Meal;
 import joshie.harvest.core.base.other.HFScript;
+import joshie.harvest.core.registry.ShippingRegistry;
 import joshie.harvest.npcs.HFNPCs;
 import joshie.harvest.quests.base.QuestAnimalContest;
 import joshie.harvest.quests.town.festivals.contest.ContestJudgingScript;
@@ -21,6 +19,7 @@ import joshie.harvest.quests.town.festivals.contest.ContestTaskWinner;
 import joshie.harvest.quests.town.festivals.contest.ContestWinningScript;
 import joshie.harvest.quests.town.festivals.contest.animal.AnimalContestEntries;
 import joshie.harvest.shops.HFShops;
+import joshie.harvest.town.BuildingLocations;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -80,7 +79,7 @@ public class QuestContestSheep extends QuestAnimalContest<EntityHarvestSheep> {
 			case FIRST: {
 				ItemStack stack = HFShops.getWoolyArmor(Items.LEATHER_CHESTPLATE, "Cashmere Sweater");
 				if (stack.getTagCompound() != null) {
-					stack.getTagCompound().setLong(SELL_VALUE, 3000L);
+					stack.getTagCompound().setLong(ShippingRegistry.SELL_VALUE, 3000L);
 				}
 				return stack;
 			}
@@ -95,6 +94,6 @@ public class QuestContestSheep extends QuestAnimalContest<EntityHarvestSheep> {
 	public void execute(Town town, EntityPlayer player, NPCEntity npc) {
 		npc.setPath(
 				move(STAND1), speech(JUDGE_1), move(STAND2), speech(JUDGE_2), move(STAND3), speech(JUDGE_3), move(STAND4), speech(JUDGE_4),
-				wait(1), speech(FINISH), move(PARK_SHEEP_JUDGE), speech(WINNER), new ContestTaskWinner(HFFestivals.SHEEP_FESTIVAL));
+				wait(1), speech(FINISH), move(BuildingLocations.PARK_SHEEP_JUDGE), speech(WINNER), new ContestTaskWinner(HFFestivals.SHEEP_FESTIVAL));
 	}
 }

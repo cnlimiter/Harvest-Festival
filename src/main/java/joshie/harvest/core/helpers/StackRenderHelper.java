@@ -1,11 +1,11 @@
 package joshie.harvest.core.helpers;
 
-import static joshie.harvest.core.lib.HFModInfo.MODID;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import joshie.harvest.core.lib.HFModInfo;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
@@ -18,13 +18,14 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ReportedException;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class StackRenderHelper {
 	public static final TextureManager textureManager = MCClientHelper.getMinecraft().getTextureManager();
-	private static final ResourceLocation RES_ITEM_GLINT = new ResourceLocation(MODID, "textures/gui/shadow.png");
+	private static final ResourceLocation RES_ITEM_GLINT = new ResourceLocation(HFModInfo.MODID, "textures/gui/shadow.png");
 	public static boolean renderShadow;
 
 	@SideOnly(Side.CLIENT)
@@ -37,12 +38,12 @@ public class StackRenderHelper {
 		GlStateManager.enableBlend(); //Forge: Make sure blend is enabled else tabs show a white border.
 		GlStateManager.enableLighting();
 		GlStateManager.enableRescaleNormal();
-		net.minecraft.client.renderer.RenderHelper.enableGUIStandardItemLighting();
+		RenderHelper.enableGUIStandardItemLighting();
 		Minecraft mc = MCClientHelper.getMinecraft();
 		mc.getRenderItem().renderItemAndEffectIntoGUI(stack, (int) (left / size), (int) (top / size));
 		String display = stack.getCount() > 1 ? stack.getCount() + "" : "";
 		mc.getRenderItem().renderItemOverlayIntoGUI(mc.fontRenderer, stack, (int) (left / size), (int) (top / size), display);
-		net.minecraft.client.renderer.RenderHelper.disableStandardItemLighting();
+		RenderHelper.disableStandardItemLighting();
 		GlStateManager.disableLighting();
 		GlStateManager.popMatrix();
 		GlStateManager.enableAlpha();
@@ -58,12 +59,12 @@ public class StackRenderHelper {
 		GlStateManager.enableBlend(); //Forge: Make sure blend is enabled else tabs show a white border.
 		GlStateManager.enableLighting();
 		GlStateManager.enableRescaleNormal();
-		net.minecraft.client.renderer.RenderHelper.enableGUIStandardItemLighting();
+		RenderHelper.enableGUIStandardItemLighting();
 		Minecraft mc = MCClientHelper.getMinecraft();
 		renderItemAndEffectIntoGUI(mc.getRenderItem(), MCClientHelper.getPlayer(), stack, (int) (left / size), (int) (top / size));
 		String display = stack.getCount() > 1 ? stack.getCount() + "" : "";
 		mc.getRenderItem().renderItemOverlayIntoGUI(mc.fontRenderer, stack, (int) (left / size), (int) (top / size), display);
-		net.minecraft.client.renderer.RenderHelper.disableStandardItemLighting();
+		RenderHelper.disableStandardItemLighting();
 		GlStateManager.disableLighting();
 		GlStateManager.popMatrix();
 		GlStateManager.enableAlpha();
@@ -107,7 +108,7 @@ public class StackRenderHelper {
 		GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		render.setupGuiTransform(x, y, bakedmodel.isGui3d());
-		bakedmodel = net.minecraftforge.client.ForgeHooksClient.handleCameraTransforms(
+		bakedmodel = ForgeHooksClient.handleCameraTransforms(
 				bakedmodel,
 				ItemCameraTransforms.TransformType.GUI,
 				false);

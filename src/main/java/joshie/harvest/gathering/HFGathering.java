@@ -1,36 +1,10 @@
 package joshie.harvest.gathering;
 
-import static joshie.harvest.api.calendar.Season.AUTUMN;
-import static joshie.harvest.api.calendar.Season.SPRING;
-import static joshie.harvest.api.calendar.Season.SUMMER;
-import static joshie.harvest.api.calendar.Season.WINTER;
-import static joshie.harvest.core.HFCore.FLOWERS;
-import static joshie.harvest.core.block.BlockFlower.FlowerType.BLUE_MAGICGRASS;
-import static joshie.harvest.core.block.BlockFlower.FlowerType.MOONDROP;
-import static joshie.harvest.core.block.BlockFlower.FlowerType.PINKCAT;
-import static joshie.harvest.core.block.BlockFlower.FlowerType.RED_MAGICGRASS;
-import static joshie.harvest.core.block.BlockFlower.FlowerType.TOY;
-import static joshie.harvest.core.block.BlockFlower.FlowerType.WEED;
-import static joshie.harvest.core.helpers.ConfigHelper.getInteger;
-import static joshie.harvest.gathering.block.BlockNature.NaturalBlock.BAMBOO;
-import static joshie.harvest.gathering.block.BlockNature.NaturalBlock.CHAMOMILE;
-import static joshie.harvest.gathering.block.BlockNature.NaturalBlock.LAVENDER;
-import static joshie.harvest.gathering.block.BlockNature.NaturalBlock.MATSUTAKE;
-import static joshie.harvest.gathering.block.BlockNature.NaturalBlock.MINT;
-import static joshie.harvest.gathering.block.BlockRock.Rock.BOULDER_LARGE;
-import static joshie.harvest.gathering.block.BlockRock.Rock.BOULDER_MEDIUM;
-import static joshie.harvest.gathering.block.BlockRock.Rock.BOULDER_SMALL;
-import static joshie.harvest.gathering.block.BlockRock.Rock.STONE_LARGE;
-import static joshie.harvest.gathering.block.BlockRock.Rock.STONE_MEDIUM;
-import static joshie.harvest.gathering.block.BlockRock.Rock.STONE_SMALL;
-import static joshie.harvest.gathering.block.BlockWood.Wood.BRANCH_LARGE;
-import static joshie.harvest.gathering.block.BlockWood.Wood.BRANCH_MEDIUM;
-import static joshie.harvest.gathering.block.BlockWood.Wood.BRANCH_SMALL;
-import static joshie.harvest.gathering.block.BlockWood.Wood.STUMP_LARGE;
-import static joshie.harvest.gathering.block.BlockWood.Wood.STUMP_MEDIUM;
-import static joshie.harvest.gathering.block.BlockWood.Wood.STUMP_SMALL;
-
 import joshie.harvest.api.HFApi;
+import joshie.harvest.api.calendar.Season;
+import joshie.harvest.core.HFCore;
+import joshie.harvest.core.block.BlockFlower;
+import joshie.harvest.core.helpers.ConfigHelper;
 import joshie.harvest.core.util.annotations.HFLoader;
 import joshie.harvest.gathering.block.BlockNature;
 import joshie.harvest.gathering.block.BlockRock;
@@ -51,44 +25,44 @@ public class HFGathering {
 	public static void init() {
 		//Seasons add up to 64
 		//Spring
-		HFApi.gathering.registerGathering(FLOWERS.getStateFromEnum(WEED), 18D, SPRING);
-		HFApi.gathering.registerGathering(FLOWERS.getStateFromEnum(MOONDROP), 5D, SPRING);
-		HFApi.gathering.registerGathering(FLOWERS.getStateFromEnum(TOY), 3D, SPRING);
-		HFApi.gathering.registerGathering(NATURE.getStateFromEnum(BAMBOO), 11D, SPRING);
-		HFApi.gathering.registerGathering(NATURE.getStateFromEnum(CHAMOMILE), 13D, SPRING);
-		HFApi.gathering.registerGathering(NATURE.getStateFromEnum(MINT), 14D, SPRING);
+		HFApi.gathering.registerGathering(HFCore.FLOWERS.getStateFromEnum(BlockFlower.FlowerType.WEED), 18D, Season.SPRING);
+		HFApi.gathering.registerGathering(HFCore.FLOWERS.getStateFromEnum(BlockFlower.FlowerType.MOONDROP), 5D, Season.SPRING);
+		HFApi.gathering.registerGathering(HFCore.FLOWERS.getStateFromEnum(BlockFlower.FlowerType.TOY), 3D, Season.SPRING);
+		HFApi.gathering.registerGathering(NATURE.getStateFromEnum(BlockNature.NaturalBlock.BAMBOO), 11D, Season.SPRING);
+		HFApi.gathering.registerGathering(NATURE.getStateFromEnum(BlockNature.NaturalBlock.CHAMOMILE), 13D, Season.SPRING);
+		HFApi.gathering.registerGathering(NATURE.getStateFromEnum(BlockNature.NaturalBlock.MINT), 14D, Season.SPRING);
 
 		//Summer
-		HFApi.gathering.registerGathering(FLOWERS.getStateFromEnum(WEED), 20D, SUMMER);
-		HFApi.gathering.registerGathering(FLOWERS.getStateFromEnum(PINKCAT), 5D, SUMMER);
-		HFApi.gathering.registerGathering(NATURE.getStateFromEnum(CHAMOMILE), 19D, SUMMER);
-		HFApi.gathering.registerGathering(NATURE.getStateFromEnum(MINT), 20D, SUMMER);
+		HFApi.gathering.registerGathering(HFCore.FLOWERS.getStateFromEnum(BlockFlower.FlowerType.WEED), 20D, Season.SUMMER);
+		HFApi.gathering.registerGathering(HFCore.FLOWERS.getStateFromEnum(BlockFlower.FlowerType.PINKCAT), 5D, Season.SUMMER);
+		HFApi.gathering.registerGathering(NATURE.getStateFromEnum(BlockNature.NaturalBlock.CHAMOMILE), 19D, Season.SUMMER);
+		HFApi.gathering.registerGathering(NATURE.getStateFromEnum(BlockNature.NaturalBlock.MINT), 20D, Season.SUMMER);
 
 		//Autumn
-		HFApi.gathering.registerGathering(FLOWERS.getStateFromEnum(WEED), 20D, AUTUMN);
-		HFApi.gathering.registerGathering(FLOWERS.getStateFromEnum(BLUE_MAGICGRASS), 4D, AUTUMN);
-		HFApi.gathering.registerGathering(FLOWERS.getStateFromEnum(RED_MAGICGRASS), 2D, AUTUMN);
-		HFApi.gathering.registerGathering(NATURE.getStateFromEnum(MATSUTAKE), 1D, AUTUMN);
-		HFApi.gathering.registerGathering(NATURE.getStateFromEnum(LAVENDER), 10D, AUTUMN);
-		HFApi.gathering.registerGathering(NATURE.getStateFromEnum(CHAMOMILE), 12D, AUTUMN);
-		HFApi.gathering.registerGathering(NATURE.getStateFromEnum(MINT), 15D, AUTUMN);
+		HFApi.gathering.registerGathering(HFCore.FLOWERS.getStateFromEnum(BlockFlower.FlowerType.WEED), 20D, Season.AUTUMN);
+		HFApi.gathering.registerGathering(HFCore.FLOWERS.getStateFromEnum(BlockFlower.FlowerType.BLUE_MAGICGRASS), 4D, Season.AUTUMN);
+		HFApi.gathering.registerGathering(HFCore.FLOWERS.getStateFromEnum(BlockFlower.FlowerType.RED_MAGICGRASS), 2D, Season.AUTUMN);
+		HFApi.gathering.registerGathering(NATURE.getStateFromEnum(BlockNature.NaturalBlock.MATSUTAKE), 1D, Season.AUTUMN);
+		HFApi.gathering.registerGathering(NATURE.getStateFromEnum(BlockNature.NaturalBlock.LAVENDER), 10D, Season.AUTUMN);
+		HFApi.gathering.registerGathering(NATURE.getStateFromEnum(BlockNature.NaturalBlock.CHAMOMILE), 12D, Season.AUTUMN);
+		HFApi.gathering.registerGathering(NATURE.getStateFromEnum(BlockNature.NaturalBlock.MINT), 15D, Season.AUTUMN);
 
 		//Winter
-		HFApi.gathering.registerGathering(NATURE.getStateFromEnum(LAVENDER), 64D, WINTER);
+		HFApi.gathering.registerGathering(NATURE.getStateFromEnum(BlockNature.NaturalBlock.LAVENDER), 64D, Season.WINTER);
 
 		//All Seasons, Adds to 192
-		HFApi.gathering.registerGathering(WOOD.getStateFromEnum(BRANCH_SMALL), 28D);
-		HFApi.gathering.registerGathering(WOOD.getStateFromEnum(BRANCH_MEDIUM), 18D);
-		HFApi.gathering.registerGathering(WOOD.getStateFromEnum(BRANCH_LARGE), 12D);
-		HFApi.gathering.registerGathering(ROCK.getStateFromEnum(STONE_SMALL), 28D);
-		HFApi.gathering.registerGathering(ROCK.getStateFromEnum(STONE_MEDIUM), 13D);
-		HFApi.gathering.registerGathering(ROCK.getStateFromEnum(STONE_LARGE), 8D);
-		HFApi.gathering.registerGathering(WOOD.getStateFromEnum(STUMP_SMALL), 25D);
-		HFApi.gathering.registerGathering(WOOD.getStateFromEnum(STUMP_MEDIUM), 10D);
-		HFApi.gathering.registerGathering(WOOD.getStateFromEnum(STUMP_LARGE), 5D);
-		HFApi.gathering.registerGathering(ROCK.getStateFromEnum(BOULDER_SMALL), 28D);
-		HFApi.gathering.registerGathering(ROCK.getStateFromEnum(BOULDER_MEDIUM), 12D);
-		HFApi.gathering.registerGathering(ROCK.getStateFromEnum(BOULDER_LARGE), 5D);
+		HFApi.gathering.registerGathering(WOOD.getStateFromEnum(BlockWood.Wood.BRANCH_SMALL), 28D);
+		HFApi.gathering.registerGathering(WOOD.getStateFromEnum(BlockWood.Wood.BRANCH_MEDIUM), 18D);
+		HFApi.gathering.registerGathering(WOOD.getStateFromEnum(BlockWood.Wood.BRANCH_LARGE), 12D);
+		HFApi.gathering.registerGathering(ROCK.getStateFromEnum(BlockRock.Rock.STONE_SMALL), 28D);
+		HFApi.gathering.registerGathering(ROCK.getStateFromEnum(BlockRock.Rock.STONE_MEDIUM), 13D);
+		HFApi.gathering.registerGathering(ROCK.getStateFromEnum(BlockRock.Rock.STONE_LARGE), 8D);
+		HFApi.gathering.registerGathering(WOOD.getStateFromEnum(BlockWood.Wood.STUMP_SMALL), 25D);
+		HFApi.gathering.registerGathering(WOOD.getStateFromEnum(BlockWood.Wood.STUMP_MEDIUM), 10D);
+		HFApi.gathering.registerGathering(WOOD.getStateFromEnum(BlockWood.Wood.STUMP_LARGE), 5D);
+		HFApi.gathering.registerGathering(ROCK.getStateFromEnum(BlockRock.Rock.BOULDER_SMALL), 28D);
+		HFApi.gathering.registerGathering(ROCK.getStateFromEnum(BlockRock.Rock.BOULDER_MEDIUM), 12D);
+		HFApi.gathering.registerGathering(ROCK.getStateFromEnum(BlockRock.Rock.BOULDER_LARGE), 5D);
 	}
 
 	//Configure
@@ -98,15 +72,15 @@ public class HFGathering {
 	static int GATHERING_MAX_HALF;
 
 	public static void configure() {
-		GATHERING_MINIMUM = getInteger(
+		GATHERING_MINIMUM = ConfigHelper.getInteger(
 				"Minimum distance for wilderness",
 				48,
 				"The minimum distance at which stuff will spawn like flowers/junk around towns");
-		GATHERING_MAXIMUM = getInteger(
+		GATHERING_MAXIMUM = ConfigHelper.getInteger(
 				"Maximum distance for wilderness",
 				512,
 				"The maximum distance at which stuff will spawn like flowers/junk around towns");
-		GATHERING_ATTEMPTS = getInteger(
+		GATHERING_ATTEMPTS = ConfigHelper.getInteger(
 				"Wilderness spawns amount",
 				256,
 				"The number of blocks to spawn around an individual town in the wilderness");

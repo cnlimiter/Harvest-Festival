@@ -1,12 +1,11 @@
 package joshie.harvest.animals.type;
 
-import static joshie.harvest.api.animals.AnimalFoodType.SEED;
-
 import javax.annotation.Nonnull;
 import joshie.harvest.animals.HFAnimals;
 import joshie.harvest.animals.item.ItemAnimalProduct.Sizeable;
 import joshie.harvest.animals.item.ItemAnimalSpawner.Spawner;
 import joshie.harvest.api.animals.AnimalAction;
+import joshie.harvest.api.animals.AnimalFoodType;
 import joshie.harvest.api.animals.AnimalStats;
 import joshie.harvest.core.helpers.SizeableHelper;
 import net.minecraft.item.ItemStack;
@@ -14,7 +13,7 @@ import net.minecraft.util.NonNullList;
 
 public class AnimalChicken extends AnimalAbstract {
 	public AnimalChicken() {
-		super("Chicken", 3, 10, SEED);
+		super("Chicken", 3, 10, AnimalFoodType.SEED);
 	}
 
 	@Override

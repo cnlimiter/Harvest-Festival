@@ -46,12 +46,6 @@ public abstract class BlockHFEnumRotatableMeta<B extends BlockHFEnumRotatableMet
 		return new BlockStateContainer(this, property, FACING);
 	}
 
-	@Override
-	@Nonnull
-	public ItemStack getStackFromEnum(E e) {
-		return new ItemStack(this, 1, e.ordinal());
-	}
-
 	@Nonnull
 	public ItemStack getStackFromEnum(E e, int amount) {
 		return new ItemStack(this, amount, e.ordinal());

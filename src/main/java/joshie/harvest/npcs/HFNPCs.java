@@ -1,21 +1,5 @@
 package joshie.harvest.npcs;
 
-import static joshie.harvest.api.calendar.Season.AUTUMN;
-import static joshie.harvest.api.calendar.Season.SPRING;
-import static joshie.harvest.api.calendar.Season.SUMMER;
-import static joshie.harvest.api.calendar.Season.WINTER;
-import static joshie.harvest.api.npc.INPCHelper.Age.ADULT;
-import static joshie.harvest.api.npc.INPCHelper.Age.CHILD;
-import static joshie.harvest.api.npc.INPCHelper.Age.ELDER;
-import static joshie.harvest.api.npc.INPCHelper.Gender.FEMALE;
-import static joshie.harvest.api.npc.INPCHelper.Gender.MALE;
-import static joshie.harvest.core.helpers.ConfigHelper.getDouble;
-import static joshie.harvest.core.helpers.RegistryHelper.registerSounds;
-import static joshie.harvest.core.lib.HFModInfo.GIFTPATH;
-import static joshie.harvest.core.lib.HFModInfo.MODID;
-import static joshie.harvest.core.lib.LoadOrder.HFNPCS;
-import static joshie.harvest.town.BuildingLocations.FISHING_POND_PIER;
-
 import java.lang.reflect.InvocationTargetException;
 
 import org.apache.commons.lang3.text.WordUtils;
@@ -25,13 +9,18 @@ import joshie.harvest.api.HFApi;
 import joshie.harvest.api.calendar.CalendarDate;
 import joshie.harvest.api.calendar.Festival;
 import joshie.harvest.api.calendar.Season;
+import joshie.harvest.api.npc.INPCHelper;
 import joshie.harvest.api.npc.INPCHelper.Age;
 import joshie.harvest.api.npc.INPCHelper.Gender;
 import joshie.harvest.api.npc.NPC;
 import joshie.harvest.api.npc.gift.IGiftHandler;
 import joshie.harvest.calendar.HFFestivals;
 import joshie.harvest.core.base.render.MeshIdentical;
+import joshie.harvest.core.helpers.ConfigHelper;
+import joshie.harvest.core.helpers.RegistryHelper;
 import joshie.harvest.core.lib.EntityIDs;
+import joshie.harvest.core.lib.HFModInfo;
+import joshie.harvest.core.lib.LoadOrder;
 import joshie.harvest.core.util.annotations.HFLoader;
 import joshie.harvest.npcs.entity.EntityNPC;
 import joshie.harvest.npcs.entity.EntityNPCBuilder;
@@ -62,6 +51,7 @@ import joshie.harvest.npcs.render.NPCItemRenderer;
 import joshie.harvest.npcs.render.NPCItemRenderer.NPCTile;
 import joshie.harvest.npcs.render.RenderNPC;
 import joshie.harvest.quests.Quests;
+import joshie.harvest.town.BuildingLocations;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.ForgeHooksClient;
@@ -72,54 +62,71 @@ import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@HFLoader(priority = HFNPCS)
+@HFLoader(priority = LoadOrder.HFNPCS)
 @SuppressWarnings("unchecked, unused")
 public class HFNPCs {
-	public static final NPC GODDESS = register("goddess", FEMALE, ADULT, 8, SPRING, 0x8CEED3, 0x4EC485).setHeight(1.2F, 0.6F)
+	public static final NPC GODDESS = register("goddess",
+			INPCHelper.Gender.FEMALE, Age.ADULT, 8, Season.SPRING, 0x8CEED3, 0x4EC485).setHeight(1.2F, 0.6F)
 			.setUninvitable()
 			.setNoRespawn();
-	public static final NPCSpecialSeller CARPENTER = register("yulif", MALE, ADULT, 19, SUMMER, 0x313857, 0x121421, NPCSpecialSeller.class);
+	public static final NPCSpecialSeller CARPENTER = register("yulif",
+			INPCHelper.Gender.MALE, Age.ADULT, 19, Season.SUMMER, 0x313857, 0x121421, NPCSpecialSeller.class);
 	public static final NPCSpecialSeller FLOWER_GIRL = register(
-			"jade",
-			FEMALE,
-			ADULT,
+			"jade", INPCHelper.Gender.FEMALE,
+			Age.ADULT,
 			14,
-			SPRING,
+			Season.SPRING,
 			0x653081,
 			0x361840,
 			NPCSpecialSeller.class);
 	public static final NPCSpecialSeller GS_OWNER = register(
-			"jenni",
-			FEMALE,
-			ADULT,
+			"jenni", INPCHelper.Gender.FEMALE,
+			Age.ADULT,
 			7,
-			WINTER,
+			Season.WINTER,
 			0xDDD0AD,
 			0xE79043,
 			NPCSpecialOpener.class).setNPC(GODDESS);
-	public static final NPC MILKMAID = register("candice", FEMALE, ADULT, 5, AUTUMN, 0xF65FAB, 0xF21985, NPCHolidayStore.class);
-	public static final NPC BARN_OWNER = register("jim", MALE, ADULT, 26, SPRING, 0xDE7245, 0x722B19, NPCHolidayStore.class);
-	public static final NPC POULTRY = register("ashlee", FEMALE, ADULT, 16, AUTUMN, 0xC62D2D, 0x571111);
-	public static final NPC TRADER = register("girafi", MALE, ADULT, 2, AUTUMN, 0xFFFFFF, 0xC60C30).setUninvitable();
-	public static final NPCSpecialSeller FISHERMAN = register("jacob", MALE, ADULT, 28, AUTUMN, 0x7396FF, 0x0036D9, NPCSpecialSeller.class);
-	public static final NPCSpecialSeller MINER = register("brandon", MALE, ADULT, 13, AUTUMN, 0xC28D48, 0x5F5247, NPCSpecialSeller.class);
+	public static final NPC MILKMAID = register("candice",
+			INPCHelper.Gender.FEMALE, Age.ADULT, 5, Season.AUTUMN, 0xF65FAB, 0xF21985, NPCHolidayStore.class);
+	public static final NPC BARN_OWNER = register("jim",
+			INPCHelper.Gender.MALE, Age.ADULT, 26, Season.SPRING, 0xDE7245, 0x722B19, NPCHolidayStore.class);
+	public static final NPC POULTRY = register("ashlee",
+			INPCHelper.Gender.FEMALE, INPCHelper.Age.ADULT, 16,
+			Season.AUTUMN, 0xC62D2D, 0x571111);
+	public static final NPC TRADER = register("girafi", INPCHelper.Gender.MALE,
+			Age.ADULT, 2, Season.AUTUMN, 0xFFFFFF, 0xC60C30).setUninvitable();
+	public static final NPCSpecialSeller FISHERMAN = register("jacob",
+			INPCHelper.Gender.MALE, Age.ADULT, 28, Season.AUTUMN, 0x7396FF, 0x0036D9, NPCSpecialSeller.class);
+	public static final NPCSpecialSeller MINER = register("brandon",
+			INPCHelper.Gender.MALE, Age.ADULT, 13, Season.AUTUMN, 0xC28D48, 0x5F5247, NPCSpecialSeller.class);
 	public static final NPCSpecialSeller CAFE_OWNER = register(
-			"liara",
-			FEMALE,
-			ADULT,
+			"liara", INPCHelper.Gender.FEMALE,
+			Age.ADULT,
 			17,
-			SPRING,
+			Season.SPRING,
 			0xBEC8EE,
 			0x8091D0,
 			NPCHolidayStoreSpecial.class);
-	public static final NPC CAFE_GRANNY = register("katlin", FEMALE, ELDER, 12, SUMMER, 0xDDDDDD, 0x777777, NPCHolidayStore.class);
-	public static final NPC BLACKSMITH = register("daniel", MALE, ADULT, 1, WINTER, 0x613827, 0x23150E);
-	public static final NPC CLOCKMAKER = register("tiberius", MALE, ADULT, 15, WINTER, 0x305A2E, 0x142419, NPCClockmaker.class);
-	public static final NPC CLOCKMAKER_CHILD = register("fenn", MALE, CHILD, 25, SUMMER, 0x228C00, 0x003F00);
-	public static final NPC PRIEST = register("thomas", MALE, ELDER, 9, SUMMER, 0x006666, 0x00B2B20);
-	public static final NPC MAYOR = register("jamie", FEMALE, ELDER, 8, SUMMER, 0xA8AC9A, 0x3B636D);
-	public static final NPC DAUGHTER_ADULT = register("cloe", FEMALE, ADULT, 3, SPRING, 0xFFFF99, 0xB2B200);
-	public static final NPC DAUGHTER_CHILD = register("abi", FEMALE, CHILD, 27, WINTER, 0xFF99FF, 0xFF20FF);
+	public static final NPC CAFE_GRANNY = register("katlin",
+			INPCHelper.Gender.FEMALE,
+			INPCHelper.Age.ELDER, 12, Season.SUMMER, 0xDDDDDD, 0x777777, NPCHolidayStore.class);
+	public static final NPC BLACKSMITH = register("daniel",
+			INPCHelper.Gender.MALE, Age.ADULT, 1, Season.WINTER, 0x613827, 0x23150E);
+	public static final NPC CLOCKMAKER = register("tiberius",
+			INPCHelper.Gender.MALE, Age.ADULT, 15, Season.WINTER, 0x305A2E, 0x142419, NPCClockmaker.class);
+	public static final NPC CLOCKMAKER_CHILD = register("fenn",
+			INPCHelper.Gender.MALE, INPCHelper.Age.CHILD, 25,
+			Season.SUMMER, 0x228C00, 0x003F00);
+	public static final NPC PRIEST = register("thomas", INPCHelper.Gender.MALE,
+			INPCHelper.Age.ELDER, 9, Season.SUMMER, 0x006666, 0x00B2B20);
+	public static final NPC MAYOR = register("jamie", INPCHelper.Gender.FEMALE,
+			INPCHelper.Age.ELDER, 8, Season.SUMMER, 0xA8AC9A, 0x3B636D);
+	public static final NPC DAUGHTER_ADULT = register("cloe",
+			INPCHelper.Gender.FEMALE, Age.ADULT, 3, Season.SPRING, 0xFFFF99, 0xB2B200);
+	public static final NPC DAUGHTER_CHILD = register("abi",
+			INPCHelper.Gender.FEMALE, INPCHelper.Age.CHILD, 27,
+			Season.WINTER, 0xFF99FF, 0xFF20FF);
 
 	//Item
 	public static final ItemNPCSpawner SPAWNER_NPC = new ItemNPCSpawner().register("spawner_npc");
@@ -140,7 +147,7 @@ public class HFNPCs {
 		BLACKSMITH.addFamily(GS_OWNER, CARPENTER);
 		DAUGHTER_ADULT.addFamily(MAYOR, DAUGHTER_CHILD);
 		EntityRegistry.registerModEntity(
-				new ResourceLocation(MODID, "villager"),
+				new ResourceLocation(HFModInfo.MODID, "villager"),
 				EntityNPCVillager.class,
 				"villager",
 				EntityIDs.VILLAGER,
@@ -149,7 +156,7 @@ public class HFNPCs {
 				3,
 				true);
 		EntityRegistry.registerModEntity(
-				new ResourceLocation(MODID, "builder"),
+				new ResourceLocation(HFModInfo.MODID, "builder"),
 				EntityNPCBuilder.class,
 				"builder",
 				EntityIDs.BUILDER,
@@ -158,7 +165,7 @@ public class HFNPCs {
 				3,
 				true);
 		EntityRegistry.registerModEntity(
-				new ResourceLocation(MODID, "goddess"),
+				new ResourceLocation(HFModInfo.MODID, "goddess"),
 				EntityNPCGoddess.class,
 				"goddess",
 				EntityIDs.GODDESS,
@@ -167,7 +174,7 @@ public class HFNPCs {
 				3,
 				true);
 		EntityRegistry.registerModEntity(
-				new ResourceLocation(MODID, "miner"),
+				new ResourceLocation(HFModInfo.MODID, "miner"),
 				EntityNPCMiner.class,
 				"miner",
 				EntityIDs.MINER,
@@ -175,7 +182,7 @@ public class HFNPCs {
 				80,
 				3,
 				true);
-		registerSounds("goddess", "blessing");
+		RegistryHelper.registerSounds("goddess", "blessing");
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -210,7 +217,7 @@ public class HFNPCs {
 		MILKMAID.addGreeting(new GreetingBeforeDanieru(MILKMAID));
 		BARN_OWNER.addGreeting(new GreetingBeforeDanieru(BARN_OWNER));
 		MINER.setQuest(Quests.SELL_ORES).setUninvitable();
-		FISHERMAN.setQuest(Quests.SELL_HATCHERY).addGreeting(new GreetingLocation(FISHING_POND_PIER));
+		FISHERMAN.setQuest(Quests.SELL_HATCHERY).addGreeting(new GreetingLocation(BuildingLocations.FISHING_POND_PIER));
 		CAFE_OWNER.setQuest(Quests.SELL_MEALS);
 		CLOCKMAKER.setHasInfo(new GreetingTime());
 		PRIEST.addGreeting(new GreetingPriestBlessing());
@@ -230,9 +237,10 @@ public class HFNPCs {
 
 	private static void setupGifts(NPC npc) {
 		npc.setGiftHandler(new IGiftHandler() {});
-		if (npc.getResource().getResourceDomain().equals(MODID)) {
+		if (npc.getResource().getResourceDomain().equals(HFModInfo.MODID)) {
 			try {
-				IGiftHandler handler = (IGiftHandler) Class.forName(GIFTPATH + WordUtils.capitalize(npc.getResource().getResourcePath()))
+				IGiftHandler handler = (IGiftHandler) Class.forName(
+								HFModInfo.GIFTPATH + WordUtils.capitalize(npc.getResource().getResourcePath()))
 						.newInstance();
 				if (handler != null) {
 					npc.setGiftHandler(handler);
@@ -279,7 +287,7 @@ public class HFNPCs {
 		} catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException ex) { /**/}
 
 		return npc != null ? (N) npc : (N) new NPC(
-				new ResourceLocation(MODID, name),
+				new ResourceLocation(HFModInfo.MODID, name),
 				gender,
 				age,
 				new CalendarDate(dayOfBirth, seasonOfBirth, 1),
@@ -296,7 +304,7 @@ public class HFNPCs {
 	public static double NPC_AI_DISTANCE;
 
 	public static void configure() {
-		TOWN_DISTANCE = getDouble("Distance between towns", 256D);
-		NPC_AI_DISTANCE = getDouble("AI Range", 32D);
+		TOWN_DISTANCE = ConfigHelper.getDouble("Distance between towns", 256D);
+		NPC_AI_DISTANCE = ConfigHelper.getDouble("AI Range", 32D);
 	}
 }

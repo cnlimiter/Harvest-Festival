@@ -1,7 +1,5 @@
 package joshie.harvest.crops;
 
-import static joshie.harvest.api.crops.IStateHandler.PlantSection.BOTTOM;
-
 import java.util.concurrent.TimeUnit;
 
 import com.google.common.cache.Cache;
@@ -11,6 +9,7 @@ import javax.annotation.Nullable;
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.calendar.Season;
 import joshie.harvest.api.calendar.Weather;
+import joshie.harvest.api.crops.IStateHandler;
 import joshie.harvest.api.crops.IStateHandler.PlantSection;
 import joshie.harvest.api.crops.WateringHandler;
 import joshie.harvest.core.entity.EntityBasket;
@@ -44,7 +43,7 @@ public class CropHelper {
 	}
 
 	public static TileWithered getTile(IBlockAccess world, BlockPos pos, PlantSection section) {
-		if (section == BOTTOM) {
+		if (section == IStateHandler.PlantSection.BOTTOM) {
 			return (TileWithered) (
 					world instanceof ChunkCache ?
 							((ChunkCache) world).getTileEntity(pos, Chunk.EnumCreateEntityType.CHECK) :

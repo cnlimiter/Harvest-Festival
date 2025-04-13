@@ -2,13 +2,10 @@ package joshie.harvest.mining.item;
 
 import java.util.Locale;
 
-import javax.annotation.Nonnull;
 import joshie.harvest.core.HFTab;
 import joshie.harvest.core.base.item.ItemHFEnum;
-import joshie.harvest.core.lib.CreativeSort;
 import joshie.harvest.core.util.interfaces.ISellable;
 import joshie.harvest.mining.item.ItemDarkDrop.DarkDrop;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
 
 public class ItemDarkDrop extends ItemHFEnum<ItemDarkDrop, DarkDrop> {
@@ -34,10 +31,5 @@ public class ItemDarkDrop extends ItemHFEnum<ItemDarkDrop, DarkDrop> {
 
 	public ItemDarkDrop() {
 		super(HFTab.MINING, DarkDrop.class);
-	}
-
-	@Override
-	public int getSortValue(@Nonnull ItemStack stack) {
-		return CreativeSort.NONE;
 	}
 }

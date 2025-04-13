@@ -1,15 +1,9 @@
 package joshie.harvest.npcs.gift;
 
-import static joshie.harvest.api.npc.gift.GiftCategory.FLOWER;
-import static joshie.harvest.api.npc.gift.GiftCategory.KNOWLEDGE;
-import static joshie.harvest.api.npc.gift.GiftCategory.MAGIC;
-import static joshie.harvest.api.npc.gift.GiftCategory.MONSTER;
-import static joshie.harvest.api.npc.gift.IGiftHandler.Quality.AWESOME;
-import static joshie.harvest.api.npc.gift.IGiftHandler.Quality.GOOD;
-import static joshie.harvest.cooking.HFCooking.MEAL;
-
 import javax.annotation.Nonnull;
 import joshie.harvest.api.core.Ore;
+import joshie.harvest.api.npc.gift.GiftCategory;
+import joshie.harvest.cooking.HFCooking;
 import joshie.harvest.cooking.item.ItemMeal.Meal;
 import joshie.harvest.core.HFCore;
 import joshie.harvest.core.block.BlockFlower.FlowerType;
@@ -28,18 +22,18 @@ import net.minecraft.potion.PotionUtils;
 public class GiftsTiberius extends Gifts {
 	public GiftsTiberius() {
 		stackRegistry.register(Items.CLOCK, Quality.AWESOME);
-		stackRegistry.register(MEAL.getStackFromEnum(Meal.DOUGHNUT), Quality.AWESOME);
+		stackRegistry.register(HFCooking.MEAL.getStackFromEnum(Meal.DOUGHNUT), Quality.AWESOME);
 		stackRegistry.register(Ore.of("dustRedstone"), Quality.GOOD);
 		stackRegistry.register(Ore.of("ingotGold"), Quality.GOOD);
-		categoryRegistry.put(MAGIC, Quality.GOOD);
-		categoryRegistry.put(KNOWLEDGE, Quality.GOOD);
-		categoryRegistry.put(MONSTER, Quality.GOOD);
+		categoryRegistry.put(GiftCategory.MAGIC, Quality.GOOD);
+		categoryRegistry.put(GiftCategory.KNOWLEDGE, Quality.GOOD);
+		categoryRegistry.put(GiftCategory.MONSTER, Quality.GOOD);
 		stackRegistry.register(Items.RABBIT_FOOT, Quality.GOOD);
-		stackRegistry.register(MEAL.getStackFromEnum(Meal.RICE_BAMBOO), Quality.DISLIKE);
-		stackRegistry.register(MEAL.getStackFromEnum(Meal.SPINACH_BOILED), Quality.DISLIKE);
-		stackRegistry.register(MEAL.getStackFromEnum(Meal.SOUP_HERB), Quality.DISLIKE);
-		stackRegistry.register(MEAL.getStackFromEnum(Meal.SALAD_HERB), Quality.DISLIKE);
-		categoryRegistry.put(FLOWER, Quality.BAD);
+		stackRegistry.register(HFCooking.MEAL.getStackFromEnum(Meal.RICE_BAMBOO), Quality.DISLIKE);
+		stackRegistry.register(HFCooking.MEAL.getStackFromEnum(Meal.SPINACH_BOILED), Quality.DISLIKE);
+		stackRegistry.register(HFCooking.MEAL.getStackFromEnum(Meal.SOUP_HERB), Quality.DISLIKE);
+		stackRegistry.register(HFCooking.MEAL.getStackFromEnum(Meal.SALAD_HERB), Quality.DISLIKE);
+		categoryRegistry.put(GiftCategory.FLOWER, Quality.BAD);
 		stackRegistry.register(HFGathering.NATURE.getStackFromEnum(NaturalBlock.BAMBOO), Quality.BAD);
 		stackRegistry.register(Ore.of("cropSpinach"), Quality.BAD);
 		stackRegistry.register(Ore.of("cropCabbage"), Quality.BAD);
@@ -54,11 +48,11 @@ public class GiftsTiberius extends Gifts {
 		if (stack.getItem() instanceof ItemPotion) {
 			for (PotionEffect effect : PotionUtils.getEffectsFromStack(stack)) {
 				if (effect.getPotion() == MobEffects.REGENERATION) {
-					return AWESOME;
+					return Quality.AWESOME;
 				}
 			}
 
-			return GOOD;
+			return Quality.GOOD;
 		} else {
 			return super.getQuality(stack);
 		}

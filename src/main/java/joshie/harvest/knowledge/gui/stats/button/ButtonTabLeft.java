@@ -1,10 +1,5 @@
 package joshie.harvest.knowledge.gui.stats.button;
 
-import static joshie.harvest.knowledge.gui.stats.GuiStats.collection;
-import static joshie.harvest.knowledge.gui.stats.GuiStats.notes;
-import static joshie.harvest.knowledge.gui.stats.GuiStats.quests;
-import static joshie.harvest.knowledge.gui.stats.GuiStats.relationships;
-
 import joshie.harvest.core.base.gui.BookPage;
 import joshie.harvest.knowledge.gui.stats.GuiStats;
 import joshie.harvest.knowledge.gui.stats.collection.page.PageCollection;
@@ -28,13 +23,13 @@ public abstract class ButtonTabLeft extends ButtonTab {
 	private void updateStaticValues() {
 		BookPage existing = gui.getPage();
 		if (existing instanceof PageCollection) {
-			collection = existing;
+			GuiStats.collection = existing;
 		} else if (existing instanceof PageRelationship) {
-			relationships = existing;
+			GuiStats.relationships = existing;
 		} else if (existing instanceof PageNotes) {
-			notes = existing;
+			GuiStats.notes = existing;
 		} else if (existing instanceof PageQuests) {
-			quests = existing;
+			GuiStats.quests = existing;
 		}
 	}
 

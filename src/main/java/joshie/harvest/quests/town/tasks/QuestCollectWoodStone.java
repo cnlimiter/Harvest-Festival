@@ -1,7 +1,5 @@
 package joshie.harvest.quests.town.tasks;
 
-import static joshie.harvest.core.helpers.InventoryHelper.ORE_DICTIONARY;
-
 import javax.annotation.Nullable;
 import joshie.harvest.api.HFApi;
 import joshie.harvest.api.core.ITiered.ToolTier;
@@ -58,8 +56,7 @@ public class QuestCollectWoodStone extends QuestDaily {
 	@Override
 	public boolean isNPCUsed(EntityPlayer player, NPCEntity entity) {
 		return super.isNPCUsed(player, entity) && InventoryHelper.getHandItemIsIn(
-				player,
-				ORE_DICTIONARY,
+				player, InventoryHelper.ORE_DICTIONARY,
 				(wood ? "logWood" : "stone"),
 				amount) != null;
 	}
@@ -73,7 +70,8 @@ public class QuestCollectWoodStone extends QuestDaily {
 
 	@Override
 	public void onChatClosed(EntityPlayer player, NPCEntity entity, boolean wasSneaking) {
-		if (InventoryHelper.takeItemsIfHeld(player, ORE_DICTIONARY, (wood ? "logWood" : "stone"), amount) != null) {
+		if (InventoryHelper.takeItemsIfHeld(player,
+				InventoryHelper.ORE_DICTIONARY, (wood ? "logWood" : "stone"), amount) != null) {
 			complete(player);
 		}
 	}

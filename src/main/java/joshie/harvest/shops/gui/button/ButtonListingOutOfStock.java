@@ -1,7 +1,5 @@
 package joshie.harvest.shops.gui.button;
 
-import static joshie.harvest.shops.gui.GuiNPCShop.SHOP_EXTRA;
-
 import javax.annotation.Nonnull;
 import joshie.harvest.core.helpers.TextHelper;
 import joshie.harvest.shops.gui.GuiNPCShop;
@@ -24,7 +22,7 @@ public class ButtonListingOutOfStock extends GuiButton {
 	public void drawButton(@Nonnull Minecraft mc, int mouseX, int mouseY, float partialTicks) {
 		if (visible) {
 			FontRenderer fontrenderer = mc.fontRenderer;
-			mc.getTextureManager().bindTexture(SHOP_EXTRA);
+			mc.getTextureManager().bindTexture(GuiNPCShop.SHOP_EXTRA);
 			GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 			GlStateManager.enableBlend();
 			GlStateManager.tryBlendFuncSeparate(
