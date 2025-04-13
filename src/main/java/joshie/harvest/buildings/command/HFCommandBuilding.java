@@ -48,11 +48,11 @@ public class HFCommandBuilding extends CommandBase {
             try {
                 ResourceLocation id = new ResourceLocation(args[1]);
                 if (!town.hasBuilding(id)) {
-                    sender.sendMessage(new TextComponentString("找不到建筑：" + id));
+                    sender.sendMessage(new TextComponentString("Cannot find building: " + id));
                     return;
                 }
                 town.removeBuilding(town.getBuilding(id));
-                sender.sendMessage(new TextComponentString("已移除建筑：" + id));
+                sender.sendMessage(new TextComponentString("Removed building: " + id));
             } catch (Exception e) {
                 System.err.println(e);
             }

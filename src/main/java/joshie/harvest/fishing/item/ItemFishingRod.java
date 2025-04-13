@@ -90,7 +90,6 @@ public class ItemFishingRod extends ItemTool<ItemFishingRod> {
                 world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_BOBBER_THROW, SoundCategory.NEUTRAL, 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
                 if (!world.isRemote) {
                     EntityFishHookHF entityfishhook = new EntityFishHookHF(world, player);
-                    System.out.println(entityfishhook);
                     ToolTier tier = getTier(stack);
                     //Lure replacement
                     int j = (tier.getToolLevel() + 1) * (getBaitAmount(stack) > 0 ? 2 : 1);
@@ -119,12 +118,7 @@ public class ItemFishingRod extends ItemTool<ItemFishingRod> {
 
     public int getMinimumFishSize(@Nonnull ItemStack held) {
         switch (getTier(held)) {
-            case BASIC:
-            case COPPER:
-            case SILVER:
-            case GOLD:
-                return SMALL_FISH;
-            case MYSTRIL:
+			case MYSTRIL:
                 return MEDIUM_FISH;
             case CURSED:
             case BLESSED:
@@ -138,9 +132,7 @@ public class ItemFishingRod extends ItemTool<ItemFishingRod> {
 
     public int getMaximumFishSize(@Nonnull ItemStack held) {
         switch (getTier(held)) {
-            case BASIC:
-                return SMALL_FISH;
-            case COPPER:
+			case COPPER:
                 return MEDIUM_FISH;
             case SILVER:
                 return LARGE_FISH;
