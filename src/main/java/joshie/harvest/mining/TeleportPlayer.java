@@ -85,7 +85,7 @@ public class TeleportPlayer {
 
 				counter--;
 				if (counter > 0 && player.world.isRemote && counter % 20 == 0) {
-					ChatHelper.displayChat(TextHelper.formatHF("elevator.wait", (int) Math.floor(counter / 20)));
+					ChatHelper.displayChat(TextHelper.formatHF("elevator.wait", (int) (double) (counter / 20)));
 				}
 
 				if (counter <= 0) {

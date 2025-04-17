@@ -41,7 +41,7 @@ import joshie.harvest.crops.HFCrops;
 import joshie.harvest.crops.block.BlockSprinkler.Sprinkler;
 import joshie.harvest.fishing.HFFishing;
 import joshie.harvest.fishing.block.BlockFishTrap.Aquatic;
-import joshie.harvest.fishing.block.BlockFloating.Floating;
+import joshie.harvest.fishing.block.BlockHatchery.Floating;
 import joshie.harvest.fishing.item.ItemFish;
 import joshie.harvest.fishing.item.ItemFish.Fish;
 import joshie.harvest.fishing.item.ItemJunk.Junk;

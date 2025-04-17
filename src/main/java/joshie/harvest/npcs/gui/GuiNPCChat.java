@@ -29,8 +29,8 @@ public class GuiNPCChat extends GuiNPCBase {
 	private int line; //Current lines displayed
 	private double character; //A ticker, Determines what character we should be displaying
 	private boolean finished; //Whether the text has finished displaying
-	private boolean isScriptInit = false;
-	private boolean info = false;
+	private boolean isScriptInit;
+	private boolean info;
 
 	private String format(String string) {
 		if (string == null) {
@@ -62,7 +62,7 @@ public class GuiNPCChat extends GuiNPCBase {
 
 	private boolean buildScript() {
 		List<String> formatted = fontRenderer.listFormattedStringToWidth(format(getScript()), 171);
-		String[] original = formatted.toArray(new String[formatted.size()]);
+		String[] original = formatted.toArray(new String[0]);
 		int size = original.length / MAX_LINES_PER_PAGE;
 		boolean isRemainder = original.length % MAX_LINES_PER_PAGE == 0;
 		if (!isRemainder) {

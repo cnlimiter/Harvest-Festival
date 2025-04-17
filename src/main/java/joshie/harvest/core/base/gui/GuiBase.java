@@ -26,7 +26,7 @@ public abstract class GuiBase extends GuiScreen {
 	private static final int inventOffset = 3;
 	private final ArrayList<String> tooltip = new ArrayList<>();
 	private final String name;
-	public int xSize = 176;
+	public int xSize;
 	public int ySize = 166;
 	protected int guiLeft;
 	protected int guiTop;

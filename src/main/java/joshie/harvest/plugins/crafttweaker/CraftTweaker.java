@@ -93,7 +93,7 @@ public class CraftTweaker {
 			}
 		}
 
-		return stacks.toArray(new IRequirement[stacks.size()]);
+		return stacks.toArray(new IRequirement[0]);
 	}
 
 	public static void logError(String message) {

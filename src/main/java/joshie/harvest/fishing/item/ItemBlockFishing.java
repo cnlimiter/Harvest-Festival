@@ -2,7 +2,7 @@ package joshie.harvest.fishing.item;
 
 import javax.annotation.Nonnull;
 import joshie.harvest.core.base.item.ItemBlockHF;
-import joshie.harvest.fishing.block.BlockFloating;
+import joshie.harvest.fishing.block.BlockHatchery;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -21,8 +21,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.BlockSnapshot;
 import net.minecraftforge.event.ForgeEventFactory;
 
-public class ItemBlockFishing extends ItemBlockHF<BlockFloating> {
-	public ItemBlockFishing(BlockFloating block) {
+public class ItemBlockFishing extends ItemBlockHF<BlockHatchery> {
+	public ItemBlockFishing(BlockHatchery block) {
 		super(block);
 	}
 

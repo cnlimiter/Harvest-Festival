@@ -73,13 +73,13 @@ public class MiningHelper {
 	}
 
 	public static int getMineID(int chunkZ) {
-		return (int) Math.floor(chunkZ / MineManager.CHUNK_BOUNDARY);
+		return (int) (double) (chunkZ / joshie.harvest.mining.gen.MineManager.CHUNK_BOUNDARY);
 	}
 
 	private static void preloadChunks(WorldServer worldServer, int mineID, int floor) {
 		MiningProvider provider = ((MiningProvider) worldServer.provider);
 		if (!provider.areCoordinatesGenerated(mineID, floor)) {
-			int xStart = (int) Math.floor((floor - 1) / MAX_FLOORS);
+			int xStart = (int) (double) ((floor - 1) / MAX_FLOORS);
 			for (
 					int x = xStart * MineManager.CHUNK_BOUNDARY; x < (xStart * MineManager.CHUNK_BOUNDARY) +
 					MineManager.CHUNK_BOUNDARY; x++) {

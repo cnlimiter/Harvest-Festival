@@ -6,7 +6,7 @@ import javax.annotation.Nonnull;
 import joshie.harvest.api.quests.HFQuest;
 import joshie.harvest.api.quests.Quest;
 import joshie.harvest.fishing.HFFishing;
-import joshie.harvest.fishing.block.BlockFloating.Floating;
+import joshie.harvest.fishing.block.BlockHatchery.Floating;
 import joshie.harvest.npcs.HFNPCs;
 import joshie.harvest.quests.Quests;
 import joshie.harvest.quests.base.QuestFriendshipStore;

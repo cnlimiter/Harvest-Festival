@@ -18,7 +18,7 @@ public class StackHelper {
 
 	@Nonnull
 	public static ItemStack getStackFromString(String str) {
-		if (str == null || str.equals("")) {
+		if (str == null || str.isEmpty()) {
 			return ItemStack.EMPTY;
 		}
 		return getStackFromArray(str.trim().split(" "));

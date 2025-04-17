@@ -43,7 +43,7 @@ public class ItemHFSizeable<I extends ItemHFFoodEnum, E extends Enum<E> & IStrin
 
 	@Override
 	public E getEnumFromStack(@Nonnull ItemStack stack) {
-		int real = (int) Math.floor(stack.getItemDamage() / 3);
+		int real = (int) (double) (stack.getItemDamage() / 3);
 		int id = Math.max(0, Math.min(values.length - 1, real));
 		return values[id];
 	}

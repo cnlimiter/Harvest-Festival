@@ -19,8 +19,8 @@ public abstract class GuiBaseBook extends GuiScreen {
 	private final int backgroundWidth;
 	private final int backgroundHeight;
 	private static BookPage page;
-	private int xSize = 176;
-	private int ySize = 166;
+	private int xSize;
+	private int ySize;
 	public int guiLeft;
 	public int guiTop;
 

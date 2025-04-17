@@ -48,7 +48,7 @@ public class HFTemplate {
 			}
 		}
 
-		components = set.toArray(new Placeable[set.size()]);
+		components = set.toArray(new joshie.harvest.buildings.placeable.Placeable[0]);
 	}
 
 	public void initTemplate() {

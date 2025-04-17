@@ -54,7 +54,7 @@ public class PlaceableNPC extends PlaceableEntity {
 
 	@Override
 	public Entity getEntity(World world, BlockPos pos, Rotation rotation) {
-		if (npc == null || npc.equals("")) {
+		if (npc == null || npc.isEmpty()) {
 			return null;
 		}
 		NPC inpc = NPC.REGISTRY.get(new ResourceLocation(npc));

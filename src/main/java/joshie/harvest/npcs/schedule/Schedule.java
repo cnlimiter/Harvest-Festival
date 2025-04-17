@@ -29,8 +29,7 @@ public class Schedule implements ISchedule {
 
 	public Schedule(ScheduleBuilder builder) {
 		this.default_ = builder.default_;
-		for (Entry<BuildingLocation, Conditional> entry : builder.rules.entrySet())
-			rules.put(entry.getKey(), entry.getValue());
+		rules.putAll(builder.rules);
 		for (TimedSchedule time : builder.timedScheduleList)
 			register(time.season, time.weekday, time.time, time.location);
 		for (HolidaySchedule time : builder.holidayScheduleList)

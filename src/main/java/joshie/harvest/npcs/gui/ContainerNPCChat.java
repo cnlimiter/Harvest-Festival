@@ -15,8 +15,8 @@ public class ContainerNPCChat extends ContainerBase {
 	protected final EntityNPC npc;
 	protected final Quest quest;
 	protected int nextGui;
-	private boolean hasBeenClosed = false;
-	private boolean sneaking = false;
+	private boolean hasBeenClosed;
+	private boolean sneaking;
 
 	public ContainerNPCChat(EntityPlayer player, EntityNPC npc, int nextGui, boolean disableQuests) {
 		this.npc = npc;

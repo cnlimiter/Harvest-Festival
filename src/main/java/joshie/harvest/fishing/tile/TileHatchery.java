@@ -10,7 +10,7 @@ import joshie.harvest.core.helpers.StackHelper;
 import joshie.harvest.fishing.FishingAPI;
 import joshie.harvest.fishing.FishingHelper;
 import joshie.harvest.fishing.HFFishing;
-import joshie.harvest.fishing.block.BlockFloating.Floating;
+import joshie.harvest.fishing.block.BlockHatchery.Floating;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -81,19 +81,21 @@ public class TileHatchery extends TileSingleStack implements ITickable {
 		if (daysRequired <= 0) {
 			return removeFish(player);
 		}
-		if (!stack.isItemEqual(place) || stack.getCount() >= 10) {
+		if (stack.getCount() >= 10) {
 			return false;
-		} else {
-			ItemStack single = place.splitStack(1);
-			if (stack.isEmpty()) {
-				stack = single.copy();
-			} else {
-				stack.grow(1);
-			}
-
-			saveAndRefresh();
-			return true;
 		}
+		if (!stack.isEmpty() && !ItemStack.areItemStacksEqual(stack, place)) {
+			return false;
+		}
+		ItemStack single = place.splitStack(1);
+		if (stack.isEmpty()) {
+			stack = single.copy();
+		} else {
+			stack.grow(1);
+		}
+
+		saveAndRefresh();
+		return true;
 	}
 
 	private boolean removeFish(EntityPlayer player) {

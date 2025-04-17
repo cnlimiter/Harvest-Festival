@@ -29,7 +29,7 @@ public class Building extends HFRegistry<Building> {
 	private final Set<NPC> inhabitants = new HashSet<>();
 	private ResourceLocation[] requirements = new ResourceLocation[0];
 	private ISpecialRules special = (w, p, a) -> true;
-	private String toLocalise = "";
+	private String toLocalise;
 	private int offsetY = -1;
 	private long tickTime = 15L;
 	private int width;

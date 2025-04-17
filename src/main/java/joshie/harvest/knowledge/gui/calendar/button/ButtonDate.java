@@ -19,8 +19,8 @@ public class ButtonDate extends GuiButton {
 	private final boolean highlighted;
 	private final GuiCalendar gui;
 	private final CyclingStack icons;
-	private int start = 5000;
-	private int end = 0;
+	private int start;
+	private int end;
 
 	public ButtonDate(GuiCalendar gui, int number, List<CalendarEntry> entries, int x, int y) {
 		super(number, x, y, "");

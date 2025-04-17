@@ -145,7 +145,7 @@ public class AnimalContestEntry extends ContestEntry<QuestAnimalContest> {
 	@Nullable
 	public static AnimalContestEntry fromNBT(NBTTagCompound tag) {
 		UUID animal = UUID.fromString(tag.getString("Animal"));
-		Integer stall = tag.getInteger("Stall");
+		int stall = tag.getInteger("Stall");
 		if (tag.hasKey("Player")) {
 			UUID player = UUID.fromString(tag.getString("Player"));
 			return new AnimalContestEntry(player, animal, stall);

@@ -7,8 +7,7 @@ import javax.annotation.Nonnull;
 import joshie.harvest.core.HFTab;
 import joshie.harvest.core.base.block.BlockHFEnum;
 import joshie.harvest.core.base.item.ItemBlockHF;
-import joshie.harvest.core.base.tile.TileSingleStack;
-import joshie.harvest.fishing.block.BlockFloating.Floating;
+import joshie.harvest.fishing.block.BlockHatchery.Floating;
 import joshie.harvest.fishing.item.ItemBlockFishing;
 import joshie.harvest.fishing.tile.TileHatchery;
 import net.minecraft.block.Block;
@@ -29,8 +28,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockFloating extends BlockHFEnum<BlockFloating, Floating> {
-	public BlockFloating() {
+public class BlockHatchery extends BlockHFEnum<BlockHatchery, Floating> {
+	public BlockHatchery() {
 		super(Material.PISTON, Floating.class, HFTab.FISHING);
 		setTickRandomly(true);
 		setHardness(0.5F);
@@ -59,7 +58,7 @@ public class BlockFloating extends BlockHFEnum<BlockFloating, Floating> {
 			float hitY,
 			float hitZ) {
 		TileEntity tile = world.getTileEntity(pos);
-		return tile instanceof TileSingleStack && ((TileSingleStack) tile).onRightClicked(player, player.getHeldItem(hand));
+		return tile instanceof TileHatchery && ((TileHatchery) tile).onRightClicked(player, player.getHeldItem(hand));
 	}
 
 	@Override
@@ -135,12 +134,7 @@ public class BlockFloating extends BlockHFEnum<BlockFloating, Floating> {
 	@Override
 	@Nonnull
 	public TileEntity createTileEntity(@Nonnull World world, @Nonnull IBlockState state) {
-		switch (getEnumFromState(state)) {
-			case HATCHERY:
-				return new TileHatchery();
-			default:
-				return null;
-		}
+		return new TileHatchery();
 	}
 
 	public enum Floating implements IStringSerializable {

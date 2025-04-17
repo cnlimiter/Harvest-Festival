@@ -345,9 +345,9 @@ public class MiningChunk implements IChunkGenerator {
 	}
 
 	private long getIndex(int chunkX, int chunkY, int chunkZ) {
-		int x = (int) Math.floor(chunkX / MineManager.CHUNK_BOUNDARY); //3x3 Chunks
-		int y = (int) Math.floor(chunkY / MiningHelper.FLOOR_HEIGHT); // Height
-		int z = (int) Math.floor(chunkZ / MineManager.CHUNK_BOUNDARY); //3x3 Chunks
+		int x = (int) (double) (chunkX / MineManager.CHUNK_BOUNDARY); //3x3 Chunks
+		int y = (int) (double) (chunkY / MiningHelper.FLOOR_HEIGHT); // Height
+		int z = (int) (double) (chunkZ / MineManager.CHUNK_BOUNDARY); //3x3 Chunks
 		return new BlockPos(x, y, z).toLong();
 	}
 
@@ -567,8 +567,8 @@ public class MiningChunk implements IChunkGenerator {
 			TIntObjectMap<IBlockState[][]> stateMap = new TIntObjectHashMap<>();
 			for (int cX = 0; cX < blockStateMap.length; cX++) {
 				for (int cZ = 0; cZ < blockStateMap[cX].length; cZ++) {
-					int chunkIndexX = (int) Math.floor(cX / 16);
-					int chunkIndexZ = (int) Math.floor(cZ / 16);
+					int chunkIndexX = (int) (double) (cX / 16);
+					int chunkIndexZ = (int) (double) (cZ / 16);
 					int chunkIndex = getChunkIndexFromCoordinates(chunkIndexX, chunkIndexZ);
 					IBlockState[][] air = getBooleanFromMap(stateMap, chunkIndex);
 					air[cX % 16][cZ % 16] = blockStateMap[cX][cZ];

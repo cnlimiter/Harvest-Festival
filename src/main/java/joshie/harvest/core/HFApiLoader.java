@@ -103,7 +103,7 @@ public class HFApiLoader {
 				Map<String, Object> data = asmData.getAnnotationInfo();
 				Class clazz = Class.forName(asmData.getClassName());
 				String value = data.get("value") != null ? (String) data.get("value") : "";
-				if (!value.equals("")) {
+				if (!value.isEmpty()) {
 					ResourceLocation resource = value.contains(":") ?
 							new ResourceLocation(value) :
 							HarvestFestival.id(value);
@@ -138,7 +138,7 @@ public class HFApiLoader {
 		for (ASMDataTable.ASMData asmData : asmDatas) {
 			try {
 				Map<String, Object> data = asmData.getAnnotationInfo();
-				Boolean sub = data.get("value") != null ? (Boolean) data.get("value") : false;
+				boolean sub = data.get("value") != null ? (Boolean) data.get("value") : false;
 				Class clazz = Class.forName(asmData.getClassName());
 				if (!sub) {
 					if (ICommand.class.isAssignableFrom(clazz)) {
@@ -164,7 +164,7 @@ public class HFApiLoader {
 						ModAnnotation.EnumHolder.class,
 						(ModAnnotation.EnumHolder) data.get("value"),
 						"value") : "";
-				if ((side.equals("CLIENT") && isClient) || side.equals("")) {
+				if ((side.equals("CLIENT") && isClient) || side.isEmpty()) {
 					Class clazz = Class.forName(asmData.getClassName());
 					Method register = getMethod(clazz, "register");
 					if (register == null || ((Boolean) register.invoke(null))) {

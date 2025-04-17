@@ -64,7 +64,7 @@ public class CalendarHelper {
 	}
 
 	public static Season getSeason(long totalTime) {
-		return SEASONS[Math.max(0, (int) Math.floor((getElapsedDays(totalTime) / CalendarDate.DAYS_PER_SEASON) % 4))];
+		return SEASONS[Math.max(0, (int) (double) ((getElapsedDays(totalTime) / CalendarDate.DAYS_PER_SEASON) % 4))];
 	}
 
 	private static int getDay(long totalTime) {

@@ -86,8 +86,7 @@ public class CookingAPI implements CookingManager {
 		ResourceLocation location = string.contains(":") ? new ResourceLocation(string) : HarvestFestival.id(string);
 		for (Recipe recipe : Recipe.REGISTRY.values()) {
 			if (recipe.getResource().equals(location)) {
-				ArrayList<IngredientStack> stacks = new ArrayList<>();
-				stacks.addAll(recipe.getRequired());
+				ArrayList<IngredientStack> stacks = new ArrayList<>(recipe.getRequired());
 				if (!recipe.getOptional().isEmpty()) {
 					stacks.addAll(recipe.getOptional());
 				}

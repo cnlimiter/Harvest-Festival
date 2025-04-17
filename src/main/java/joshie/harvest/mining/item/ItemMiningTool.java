@@ -68,7 +68,7 @@ public class ItemMiningTool extends ItemHFEnum<ItemMiningTool, MiningTool> {
 	}
 
 	private int getCostBasedOnFloor(int floor) {
-		return 1 + (int) Math.floor(floor / 42);
+		return 1 + (int) (double) (floor / 42);
 	}
 
 	private int getCost(BlockPos link1, BlockPos pos) {
