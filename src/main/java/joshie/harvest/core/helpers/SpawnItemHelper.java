@@ -16,7 +16,7 @@ import net.minecraftforge.items.ItemHandlerHelper;
 
 public class SpawnItemHelper {
 	public static void addToPlayerInventory(EntityPlayer player, @Nonnull ItemStack stack) {
-		ItemHandlerHelper.giveItemToPlayer(player, stack);
+		ItemHandlerHelper.giveItemToPlayer(player, stack, player.inventory.currentItem);
 	}
 
 	//Items Spawned by entities last 1 day

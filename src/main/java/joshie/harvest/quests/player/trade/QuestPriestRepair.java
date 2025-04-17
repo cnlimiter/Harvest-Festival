@@ -58,45 +58,44 @@ public class QuestPriestRepair extends QuestTrade {
 	public void onChatClosed(EntityPlayer player, NPCEntity npc, boolean wasSneaking) {
 		long cost = HFApi.quests.hasCompleted(Quests.TOMAS_15K, player) ? 2500 : 5000;
 		boolean hasGold = HFTrackers.getPlayerTrackerFromPlayer(player).getStats().getGold() >= cost;
-		if (hasGold) {
-			complete(player);
-			player.world.playSound(player, player.posX, player.posY, player.posZ, HFSounds.BLESS_TOOL, SoundCategory.NEUTRAL, 0.25F, 1F);
-			EntityLiving entity = npc.getAsEntity();
-			for (int i = 0; i < 32; i++) {
-				player.world.spawnParticle(
-						EnumParticleTypes.VILLAGER_HAPPY,
-						entity.posX + player.world.rand.nextFloat() + player.world.rand.nextFloat() - 1F,
-						entity.posY + 0.25D + entity.world.rand.nextFloat() + entity.world.rand.nextFloat(),
-						entity.posZ + player.world.rand.nextFloat() + player.world.rand.nextFloat() - 1F,
-						0,
-						0,
-						0);
-			}
+		if (!hasGold || !isHolding(player)) {
+			return;
+		}
+		complete(player);
+		player.world.playSound(player, player.posX, player.posY, player.posZ, HFSounds.BLESS_TOOL, SoundCategory.NEUTRAL, 0.25F, 1F);
+		EntityLiving entity = npc.getAsEntity();
+		for (int i = 0; i < 32; i++) {
+			player.world.spawnParticle(
+					EnumParticleTypes.VILLAGER_HAPPY,
+					entity.posX + player.world.rand.nextFloat() + player.world.rand.nextFloat() - 1F,
+					entity.posY + 0.25D + entity.world.rand.nextFloat() + entity.world.rand.nextFloat(),
+					entity.posZ + player.world.rand.nextFloat() + player.world.rand.nextFloat() - 1F,
+					0,
+					0,
+					0);
 		}
 	}
 
 	@Override
 	public void onQuestCompleted(EntityPlayer player) {
-		if (!player.getHeldItemMainhand().isEmpty()) {
-			long cost = HFApi.quests.hasCompleted(Quests.TOMAS_15K, player) ? 1000 : 2500;
-			ItemStack stack = player.getHeldItemMainhand().copy();
-			ItemStack tool = new ItemStack(stack.getItem(), 1, stack.getItemDamage());
-			tool.getOrCreateSubCompound("Data").setDouble("Level", stack.getOrCreateSubCompound("Data").getDouble("Level"));
-			rewardGold(player, -cost);
-			takeHeldStack(player, 1);
-			rewardItem(player, tool);
-			SpawnItemHelper.spawnXP(player.world, (int) player.posX, (int) player.posY, (int) player.posZ, 5);
+		if (!isHolding(player)) {
+			return;
 		}
+		long cost = HFApi.quests.hasCompleted(Quests.TOMAS_15K, player) ? 1000 : 2500;
+		ItemStack tool = player.getHeldItemMainhand().copy();
+		tool.setItemDamage(0);
+		rewardGold(player, -cost);
+		takeHeldStack(player, 1);
+		rewardItem(player, tool);
+		SpawnItemHelper.spawnXP(player.world, (int) player.posX, (int) player.posY, (int) player.posZ, 5);
 	}
 
 	private boolean isHolding(EntityPlayer player) {
 		ItemStack held = player.getHeldItemMainhand();
-		if (!held.isEmpty()) {
-			if (held.getItem() instanceof ItemTool) {
-				ItemTool tool = ((ItemTool) held.getItem());
-				ToolTier tier = tool.getTier(held);
-				return tool.canBeDamaged() && tier == ITiered.ToolTier.BLESSED;
-			}
+		if (held.getItem() instanceof ItemTool) {
+			ItemTool tool = ((ItemTool) held.getItem());
+			ToolTier tier = tool.getTier(held);
+			return tool.isDamaged(held) && tier == ITiered.ToolTier.BLESSED;
 		}
 
 		return false;
