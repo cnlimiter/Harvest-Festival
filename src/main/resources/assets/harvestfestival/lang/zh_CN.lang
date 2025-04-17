@@ -1937,7 +1937,7 @@ harvestfestival.quest.trade.cursed.done=你的%s的祝福已经完成了！愿�
 # Priest Repair Quests
 harvestfestival.quest.trade.bless.reminder=只需要%s金钱，我就能维修你的祝福工具。
 harvestfestival.quest.trade.bless.repair.gold=看来你有把祝福工具。只要500G我就可以为你修理它。
-harvestfestival.quest.trade.bless.repair.done=借助全能神的力量你的%s已经被重塑并且恢复了它的力量。
+harvestfestival.quest.trade.bless.repair.done=借助全能的神的力量你的%s已经被重塑并且恢复了它的力量。
 
 # Blacksmith Upgrades
 harvestfestival.quest.trade.upgrade.closed.start=不好意思，我只能在上班时间对你的工具进行升级。
