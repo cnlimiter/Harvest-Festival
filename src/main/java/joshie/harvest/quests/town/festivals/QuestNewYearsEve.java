@@ -181,11 +181,11 @@ public class QuestNewYearsEve extends QuestFestival {
 				String colors,
 				String fadeColor) {
 			pos = town.getCoordinatesFromOffset(HFBuildings.FESTIVAL_GROUNDS, pos);
-			FMLCommonHandler.instance().getMinecraftServerInstance().getCommandManager().executeCommand(
-					npc,
-					"/summon FireworksRocketEntity " + pos.getX() + " " + pos.getY() + " " + pos.getZ() + " {LifeTime:" + lifetime +
-							",FireworksItem:{id:fireworks,Count:1,tag:{Fireworks:{Explosions:[{Type:" + type + ",Flicker:" + flicker +
-							",Trail:" + trail + ",Colors:[" + colors + "],FadeColors:[" + fadeColor + "]}]}}}}");
+			String command = "/summon fireworks_rocket " + pos.getX() + " " + pos.getY() + " " + pos.getZ() + " {LifeTime:" + lifetime +
+					",FireworksItem:{id:fireworks,Count:1,tag:{Fireworks:{Explosions:[{Type:" + type + ",Flicker:" + flicker +
+					",Trail:" + trail + ",Colors:[I;" + colors + "],FadeColors:[I;" + fadeColor + "]}]}}}}";
+//			System.out.println(command);
+			FMLCommonHandler.instance().getMinecraftServerInstance().getCommandManager().executeCommand(npc, command);
 		}
 
 		static boolean stop(int seconds) {
