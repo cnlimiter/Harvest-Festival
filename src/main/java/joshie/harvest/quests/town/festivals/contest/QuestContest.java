@@ -157,14 +157,14 @@ public abstract class QuestContest<E extends ContestEntries> extends QuestFestiv
 	@Override
 	public void onChatClosed(EntityPlayer player, NPCEntity entity, boolean wasSneaking) {
 		if (quest_stage == EXPLAIN) {
-			quest_stage = QUESTION;
-		}
-		if (quest_stage == START) {
+			setStage(QUESTION);
+		} else if (quest_stage == START) {
 			increaseStage(player);
 		}
 		if (entries.isSelecting(player) && entries.getNames().isEmpty()) {
 			entries.getSelecting().remove(EntityHelper.getPlayerUUID(player)); //Remove the player
 		}
+		syncData(player);
 	}
 
 	public void reward(World world, Place place) {

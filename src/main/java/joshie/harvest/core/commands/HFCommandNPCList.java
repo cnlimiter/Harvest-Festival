@@ -7,10 +7,12 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.event.ClickEvent;
 
 @HFCommand
-public class HFCommandNPC extends CommandBase {
+public class HFCommandNPCList extends CommandBase {
 	@Override
 	@Nonnull
 	public String getName() {
@@ -38,6 +40,10 @@ public class HFCommandNPC extends CommandBase {
 			TextComponentString componentTranslation = new TextComponentString(
 					npc.getNPC().getLocalizedName() + " is hiding at the coordinates " + (int) npc.posX + " " + (int) npc.posY + " " +
 							(int) npc.posZ);
+			ClickEvent clickEvent = new ClickEvent(
+					ClickEvent.Action.RUN_COMMAND,
+					"/tp " + (int) npc.posX + " " + (int) npc.posY + " " + (int) npc.posZ);
+			componentTranslation.setStyle(new Style().setClickEvent(clickEvent));
 			sender.sendMessage(componentTranslation);
 		});
 	}

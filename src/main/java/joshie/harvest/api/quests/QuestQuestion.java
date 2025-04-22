@@ -69,7 +69,7 @@ public abstract class QuestQuestion extends Quest {
 		@Override
 		public Result onSelected(EntityPlayer player, NPCEntity entity, QuestQuestion quest, int option) {
 			if (option == 1) { //If it's our first time, start tutorials
-				quest.quest_stage++;
+				quest.increaseStage(player);
 			} else { //If it's not then give the player the essentials to get started
 				finishedEarly = true;
 			}

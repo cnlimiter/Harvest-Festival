@@ -47,6 +47,8 @@ minecraft {
     clientRunArgs += "--mixin ${resolved_core_config}"
     serverRunArgs += "--mixin ${resolved_core_config}"
 
+    clientRunArgs += "--username Player20"
+
     replace "@VERSION@", "${mod_version}"
     replaceIn "HFModInfo.java"
 }

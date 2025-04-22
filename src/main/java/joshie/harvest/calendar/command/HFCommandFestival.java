@@ -1,5 +1,7 @@
 package joshie.harvest.calendar.command;
 
+import com.google.common.base.Preconditions;
+
 import javax.annotation.Nonnull;
 import joshie.harvest.HarvestFestival;
 import joshie.harvest.api.calendar.Festival;
@@ -47,6 +49,7 @@ public class HFCommandFestival extends CommandBase {
 				Festival newFestival = parameters[0].contains(":") ?
 						Festival.REGISTRY.get(new ResourceLocation(parameters[0])) :
 						Festival.REGISTRY.get(HarvestFestival.id(parameters[0]));
+				Preconditions.checkNotNull(newFestival, "Festival not found: " + parameters[0]);
 				TownDataServer town = TownHelper.getClosestTownToEntity(((Entity) sender), false);
 				town.startFestival(newFestival); //Update the building right away
 				long i = sender.getEntityWorld().getWorldTime() + HFCalendar.TICKS_PER_DAY;
