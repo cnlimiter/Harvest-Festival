@@ -18,7 +18,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
 public class CalendarServer extends Calendar {
-	private final CalendarDate DATE = new CalendarDate(0, Season.SPRING, 1);
+	private final CalendarDate DATE = new CalendarDate(0, Season.SPRING);
 	private static final Random rand = new Random();
 	private CalendarSavedData data;
 
@@ -126,7 +126,7 @@ public class CalendarServer extends Calendar {
 	public void readFromNBT(NBTTagCompound nbt) {
 		if (nbt.hasKey("Date")) {
 			CalendarDate date = CalendarDate.fromNBT(nbt.getCompoundTag("Date"));
-			DATE.setDate(date.getWeekday(), date.getDay(), date.getSeason(), date.getYear());
+			DATE.setDate(date.getDay(), date.getSeason(), date.getYear());
 		}
 
 		rainStrength = nbt.getInteger("RainStrength");

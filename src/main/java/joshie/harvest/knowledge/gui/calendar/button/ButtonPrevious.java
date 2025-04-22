@@ -41,7 +41,7 @@ public class ButtonPrevious extends GuiButton {
 	public void mouseReleased(int mouseX, int mouseY) {
 		Season season = GuiCalendar.season;
 		if (season == Season.SPRING) {
-			if (GuiCalendar.year != 0) {
+			if (GuiCalendar.year != 1) {
 				GuiCalendar.season = Season.WINTER;
 				GuiCalendar.year--;
 			}

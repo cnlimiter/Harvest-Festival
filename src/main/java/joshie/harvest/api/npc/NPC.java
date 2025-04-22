@@ -71,7 +71,7 @@ public class NPC extends HFRegistry<NPC> implements CalendarEntry {
 				HarvestFestival.id("null"),
 				INPCHelper.Gender.MALE,
 				INPCHelper.Age.ADULT,
-				new CalendarDate(1, Season.SPRING, 1),
+				new CalendarDate(1, Season.SPRING),
 				0,
 				0);
 	}

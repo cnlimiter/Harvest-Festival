@@ -118,7 +118,7 @@ public class CalendarAPI implements CalendarManager {
 
 	@Override
 	public void registerFestival(Festival festival, int originalDay, Season originalSeason) {
-		festivals.put(new CalendarDate(getOffsetDay(originalDay), getOffsetSeason(originalDay, originalSeason), 1), festival);
+		festivals.put(new CalendarDate(getOffsetDay(originalDay), getOffsetSeason(originalDay, originalSeason)), festival);
 	}
 
 	@Override

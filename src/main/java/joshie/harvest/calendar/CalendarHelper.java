@@ -38,7 +38,7 @@ public class CalendarHelper {
 		return (int) (((day + 1) / 30D) * CalendarDate.DAYS_PER_SEASON) - 1;
 	}
 
-	private static Weekday getWeekday(int days) {
+	public static Weekday getWeekday(int days) {
 		int modulus = days % 7;
 		if (modulus < 0) {
 			modulus = 0;
@@ -46,21 +46,17 @@ public class CalendarHelper {
 		return DAYS[modulus];
 	}
 
-	public static Weekday getWeekday(long time) {
-		return getWeekday(getElapsedDays(time));
-	}
-
 	public static void setDate(World world, CalendarDate date) {
 		long time = world.getWorldTime();
 		Season previous = date.getSeason();
-		date.setDate(getWeekday(time), getDay(time), getSeason(time), getYear(time));
+		date.setDate(getDay(time), getSeason(time), getYear(time));
 		if (previous != date.getSeason()) {
 			HFTrackers.getCalendar(world).onSeasonChanged();
 		}
 	}
 
 	private static int getYear(long totalTime) {
-		return (int) Math.floor((double) getElapsedDays(totalTime) / 4 / CalendarDate.DAYS_PER_SEASON);
+		return (int) Math.floor((double) getElapsedDays(totalTime) / 4 / CalendarDate.DAYS_PER_SEASON) + 1;
 	}
 
 	public static Season getSeason(long totalTime) {

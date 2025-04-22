@@ -1,6 +1,7 @@
 package joshie.harvest.api.npc.task;
 
 import joshie.harvest.api.npc.NPCEntity;
+import joshie.harvest.core.HFCore;
 import net.minecraft.nbt.NBTTagCompound;
 
 @HFTask("wait")
@@ -24,6 +25,9 @@ public class TaskWait extends TaskElement {
 
 	@Override
 	public boolean isSatisfied(NPCEntity npc) {
+		if (HFCore.DEBUG_MODE) {
+			return true;
+		}
 		return ticker >= target;
 	}
 

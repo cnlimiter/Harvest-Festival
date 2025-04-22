@@ -18,7 +18,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 
 public class ContainerNPCGift extends ContainerNPCChat {
-	public static final CalendarDate CHRISTMAS = new CalendarDate(25, Season.WINTER, 0);
+	public static final CalendarDate CHRISTMAS = new CalendarDate(25, Season.WINTER);
 	private final EnumHand hand;
 
 	public ContainerNPCGift(EntityPlayer player, EntityNPC npc, EnumHand hand, int nextGui) {

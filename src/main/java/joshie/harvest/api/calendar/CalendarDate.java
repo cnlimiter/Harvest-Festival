@@ -1,5 +1,7 @@
 package joshie.harvest.api.calendar;
 
+import joshie.harvest.HarvestFestival;
+import joshie.harvest.calendar.CalendarHelper;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class CalendarDate {
@@ -14,34 +16,39 @@ public class CalendarDate {
 
 	public CalendarDate() {}
 
+	public CalendarDate(int day, Season season) {
+		this(day, season, 1);
+	}
+
 	public CalendarDate(int day, Season season, int year) {
-		this.day = day;
-		this.season = season;
-		this.year = year;
-		this.weekday = Weekday.MONDAY;
+		setDate(day, season, year);
 	}
 
 	/**
 	 * Make a copy of this date
 	 **/
 	public CalendarDate copy() {
-		return new CalendarDate().setDate(weekday, day, season, year);
+		CalendarDate date = new CalendarDate().setDate(day, season, year);
+		date.weekday = weekday;
+		return date;
 	}
 
 	/**
 	 * Update the internal values of this date
 	 *
-	 * @param weekday the day of the week
-	 * @param day     the day of the season
-	 * @param season  the season
-	 * @param year    the year
+	 * @param day    the day of the season
+	 * @param season the season
+	 * @param year   the year
 	 * @return the full date
 	 */
-	public CalendarDate setDate(Weekday weekday, int day, Season season, int year) {
-		this.weekday = weekday;
+	public CalendarDate setDate(int day, Season season, int year) {
 		this.day = day;
 		this.season = season;
 		this.year = year;
+		if (year == 0) {
+			HarvestFestival.LOGGER.error("Year cannot be 0, setting to 1");
+			this.year = 1;
+		}
 		return this;
 	}
 
@@ -49,6 +56,9 @@ public class CalendarDate {
 	 * @return the day of the week
 	 **/
 	public Weekday getWeekday() {
+		if (weekday == null) {
+			weekday = CalendarHelper.getWeekday(CalendarHelper.getTotalDays(this));
+		}
 		return weekday;
 	}
 
@@ -80,11 +90,10 @@ public class CalendarDate {
 	 * @return the date
 	 */
 	public static CalendarDate fromNBT(NBTTagCompound nbt) {
-		Weekday weekday = Weekday.values()[nbt.getByte("WeekDay")];
 		int day = nbt.getInteger("Day");
 		Season season = Season.VALUES.get(nbt.getByte("Season"));
-		int year = nbt.getInteger("Year");
-		return new CalendarDate().setDate(weekday, day, season, year);
+		int year = Math.max(1, nbt.getInteger("Year"));
+		return new CalendarDate().setDate(day, season, year);
 	}
 
 	/**

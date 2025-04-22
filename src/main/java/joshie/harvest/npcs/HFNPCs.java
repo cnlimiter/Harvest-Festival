@@ -296,7 +296,7 @@ public class HFNPCs {
 								new ResourceLocation("harvestfestival", name),
 								gender,
 								age,
-								new CalendarDate(dayOfBirth, seasonOfBirth, 1),
+								new CalendarDate(dayOfBirth, seasonOfBirth),
 								insideColor,
 								outsideColor);
 			}
@@ -306,7 +306,7 @@ public class HFNPCs {
 				HarvestFestival.id(name),
 				gender,
 				age,
-				new CalendarDate(dayOfBirth, seasonOfBirth, 1),
+				new CalendarDate(dayOfBirth, seasonOfBirth),
 				insideColor,
 				outsideColor);
 	}

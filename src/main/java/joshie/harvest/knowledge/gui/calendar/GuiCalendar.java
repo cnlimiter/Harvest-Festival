@@ -87,7 +87,7 @@ public class GuiCalendar extends GuiBase {
 					guiTop + getYForDate(date)));
 		}
 
-		if ((GuiCalendar.year > 0 || (GuiCalendar.year == 0 && GuiCalendar.season != Season.SPRING))) {
+		if ((GuiCalendar.year > 1 || (GuiCalendar.year == 1 && GuiCalendar.season != Season.SPRING))) {
 			buttonList.add(new ButtonPrevious(this, buttonList.size(), guiLeft + 30, guiTop - 12));
 		}
 
@@ -147,7 +147,7 @@ public class GuiCalendar extends GuiBase {
 		drawTexturedModalRect(guiLeft + 10, guiTop + 18 + 30 * rows, 8, 52, 210, 2);
 		drawCenteredString(
 				fontRenderer,
-				season.getDisplayName() + TextFormatting.RESET + " - Year " + (year + 1),
+				season.getDisplayName() + TextFormatting.RESET + " - Year " + year,
 				guiLeft + 113,
 				guiTop - 10,
 				0xFFFFFF);
