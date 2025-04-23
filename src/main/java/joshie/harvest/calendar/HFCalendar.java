@@ -1,19 +1,14 @@
 package joshie.harvest.calendar;
 
 import joshie.harvest.api.HFApi;
-import joshie.harvest.api.calendar.CalendarDate;
 import joshie.harvest.api.calendar.SeasonProvider;
-import joshie.harvest.calendar.data.CalendarServer;
 import joshie.harvest.calendar.provider.HFWorldProvider;
 import joshie.harvest.calendar.provider.SeasonProviderHidden;
-import joshie.harvest.core.HFTrackers;
 import joshie.harvest.core.helpers.ConfigHelper;
 import joshie.harvest.core.lib.LoadOrder;
 import joshie.harvest.core.util.annotations.HFLoader;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.DimensionType;
 import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 @HFLoader(priority = LoadOrder.HFCALENDAR)
@@ -77,8 +72,8 @@ public class HFCalendar {
 	public static void configure() {
 		CONFIG = ConfigHelper.getConfig();
 		//OVERWORLD_ID = getInteger("Overworld ID", 3);
-		DAYS_PER_SEASON_INTEGRATED = ConfigHelper.getInteger("Integrated Server > Days per season", 30, 30, 3000);
-		DAYS_PER_SEASON_DEDICATED = ConfigHelper.getInteger("Dedicated Server > Days per season", 300, 30, 3000);
+//		DAYS_PER_SEASON_INTEGRATED = ConfigHelper.getInteger("Integrated Server > Days per season", 30, 30, 3000);
+//		DAYS_PER_SEASON_DEDICATED = ConfigHelper.getInteger("Dedicated Server > Days per season", 300, 30, 3000);
 		TICKS_PER_DAY = ConfigHelper.getInteger("Ticks per day", 24000);
 		ENABLE_SUNNY = ConfigHelper.getBoolean("Weather > Enable sunny", true);
 		ENABLE_RAIN = ConfigHelper.getBoolean("Weather > Enable rain", true);
@@ -99,14 +94,14 @@ public class HFCalendar {
 		TWO_HOURS = (TICKS_PER_DAY / 12);
 	}
 
-	public static void onServerStarting() {
-		MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
-		if (server.isDedicatedServer()) {
-			CalendarDate.DAYS_PER_SEASON = DAYS_PER_SEASON_DEDICATED;
-		} else {
-			CalendarDate.DAYS_PER_SEASON = DAYS_PER_SEASON_INTEGRATED;
-		}
-
-		HFTrackers.<CalendarServer>getCalendar(server.getEntityWorld()).recalculate(server.getEntityWorld());
-	}
+//	public static void onServerStarting() {
+//		MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
+//		if (server.isDedicatedServer()) {
+//			CalendarDate.DAYS_PER_SEASON = DAYS_PER_SEASON_DEDICATED;
+//		} else {
+//			CalendarDate.DAYS_PER_SEASON = DAYS_PER_SEASON_INTEGRATED;
+//		}
+//
+//		HFTrackers.<CalendarServer>getCalendar(server.getEntityWorld()).recalculate(server.getEntityWorld());
+//	}
 }

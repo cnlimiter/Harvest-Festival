@@ -18,7 +18,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
 public class CalendarServer extends Calendar {
-	private final CalendarDate DATE = new CalendarDate(0, Season.SPRING);
+	private final CalendarDate DATE = new CalendarDate(1, Season.SPRING);
 	private static final Random rand = new Random();
 	private CalendarSavedData data;
 

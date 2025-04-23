@@ -14,8 +14,6 @@ public class CalendarDate {
 	private Season season;
 	private int year;
 
-	public CalendarDate() {}
-
 	public CalendarDate(int day, Season season) {
 		this(day, season, 1);
 	}
@@ -28,7 +26,7 @@ public class CalendarDate {
 	 * Make a copy of this date
 	 **/
 	public CalendarDate copy() {
-		CalendarDate date = new CalendarDate().setDate(day, season, year);
+		CalendarDate date = new CalendarDate(day, season, year);
 		date.weekday = weekday;
 		return date;
 	}
@@ -45,10 +43,15 @@ public class CalendarDate {
 		this.day = day;
 		this.season = season;
 		this.year = year;
+		if (day == 0) {
+			HarvestFestival.LOGGER.error("Day cannot be 0, setting to 1");
+			this.day = 1;
+		}
 		if (year == 0) {
 			HarvestFestival.LOGGER.error("Year cannot be 0, setting to 1");
 			this.year = 1;
 		}
+		weekday = null;
 		return this;
 	}
 
@@ -90,10 +93,10 @@ public class CalendarDate {
 	 * @return the date
 	 */
 	public static CalendarDate fromNBT(NBTTagCompound nbt) {
-		int day = nbt.getInteger("Day");
+		int day = Math.max(1, nbt.getInteger("Day"));
 		Season season = Season.VALUES.get(nbt.getByte("Season"));
 		int year = Math.max(1, nbt.getInteger("Year"));
-		return new CalendarDate().setDate(day, season, year);
+		return new CalendarDate(day, season, year);
 	}
 
 	/**

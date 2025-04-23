@@ -180,7 +180,7 @@ public class CalendarHUD {
 									"" + MiningHelper.getFloor(
 											(int) mc.player.posX >> 4,
 											(int) Math.min(247, Math.max(1, mc.player.posY)))) :
-							TextHelper.format("harvestfestival.calendar.date", season.getDisplayName(), (date.getDay() + 1));
+							TextHelper.format("harvestfestival.calendar.date", season.getDisplayName(), date.getDay());
 					mc.fontRenderer.drawStringWithShadow(header, (adjustedX / 1.4F) + 30, (adjustedY / 1.4F) + 7, 0xFFFFFFFF);
 					GlStateManager.popMatrix();
 

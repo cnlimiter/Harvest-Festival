@@ -77,14 +77,19 @@ public class GuiCalendar extends GuiBase {
 		buttonList.clear();
 		rows = getNumberOfRows();
 		//int yExtra = rows
-		for (int day = 0; day < 30; day++) {
+		int y = guiTop + 30 - 6;
+		for (int day = 1; day <= 30; day++) {
 			CalendarDate date = new CalendarDate(day, season, year);
+			int x = 14 + date.getWeekday().ordinal() * 30;
 			buttonList.add(new ButtonDate(
 					this,
 					day,
 					getStacksForDate(new CalendarDate(day * (CalendarDate.DAYS_PER_SEASON / 30), season, year)),
-					guiLeft + getXForDate(date),
-					guiTop + getYForDate(date)));
+					x,
+					y));
+			if (date.getWeekday() == Weekday.SATURDAY) {
+				y += 30;
+			}
 		}
 
 		if ((GuiCalendar.year > 1 || (GuiCalendar.year == 1 && GuiCalendar.season != Season.SPRING))) {
@@ -100,31 +105,8 @@ public class GuiCalendar extends GuiBase {
 	}
 
 	private int getNumberOfRows() {
-		int max = 0;
-		for (int day = 0; day < 30; day++) {
-			CalendarDate date = new CalendarDate(day, season, year);
-			int season = (date.getYear() * 4) + date.getSeason().ordinal();
-			int x = (((date.getDay() + (season * 2)) % 7));
-			int value = (int) ((double) (date.getDay() - x) + 13) / 7;
-			if (value > max) {
-				max = value;
-			}
-		}
-
-		return max;
-	}
-
-	private int getXForDate(CalendarDate date) {
-		int season = (date.getYear() * 4) + date.getSeason().ordinal();
-		int value = (((date.getDay() + (season * 2)) % 7));
-		return 14 + (value * 30);
-	}
-
-	private int getYForDate(CalendarDate date) {
-		int season = (date.getYear() * 4) + date.getSeason().ordinal();
-		int x = (((date.getDay() + (season * 2)) % 7));
-		int value = (int) ((double) (date.getDay() - x) + 13) / 7;
-		return (value * 30) - 6;
+		CalendarDate date = new CalendarDate(1, season, year);
+		return date.getWeekday() == Weekday.SATURDAY ? 6 : 5;
 	}
 
 	@Override

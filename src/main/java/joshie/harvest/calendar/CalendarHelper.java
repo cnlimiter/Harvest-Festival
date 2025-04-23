@@ -20,22 +20,9 @@ public class CalendarHelper {
 		DAYS = Weekday.class.getEnumConstants();
 	}
 
-	//Dates are 0-29
+	//Dates are 1-30
 	public static boolean isDateSame(CalendarDate today, CalendarDate dateOffByOne) {
-		int dayToCompareAgainst = dateOffByOne.getDay() - 1;
-		int compareMin = getMinDay(dayToCompareAgainst);
-		int compareMax = getMaxDay(dayToCompareAgainst);
-		return today.getDay() >= compareMin && today.getDay() <= compareMax && today.getSeason() == dateOffByOne.getSeason();
-	}
-
-	//Returns 0-29
-	public static int getMinDay(int day) {
-		return (int) (((day) / 30D) * CalendarDate.DAYS_PER_SEASON);
-	}
-
-	//Returns 0-29
-	public static int getMaxDay(int day) {
-		return (int) (((day + 1) / 30D) * CalendarDate.DAYS_PER_SEASON) - 1;
+		return today.getDay() == dateOffByOne.getDay() && today.getSeason() == dateOffByOne.getSeason();
 	}
 
 	public static Weekday getWeekday(int days) {
@@ -74,14 +61,11 @@ public class CalendarHelper {
 	private static int getTotalDays(int day, Season season, int year) {
 		int season_days = CalendarDate.DAYS_PER_SEASON * season.ordinal();
 		int year_days = (year - 1) * (CalendarDate.DAYS_PER_SEASON * 4);
-		return day + season_days + year_days;
+		return day - 1 + season_days + year_days;
 	}
 
 	public static int getTotalDays(CalendarDate date) {
-		int current_days = date.getDay();
-		int season_days = CalendarDate.DAYS_PER_SEASON * date.getSeason().ordinal();
-		int year_days = (date.getYear() - 1) * (CalendarDate.DAYS_PER_SEASON * 4);
-		return current_days + season_days + year_days;
+		return getTotalDays(date.getDay(), date.getSeason(), date.getYear());
 	}
 
 	public static int getYearsPassed(@Nonnull CalendarDate birthday, @Nonnull CalendarDate date) {

@@ -6,7 +6,6 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import joshie.harvest.api.calendar.CalendarDate;
 import joshie.harvest.api.calendar.CalendarEntry;
-import joshie.harvest.calendar.CalendarHelper;
 import joshie.harvest.core.helpers.StackRenderHelper;
 import joshie.harvest.knowledge.gui.calendar.GuiCalendar;
 import net.minecraft.client.Minecraft;
@@ -19,19 +18,17 @@ public class ButtonDate extends GuiButton {
 	private final boolean highlighted;
 	private final GuiCalendar gui;
 	private final CyclingStack icons;
-	private int start;
-	private int end;
+	private int day;
 
-	public ButtonDate(GuiCalendar gui, int number, List<CalendarEntry> entries, int x, int y) {
-		super(number, x, y, "");
+	public ButtonDate(GuiCalendar gui, int day, List<CalendarEntry> entries, int x, int y) {
+		super(day, x, y, "");
 		this.gui = gui;
 		this.icons = new CyclingStack(x + 8, y + 6, entries);
 		this.width = 26;
 		this.height = 26;
-		this.start = CalendarHelper.getMinDay(number) + 1;
-		this.end = CalendarHelper.getMaxDay(number) + 1;
-		this.highlighted = GuiCalendar.date.getDay() >= (start - 1) && GuiCalendar.date.getDay() <= (end - 1) &&
-				GuiCalendar.season == GuiCalendar.date.getSeason() && GuiCalendar.year == GuiCalendar.date.getYear();
+		this.day = day;
+		this.highlighted = day == GuiCalendar.date.getDay() && GuiCalendar.season == GuiCalendar.date.getSeason() &&
+				GuiCalendar.year == GuiCalendar.date.getYear();
 	}
 
 	@Override
@@ -55,14 +52,14 @@ public class ButtonDate extends GuiButton {
 
 			boolean prev = mc.fontRenderer.getUnicodeFlag();
 			mc.fontRenderer.setUnicodeFlag(true);
-			gui.drawString(mc.fontRenderer, TextFormatting.BOLD + "" + (id + 1), x + 2, y, 0xFFFFFF);
+			gui.drawString(mc.fontRenderer, TextFormatting.BOLD + "" + id, x + 2, y, 0xFFFFFF);
 
 			mc.fontRenderer.setUnicodeFlag(prev);
 			mouseDragged(mc, mouseX, mouseY);
 			icons.render(gui, mouseX, mouseY);
-			if (CalendarDate.DAYS_PER_SEASON != 30 && hovered) {
-				gui.addTooltip(start + "-" + end);
-			}
+//			if (CalendarDate.DAYS_PER_SEASON != 30 && hovered) {
+//				gui.addTooltip(start + "-" + end);
+//			}
 		}
 	}
 

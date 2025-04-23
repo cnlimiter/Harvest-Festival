@@ -183,7 +183,7 @@ public abstract class TownData<Q extends QuestData, L extends LetterData> implem
 		if (nbt.hasKey("Created")) {
 			birthday = CalendarDate.fromNBT(nbt.getCompoundTag("Created"));
 		} else {
-			birthday = new CalendarDate(0, Season.SPRING);
+			birthday = new CalendarDate(1, Season.SPRING);
 		}
 		shops.readFromNBT(nbt);
 		uuid = NBTHelper.readUUID("Town", nbt);

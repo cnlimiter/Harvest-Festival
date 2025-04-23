@@ -49,7 +49,7 @@ public class HFCommandDay extends CommandBase {
 			notifyCommandListener(sender, this, "Weekday: " + date.getWeekday());
 		} else if (parameters.length == 1) {
 			CalendarServer calendar = HFTrackers.getCalendar(sender.getEntityWorld());
-			int day = Math.min(CalendarDate.DAYS_PER_SEASON, Math.max(1, parseInt(parameters[0]))) - 1;
+			int day = Math.min(CalendarDate.DAYS_PER_SEASON, Math.max(1, parseInt(parameters[0])));
 			Season season = calendar.getDate().getSeason();
 			int year = calendar.getDate().getYear();
 			long leftover = server.worlds[0].getWorldTime() % HFCalendar.TICKS_PER_DAY;
