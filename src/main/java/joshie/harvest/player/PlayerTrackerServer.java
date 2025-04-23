@@ -120,7 +120,7 @@ public class PlayerTrackerServer extends PlayerTracker implements ISyncMaster {
 			if (CalendarHelper.isDateSame(today, ContainerNPCGift.CHRISTMAS)) {
 				EventTrigger.INSTANCE.trigger(player, "first_christmas");
 			}
-			if (CalendarHelper.isDateSame(today, stats.getBirthday())) {
+			if (today.getYear() > 1 && CalendarHelper.isDateSame(today, stats.getBirthday())) {
 				EventTrigger.INSTANCE.trigger(player, "birthday");
 			}
 

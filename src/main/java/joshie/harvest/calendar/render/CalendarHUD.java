@@ -102,7 +102,7 @@ public class CalendarHUD {
 				} else {
 					HFCalendar.X_GOLD--;
 				}
-			} else if (Keyboard.isKeyDown(Keyboard.KEY_RETURN)) {
+			} else if (Keyboard.isKeyDown(Keyboard.KEY_RETURN) || Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
 				editingCalendar = false;
 				editingGold = false;
 				save = true;

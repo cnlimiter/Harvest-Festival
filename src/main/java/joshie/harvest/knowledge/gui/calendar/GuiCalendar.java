@@ -80,7 +80,7 @@ public class GuiCalendar extends GuiBase {
 		int y = guiTop + 30 - 6;
 		for (int day = 1; day <= 30; day++) {
 			CalendarDate date = new CalendarDate(day, season, year);
-			int x = 14 + date.getWeekday().ordinal() * 30;
+			int x = guiLeft + 14 + date.getWeekday().ordinal() * 30;
 			buttonList.add(new ButtonDate(
 					this,
 					day,

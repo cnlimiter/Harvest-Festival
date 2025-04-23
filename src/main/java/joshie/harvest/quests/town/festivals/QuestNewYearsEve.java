@@ -120,7 +120,7 @@ public class QuestNewYearsEve extends QuestFestival {
 			//Set the world time to one tick before the new year!
 			MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
 			CalendarServer calendar = HFTrackers.getCalendar(npc.world);
-			CalendarHelper.setWorldTime(server, CalendarHelper.getTime(0, Season.SPRING, calendar.getDate().getYear() + 1) - 1);
+			CalendarHelper.setWorldTime(server, CalendarHelper.getTime(1, Season.SPRING, calendar.getDate().getYear() + 1) - 1);
 
 			//Add 500RP to all the npcs for any players that are in range
 			for (EntityPlayer player : EntityHelper.getEntities(EntityPlayer.class, npc.world, new BlockPos(npc), 64, 64)) {

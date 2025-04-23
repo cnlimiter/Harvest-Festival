@@ -61,7 +61,7 @@ public class CalendarHelper {
 	private static int getTotalDays(int day, Season season, int year) {
 		int season_days = CalendarDate.DAYS_PER_SEASON * season.ordinal();
 		int year_days = (year - 1) * (CalendarDate.DAYS_PER_SEASON * 4);
-		return day - 1 + season_days + year_days;
+		return day + season_days + year_days;
 	}
 
 	public static int getTotalDays(CalendarDate date) {
