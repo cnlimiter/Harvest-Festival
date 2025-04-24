@@ -47,7 +47,7 @@ public class NewDayHandler {
 			if (overworld.getWorldTime() % HFCalendar.TICKS_PER_DAY == 1) {
 				CalendarServer calendar = HFTrackers.getCalendar(overworld);
 				CalendarDate yesterday = calendar.getDate().copy();
-				HFTrackers.<CalendarServer>getCalendar(overworld).newDay(overworld);
+				calendar.newDay(overworld);
 				CalendarDate today = calendar.getDate().copy();
 				for (PlayerTrackerServer player : HFTrackers.getPlayerTrackers()) {
 					player.newDay(yesterday, today);

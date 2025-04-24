@@ -51,7 +51,7 @@ public class CalendarHelper {
 	}
 
 	private static int getDay(long totalTime) {
-		return getElapsedDays(totalTime) % CalendarDate.DAYS_PER_SEASON;
+		return getElapsedDays(totalTime) % CalendarDate.DAYS_PER_SEASON + 1;
 	}
 
 	public static int getElapsedDays(long totalTime) {
@@ -80,7 +80,7 @@ public class CalendarHelper {
 	}
 
 	public static long getTime(int day, Season season, int year) {
-		return (getTotalDays(day, season, year)) * HFCalendar.TICKS_PER_DAY;
+		return (getTotalDays(day, season, year) - 1) * HFCalendar.TICKS_PER_DAY;
 	}
 
 	public static long getTime(World world) {
